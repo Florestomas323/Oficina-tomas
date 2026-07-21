@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#FAFAF8">
-<title>Tomás Flores — Tu distribuidor Royal Prestige | Demostraciones, recetas y servicio</title>
-<meta name="description" content="Reserva tu demostración gratuita, solicita servicio para tu equipo, encuentra recetas y guarda mi contacto. Tomás Flores, distribuidor autorizado Royal Prestige en DFW, Texas.">
+<title>Tomas Flores — Tu distribuidor Royal Prestige | Demostraciones, recetas y servicio</title>
+<meta name="description" content="Reserva tu demostración gratuita, solicita servicio para tu equipo, encuentra recetas y guarda mi contacto. Tomas Flores, distribuidor autorizado Royal Prestige en DFW, Texas.">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Tomás Flores — Royal Prestige">
-<meta property="og:title" content="Tomás Flores — Royal Prestige">
+<meta property="og:site_name" content="Tomas Flores — Royal Prestige">
+<meta property="og:title" content="Tomas Flores — Royal Prestige">
 <meta property="og:description" content="Tu distribuidor de confianza. Demostración gratuita, recetas, servicio y contacto directo.">
 <meta property="og:url" content="https://oficina-tomas.vercel.app/">
 <meta property="og:image" content="https://oficina-tomas.vercel.app/og-image.jpeg">
@@ -16,10 +16,10 @@
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Tomás Flores, distribuidor autorizado Royal Prestige en DFW, Texas">
+<meta property="og:image:alt" content="Tomas Flores, distribuidor autorizado Royal Prestige en DFW, Texas">
 <meta property="og:locale" content="es_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Tomás Flores — Royal Prestige">
+<meta name="twitter:title" content="Tomas Flores — Royal Prestige">
 <meta name="twitter:description" content="Tu distribuidor de confianza. Demostración gratuita, recetas, servicio y contacto directo.">
 <meta name="twitter:image" content="https://oficina-tomas.vercel.app/og-image.jpeg">
 <meta name="robots" content="index,follow">
@@ -30,7 +30,7 @@
 {
   "@context":"https://schema.org",
   "@type":"Person",
-  "name":"Tomás Flores",
+  "name":"Tomas Flores",
   "jobTitle":"Distribuidor autorizado Royal Prestige",
   "worksFor":{"@type":"Organization","name":"Impact Enterprises"},
   "telephone":"+1-682-381-1576",
@@ -622,18 +622,80 @@
   .hero-trust .stars{color:#B8860B;letter-spacing:1.5px;font-size:14.5px}
   .hero-trust *{pointer-events:none}
   .hero-trust:active{opacity:.7}
+
+  /* ---------- Tarjeta Compartir ---------- */
+  .share-card{background:var(--card);border:1px solid var(--hairline);border-radius:24px;padding:clamp(30px,7vw,46px) 26px;text-align:center;box-shadow:var(--shadow-soft);max-width:620px;margin:0 auto;position:relative;overflow:hidden}
+  .share-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .share-emoji{font-size:32px;display:block;margin-bottom:14px}
+  .share-h{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:clamp(21px,5.5vw,27px);letter-spacing:-.02em;line-height:1.15;margin-bottom:10px}
+  .share-p{color:var(--stone);font-size:15.5px;line-height:1.55;max-width:36ch;margin:0 auto 24px}
+  .share-btn{touch-action:manipulation}
+  .share-btn svg{pointer-events:none}
+  .share-ok{display:block;margin-top:16px;color:var(--gold-text);font-weight:600;font-size:14px}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
+<script>
+(function(){
+  // Tracking de clics: guarda en localStorage (para debug) + intenta enviar a Firestore
+  var clickLog = [];
+  try { clickLog = JSON.parse(localStorage.getItem('_clicks') || '[]'); } catch(e) {}
+  
+  function logClick(label, action) {
+    if(!label || !action) return;
+    var now = new Date();
+    var entry = {
+      label: label,
+      action: action,
+      time: now.toISOString(),
+      timestamp: now.getTime(),
+      userAgent: navigator.userAgent.slice(0,100),
+      referrer: document.referrer.slice(0,100)
+    };
+    clickLog.push(entry);
+    if(clickLog.length > 500) clickLog.shift();
+    try { localStorage.setItem('_clicks', JSON.stringify(clickLog)); } catch(e) {}
+    
+    // Intentar enviar a Firestore (si está conectado)
+    if(window.__addDoc && window.__collection && window.__db && window.__serverTimestamp) {
+      try {
+        window.__addDoc(window.__collection(window.__db, 'analytics_clicks'), {
+          label: label,
+          action: action,
+          createdAt: window.__serverTimestamp(),
+          userAgent: entry.userAgent,
+          referrer: entry.referrer
+        }).catch(()=>{}); // silencioso si falla
+      } catch(e) {}
+    }
+  }
+  
+  window.logClick = logClick;
+  
+  // Event listener global para capturar clics
+  document.addEventListener('click', function(e) {
+    var target = e.target.closest('[data-cal], [data-share], a[href*="wa.me"], a[href*="instagram"], a[href*="tiktok"], .share-btn, [onclick*="openReview"]');
+    if(!target) return;
+    
+    if(target.closest('[data-cal]')) logClick('Agendar', 'click');
+    else if(target.closest('[data-share]')) logClick('Compartir', 'click');
+    else if(target.closest('a[href*="wa.me"]')) logClick('WhatsApp', 'click');
+    else if(target.closest('a[href*="instagram"]')) logClick('Instagram', 'click');
+    else if(target.closest('a[href*="tiktok"]')) logClick('TikTok', 'click');
+    else if(target.closest('.share-btn')) logClick('Comparte oficina', 'click');
+    else if(target.closest('[onclick*="openReview"]')) logClick('Deja reseña', 'click');
+  }, true);
+})();
+</script>
 </head>
 <body>
 
 <!-- =============== HERO =============== -->
 <section class="hero">
-  <div class="hero-photo"><img id="heroImg" src="foto-hero.jpg" alt="Tomás Flores cocinando con utensilios Royal Prestige" fetchpriority="high"></div>
+  <div class="hero-photo"><img id="heroImg" src="foto-hero.jpg" alt="Tomas Flores cocinando con utensilios Royal Prestige" fetchpriority="high"></div>
   <div class="hero-veil"></div>
   <div class="hero-content">
     <span class="eyebrow rv in">Distribuidor autorizado Royal Prestige</span>
-    <h1 class="rv in">Tomás<br>Flores</h1>
+    <h1 class="rv in">Tomas<br>Flores</h1>
     <p class="sub rv in" id="heroSub">Estoy aquí para ayudarte a sacarle todo el provecho a tu cocina.</p>
     <a class="hero-trust rv in" href="#opiniones" aria-label="Ver reseñas de clientes">
 <span class="stars" aria-hidden="true">★★★★★</span>
@@ -721,11 +783,11 @@
     </div>
   </div>
   <div class="rev-track rv" aria-label="Opiniones de clientes" id="revTrack">
-    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#8A6FB4">MG</span><div><div class="rev-name">María G.</div><div class="rev-sub">Cliente desde 2024</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">La demostración fue increíble. Tomás cocinó para toda mi familia y nos explicó todo con muchísima paciencia. Ahora cocino más rápido y más saludable.</p></article>
+    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#8A6FB4">MG</span><div><div class="rev-name">María G.</div><div class="rev-sub">Cliente desde 2024</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">La demostración fue increíble. Tomas cocinó para toda mi familia y nos explicó todo con muchísima paciencia. Ahora cocino más rápido y más saludable.</p></article>
     <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#B08D4F">CR</span><div><div class="rev-name">Carlos R.</div><div class="rev-sub">Cliente desde 2023</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Lo que más valoro es el servicio después de la compra. Tuve una duda con mi olla de presión, le escribí y me respondió en minutos. Así se atiende a un cliente.</p></article>
     <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#5B8A72">AP</span><div><div class="rev-name">Ana P.</div><div class="rev-sub">Cliente desde 2025</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Las recetas de su página son mi salvación entre semana. Los tamales me quedaron perfectos a la primera con su tamalera y sus consejos.</p></article>
-    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#7A6A5A">LM</span><div><div class="rev-name">Luis M.</div><div class="rev-sub">Cliente desde 2024</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Comparé con otros distribuidores y me quedé con Tomás por su seriedad. Todo lo que prometió en la demostración se cumplió.</p></article>
-    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#4E6B9B">RT</span><div><div class="rev-name">Rosa T.</div><div class="rev-sub">Cliente desde 2023</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Mi ribeye nunca había quedado así. El sartén es otra cosa y Tomás siempre está pendiente de que le saquemos provecho a todo el equipo.</p></article>
+    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#7A6A5A">LM</span><div><div class="rev-name">Luis M.</div><div class="rev-sub">Cliente desde 2024</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Comparé con otros distribuidores y me quedé con Tomas por su seriedad. Todo lo que prometió en la demostración se cumplió.</p></article>
+    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#4E6B9B">RT</span><div><div class="rev-name">Rosa T.</div><div class="rev-sub">Cliente desde 2023</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Mi ribeye nunca había quedado así. El sartén es otra cosa y Tomas siempre está pendiente de que le saquemos provecho a todo el equipo.</p></article>
   </div>
   <p class="rev-note rv">¿Ya cocinas con tu Royal Prestige? <button type="button" class="rev-open" onclick="openReview()" style="font-weight:600;color:var(--ink);border-bottom:1px solid var(--gold);background:none;cursor:pointer">Deja tu reseña ⭐</button></p>
 </section>
@@ -781,23 +843,37 @@
     <h2 class="sec-h rv">Galería</h2>
   </div>
   <div class="gal-grid" id="galGrid">
-    <button class="gal-item rv" data-lb="0" type="button" aria-label="Ver foto: Demostración en vivo"><img src="foto-galeria-1.jpg" alt="Tomás en una demostración en vivo" loading="lazy"><span class="gal-tag">Demostración en vivo</span></button>
-    <button class="gal-item rv" data-lb="1" type="button" style="transition-delay:60ms" aria-label="Ver foto: Cocinando con clientes"><img src="foto-galeria-2.jpg" alt="Tomás cocinando junto a una clienta" loading="lazy"><span class="gal-tag">Cocinando con clientes</span></button>
-    <button class="gal-item rv" data-lb="2" type="button" style="transition-delay:120ms" aria-label="Ver foto: El toque del chef"><img src="foto-galeria-3.jpg" alt="Tomás sazonando durante una demostración" loading="lazy"><span class="gal-tag">El toque del chef</span></button>
-    <button class="gal-item rv" data-lb="3" type="button" style="transition-delay:180ms" aria-label="Ver foto: Tomás Flores"><img src="foto-galeria-4.jpg" alt="Retrato de Tomás Flores" loading="lazy"><span class="gal-tag">Tomás Flores</span></button>
+    <button class="gal-item rv" data-lb="0" type="button" aria-label="Ver foto: Demostración en vivo"><img src="foto-galeria-1.jpg" alt="Tomas en una demostración en vivo" loading="lazy"><span class="gal-tag">Demostración en vivo</span></button>
+    <button class="gal-item rv" data-lb="1" type="button" style="transition-delay:60ms" aria-label="Ver foto: Cocinando con clientes"><img src="foto-galeria-2.jpg" alt="Tomas cocinando junto a una clienta" loading="lazy"><span class="gal-tag">Cocinando con clientes</span></button>
+    <button class="gal-item rv" data-lb="2" type="button" style="transition-delay:120ms" aria-label="Ver foto: El toque del chef"><img src="foto-galeria-3.jpg" alt="Tomas sazonando durante una demostración" loading="lazy"><span class="gal-tag">El toque del chef</span></button>
+    <button class="gal-item rv" data-lb="3" type="button" style="transition-delay:180ms" aria-label="Ver foto: Tomas Flores"><img src="foto-galeria-4.jpg" alt="Retrato de Tomas Flores" loading="lazy"><span class="gal-tag">Tomas Flores</span></button>
   </div>
 </section>
 
 <!-- =============== SOBRE MÍ =============== -->
 <section class="about" id="sobre-mi">
   <div class="about-inner">
-    <div class="about-photo rv"><img id="aboutImg" src="foto-about.jpg" alt="Tomás Flores" loading="lazy"></div>
+    <div class="about-photo rv"><img id="aboutImg" src="foto-about.jpg" alt="Tomas Flores" loading="lazy"></div>
     <div class="about-txt">
       <span class="eyebrow rv">Sobre mí</span>
       <h2 class="rv" id="aboutH">Estoy aquí para servirte, no solo para venderte.</h2>
       <p class="motto rv" id="aboutMotto">"Más que vender, sirvo."</p>
-      <p class="body rv" id="aboutBody">Soy Tomás. Cuando compras conmigo, no termina la relación: empieza. Recetas, servicio, dudas — cuenta conmigo antes, durante y después.</p>
+      <p class="body rv" id="aboutBody">Soy Tomas. Cuando compras conmigo, no termina la relación: empieza. Recetas, servicio, dudas — cuenta conmigo antes, durante y después.</p>
     </div>
+  </div>
+</section>
+
+<!-- =============== COMPARTIR =============== -->
+<section class="block wrap">
+  <div class="share-card rv">
+    <span class="share-emoji" aria-hidden="true">📣</span>
+    <h2 class="share-h">¿Conoces a alguien que quiera cocinar mejor?</h2>
+    <p class="share-p">Comparte mi oficina digital. Toma un segundo — y puede cambiarle la cocina a una familia.</p>
+    <button class="btn btn-solid share-btn" id="shareBtn" type="button" data-share onclick="shareOffice()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+      Comparte mi oficina
+    </button>
+    <span class="share-ok" id="shareOk" hidden>¡Listo, link copiado!</span>
   </div>
 </section>
 
@@ -866,7 +942,7 @@
 </section>
 
 <footer>
-  <b>Tomás Flores</b> · Distribuidor autorizado Royal Prestige<br>
+  <b>Tomas Flores</b> · Distribuidor autorizado Royal Prestige<br>
   "Más que vender, sirvo."
 </footer>
 
@@ -1004,7 +1080,14 @@ function closeCal(){
 var CAL_URL = 'https://calendly.com/florestomas/demo-royal';
 document.querySelectorAll('[data-cal]').forEach(function(b){
   b.addEventListener('click', function(){
-    window.open(window.CAL_URL || CAL_URL, '_blank', 'noopener');
+    var url = window.CAL_URL || CAL_URL;
+    var p = new URLSearchParams(location.search);
+    var ref = p.get('ref'); var src = p.get('utm_source');
+    var extra = [];
+    if(ref){ extra.push('utm_campaign=referido'); extra.push('utm_content=' + encodeURIComponent(ref)); }
+    if(src){ extra.push('utm_source=' + encodeURIComponent(src)); }
+    if(extra.length){ url += (url.indexOf('?')>=0?'&':'?') + extra.join('&'); }
+    window.open(url, '_blank', 'noopener');
   });
 });
 document.querySelectorAll('[data-cal-close]').forEach(function(b){
@@ -1304,7 +1387,7 @@ try{
     try{
       const last = parseInt(localStorage.getItem("revLast")||"0",10);
       if(Date.now() - last < 10*60*1000){
-        alert("Ya enviaste una reseña hace poco. ¡Gracias! Tomás la revisará pronto.");
+        alert("Ya enviaste una reseña hace poco. ¡Gracias! Tomas la revisará pronto.");
         return;
       }
     }catch(e){}
@@ -1330,7 +1413,7 @@ try{
       await addDoc(collection(db,"testimonials"), {
         name, text, stars, ini, color,
         sub: "Cliente",
-        status: "hidden",   // queda oculta hasta que Tomás la apruebe en el panel
+        status: "hidden",   // queda oculta hasta que Tomas la apruebe en el panel
         visible: false,
         order: 999,
         pendiente: true,
@@ -1343,7 +1426,7 @@ try{
       console.error("Reseña error:", e);
       const codigo = (e && (e.code || e.message)) ? String(e.code || e.message) : "desconocido";
       if(e && e.code === "permission-denied"){
-        alert("La nube rechazó la reseña (permisos). Avísale a Tomás.");
+        alert("La nube rechazó la reseña (permisos). Avísale a Tomas.");
       } else if(e && (e.code === "unavailable" || /network|failed to fetch|load|import/i.test(String(e.message)))){
         alert("No hay conexión con la nube. Revisa tu internet e inténtalo otra vez.");
       } else {
@@ -1382,11 +1465,37 @@ try{
     <div id="revThanks" style="display:none" class="rm-ok">
       <div class="big">🙏</div>
       <h3>¡Gracias por tu reseña!</h3>
-      <p class="rm-sub" style="margin-top:8px">Tomás la revisará y aparecerá pronto en el sitio.</p>
+      <p class="rm-sub" style="margin-top:8px">Tomas la revisará y aparecerá pronto en el sitio.</p>
       <button type="button" class="btn btn-solid" style="margin-top:18px;width:100%;justify-content:center" onclick="closeReview()">Cerrar</button>
     </div>
   </div>
 </div>
 
+<script>
+(function(){
+  window.shareOffice = async function(){
+    var base = location.origin + location.pathname;
+    var params = new URLSearchParams(location.search);
+    var ref = params.get('ref');
+    var url = ref ? (base + '?ref=' + encodeURIComponent(ref)) : base;
+    var data = {
+      title: 'Tom\u00e1s Flores \u2014 Royal Prestige',
+      text: 'Te comparto a Tom\u00e1s Flores, mi distribuidor Royal Prestige \ud83d\udc4b Agenda una demostraci\u00f3n gratis:',
+      url: url
+    };
+    try{
+      if(navigator.share){
+        await navigator.share(data);
+      } else if(navigator.clipboard && navigator.clipboard.writeText){
+        await navigator.clipboard.writeText(data.text + ' ' + url);
+        var ok = document.getElementById('shareOk');
+        if(ok){ ok.hidden = false; setTimeout(function(){ ok.hidden = true; }, 3000); }
+      } else {
+        window.open('https://wa.me/?text=' + encodeURIComponent(data.text + ' ' + url), '_blank', 'noopener');
+      }
+    }catch(e){ /* el usuario cancel\u00f3: no hacer nada */ }
+  };
+})();
+</script>
 </body>
 </html>
