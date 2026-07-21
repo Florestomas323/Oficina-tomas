@@ -107,6 +107,10 @@
   .gal-row.dragging{box-shadow:var(--shl);opacity:.96}
   .gal-placeholder{border:2px dashed var(--gold);border-radius:16px;margin-bottom:12px;background:#FBF6EC}
   .empty-note{text-align:center;color:var(--stone);font-size:14px;padding:30px 20px;background:var(--card);border:1px dashed var(--hair);border-radius:16px}
+
+  .maint-card{margin-top:18px;padding:16px;border:1px dashed var(--line,#d8d2c4);border-radius:14px;background:#faf8f3}
+  .maint-t{font-weight:700;font-size:14px;margin-bottom:4px}
+  .maint-p{font-size:13px;color:#6b6459;line-height:1.5;margin-bottom:12px}
 </style>
 </head>
 <body>
@@ -247,7 +251,12 @@
     if(user.photoURL){ $("userPic").src=user.photoURL; $("userPic").style.display="block"; }
     view("loading");
     $("loadingTxt").textContent = "Cargando tu contenido…";
-    try{ await loadOrSeed(); view("app"); renderAll(); }
+    try{
+      await loadOrSeed(); view("app"); renderAll();
+      countDuplicates().then(function(n){
+        if(n>0) toast("Tienes "+n+" duplicados. Ve a Inicio y toca \u201CLimpiar duplicados\u201D.");
+      });
+    }
     catch(e){ console.error(e); view("app"); renderAll(); toast("Se cargó sin conexión a la nube"); }
   });
 
@@ -277,15 +286,15 @@
       batch.set(ref, clean({ ...r, order:i, status:"published", visible:true }));
     });
     SEED.reviews.forEach((r,i)=>{
-      const ref = doc(collection(db,"testimonials"));
+      const ref = doc(db,"testimonials","seed-rev-"+i);
       batch.set(ref, clean({ ...r, order:i, status:"published", visible:true }));
     });
     SEED.gallery.forEach((g,i)=>{
-      const ref = doc(collection(db,"gallery"));
+      const ref = doc(db,"gallery","seed-gal-"+i);
       batch.set(ref, clean({ ...g, order:i, status:"published", visible:true }));
     });
     SEED.soon.forEach((s,i)=>{
-      const ref = doc(collection(db,"upcoming"));
+      const ref = doc(db,"upcoming","seed-soon-"+i);
       batch.set(ref, clean({ ...s, order:i }));
     });
     batch.set(doc(db,"settings","public"), clean({ ...SEED.config, texts:SEED.texts }));
@@ -308,6 +317,59 @@
     if(pub){ const p=pub.data(); DATA.config=p; DATA.texts=p.texts||{}; }
   }
 
+  // ---------- Limpieza de duplicados ----------
+  async function dedupeCollection(coll, sigFn){
+    const snap = await getDocs(collection(db, coll));
+    const seen = new Set();
+    const toDelete = [];
+    snap.docs
+      .slice()
+      .sort((a,b)=>((a.data().order||0)-(b.data().order||0)))
+      .forEach(d=>{
+        const sig = sigFn(d.data() || {});
+        if(seen.has(sig)) toDelete.push(d.id);
+        else seen.add(sig);
+      });
+    for(let k=0; k<toDelete.length; k+=400){
+      const batch = writeBatch(db);
+      toDelete.slice(k, k+400).forEach(id=> batch.delete(doc(db, coll, id)));
+      await batch.commit();
+    }
+    return toDelete.length;
+  }
+
+  async function countDuplicates(){
+    try{
+      const g = (await getDocs(collection(db,"gallery"))).docs;
+      const r = (await getDocs(collection(db,"testimonials"))).docs;
+      const s = (await getDocs(collection(db,"upcoming"))).docs;
+      function dupes(docs, sigFn){
+        const seen=new Set(); let n=0;
+        docs.forEach(d=>{ const sig=sigFn(d.data()||{}); if(seen.has(sig)) n++; else seen.add(sig); });
+        return n;
+      }
+      return dupes(g, d=>(d.src||'')+'|'+(d.alt||'')+'|'+(d.tag||''))
+           + dupes(r, d=>(d.name||'')+'|'+(d.text||''))
+           + dupes(s, d=>(d.name||''));
+    }catch(e){ return 0; }
+  }
+
+  window.cleanDuplicates = async function(){
+    if(!confirm("Voy a revisar tu galería, opiniones y próximos, y quitar las copias repetidas (dejo una de cada una). Tus fotos y textos originales no se tocan. ¿Continuar?")) return;
+    try{
+      setCloud(true);
+      toast("Limpiando duplicados…");
+      const g = await dedupeCollection("gallery",      d=>(d.src||'')+'|'+(d.alt||'')+'|'+(d.tag||''));
+      const r = await dedupeCollection("testimonials", d=>(d.name||'')+'|'+(d.text||''));
+      const s = await dedupeCollection("upcoming",     d=>(d.name||''));
+      await loadAll(); renderAll();
+      setCloud(false);
+      const total = g+r+s;
+      if(total>0) toast("✓ Se quitaron "+total+" duplicados ("+g+" fotos, "+r+" opiniones, "+s+" próximos)");
+      else toast("✓ No había duplicados. Todo limpio.");
+    }catch(e){ console.error(e); setCloud(false); toast("No se pudo limpiar. Revisa tu conexión e inténtalo otra vez."); }
+  };
+
   // ---------- Render ----------
   function renderAll(){ renderDash(); renderRecipes(); renderReviews(); renderGallery(); renderSoon(); renderTexts(); }
 
@@ -322,6 +384,7 @@
         '<button class="stat-card" type="button" onclick="goTab(\'galeria\')"><div class="sn">'+DATA.gallery.length+'</div><div class="sl">Fotos en galería</div><span class="go">Ver galería ›</span></button>'+
         '<button class="stat-card" type="button" onclick="goTab(\'proximamente\')"><div class="sn">'+DATA.soon.length+'</div><div class="sl">Próximamente</div><span class="go">Ver próximamente ›</span></button>'+
       '</div>'+
+      '<div class="maint-card"><div class="maint-t">Mantenimiento</div><p class="maint-p">Si ves fotos, opiniones o próximos repetidos, toca aquí para quitar las copias. Deja una de cada una; tus originales no se tocan.</p><button class="btn btn-line btn-block" type="button" onclick="cleanDuplicates()">\uD83E\uDDF9 Limpiar duplicados</button></div>'+
       '';
   }
 
