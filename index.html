@@ -1255,6 +1255,7 @@ try{
 // ---------- Modal de reseña (fuera del try para que siempre funcione) ----------
 (function(){
   let stars = 0;
+  let openedAt = 0;
   function getModal(){ return document.getElementById("revModal"); }
   window.openReview = function(){
     const modal = getModal();
@@ -1264,6 +1265,8 @@ try{
     document.getElementById("revThanks").style.display = "none";
     const n=document.getElementById("rmName"); if(n) n.value="";
     const t=document.getElementById("rmText"); if(t) t.value="";
+    const w=document.getElementById("rmWeb"); if(w) w.value="";
+    openedAt = Date.now();
     modal.classList.add("open"); modal.setAttribute("aria-hidden","false");
     document.body.classList.add("lock");
   };
@@ -1288,6 +1291,22 @@ try{
     if(!stars){ alert("Elige cuántas estrellas 🌟"); return; }
     if(!name){ alert("Escribe tu nombre"); return; }
     if(!text){ alert("Cuéntanos tu experiencia"); return; }
+    // ---- Protección anti-spam (silenciosa para bots, invisible para humanos) ----
+    const hp = document.getElementById("rmWeb");
+    const tooFast = Date.now() - openedAt < 4000;
+    if((hp && hp.value) || tooFast){
+      // Bot detectado: fingir éxito sin guardar nada
+      document.getElementById("revFormWrap").style.display = "none";
+      document.getElementById("revThanks").style.display = "block";
+      return;
+    }
+    try{
+      const last = parseInt(localStorage.getItem("revLast")||"0",10);
+      if(Date.now() - last < 10*60*1000){
+        alert("Ya enviaste una reseña hace poco. ¡Gracias! Tomás la revisará pronto.");
+        return;
+      }
+    }catch(e){}
     const btn = document.getElementById("rmSend");
     btn.disabled = true; btn.textContent = "Enviando…";
     try{
@@ -1303,6 +1322,7 @@ try{
         pendiente: true,
         createdAt: window.__serverTimestamp()
       });
+      try{ localStorage.setItem("revLast", String(Date.now())); }catch(e){}
       document.getElementById("revFormWrap").style.display = "none";
       document.getElementById("revThanks").style.display = "block";
     }catch(e){
@@ -1328,7 +1348,8 @@ try{
         <button type="button" data-s="4" aria-label="4 estrellas">★</button>
         <button type="button" data-s="5" aria-label="5 estrellas">★</button>
       </div>
-      <label for="rmName">Tu nombre</label>
+      <input id="rmWeb" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;height:1px;width:1px;opacity:0;pointer-events:none">
+<label for="rmName">Tu nombre</label>
       <input id="rmName" type="text" placeholder="Ej. María G." autocomplete="name">
       <label for="rmText">Tu experiencia</label>
       <textarea id="rmText" placeholder="Cuéntanos cómo te fue con tu equipo o en la demostración…"></textarea>
