@@ -119,8 +119,10 @@
   .hero h1{
     font-family:'Inter Tight',sans-serif;font-weight:700;
     font-size:clamp(48px,13vw,92px);letter-spacing:-.04em;line-height:.96;
+    -webkit-text-stroke:5px #fff;paint-order:stroke fill;
+    text-shadow:0 0 1px #fff, 1.5px 1.5px 0 rgba(255,255,255,.55), -1.5px -1.5px 0 rgba(255,255,255,.55), 0 3px 14px rgba(255,255,255,.35);
   }
-  .hero .sub{margin-top:16px;font-size:clamp(16px,4.2vw,19px);line-height:1.5;color:#4A463F;max-width:32ch;font-weight:500}
+  .hero .sub{margin-top:16px;font-size:clamp(16px,4.2vw,19px);line-height:1.5;color:#B8860B;max-width:32ch;font-weight:600;text-shadow:0 1px 10px rgba(250,250,248,.55)}
   .hero-cta{display:flex;gap:11px;margin-top:24px;flex-wrap:wrap}
   .btn{
     display:inline-flex;align-items:center;justify-content:center;gap:9px;
@@ -632,6 +634,11 @@
   .share-btn{touch-action:manipulation}
   .share-btn svg{pointer-events:none}
   .share-ok{display:block;margin-top:16px;color:var(--gold-text);font-weight:600;font-size:14px}
+
+  .hero-badge{position:absolute;z-index:3;top:calc(env(safe-area-inset-top) + 18px);left:26px;display:flex;flex-direction:column;line-height:1.15;pointer-events:none}
+  .hero-badge .hb-l1{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-text)}
+  .hero-badge .hb-l2{font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:19px;color:#B8860B;margin-top:2px}
+  @media(min-width:768px){ .hero-badge{top:calc(env(safe-area-inset-top) + 34px);left:40px} .hero-badge .hb-l2{font-size:22px} }
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script>
@@ -693,8 +700,11 @@
 <section class="hero">
   <div class="hero-photo"><img id="heroImg" src="foto-hero.jpg" alt="Tomas Flores cocinando con utensilios Royal Prestige" fetchpriority="high"></div>
   <div class="hero-veil"></div>
+  <div class="hero-badge rv in">
+    <span class="hb-l1">Distribuidor autorizado</span>
+    <span class="hb-l2">Royal Prestige</span>
+  </div>
   <div class="hero-content">
-    <span class="eyebrow rv in">Distribuidor autorizado Royal Prestige</span>
     <h1 class="rv in">Tomas<br>Flores</h1>
     <p class="sub rv in" id="heroSub">Estoy aquí para ayudarte a sacarle todo el provecho a tu cocina.</p>
     <a class="hero-trust rv in" href="#opiniones" aria-label="Ver reseñas de clientes">
