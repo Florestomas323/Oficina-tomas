@@ -1120,7 +1120,7 @@ window.addEventListener('scroll', function(){
 /* ETAPA 4 — La portada lee de la nube (Firestore). Si algo falla, muestra el contenido integrado. */
 try{
   const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
-  const { getFirestore, collection, getDocs, getDoc, doc, query, where } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+  const { getFirestore, collection, getDocs, getDoc, doc, query, where, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
   const app = initializeApp({
     apiKey:"AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",
     authDomain:"oficina-digital-tomas.firebaseapp.com",
@@ -1314,26 +1314,40 @@ try{
       const ini = name.split(/\s+/).map(w=>w[0]||"").join("").toUpperCase().slice(0,2);
       const COLORS = ["#8A6FB4","#B08D4F","#5B8A72","#7A6A5A","#4E6B9B","#B07A6A"];
       const color = COLORS[Math.floor(Math.random()*COLORS.length)];
-      await window.__addDoc(window.__collection(window.__db,"testimonials"), {
+      // ---- Firebase propio del formulario: no depende del resto de la página ----
+      const CFG = {
+        apiKey:"AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",
+        authDomain:"oficina-digital-tomas.firebaseapp.com",
+        projectId:"oficina-digital-tomas",
+        storageBucket:"oficina-digital-tomas.firebasestorage.app",
+        messagingSenderId:"898342341243",
+        appId:"1:898342341243:web:7ee15b8b3533f3889570de"
+      };
+      const { initializeApp, getApps } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+      const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+      const app = (getApps && getApps().length) ? getApps()[0] : initializeApp(CFG);
+      const db = getFirestore(app);
+      await addDoc(collection(db,"testimonials"), {
         name, text, stars, ini, color,
         sub: "Cliente",
         status: "hidden",   // queda oculta hasta que Tomás la apruebe en el panel
         visible: false,
         order: 999,
         pendiente: true,
-        createdAt: window.__serverTimestamp()
+        createdAt: serverTimestamp()
       });
       try{ localStorage.setItem("revLast", String(Date.now())); }catch(e){}
       document.getElementById("revFormWrap").style.display = "none";
       document.getElementById("revThanks").style.display = "block";
     }catch(e){
-      console.error(e);
+      console.error("Reseña error:", e);
+      const codigo = (e && (e.code || e.message)) ? String(e.code || e.message) : "desconocido";
       if(e && e.code === "permission-denied"){
-        alert("No se pudo guardar: la nube rechazó la reseña (permisos). Avísale a Tomás.");
-      } else if(!window.__addDoc){
-        alert("La conexión con la nube aún no está lista. Espera unos segundos e intenta de nuevo.");
+        alert("La nube rechazó la reseña (permisos). Avísale a Tomás.");
+      } else if(e && (e.code === "unavailable" || /network|failed to fetch|load|import/i.test(String(e.message)))){
+        alert("No hay conexión con la nube. Revisa tu internet e inténtalo otra vez.");
       } else {
-        alert("No se pudo enviar. Revisa tu internet e inténtalo de nuevo.");
+        alert("No se pudo enviar (" + codigo + "). Inténtalo de nuevo.");
       }
       btn.disabled = false; btn.textContent = "Enviar reseña";
     }
