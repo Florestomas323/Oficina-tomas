@@ -1130,6 +1130,9 @@ try{
     appId:"1:898342341243:web:7ee15b8b3533f3889570de"
   });
   const db = getFirestore(app);
+  // Llaves del formulario de reseñas: disponibles SIEMPRE, aunque falle lo demás
+  window.__db = db;
+  window.__addDoc = addDoc; window.__collection = collection; window.__serverTimestamp = serverTimestamp;
   const esc = s => String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
   const byOrder = (a,b)=>(a.order||0)-(b.order||0);
   const pub = c => query(collection(db,c), where("status","==","published"), where("visible","==",true));
@@ -1247,9 +1250,7 @@ try{
     }
   }
 
-  // ---------- Enviar reseña a la nube (queda pendiente de aprobación) ----------
-  window.__db = db; // referencia para el formulario
-  window.__addDoc = addDoc; window.__collection = collection; window.__serverTimestamp = serverTimestamp;
+
 }catch(e){ /* sin conexión o sin datos: se muestra el contenido integrado */ }
 
 // ---------- Modal de reseña (fuera del try para que siempre funcione) ----------
@@ -1327,7 +1328,13 @@ try{
       document.getElementById("revThanks").style.display = "block";
     }catch(e){
       console.error(e);
-      alert("No se pudo enviar. Revisa tu internet e inténtalo de nuevo.");
+      if(e && e.code === "permission-denied"){
+        alert("No se pudo guardar: la nube rechazó la reseña (permisos). Avísale a Tomás.");
+      } else if(!window.__addDoc){
+        alert("La conexión con la nube aún no está lista. Espera unos segundos e intenta de nuevo.");
+      } else {
+        alert("No se pudo enviar. Revisa tu internet e inténtalo de nuevo.");
+      }
       btn.disabled = false; btn.textContent = "Enviar reseña";
     }
   };
