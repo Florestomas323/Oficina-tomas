@@ -170,6 +170,7 @@
     <button class="tab" data-tab="proximamente" type="button">Próximamente</button>
     <button class="tab" data-tab="textos" type="button">Textos</button>
       <button class="tab" data-tab="analitica" type="button">Analítica</button>
+      <button class="tab" data-tab="papelera" type="button">Papelera</button>
   </nav>
   <main class="wrap">
     <div class="panel on" id="p-inicio"></div>
@@ -179,6 +180,7 @@
     <div class="panel" id="p-proximamente"></div>
     <div class="panel" id="p-textos"></div>
     <div class="panel" id="p-analitica"></div>
+    <div class="panel" id="p-papelera"></div>
   </main>
 </div>
 
@@ -273,6 +275,7 @@
     $("loadingTxt").textContent = "Cargando tu contenido…";
     try{
       await loadOrSeed(); view("app"); renderAll();
+      purgeOldTrash();
       countDuplicates().then(function(n){
         if(n>0) toast("Tienes "+n+" duplicados. Ve a Inicio y toca \u201CLimpiar duplicados\u201D.");
       });
@@ -405,7 +408,7 @@
         '<button class="stat-card" type="button" onclick="goTab(\'proximamente\')"><div class="sn">'+DATA.soon.length+'</div><div class="sl">Próximamente</div><span class="go">Ver próximamente ›</span></button>'+
         '<button class="stat-card stat-wide" type="button" onclick="goTab(\'analitica\')"><div class="sl">📊 Ver analítica de visitas y clics</div><span class="go">Abrir ›</span></button>'+
       '</div>'+
-      '<div class="maint-card"><div class="maint-t">Mantenimiento</div><p class="maint-p">Si ves fotos, opiniones o próximos repetidos, toca aquí para quitar las copias. Deja una de cada una; tus originales no se tocan.</p><button class="btn btn-line btn-block" type="button" onclick="cleanDuplicates()">\uD83E\uDDF9 Limpiar duplicados</button></div>'+
+      '<div class="maint-card"><div class="maint-t">Mantenimiento</div><p class="maint-p">Si ves fotos, opiniones o próximos repetidos, toca aquí para quitar las copias. Deja una de cada una; tus originales no se tocan.</p><button class="btn btn-line btn-block" type="button" onclick="cleanDuplicates()">\uD83E\uDDF9 Limpiar duplicados</button><button class="btn btn-line btn-block" type="button" onclick="downloadBackup()" style="margin-top:10px">\uD83D\uDCBE Descargar respaldo de todo</button></div>'+
       '';
   }
 
@@ -470,12 +473,11 @@
 
   window.delRecipe = function(i){
     const r = DATA.recipes[i];
-    if(!confirm('¿Eliminar "'+r.name+'"? Esto no se puede deshacer.')) return;
-    setCloud(true);
-    deleteDoc(doc(db,"recipes",r._id)).then(()=>{
+    if(!confirm('¿Enviar "'+r.name+'" a la papelera? Podrás restaurarla durante 30 días.')) return;
+    softDelete("recipes", r._id, r, r.name, "Receta").then(()=>{
       DATA.recipes.splice(i,1);
-      toast("Receta eliminada"); renderRecipes(); renderDash();
-    }).catch(e=>{ console.error(e); toast("No se pudo eliminar"); }).finally(()=>setCloud(false));
+      toast("Enviada a la papelera"); renderRecipes(); renderDash();
+    }).catch(e=>{ console.error(e); toast("No se pudo enviar a la papelera"); });
   };
 
   window.editRecipe = function(i){
@@ -603,11 +605,10 @@
 
   window.delReview = function(i){
     const r = DATA.reviews[i];
-    if(!confirm('¿Eliminar la opinión de '+r.name+'?')) return;
-    setCloud(true);
-    deleteDoc(doc(db,"testimonials",r._id)).then(()=>{
-      DATA.reviews.splice(i,1); toast("Opinión eliminada"); renderReviews(); renderDash();
-    }).catch(e=>{ console.error(e); toast("No se pudo eliminar"); }).finally(()=>setCloud(false));
+    if(!confirm('¿Enviar la opinión de '+r.name+' a la papelera? Podrás restaurarla durante 30 días.')) return;
+    softDelete("testimonials", r._id, r, "Opinión de "+r.name, "Opinión").then(()=>{
+      DATA.reviews.splice(i,1); toast("Enviada a la papelera"); renderReviews(); renderDash();
+    }).catch(e=>{ console.error(e); toast("No se pudo enviar a la papelera"); });
   };
 
   function renderGallery(){
@@ -767,11 +768,10 @@
 
   window.delGalPhoto = function(i){
     const g = DATA.gallery[i];
-    if(!confirm("¿Eliminar esta foto de la galería?")) return;
-    setCloud(true);
-    deleteDoc(doc(db,"gallery",g._id)).then(()=>{
-      DATA.gallery.splice(i,1); toast("Foto eliminada"); renderGallery(); renderDash();
-    }).catch(e=>{ console.error(e); toast("No se pudo eliminar"); }).finally(()=>setCloud(false));
+    if(!confirm("¿Enviar esta foto a la papelera? Podrás restaurarla durante 30 días.")) return;
+    softDelete("gallery", g._id, g, g.alt || g.tag || "Foto de galería", "Foto").then(()=>{
+      DATA.gallery.splice(i,1); toast("Enviada a la papelera"); renderGallery(); renderDash();
+    }).catch(e=>{ console.error(e); toast("No se pudo enviar a la papelera"); });
   };
 
 
@@ -871,11 +871,10 @@
 
   window.delSoon = function(i){
     const s = DATA.soon[i];
-    if(!confirm('¿Eliminar "'+s.name+'"?')) return;
-    setCloud(true);
-    deleteDoc(doc(db,"upcoming",s._id)).then(()=>{
-      DATA.soon.splice(i,1); toast("Eliminado"); renderSoon(); renderDash();
-    }).catch(e=>{ console.error(e); toast("No se pudo eliminar"); }).finally(()=>setCloud(false));
+    if(!confirm('¿Enviar "'+s.name+'" a la papelera? Podrás restaurarlo durante 30 días.')) return;
+    softDelete("upcoming", s._id, s, s.name, "Próximamente").then(()=>{
+      DATA.soon.splice(i,1); toast("Enviado a la papelera"); renderSoon(); renderDash();
+    }).catch(e=>{ console.error(e); toast("No se pudo enviar a la papelera"); });
   };
 
   function renderTexts(){
@@ -984,6 +983,129 @@
     cont.innerHTML = html;
   }
 
+  // ---------- Papelera (30 días) ----------
+  const TRASH_DAYS = 30;
+  const COLL_ES = { recipes:"Receta", testimonials:"Opinión", gallery:"Foto", upcoming:"Próximamente" };
+
+  async function softDelete(coll, id, item, label, kind){
+    setCloud(true);
+    try{
+      const payload = {};
+      for(const k in item){ if(k !== "_id") payload[k] = item[k]; }
+      await setDoc(doc(db, "trash", coll + "__" + id), clean({
+        origColl: coll, origId: id, label: String(label||"Elemento").slice(0,80),
+        kind: kind || COLL_ES[coll] || "Elemento",
+        payload: payload, deletedAt: serverTimestamp()
+      }));
+      await deleteDoc(doc(db, coll, id));
+    } finally { setCloud(false); }
+  }
+
+  function trashMillis(x){
+    if(x && typeof x.toMillis === "function") return x.toMillis();
+    if(x && x.seconds) return x.seconds * 1000;
+    return Date.now();
+  }
+
+  async function purgeOldTrash(){
+    try{
+      const snap = await getDocs(collection(db, "trash"));
+      const cut = Date.now() - TRASH_DAYS * 86400000;
+      const old = snap.docs.filter(d => trashMillis((d.data()||{}).deletedAt) < cut);
+      if(!old.length) return;
+      const batch = writeBatch(db);
+      old.forEach(d => batch.delete(doc(db, "trash", d.id)));
+      await batch.commit();
+    }catch(e){ /* silencioso */ }
+  }
+
+  let TRASH = [];
+  async function loadTrash(){
+    const snap = await getDocs(collection(db, "trash"));
+    TRASH = snap.docs.map(d => ({ _tid: d.id, ...(d.data()||{}) }))
+      .sort((a,b) => trashMillis(b.deletedAt) - trashMillis(a.deletedAt));
+  }
+
+  window.renderTrash = async function(){
+    const cont = $("p-papelera");
+    cont.innerHTML = '<div class="empty-note">Cargando papelera…</div>';
+    try{ await loadTrash(); }
+    catch(e){ cont.innerHTML = '<div class="empty-note">No se pudo cargar la papelera. Revisa tu conexión.</div>'; return; }
+
+    let html = '<div class="dash-hi"><h2>Papelera</h2><p>Lo que elimines espera aquí ' + TRASH_DAYS + ' días. Puedes restaurarlo o borrarlo definitivamente. Pasado ese tiempo se borra solo.</p></div>';
+    if(!TRASH.length){
+      html += '<div class="empty-note">La papelera está vacía. ✨</div>';
+      cont.innerHTML = html; return;
+    }
+    TRASH.forEach(function(t, i){
+      const dias = Math.max(0, TRASH_DAYS - Math.floor((Date.now() - trashMillis(t.deletedAt)) / 86400000));
+      html += '<div class="item"><div class="item-info">'+
+        '<div class="item-name">'+ (t.label ? String(t.label).replace(/[&<>]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])) : "Elemento") +'</div>'+
+        '<div class="item-sub">'+ (t.kind || COLL_ES[t.origColl] || "") + ' · se borra en ' + dias + (dias===1?' día':' días') + '</div></div>'+
+        '<div class="item-actions">'+
+        '<button class="icon-btn" onclick="restoreTrash('+i+')" aria-label="Restaurar" title="Restaurar">↩︎</button>'+
+        '<button class="icon-btn" onclick="hardDeleteTrash('+i+')" aria-label="Borrar definitivamente" title="Borrar definitivamente">✕</button>'+
+        '</div></div>';
+    });
+    cont.innerHTML = html;
+  };
+
+  window.restoreTrash = async function(i){
+    const t = TRASH[i]; if(!t) return;
+    setCloud(true);
+    try{
+      await setDoc(doc(db, t.origColl, t.origId), clean(t.payload || {}));
+      await deleteDoc(doc(db, "trash", t._tid));
+      await loadAll(); renderAll();
+      toast('✓ "'+ (t.label||"Elemento") +'" restaurado');
+      renderTrash();
+    }catch(e){ console.error(e); toast("No se pudo restaurar"); }
+    finally{ setCloud(false); }
+  };
+
+  window.hardDeleteTrash = async function(i){
+    const t = TRASH[i]; if(!t) return;
+    if(!confirm('¿Borrar "'+ (t.label||"este elemento") +'" DEFINITIVAMENTE? Esto sí es para siempre.')) return;
+    setCloud(true);
+    try{
+      await deleteDoc(doc(db, "trash", t._tid));
+      toast("Borrado definitivamente");
+      renderTrash();
+    }catch(e){ console.error(e); toast("No se pudo borrar"); }
+    finally{ setCloud(false); }
+  };
+
+  // ---------- Respaldo de contenido ----------
+  window.downloadBackup = async function(){
+    setCloud(true);
+    try{
+      const [rec, tes, gal, up, set, tra] = await Promise.all([
+        getDocs(collection(db,"recipes")), getDocs(collection(db,"testimonials")),
+        getDocs(collection(db,"gallery")), getDocs(collection(db,"upcoming")),
+        getDocs(collection(db,"settings")), getDocs(collection(db,"trash"))
+      ]);
+      const dump = function(s){ return s.docs.map(function(d){ return { _id:d.id, ...(d.data()||{}) }; }); };
+      const backup = {
+        oficina: "Tomas Flores — Royal Prestige",
+        fecha: new Date().toISOString(),
+        recetas: dump(rec), opiniones: dump(tes), galeria: dump(gal),
+        proximamente: dump(up), configuracion: dump(set), papelera: dump(tra)
+      };
+      const json = JSON.stringify(backup, function(k, v){
+        if(v && typeof v === "object" && typeof v.toMillis === "function") return new Date(v.toMillis()).toISOString();
+        return v;
+      }, 2);
+      const blob = new Blob([json], {type:"application/json"});
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "respaldo-oficina-" + new Date().toISOString().slice(0,10) + ".json";
+      document.body.appendChild(a); a.click();
+      setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 2000);
+      toast("✓ Respaldo descargado (" + backup.recetas.length + " recetas, " + backup.opiniones.length + " opiniones, " + backup.galeria.length + " fotos)");
+    }catch(e){ console.error(e); toast("No se pudo crear el respaldo"); }
+    finally{ setCloud(false); }
+  };
+
   // ---------- Tabs ----------
   window.goTab = function(name){
     document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on", t.dataset.tab===name));
@@ -991,6 +1113,7 @@
     const panel = $("p-"+name);
     if(panel) panel.classList.add("on");
     if(name==="analitica") renderAnalytics();
+    if(name==="papelera") renderTrash();
     window.scrollTo({top:0,behavior:"smooth"});
   };
   $("tabs").addEventListener("click",(e)=>{
