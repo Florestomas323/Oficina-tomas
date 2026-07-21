@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Panel del Distribuidor — Tomás Flores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAFAF8;--card:#fff;--ink:#111110;--stone:#66625B;--hair:#E9E6E0;
+    --gold:#B08D4F;--gold-text:#8A672B;--royal:#6B4E9B;--ok:#2E7D46;--danger:#B3402F;--warn:#8A6218;
+    --sh:0 1px 2px rgba(17,17,16,.04),0 8px 24px rgba(17,17,16,.06);
+    --shl:0 2px 4px rgba(17,17,16,.05),0 18px 44px rgba(17,17,16,.12);
+    --radius:18px;--ease:cubic-bezier(.22,.8,.24,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{background:var(--paper);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  input,textarea,select{font:inherit;color:inherit;width:100%;background:var(--card);border:1px solid var(--hair);border-radius:12px;padding:12px 14px}
+  input:focus,textarea:focus,select:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
+  h1,h2,h3{font-family:'Inter Tight',sans-serif;letter-spacing:-.02em;line-height:1.15}
+  a{color:inherit}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:8px}
+
+  .center{min-height:100svh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:20px}
+  .verifying{display:flex;flex-direction:column;align-items:center;gap:16px;color:var(--stone);font-size:14px}
+  .ring{width:34px;height:34px;border-radius:50%;border:3px solid var(--hair);border-top-color:var(--gold);animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @media(prefers-reduced-motion:reduce){.ring{animation:none}}
+
+  .card{background:var(--card);border:1px solid var(--hair);border-radius:22px;padding:38px 30px;max-width:400px;width:100%;box-shadow:var(--shl);text-align:center;position:relative;overflow:hidden}
+  .card::after{content:"";position:absolute;top:0;left:30px;right:30px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.6}
+  .icon-3d{position:relative;display:grid;place-items:center;margin:0 auto;width:62px;height:62px;border-radius:20px;color:#3E3A33;background:radial-gradient(circle at 30% 20%, rgba(255,255,255,.96), rgba(255,255,255,.35) 42%, transparent 72%),linear-gradient(145deg,#FFFFFF,#EAE5DB);border:1px solid rgba(255,255,255,.9);box-shadow:inset 2px 2px 5px rgba(255,255,255,.95),inset -3px -3px 8px rgba(17,17,16,.07),0 10px 20px rgba(17,17,16,.10)}
+  .icon-3d svg{width:29px;height:29px;filter:drop-shadow(0 2px 2px rgba(17,17,16,.14))}
+  h1{font-size:23px;margin-top:14px}
+  .sub{color:var(--stone);font-size:13.5px;margin-top:6px}
+  .g-btn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;margin-top:26px;padding:15px 20px;border-radius:14px;border:1px solid var(--hair);background:var(--card);font-weight:600;font-size:15px;box-shadow:var(--sh);transition:transform .25s var(--ease), box-shadow .25s;min-height:52px}
+  .g-btn:active{transform:scale(.98)}
+  .g-btn:disabled{opacity:.6;pointer-events:none}
+  .msg{margin-top:16px;font-size:13.5px;border-radius:12px;padding:12px 14px;display:none;text-align:left}
+  .msg.show{display:block}
+  .msg.err{background:#FBF1EF;color:var(--danger);border:1px solid #EAD6D1}
+  .msg.info{background:#F3F6F4;color:var(--ok);border:1px solid #D6E6DB}
+
+  /* App */
+  #app{display:none}
+  header.bar{position:sticky;top:0;z-index:40;background:rgba(250,250,248,.9);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--hair)}
+  .bar-in{max-width:820px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:12px}
+  .bar-in .who{font-size:11px;color:var(--gold-text);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+  .bar-in h2{font-size:16px}
+  .avatar{width:34px;height:34px;border-radius:50%;object-fit:cover;border:1px solid var(--hair)}
+  .logout{margin-left:auto;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hair);background:var(--card);border-radius:999px;padding:9px 14px;font-weight:600;font-size:13px;box-shadow:var(--sh);min-height:40px}
+  .logout:active{transform:scale(.97)}
+  .cloud{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--stone);padding:6px 12px;border-radius:999px;background:var(--card);border:1px solid var(--hair)}
+  .cloud .dot{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+  .cloud.saving .dot{background:var(--warn)}
+
+  .wrap{max-width:820px;margin:0 auto;padding:20px 16px 80px}
+  .tabs{display:flex;gap:8px;overflow-x:auto;padding:14px 16px;position:sticky;top:62px;z-index:30;background:rgba(250,250,248,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto;padding:9px 16px;border-radius:999px;border:1px solid var(--hair);background:var(--card);font-weight:600;font-size:13.5px;color:var(--stone)}
+  .tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .panel{display:none}
+  .panel.on{display:block;animation:fade .4s var(--ease)}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .item{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--hair);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:var(--sh)}
+  .item .thumb{width:56px;height:56px;border-radius:12px;object-fit:cover;flex:0 0 auto;background:#EDEAE4;display:grid;place-items:center;overflow:hidden}
+  .item .ti{flex:1;min-width:0}
+  .item .ti b{font-family:'Inter Tight';font-size:15.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .item .ti .sub{font-size:12.5px;color:var(--stone);display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+  .st{font-size:11px;padding:2px 8px;border-radius:999px;font-weight:600}
+  .st-pub{background:#EFF6F0;color:#25693A}
+  .st-hid{background:#FBF1EF;color:#9C3524}
+  .acts{display:flex;gap:6px;flex:0 0 auto}
+  .icon-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--hair);background:var(--card);display:grid;place-items:center;font-size:15px}
+  .icon-btn:active{transform:scale(.94)}
+
+  .card-form{background:var(--card);border:1px solid var(--hair);border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:var(--sh)}
+  label{display:block;font-size:12.5px;font-weight:600;color:var(--stone);margin:14px 0 6px}
+  label:first-child{margin-top:0}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:13px 22px;font-weight:600;font-size:14.5px;min-height:46px;transition:transform .2s}
+  .btn:active{transform:scale(.97)}
+  .btn-solid{background:var(--ink);color:#fff}
+  .btn-line{background:var(--card);border:1px solid var(--hair)}
+  .btn-block{width:100%}
+  .form-acts{display:flex;gap:10px;margin-top:18px}
+  .hint{font-size:12px;color:#767168;margin-top:8px}
+  .dash-hi h2{font-size:22px}
+  .dash-hi p{color:var(--stone);font-size:14px;margin-top:4px}
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+  .stat-card{background:var(--card);border:1px solid var(--hair);border-radius:16px;padding:16px;box-shadow:var(--sh);text-align:left;width:100%;display:block;transition:transform .2s var(--ease),box-shadow .2s}
+  .stat-card:active{transform:scale(.97)}
+  @media(hover:hover){.stat-card:hover{box-shadow:var(--shl);transform:translateY(-2px)}}
+  .stat-card .go{display:inline-block;margin-top:10px;font-size:12px;font-weight:600;color:var(--gold-text)}
+  .stat-card .sn{font-family:'Inter Tight';font-size:28px;font-weight:700}
+  .stat-card .sl{font-size:12.5px;color:var(--stone);margin-top:2px}
+  .toast{pointer-events:none;position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:13px 22px;border-radius:999px;font-size:14px;font-weight:500;opacity:0;transition:all .3s var(--ease);z-index:100;box-shadow:var(--shl)}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .drag-handle{width:34px;height:44px;flex:0 0 auto;display:grid;place-items:center;font-size:20px;color:#B0A99E;cursor:grab;touch-action:none;letter-spacing:-2px}
+  .drag-handle:active{cursor:grabbing;color:var(--gold)}
+  .gal-row{transition:box-shadow .2s}
+  .gal-row.dragging{box-shadow:var(--shl);opacity:.96}
+  .gal-placeholder{border:2px dashed var(--gold);border-radius:16px;margin-bottom:12px;background:#FBF6EC}
+  .empty-note{text-align:center;color:var(--stone);font-size:14px;padding:30px 20px;background:var(--card);border:1px dashed var(--hair);border-radius:16px}
+</style>
+</head>
+<body>
+
+<div class="center" id="loadingView">
+  <div class="verifying"><div class="ring" role="status" aria-label="Verificando sesión"></div><span id="loadingTxt">Verificando sesión…</span><span style="display:block;font-size:10px;color:#B0A99E;margin-top:8px">v3-corregido</span></div>
+</div>
+
+<div class="center" id="loginView" style="display:none">
+  <div class="card">
+    <span class="icon-3d" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span>
+    <h1>Panel del Distribuidor</h1>
+    <p class="sub">Tomás Flores · Royal Prestige</p>
+    <button class="g-btn" id="googleBtn" type="button">
+      <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.4 0 10.3-2.1 14-5.4l-6.5-5.5c-2.1 1.6-4.7 2.9-7.5 2.9-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4 5.6l6.5 5.5C41.6 35.6 44 30.3 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>
+      Entrar con Google
+    </button>
+    <div class="msg" id="loginMsg" role="alert" aria-live="polite"></div>
+    <p class="sub" style="margin-top:18px">Acceso exclusivo del administrador.</p>
+  </div>
+</div>
+
+<div id="app">
+  <header class="bar">
+    <div class="bar-in">
+      <img class="avatar" id="userPic" alt="" src="" style="display:none">
+      <div><div class="who">Panel del distribuidor</div><h2>Tu Oficina Digital</h2></div>
+      <button class="logout" id="logoutBtn" type="button">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
+        Salir
+      </button>
+    </div>
+  </header>
+  <nav class="tabs" id="tabs">
+    <button class="tab on" data-tab="inicio" type="button">Inicio</button>
+    <button class="tab" data-tab="recetas" type="button">Recetas</button>
+    <button class="tab" data-tab="opiniones" type="button">Opiniones</button>
+    <button class="tab" data-tab="galeria" type="button">Galería</button>
+    <button class="tab" data-tab="proximamente" type="button">Próximamente</button>
+    <button class="tab" data-tab="textos" type="button">Textos</button>
+  </nav>
+  <main class="wrap">
+    <div class="panel on" id="p-inicio"></div>
+    <div class="panel" id="p-recetas"></div>
+    <div class="panel" id="p-opiniones"></div>
+    <div class="panel" id="p-galeria"></div>
+    <div class="panel" id="p-proximamente"></div>
+    <div class="panel" id="p-textos"></div>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, collection, doc, getDocs, setDoc, addDoc, updateDoc, deleteDoc, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",
+    authDomain: "oficina-digital-tomas.firebaseapp.com",
+    projectId: "oficina-digital-tomas",
+    storageBucket: "oficina-digital-tomas.firebasestorage.app",
+    messagingSenderId: "898342341243",
+    appId: "1:898342341243:web:7ee15b8b3533f3889570de"
+  };
+  const ADMIN_EMAIL = "florestomas323@gmail.com";
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // --- Foto sin Storage: comprime a un base64 pequeño para guardar en Firestore (<1MB) ---
+  async function subirFoto(file, carpeta){
+    const dataUrl = await new Promise((res,rej)=>{
+      const fr = new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(file);
+    });
+    const img = await new Promise((res,rej)=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=rej; im.src=dataUrl; });
+    // tamaño moderado (máx 900px) y calidad 0.72 para que pese poco
+    const max = 900;
+    let w = img.width, hh = img.height;
+    if(w > max){ hh = Math.round(hh * max / w); w = max; }
+    const canvas = document.createElement("canvas"); canvas.width=w; canvas.height=hh;
+    canvas.getContext("2d").drawImage(img,0,0,w,hh);
+    let q = 0.72;
+    let out = canvas.toDataURL("image/jpeg", q);
+    // si sigue pesando mucho, bajar calidad hasta caber bajo ~700KB
+    while(out.length > 700000 && q > 0.4){ q -= 0.1; out = canvas.toDataURL("image/jpeg", q); }
+    return out;
+  }
+
+  const $ = (id) => document.getElementById(id);
+  const view = (w) => {
+    $("loadingView").style.display = w==="loading"?"flex":"none";
+    $("loginView").style.display   = w==="login"?"flex":"none";
+    $("app").style.display         = w==="app"?"block":"none";
+  };
+  const toast = (t) => { const el=$("toast"); el.textContent=t; el.classList.add("show"); setTimeout(()=>el.classList.remove("show"),2600); };
+  const esc = (s) => (s==null?"":String(s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+
+  // ---------- Datos precargados (semilla) ----------
+  const SEED = {"recipes": [{"id": "costillas-bbq", "name": "Costillas BBQ en Olla de Presión", "time": "35 min", "servings": "4 porciones", "diff": "Fácil", "utensil": "Olla de Presión Royal Prestige", "cats": ["presion", "carnes"], "badge": "La más preparada", "desc": "Costillas increíblemente suaves, jugosas y llenas de sabor gracias a la cocción a presión.", "img": "", "tone": "#3E2B22", "video": "", "ingredients": [{"name": "Costillas de cerdo", "amount": "1.5 kg"}, {"name": "Salsa BBQ", "amount": "1 taza"}, {"name": "Dientes de ajo", "amount": "3"}, {"name": "Cebolla", "amount": "media pieza"}, {"name": "Paprika", "amount": "1 cda"}, {"name": "Caldo de res", "amount": "1 taza"}, {"name": "Sal", "amount": "al gusto"}, {"name": "Pimienta", "amount": "al gusto"}], "steps": ["Retira la membrana de la parte trasera de las costillas y córtalas en secciones de 3 a 4 huesos. Sazona por ambos lados con sal, pimienta y paprika.", "Calienta la olla de presión a fuego medio-alto y <b>sella las costillas 2 minutos por lado</b> hasta que doren. Retíralas un momento.", "En la misma olla, sofríe la cebolla y el ajo picados hasta que suelten aroma. Vierte el caldo de res y raspa el fondo para levantar todo el sabor.", "Regresa las costillas, cierra la olla y cocina a presión durante <b>25 minutos</b> desde que empieza a sonar la válvula.", "Libera la presión, barniza las costillas con la salsa BBQ y déjalas 3 minutos a fuego bajo con la olla destapada para que la salsa se concentre."], "tip": "Si quieres un acabado caramelizado, pasa las costillas ya barnizadas 4 minutos al horno en modo broil. El azúcar de la salsa BBQ hará una costra brillante.", "royalTip": "El sello hermético de tu Olla de Presión Royal Prestige concentra el vapor, por eso una sola taza de caldo es suficiente: la carne se cocina en su propio jugo y el sabor no se diluye."}, {"id": "tamales-caseros", "name": "Tamales Caseros", "time": "1 h 30 min", "servings": "12 tamales", "diff": "Media", "utensil": "Tamalera Royal Prestige", "cats": ["tamalera", "tamales"], "badge": "Favorita de nuestros clientes", "desc": "Tamales tradicionales cocinados al vapor con una textura perfecta.", "img": "", "tone": "#4A3B26", "video": "", "ingredients": [{"name": "Masa para tamales", "amount": "1 kg"}, {"name": "Carne de cerdo o pollo cocida y deshebrada", "amount": "500 g"}, {"name": "Chile guajillo o de tu preferencia", "amount": "4 piezas"}, {"name": "Hojas de maíz", "amount": "16"}, {"name": "Caldo de la cocción", "amount": "1 taza y media"}, {"name": "Sal", "amount": "al gusto"}], "steps": ["Remoja las hojas de maíz en agua caliente durante 20 minutos hasta que estén flexibles. Escúrrelas bien.", "Hidrata los chiles en agua caliente, licúalos con un poco de caldo y sal, y mezcla esta salsa con la carne deshebrada.", "Bate la masa incorporando el caldo poco a poco hasta que esté suave y esponjosa. <b>Prueba de la bolita:</b> si una porción de masa flota en un vaso de agua, está lista.", "Extiende 2 cucharadas de masa sobre cada hoja, agrega una porción de carne al centro y dobla los costados y la base hacia arriba.", "Coloca agua en la base de la tamalera, acomoda los tamales en vertical con la abertura hacia arriba y cocina al vapor a fuego medio durante <b>1 hora</b>.", "Están listos cuando la masa se despega limpiamente de la hoja. Déjalos reposar 10 minutos antes de servir."], "tip": "No amontones los tamales: el vapor debe circular entre ellos para una cocción pareja de principio a fin.", "royalTip": "Con tu Tamalera Royal Prestige no necesitas fuego alto: la tapa conserva el vapor y mantiene la temperatura estable. Cocinas los mismos tamales gastando menos gas."}, {"id": "pollo-romero", "name": "Pollo al Romero con Papas", "time": "45 min", "servings": "4 porciones", "diff": "Fácil", "utensil": "Olla Royal Prestige", "cats": ["ollas", "carnes", "pollo", "saludable"], "badge": "Recomendada", "desc": "Una comida completa, saludable y llena de sabor.", "img": "", "tone": "#5A4630", "video": "", "ingredients": [{"name": "Piezas de pollo", "amount": "8"}, {"name": "Papas medianas", "amount": "4"}, {"name": "Ramas de romero fresco", "amount": "3"}, {"name": "Dientes de ajo", "amount": "4"}, {"name": "Aceite de oliva", "amount": "2 cdas"}, {"name": "Sal", "amount": "al gusto"}, {"name": "Pimienta", "amount": "al gusto"}], "steps": ["Seca el pollo con papel y sazónalo con sal, pimienta y el ajo picado. Corta las papas en cuartos con todo y piel.", "Calienta la olla a fuego medio con el aceite de oliva y <b>sella el pollo con la piel hacia abajo</b> hasta que dore, unos 5 minutos por lado.", "Agrega las papas y el romero, tapa la olla y baja el fuego a medio-bajo.", "Cocina <b>30 minutos sin destapar</b> — el vapor cocinará las papas con los jugos del pollo, sin necesidad de agregar agua.", "Verifica que el pollo esté cocido al centro, rectifica la sal y sirve directo de la olla."], "tip": "Resiste la tentación de destapar antes de tiempo: cada vez que abres la olla, escapa el vapor y la cocción se alarga.", "royalTip": "Esta receta usa el sistema de cocción sin agua de Royal Prestige: los alimentos se cocinan en sus jugos naturales, conservando vitaminas y sabor que normalmente se pierden en el agua."}, {"id": "ribeye-mantequilla", "name": "Ribeye Sellado con Mantequilla y Ajo", "time": "12 min", "servings": "2 porciones", "diff": "Fácil", "utensil": "Sartén Royal Prestige", "cats": ["sartenes", "carnes"], "badge": "Lista en menos de 30 minutos", "desc": "Un ribeye perfectamente sellado con un exterior dorado y un interior jugoso.", "img": "", "tone": "#38221C", "video": "", "ingredients": [{"name": "Ribeye de 3 cm de grosor", "amount": "2 piezas"}, {"name": "Mantequilla", "amount": "60 g"}, {"name": "Dientes de ajo machacados", "amount": "3"}, {"name": "Ramas de romero", "amount": "2"}, {"name": "Sal gruesa", "amount": "al gusto"}, {"name": "Pimienta recién molida", "amount": "al gusto"}], "steps": ["Saca el ribeye del refrigerador <b>30 minutos antes</b> de cocinar. Sécalo muy bien con papel y sazona generosamente con sal gruesa y pimienta.", "Calienta el sartén a fuego medio-alto, en seco, hasta que una gota de agua baile sobre la superficie. Esa es la señal de que está listo.", "Coloca el ribeye y <b>no lo muevas durante 3 minutos</b>. Voltéalo una sola vez y cocina 3 minutos más para término medio.", "Baja el fuego, agrega la mantequilla, el ajo y el romero. Inclina el sartén y baña la carne con la mantequilla espumosa durante 1 minuto por lado.", "Retira el ribeye a una tabla y <b>déjalo reposar 5 minutos</b> antes de cortar, para que los jugos se redistribuyan."], "tip": "La sal gruesa antes de cocinar y el reposo después de cocinar: esos dos hábitos separan un buen corte de uno perfecto.", "royalTip": "El acero de tu Sartén Royal Prestige distribuye el calor de manera uniforme y lo retiene: no necesitas fuego máximo ni exceso de aceite para lograr una costra dorada perfecta."}, {"id": "pasta-alfredo", "name": "Pasta Alfredo con Pollo", "time": "25 min", "servings": "4 porciones", "diff": "Fácil", "utensil": "Olla Royal Prestige", "cats": ["ollas", "pastas", "pollo"], "badge": "Lista en menos de 30 minutos", "desc": "Una receta cremosa ideal para compartir en familia.", "img": "", "tone": "#5C5138", "video": "", "ingredients": [{"name": "Pasta fettuccine", "amount": "400 g"}, {"name": "Pechuga de pollo en tiras", "amount": "2"}, {"name": "Crema para batir", "amount": "1 taza y media"}, {"name": "Queso parmesano rallado", "amount": "1 taza"}, {"name": "Mantequilla", "amount": "40 g"}, {"name": "Dientes de ajo", "amount": "2"}, {"name": "Sal y pimienta", "amount": "al gusto"}], "steps": ["Cocina la pasta en agua con sal siguiendo el tiempo del paquete. Antes de escurrir, <b>reserva 1 taza del agua de cocción</b>.", "Mientras, sazona el pollo con sal y pimienta y dóralo en la olla con la mitad de la mantequilla, unos 6 minutos. Retíralo.", "En la misma olla, derrite el resto de la mantequilla y sofríe el ajo picado 30 segundos, sin que dore.", "Vierte la crema, baja el fuego y agrega el parmesano en dos tandas, moviendo hasta que la salsa esté sedosa.", "Regresa el pollo, incorpora la pasta y mezcla. Si la salsa espesa de más, suéltala con un poco del agua reservada. Sirve con parmesano extra."], "tip": "El agua de la pasta es el secreto de los restaurantes: su almidón une la salsa con la pasta y le da brillo. Nunca la tires antes de terminar el platillo.", "royalTip": "El fondo de tu Olla Royal Prestige reparte el calor sin puntos calientes, así la crema no se corta ni se pega. Puedes hacer la salsa a fuego bajo con total confianza."}, {"id": "flan-casero", "name": "Flan Casero", "time": "50 min", "servings": "8 porciones", "diff": "Media", "utensil": "Olla Royal Prestige", "cats": ["ollas", "postres"], "badge": "Fácil para principiantes", "desc": "Un flan suave, cremoso y perfecto preparado a baño María.", "img": "", "tone": "#6B4A22", "video": "", "ingredients": [{"name": "Leche condensada", "amount": "1 lata"}, {"name": "Leche evaporada", "amount": "1 lata"}, {"name": "Huevos", "amount": "4"}, {"name": "Vainilla", "amount": "1 cda"}, {"name": "Azúcar (para el caramelo)", "amount": "media taza"}], "steps": ["Derrite el azúcar en un molde a fuego bajo, moviéndolo con cuidado, hasta obtener un caramelo dorado. Cubre el fondo y deja enfriar.", "Licúa la leche condensada, la leche evaporada, los huevos y la vainilla durante 1 minuto, hasta integrar por completo.", "Vierte la mezcla sobre el caramelo y cubre el molde con papel aluminio bien ajustado.", "Coloca el molde dentro de tu olla con <b>agua hasta la mitad del molde</b> (baño María). Tapa y cocina a fuego bajo durante <b>40 minutos</b>.", "Está listo cuando un cuchillo insertado al centro sale limpio. Refrigera <b>mínimo 4 horas</b> antes de desmoldar.", "Para desmoldar, pasa un cuchillo por la orilla, coloca un plato encima y voltea con un movimiento firme."], "tip": "La paciencia hace el flan: fuego bajo y refrigeración completa. Si lo desmoldas tibio, se rompe. Frío de un día para otro queda aún mejor.", "royalTip": "La tapa de tu olla Royal Prestige sella el calor y mantiene el baño María a temperatura constante — el secreto de un flan sin burbujas, con textura sedosa de principio a fin."}], "soon": [{"name": "Pizza casera"}, {"name": "Paella"}, {"name": "Pan casero"}], "gallery": [{"src": "", "alt": "Tomás en una demostración en vivo", "tag": "Demostración en vivo"}, {"src": "", "alt": "Tomás cocinando junto a una clienta", "tag": "Cocinando con clientes"}, {"src": "", "alt": "Tomás sazonando durante una demostración", "tag": "El toque del chef"}, {"src": "", "alt": "Retrato de Tomás Flores", "tag": "Tomás Flores"}], "reviews": [{"color": "#8A6FB4", "ini": "MG", "name": "María G.", "sub": "Cliente desde 2024", "stars": 5, "text": "La demostración fue increíble. Tomás cocinó para toda mi familia y nos explicó todo con muchísima paciencia. Ahora cocino más rápido y más saludable."}, {"color": "#B08D4F", "ini": "CR", "name": "Carlos R.", "sub": "Cliente desde 2023", "stars": 5, "text": "Lo que más valoro es el servicio después de la compra. Tuve una duda con mi olla de presión, le escribí y me respondió en minutos. Así se atiende a un cliente."}, {"color": "#5B8A72", "ini": "AP", "name": "Ana P.", "sub": "Cliente desde 2025", "stars": 5, "text": "Las recetas de su página son mi salvación entre semana. Los tamales me quedaron perfectos a la primera con su tamalera y sus consejos."}, {"color": "#7A6A5A", "ini": "LM", "name": "Luis M.", "sub": "Cliente desde 2024", "stars": 5, "text": "Comparé con otros distribuidores y me quedé con Tomás por su seriedad. Todo lo que prometió en la demostración se cumplió."}, {"color": "#4E6B9B", "ini": "RT", "name": "Rosa T.", "sub": "Cliente desde 2023", "stars": 5, "text": "Mi ribeye nunca había quedado así. El sartén es otra cosa y Tomás siempre está pendiente de que le saquemos provecho a todo el equipo."}], "texts": {"heroSub": "Estoy aquí para ayudarte a sacarle todo el provecho a tu cocina.", "aboutH": "Estoy aquí para servirte, no solo para venderte.", "motto": "Más que vender, sirvo.", "aboutB": "Soy Tomás. Cuando compras conmigo, no termina la relación: empieza. Recetas, servicio, dudas — cuenta conmigo antes, durante y después.", "gscore": "4.9", "gcount": "Basado en reseñas de clientes en Google"}, "config": {"phone": "16823811576", "cal": "https://calendly.com/florestomas/demo-royal", "ig": "tomasflores_23", "tt": "titoflores45", "loc": "DFW — Texas"}};
+
+  let DATA = { recipes:[], reviews:[], gallery:[], soon:[], texts:{}, config:{} };
+
+  function setCloud(saving){
+    const c=$("cloudState"); if(!c) return;
+    c.classList.toggle("saving", !!saving);
+    c.querySelector(".ct").textContent = saving ? "Guardando…" : "Todo sincronizado";
+  }
+
+  // ---------- Login ----------
+  function showMsg(t,k){ const m=$("loginMsg"); m.textContent=t; m.className="msg show "+(k||"err"); }
+  function clearMsg(){ $("loginMsg").className="msg"; }
+  setPersistence(auth, browserLocalPersistence).catch(()=>{});
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt:"select_account" });
+  let busy=false;
+  $("googleBtn").addEventListener("click", async ()=>{
+    if(busy) return; busy=true; $("googleBtn").disabled=true; clearMsg();
+    try{ await signInWithPopup(auth, provider); }
+    catch(e){
+      if(e.code==="auth/popup-closed-by-user"||e.code==="auth/cancelled-popup-request"){ clearMsg(); }
+      else if(e.code==="auth/network-request-failed"){ showMsg("No hay conexión. Verifica tu internet."); }
+      else if(e.code==="auth/unauthorized-domain"){ showMsg("Este dominio aún no está autorizado en Firebase. Agrégalo en Authentication → Settings → Dominios autorizados."); }
+      else { showMsg("No pudimos iniciar sesión. Inténtalo nuevamente."); console.error(e.code||e.message); }
+    } finally { busy=false; $("googleBtn").disabled=false; }
+  });
+  $("logoutBtn").addEventListener("click", ()=>signOut(auth).catch(e=>console.error(e)));
+
+  onAuthStateChanged(auth, async (user)=>{
+    if(!user){ view("login"); return; }
+    if((user.email||"").toLowerCase() !== ADMIN_EMAIL.toLowerCase()){
+      await signOut(auth); view("login");
+      showMsg("Esta cuenta no tiene acceso al panel. Entra con la cuenta del administrador.");
+      return;
+    }
+    if(user.photoURL){ $("userPic").src=user.photoURL; $("userPic").style.display="block"; }
+    view("loading");
+    $("loadingTxt").textContent = "Cargando tu contenido…";
+    try{ await loadOrSeed(); view("app"); renderAll(); }
+    catch(e){ console.error(e); view("app"); renderAll(); toast("Se cargó sin conexión a la nube"); }
+  });
+
+  // ---------- Carga o auto-siembra ----------
+  async function loadOrSeed(){
+    const snap = await getDocs(collection(db,"recipes"));
+    if(snap.empty){
+      $("loadingTxt").textContent = "Preparando tu oficina por primera vez…";
+      await seedEverything();
+    }
+    await loadAll();
+  }
+
+  function clean(obj){
+    if(Array.isArray(obj)) return obj.map(clean).filter(v=>v!==undefined);
+    if(obj && typeof obj==="object"){
+      const o={};
+      for(const k in obj){ const v=clean(obj[k]); if(v!==undefined) o[k]=v; }
+      return o;
+    }
+    return obj===undefined ? null : obj;
+  }
+  async function seedEverything(){
+    const batch = writeBatch(db);
+    SEED.recipes.forEach((r,i)=>{
+      const ref = doc(db,"recipes", r.id || ("rec"+i));
+      batch.set(ref, clean({ ...r, order:i, status:"published", visible:true }));
+    });
+    SEED.reviews.forEach((r,i)=>{
+      const ref = doc(collection(db,"testimonials"));
+      batch.set(ref, clean({ ...r, order:i, status:"published", visible:true }));
+    });
+    SEED.gallery.forEach((g,i)=>{
+      const ref = doc(collection(db,"gallery"));
+      batch.set(ref, clean({ ...g, order:i, status:"published", visible:true }));
+    });
+    SEED.soon.forEach((s,i)=>{
+      const ref = doc(collection(db,"upcoming"));
+      batch.set(ref, clean({ ...s, order:i }));
+    });
+    batch.set(doc(db,"settings","public"), clean({ ...SEED.config, texts:SEED.texts }));
+    await batch.commit();
+  }
+
+  async function loadAll(){
+    const [rec, tes, gal, up, set] = await Promise.all([
+      getDocs(collection(db,"recipes")),
+      getDocs(collection(db,"testimonials")),
+      getDocs(collection(db,"gallery")),
+      getDocs(collection(db,"upcoming")),
+      getDocs(collection(db,"settings"))
+    ]);
+    DATA.recipes = rec.docs.map(d=>({_id:d.id,...d.data()})).sort((a,b)=>(a.order||0)-(b.order||0));
+    DATA.reviews = tes.docs.map(d=>({_id:d.id,...d.data()})).sort((a,b)=>(a.order||0)-(b.order||0));
+    DATA.gallery = gal.docs.map(d=>({_id:d.id,...d.data()})).sort((a,b)=>(a.order||0)-(b.order||0));
+    DATA.soon = up.docs.map(d=>({_id:d.id,...d.data()})).sort((a,b)=>(a.order||0)-(b.order||0));
+    const pub = set.docs.find(d=>d.id==="public");
+    if(pub){ const p=pub.data(); DATA.config=p; DATA.texts=p.texts||{}; }
+  }
+
+  // ---------- Render ----------
+  function renderAll(){ renderDash(); renderRecipes(); renderReviews(); renderGallery(); renderSoon(); renderTexts(); }
+
+  function renderDash(){
+    const vis = DATA.recipes.filter(r=>r.status!=="hidden").length;
+    $("p-inicio").innerHTML =
+      '<div class="dash-hi"><h2>Hola, Tomás</h2><p>Tu contenido ya vive en la nube. Edítalo desde aquí y se guarda al instante.</p></div>'+
+      '<div class="cloud" id="cloudState" style="margin-top:14px"><span class="dot"></span><span class="ct">Todo sincronizado</span></div>'+
+      '<div class="stat-grid">'+
+        '<button class="stat-card" type="button" onclick="goTab(\'recetas\')"><div class="sn">'+vis+'</div><div class="sl">Recetas publicadas</div><span class="go">Ver recetas ›</span></button>'+
+        '<button class="stat-card" type="button" onclick="goTab(\'opiniones\')"><div class="sn">'+DATA.reviews.length+'</div><div class="sl">Opiniones</div><span class="go">Ver opiniones ›</span></button>'+
+        '<button class="stat-card" type="button" onclick="goTab(\'galeria\')"><div class="sn">'+DATA.gallery.length+'</div><div class="sl">Fotos en galería</div><span class="go">Ver galería ›</span></button>'+
+        '<button class="stat-card" type="button" onclick="goTab(\'proximamente\')"><div class="sn">'+DATA.soon.length+'</div><div class="sl">Próximamente</div><span class="go">Ver próximamente ›</span></button>'+
+      '</div>'+
+      '';
+  }
+
+  function statusChip(x){ return x.status==="hidden" ? '<span class="st st-hid">Oculta</span>' : '<span class="st st-pub">Publicada</span>'; }
+
+  function renderRecipes(){
+    let h = '<button class="btn btn-solid btn-block" onclick="newRecipe()" style="margin-bottom:14px">＋ Nueva receta</button>';
+    h += '<p class="hint" style="margin-bottom:12px">Toca una receta para editar su texto. Los cambios se guardan en la nube al instante.</p>';
+    if(!DATA.recipes.length) h += '<div class="empty-note">Aún no hay recetas.</div>';
+    DATA.recipes.forEach((r,i)=>{
+      h += '<div class="item">'+
+        '<div class="thumb">'+(r.img?('<img src="'+r.img+'" alt="" style="width:100%;height:100%;object-fit:cover">'):'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#B0A99E" stroke-width="1.6"><path d="M2 12h20"/><path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8"/><path d="m4 8 16-4"/></svg>')+'</div>'+
+        '<div class="ti"><b>'+esc(r.name)+'</b><span class="sub">'+statusChip(r)+'<span>'+esc(r.time||"")+'</span></span></div>'+
+        '<div class="acts"><button class="icon-btn" onclick="editRecipe('+i+')" aria-label="Editar">✎</button>'+
+        '<button class="icon-btn" onclick="toggleRecipe('+i+')" aria-label="Ocultar o publicar">'+(r.status==="hidden"?"◯":"●")+'</button>'+
+        '<button class="icon-btn" onclick="delRecipe('+i+')" aria-label="Eliminar">🗑</button></div></div>';
+    });
+    $("p-recetas").innerHTML = h;
+  }
+
+  window.newRecipe = function(){
+    const p = $("p-recetas");
+    p.innerHTML = '<div class="card-form">'+
+      '<h2 style="font-size:19px;margin-bottom:16px">Nueva receta</h2>'+
+      '<label>Nombre</label><input id="nName" placeholder="Ej. Sopa de tortilla">'+
+      '<label>Descripción</label><textarea id="nDesc" style="min-height:80px" placeholder="Una frase que dé antojo"></textarea>'+
+      '<div class="row2"><div><label>Tiempo</label><input id="nTime" placeholder="30 min"></div>'+
+      '<div><label>Porciones</label><input id="nServ" placeholder="4 porciones"></div></div>'+
+      '<div class="row2"><div><label>Dificultad</label><input id="nDiff" placeholder="Fácil"></div>'+
+      '<div><label>Utensilio</label><input id="nUt" placeholder="Olla Royal Prestige"></div></div>'+
+      '<label>Consejo del Chef</label><textarea id="nChef" style="min-height:60px"></textarea>'+
+      '<label>Tip Royal Prestige</label><textarea id="nRoyal" style="min-height:60px"></textarea>'+
+      '<div class="form-acts"><button class="btn btn-solid" onclick="saveNewRecipe()">Crear receta</button>'+
+      '<button class="btn btn-line" onclick="renderRecipes()">Cancelar</button></div>'+
+      '<p class="hint">La foto, los ingredientes y los pasos los podrás añadir editando la receta después. Por ahora se crea con los datos principales.</p></div>';
+  };
+
+  function slugify(s){
+    return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+      .replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,40) || ("receta-"+Date.now());
+  }
+
+  window.saveNewRecipe = async function(){
+    const name = $("nName").value.trim();
+    if(!name){ toast("Ponle un nombre a la receta"); return; }
+    const id = slugify(name);
+    const nueva = {
+      name, desc:$("nDesc").value.trim(), time:$("nTime").value.trim(),
+      servings:$("nServ").value.trim(), diff:$("nDiff").value.trim(), utensil:$("nUt").value.trim(),
+      chefTip:$("nChef").value.trim(), royalTip:$("nRoyal").value.trim(),
+      cats:[], badge:"", img:"", tone:"#5A4630", video:"", ingredients:[], steps:[],
+      order: DATA.recipes.length, status:"published", visible:true, updatedAt: serverTimestamp()
+    };
+    setCloud(true);
+    try{
+      await setDoc(doc(db,"recipes",id), nueva);
+      DATA.recipes.push({_id:id, ...nueva});
+      toast("✓ Receta creada"); renderRecipes(); renderDash();
+    }catch(e){ console.error(e); toast("No se pudo crear"); }
+    finally{ setCloud(false); }
+  };
+
+  window.delRecipe = function(i){
+    const r = DATA.recipes[i];
+    if(!confirm('¿Eliminar "'+r.name+'"? Esto no se puede deshacer.')) return;
+    setCloud(true);
+    deleteDoc(doc(db,"recipes",r._id)).then(()=>{
+      DATA.recipes.splice(i,1);
+      toast("Receta eliminada"); renderRecipes(); renderDash();
+    }).catch(e=>{ console.error(e); toast("No se pudo eliminar"); }).finally(()=>setCloud(false));
+  };
+
+  window.editRecipe = function(i){
+    const r = DATA.recipes[i];
+    const p = $("p-recetas");
+    p.innerHTML = '<div class="card-form">'+
+      '<h2 style="font-size:19px;margin-bottom:16px">Editar receta</h2>'+
+      '<label>Nombre</label><input id="rName" value="'+esc(r.name)+'">'+
+      '<label>Descripción</label><textarea id="rDesc" style="min-height:80px">'+esc(r.desc||"")+'</textarea>'+
+      '<div class="row2"><div><label>Tiempo</label><input id="rTime" value="'+esc(r.time||"")+'"></div>'+
+      '<div><label>Porciones</label><input id="rServ" value="'+esc(r.servings||"")+'"></div></div>'+
+      '<div class="row2"><div><label>Dificultad</label><input id="rDiff" value="'+esc(r.diff||"")+'"></div>'+
+      '<div><label>Utensilio</label><input id="rUt" value="'+esc(r.utensil||"")+'"></div></div>'+
+      '<label>Consejo del Chef</label><textarea id="rChef" style="min-height:70px">'+esc(r.chefTip||r.chef||"")+'</textarea>'+
+      '<label>Tip Royal Prestige</label><textarea id="rRoyal" style="min-height:70px">'+esc(r.royalTip||r.royal||"")+'</textarea>'+
+      '<div class="form-acts"><button class="btn btn-solid" onclick="saveRecipe('+i+')">Guardar en la nube</button>'+
+      '<button class="btn btn-line" onclick="renderRecipes()">Cancelar</button></div>'+
+      '<p class="hint">Los ingredientes y pasos se editarán en la próxima versión. Por ahora puedes ajustar los datos principales.</p></div>';
+  };
+
+  window.saveRecipe = async function(i){
+    const r = DATA.recipes[i];
+    const upd = {
+      name:$("rName").value.trim(), desc:$("rDesc").value.trim(),
+      time:$("rTime").value.trim(), servings:$("rServ").value.trim(),
+      diff:$("rDiff").value.trim(), utensil:$("rUt").value.trim(),
+      chefTip:$("rChef").value.trim(), royalTip:$("rRoyal").value.trim(),
+      updatedAt: serverTimestamp()
+    };
+    setCloud(true);
+    try{
+      await updateDoc(doc(db,"recipes",r._id), upd);
+      Object.assign(DATA.recipes[i], upd);
+      toast("✓ Guardado en la nube"); renderRecipes();
+    }catch(e){ console.error(e); toast("No se pudo guardar"); }
+    finally{ setCloud(false); }
+  };
+
+  window.toggleRecipe = async function(i){
+    const r = DATA.recipes[i];
+    const ns = r.status==="hidden" ? "published" : "hidden";
+    setCloud(true);
+    try{
+      await updateDoc(doc(db,"recipes",r._id), { status:ns, visible: ns==="published" });
+      DATA.recipes[i].status = ns; DATA.recipes[i].visible = ns==="published";
+      renderRecipes(); renderDash();
+    }catch(e){ console.error(e); toast("No se pudo actualizar"); }
+    finally{ setCloud(false); }
+  };
+
+  const REV_COLORS = ["#8A6FB4","#B08D4F","#5B8A72","#7A6A5A","#4E6B9B","#B07A6A"];
+  function renderReviews(){
+    let h = '<button class="btn btn-solid btn-block" onclick="newReview()" style="margin-bottom:14px">＋ Nueva opinión</button>';
+    const pend = DATA.reviews.filter(r=>r.pendiente);
+    if(pend.length){
+      h += '<div class="card-form" style="background:#FFF9EC;border-color:#F0E2BE">'+
+        '<b style="font-family:Inter Tight;font-size:15px">🔔 '+pend.length+' reseña'+(pend.length>1?'s':'')+' nueva'+(pend.length>1?'s':'')+' de clientes</b>'+
+        '<p class="hint" style="margin-top:4px">Revísalas abajo y toca <b>Aprobar</b> para publicarlas en tu sitio.</p></div>';
+    }
+    h += '<p class="hint" style="margin-bottom:12px">Las opiniones de tu sitio. Las nuevas de clientes aparecen marcadas.</p>';
+    if(!DATA.reviews.length) h += '<div class="empty-note">Aún no hay opiniones.</div>';
+    DATA.reviews.forEach((r,i)=>{
+      const esPend = r.pendiente;
+      h += '<div class="item"'+(esPend?' style="border-color:#F0E2BE;background:#FFFDF7"':'')+'><div class="thumb" style="background:'+(r.color||"#B08D4F")+';color:#fff;font-weight:600;font-family:Inter Tight">'+esc(r.ini||"")+'</div>'+
+        '<div class="ti"><b>'+esc(r.name)+(esPend?' <span class="st" style="background:#FBEED0;color:#8A6218">Nueva</span>':'')+'</b><span class="sub"><span>'+"★".repeat(r.stars||5)+'</span>'+(r.text?'<span>'+esc(r.text.slice(0,26))+(r.text.length>26?'…':'')+'</span>':'')+'</span></div>'+
+        '<div class="acts">'+
+        (esPend?'<button class="icon-btn" onclick="approveReview('+i+')" aria-label="Aprobar" style="background:#EAF6ED;border-color:#BFE3C8">✓</button>':'')+
+        '<button class="icon-btn" onclick="editReview('+i+')" aria-label="Editar">✎</button>'+
+        '<button class="icon-btn" onclick="delReview('+i+')" aria-label="Eliminar">🗑</button></div></div>';
+    });
+    $("p-opiniones").innerHTML = h;
+  }
+
+  window.approveReview = async function(i){
+    const r = DATA.reviews[i];
+    setCloud(true);
+    try{
+      const maxOrder = Math.max(0, ...DATA.reviews.filter(x=>!x.pendiente).map(x=>x.order||0));
+      await updateDoc(doc(db,"testimonials",r._id), { status:"published", visible:true, pendiente:false, sub:r.sub||"Cliente", order:maxOrder+1 });
+      r.status="published"; r.visible=true; r.pendiente=false; r.order=maxOrder+1;
+      toast("✓ Reseña publicada en tu sitio"); renderReviews(); renderDash();
+    }catch(e){ console.error(e); toast("No se pudo aprobar"); }
+    finally{ setCloud(false); }
+  };
+
+  function reviewForm(r, isNew){
+    const idx = isNew ? -1 : DATA.reviews.indexOf(r);
+    $("p-opiniones").innerHTML = '<div class="card-form">'+
+      '<h2 style="font-size:19px;margin-bottom:16px">'+(isNew?"Nueva opinión":"Editar opinión")+'</h2>'+
+      '<label>Nombre del cliente</label><input id="vName" value="'+esc(r.name||"")+'" placeholder="Ej. María G.">'+
+      '<label>Detalle (ej. Cliente desde 2024)</label><input id="vSub" value="'+esc(r.sub||"")+'">'+
+      '<label>Estrellas (1 a 5)</label><input id="vStars" inputmode="numeric" value="'+(r.stars||5)+'">'+
+      '<label>Opinión</label><textarea id="vText" style="min-height:100px">'+esc(r.text||"")+'</textarea>'+
+      '<div class="form-acts"><button class="btn btn-solid" onclick="saveReview('+idx+')">Guardar en la nube</button>'+
+      '<button class="btn btn-line" onclick="renderReviews()">Cancelar</button></div></div>';
+  }
+  window.newReview = function(){ reviewForm({}, true); };
+  window.editReview = function(i){ reviewForm(DATA.reviews[i], false); };
+
+  window.saveReview = async function(idx){
+    const name = $("vName").value.trim();
+    if(!name){ toast("Falta el nombre"); return; }
+    let stars = parseInt($("vStars").value,10); if(isNaN(stars)||stars<1) stars=5; if(stars>5) stars=5;
+    const ini = name.split(/\s+/).map(w=>w[0]||"").join("").toUpperCase().slice(0,2);
+    const data = {
+      name, sub:$("vSub").value.trim(), stars, text:$("vText").value.trim(),
+      ini, updatedAt: serverTimestamp()
+    };
+    setCloud(true);
+    try{
+      if(idx<0){
+        const color = REV_COLORS[DATA.reviews.length % REV_COLORS.length];
+        const full = { ...data, color, order:DATA.reviews.length, status:"published", visible:true };
+        const ref = await addDoc(collection(db,"testimonials"), full);
+        DATA.reviews.push({_id:ref.id, ...full});
+      }else{
+        const r = DATA.reviews[idx];
+        await updateDoc(doc(db,"testimonials",r._id), data);
+        Object.assign(DATA.reviews[idx], data);
+      }
+      toast("✓ Guardado en la nube"); renderReviews(); renderDash();
+    }catch(e){ console.error(e); toast("No se pudo guardar"); }
+    finally{ setCloud(false); }
+  };
+
+  window.delReview = function(i){
+    const r = DATA.reviews[i];
+    if(!confirm('¿Eliminar la opinión de '+r.name+'?')) return;
+    setCloud(true);
+    deleteDoc(doc(db,"testimonials",r._id)).then(()=>{
+      DATA.reviews.splice(i,1); toast("Opinión eliminada"); renderReviews(); renderDash();
+    }).catch(e=>{ console.error(e); toast("No se pudo eliminar"); }).finally(()=>setCloud(false));
+  };
+
+  function renderGallery(){
+    let h = '<button class="btn btn-solid btn-block" onclick="newGalPhoto()" style="margin-bottom:14px">＋ Agregar foto</button>';
+    h += '<p class="hint" style="margin-bottom:12px">Mantén presionada la manija <b>⠿</b> y arrastra para reordenar. Toca ✎ para editar.</p>';
+    if(!DATA.gallery.length) h += '<div class="empty-note">Aún no hay fotos. Agrega la primera.</div>';
+    h += '<div id="galList">';
+    DATA.gallery.forEach((g,i)=>{
+      h += '<div class="item gal-row" data-idx="'+i+'">'+
+        '<button class="drag-handle" aria-label="Arrastrar para reordenar">⠿</button>'+
+        '<div class="thumb">'+(g.src?('<img src="'+g.src+'" alt="" style="width:100%;height:100%;object-fit:cover">'):'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B0A99E" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>')+'</div>'+
+        '<div class="ti"><b>'+(g.video?"▶ ":"")+esc(g.tag||(g.video?"Video":"Foto"))+'</b><span class="sub"><span>'+esc(g.alt||"")+'</span></span></div>'+
+        '<div class="acts">'+
+        '<button class="icon-btn" onclick="editGalPhoto('+i+')" aria-label="Editar">✎</button>'+
+        '<button class="icon-btn" onclick="delGalPhoto('+i+')" aria-label="Eliminar">🗑</button></div></div>';
+    });
+    h += '</div>';
+    $("p-galeria").innerHTML = h;
+    initGalDrag();
+  }
+
+  // ---- Arrastre táctil para reordenar la galería ----
+  function initGalDrag(){
+    const list = $("galList"); if(!list) return;
+    let dragEl=null, dragIdx=-1, startY=0, curY=0, placeholder=null;
+
+    list.querySelectorAll(".gal-row").forEach(row=>{
+      const handle = row.querySelector(".drag-handle");
+      if(!handle) return;
+      const start = (clientY)=>{
+        dragEl = row; dragIdx = parseInt(row.dataset.idx,10);
+        startY = clientY; curY = clientY;
+        row.classList.add("dragging");
+        placeholder = document.createElement("div");
+        placeholder.className = "gal-placeholder";
+        placeholder.style.height = row.offsetHeight+"px";
+        row.parentNode.insertBefore(placeholder, row.nextSibling);
+        row.style.position="relative"; row.style.zIndex="50";
+        document.body.style.userSelect="none";
+      };
+      const move = (clientY)=>{
+        if(!dragEl) return;
+        curY = clientY;
+        const dy = curY - startY;
+        dragEl.style.transform = "translateY("+dy+"px)";
+        // encontrar sobre qué fila estamos
+        const rows = [...list.querySelectorAll(".gal-row:not(.dragging)")];
+        const dragRect = dragEl.getBoundingClientRect();
+        const dragMid = dragRect.top + dragRect.height/2;
+        let ref=null;
+        for(const r of rows){
+          const rect=r.getBoundingClientRect();
+          if(dragMid < rect.top + rect.height/2){ ref=r; break; }
+        }
+        if(ref) list.insertBefore(placeholder, ref);
+        else list.appendChild(placeholder);
+      };
+      const end = async ()=>{
+        if(!dragEl) return;
+        const rows=[...list.querySelectorAll(".gal-row, .gal-placeholder")];
+        const newPos = rows.indexOf(placeholder);
+        dragEl.style.transform=""; dragEl.style.position=""; dragEl.style.zIndex="";
+        dragEl.classList.remove("dragging");
+        list.insertBefore(dragEl, placeholder);
+        placeholder.remove();
+        document.body.style.userSelect="";
+        // calcular índice destino real
+        let target = [...list.querySelectorAll(".gal-row")].indexOf(dragEl);
+        const from = dragIdx; dragEl=null;
+        if(target!==from && target>=0){ await reorderGal(from, target); }
+      };
+
+      // touch
+      handle.addEventListener("touchstart", e=>{ e.preventDefault(); start(e.touches[0].clientY); }, {passive:false});
+      list.addEventListener("touchmove", e=>{ if(dragEl){ e.preventDefault(); move(e.touches[0].clientY);} }, {passive:false});
+      handle.addEventListener("touchend", end);
+      // mouse (por si usa compu)
+      handle.addEventListener("mousedown", e=>{ e.preventDefault(); start(e.clientY);
+        const mm=ev=>move(ev.clientY); const mu=()=>{ end(); document.removeEventListener("mousemove",mm); document.removeEventListener("mouseup",mu); };
+        document.addEventListener("mousemove",mm); document.addEventListener("mouseup",mu);
+      });
+    });
+  }
+
+  async function reorderGal(from, to){
+    const arr = DATA.gallery;
+    const [moved] = arr.splice(from,1);
+    arr.splice(to,0,moved);
+    renderGallery();
+    setCloud(true);
+    try{
+      await Promise.all(arr.map((g,i)=> updateDoc(doc(db,"gallery",g._id), {order:i})));
+      arr.forEach((g,i)=>g.order=i);
+      toast("✓ Nuevo orden guardado");
+    }catch(e){ console.error(e); toast("No se pudo guardar el orden"); }
+    finally{ setCloud(false); }
+  }
+
+  let galPhotoTmp = undefined;
+  function galForm(g, isNew){
+    const idx = isNew ? -1 : DATA.gallery.indexOf(g);
+    galPhotoTmp = undefined;
+    const fotoActual = g.src || "";
+    $("p-galeria").innerHTML = '<div class="card-form">'+
+      '<h2 style="font-size:19px;margin-bottom:16px">'+(isNew?"Agregar foto":"Editar foto")+'</h2>'+
+      '<label>Foto</label>'+
+      '<div id="gPhotoBox">'+
+        (fotoActual?'<img id="gPhotoPrev" src="'+fotoActual+'" style="width:100%;max-height:200px;object-fit:cover;border-radius:12px;margin-bottom:8px">':'')+
+        '<input type="file" id="gPhotoFile" accept="image/*" style="border:1px dashed var(--hair);padding:14px">'+
+      '</div>'+
+      '<label>Enlace de video (opcional — YouTube, TikTok o Instagram)</label><input id="gVid" value="'+esc(g.video||"")+'" placeholder="Ej. https://youtube.com/shorts/...">'+
+      '<p class="hint" style="margin-top:4px">Si pegas un enlace, la tarjeta mostrará un botón de play y abrirá tu video. Con YouTube la portada se genera sola; con TikTok o Instagram sube una foto de portada.</p>'+
+      '<label>Etiqueta (título corto)</label><input id="gTag" value="'+esc(g.tag||"")+'" placeholder="Ej. Demostración en vivo">'+
+      '<label>Descripción (para accesibilidad)</label><input id="gAlt" value="'+esc(g.alt||"")+'" placeholder="Ej. Tomás cocinando con una clienta">'+
+      '<div class="form-acts"><button class="btn btn-solid" id="gSaveBtn" onclick="saveGalPhoto('+idx+')">Guardar en la nube</button>'+
+      '<button class="btn btn-line" onclick="renderGallery()">Cancelar</button></div></div>';
+    const fileInput = $("gPhotoFile");
+    if(fileInput){
+      fileInput.addEventListener("change", function(){
+        const f=this.files[0]; if(!f) return; galPhotoTmp=f;
+        const fr=new FileReader(); fr.onload=()=>{
+          let prev=$("gPhotoPrev");
+          if(!prev){ prev=document.createElement("img"); prev.id="gPhotoPrev";
+            prev.style.cssText="width:100%;max-height:200px;object-fit:cover;border-radius:12px;margin-bottom:8px";
+            $("gPhotoBox").insertBefore(prev, fileInput); }
+          prev.src=fr.result;
+        }; fr.readAsDataURL(f);
+      });
+    }
+  }
+  window.newGalPhoto = function(){ galForm({}, true); };
+  window.editGalPhoto = function(i){ galForm(DATA.gallery[i], false); };
+
+  window.saveGalPhoto = async function(idx){
+    const tag = $("gTag").value.trim();
+    const vid = $("gVid").value.trim();
+    if(idx<0 && !(galPhotoTmp instanceof File) && !vid){ toast("Sube una foto o pega un enlace de video"); return; }
+    const btn=$("gSaveBtn"); if(btn){ btn.disabled=true; btn.textContent="Guardando…"; }
+    setCloud(true);
+    try{
+      let src = (idx<0) ? "" : (DATA.gallery[idx].src||"");
+      if(galPhotoTmp instanceof File){ src = await subirFoto(galPhotoTmp, "galeria"); }
+      const data = { src, tag, alt:$("gAlt").value.trim(), video: vid };
+      if(idx<0){
+        const full = { ...data, order:DATA.gallery.length, status:"published", visible:true };
+        const ref = await addDoc(collection(db,"gallery"), full);
+        DATA.gallery.push({_id:ref.id, ...full});
+      }else{
+        const g = DATA.gallery[idx];
+        await updateDoc(doc(db,"gallery",g._id), data);
+        Object.assign(DATA.gallery[idx], data);
+      }
+      toast("✓ Guardado en la nube"); renderGallery(); renderDash();
+    }catch(e){ console.error(e); toast("No se pudo guardar: "+(e.code||e.message||"")); if(btn){btn.disabled=false;btn.textContent="Guardar en la nube";} }
+    finally{ setCloud(false); }
+  };
+
+  window.delGalPhoto = function(i){
+    const g = DATA.gallery[i];
+    if(!confirm("¿Eliminar esta foto de la galería?")) return;
+    setCloud(true);
+    deleteDoc(doc(db,"gallery",g._id)).then(()=>{
+      DATA.gallery.splice(i,1); toast("Foto eliminada"); renderGallery(); renderDash();
+    }).catch(e=>{ console.error(e); toast("No se pudo eliminar"); }).finally(()=>setCloud(false));
+  };
+
+
+
+  const SOON_TIPOS = {
+    receta:   {label:"Nueva receta",     color:"#8A672B", bg:"#F5EEE0"},
+    novedad:  {label:"Novedad",          color:"#5A3F86", bg:"#EFE9F5"},
+    oferta:   {label:"Oferta especial",  color:"#9C3524", bg:"#FBEDE9"}
+  };
+  function tipoInfo(t){ return SOON_TIPOS[t] || SOON_TIPOS.receta; }
+
+  function renderSoon(){
+    let h = '<button class="btn btn-solid btn-block" onclick="newSoon()" style="margin-bottom:14px">＋ Agregar</button>';
+    h += '<p class="hint" style="margin-bottom:12px">Nuevas recetas, novedades y ofertas especiales que se muestran en tu sitio.</p>';
+    if(!DATA.soon.length) h += '<div class="empty-note">Nada por ahora. Agrega una novedad u oferta.</div>';
+    DATA.soon.forEach((s,i)=>{
+      const ti = tipoInfo(s.tipo);
+      h += '<div class="item">'+
+        '<div class="thumb">'+(s.img?('<img src="'+s.img+'" alt="" style="width:100%;height:100%;object-fit:cover">'):('<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B0A99E" stroke-width="1.6"><path d="m12 3-1.9 5.8L4 10.7l6.1 1.9L12 18.4l1.9-5.8 6.1-1.9-6.1-1.9z"/></svg>'))+'</div>'+
+        '<div class="ti"><b>'+esc(s.name)+'</b><span class="sub">'+
+        '<span class="st" style="background:'+ti.bg+';color:'+ti.color+'">'+ti.label+'</span>'+
+        (s.desc?'<span>'+esc(s.desc.slice(0,30))+(s.desc.length>30?'…':'')+'</span>':'')+'</span></div>'+
+        '<div class="acts"><button class="icon-btn" onclick="editSoon('+i+')" aria-label="Editar">✎</button>'+
+        '<button class="icon-btn" onclick="delSoon('+i+')" aria-label="Eliminar">🗑</button></div></div>';
+    });
+    $("p-proximamente").innerHTML = h;
+  }
+
+  let soonPhotoTmp = undefined; // undefined = sin cambio, "" = quitar, "data:..." o url = nueva
+
+  function soonForm(s, isNew){
+    const idx = isNew ? -1 : DATA.soon.indexOf(s);
+    soonPhotoTmp = undefined;
+    const tipo = s.tipo || "receta";
+    const opts = Object.keys(SOON_TIPOS).map(k=>'<option value="'+k+'"'+(tipo===k?' selected':'')+'>'+SOON_TIPOS[k].label+'</option>').join("");
+    const fotoActual = s.img || "";
+    $("p-proximamente").innerHTML = '<div class="card-form">'+
+      '<h2 style="font-size:19px;margin-bottom:16px">'+(isNew?"Agregar":"Editar")+'</h2>'+
+      '<label>Tipo</label><select id="sTipo">'+opts+'</select>'+
+      '<label>Título</label><input id="sName" value="'+esc(s.name||"")+'" placeholder="Ej. 20% en juego de ollas">'+
+      '<label>Descripción (opcional)</label><textarea id="sDesc" style="min-height:70px" placeholder="Detalles de la oferta o novedad">'+esc(s.desc||"")+'</textarea>'+
+      '<label>Foto (opcional)</label>'+
+      '<div id="sPhotoBox">'+
+        (fotoActual?'<img id="sPhotoPrev" src="'+fotoActual+'" style="width:100%;max-height:180px;object-fit:cover;border-radius:12px;margin-bottom:8px">':'')+
+        '<input type="file" id="sPhotoFile" accept="image/*" style="border:1px dashed var(--hair);padding:14px">'+
+        (fotoActual?'<button class="btn btn-line" style="margin-top:8px" onclick="quitarFotoSoon()">Quitar foto</button>':'')+
+      '</div>'+
+      '<div class="form-acts"><button class="btn btn-solid" id="sSaveBtn" onclick="saveSoon('+idx+')">Guardar en la nube</button>'+
+      '<button class="btn btn-line" onclick="renderSoon()">Cancelar</button></div></div>';
+    const fileInput = $("sPhotoFile");
+    if(fileInput){
+      fileInput.addEventListener("change", function(){
+        const f = this.files[0]; if(!f) return;
+        soonPhotoTmp = f; // guardamos el archivo para subir al guardar
+        const fr = new FileReader(); fr.onload=()=>{
+          let prev = $("sPhotoPrev");
+          if(!prev){ prev=document.createElement("img"); prev.id="sPhotoPrev";
+            prev.style.cssText="width:100%;max-height:180px;object-fit:cover;border-radius:12px;margin-bottom:8px";
+            $("sPhotoBox").insertBefore(prev, fileInput); }
+          prev.src = fr.result;
+        }; fr.readAsDataURL(f);
+      });
+    }
+  }
+  window.quitarFotoSoon = function(){ soonPhotoTmp=""; const p=$("sPhotoPrev"); if(p) p.remove(); toast("La foto se quitará al guardar"); };
+  window.newSoon = function(){ soonForm({}, true); };
+  window.editSoon = function(i){ soonForm(DATA.soon[i], false); };
+
+  window.saveSoon = async function(idx){
+    const name = $("sName").value.trim();
+    if(!name){ toast("Falta el título"); return; }
+    const btn = $("sSaveBtn"); if(btn){ btn.disabled=true; btn.textContent="Guardando…"; }
+    const base = { name, tipo:$("sTipo").value, desc:$("sDesc").value.trim() };
+    setCloud(true);
+    try{
+      // manejar foto
+      let imgVal = (idx<0) ? "" : (DATA.soon[idx].img || "");
+      if(soonPhotoTmp instanceof File){
+        imgVal = await subirFoto(soonPhotoTmp, "proximamente");
+      }else if(soonPhotoTmp===""){
+        imgVal = "";
+      }
+      base.img = imgVal;
+      if(idx<0){
+        const full = { ...base, order:DATA.soon.length };
+        const ref = await addDoc(collection(db,"upcoming"), full);
+        DATA.soon.push({_id:ref.id, ...full});
+      }else{
+        const s = DATA.soon[idx];
+        await updateDoc(doc(db,"upcoming",s._id), base);
+        Object.assign(DATA.soon[idx], base);
+      }
+      toast("✓ Guardado en la nube"); renderSoon(); renderDash();
+    }catch(e){ console.error(e); toast("No se pudo guardar: "+(e.code||e.message||"")); if(btn){btn.disabled=false;btn.textContent="Guardar en la nube";} }
+    finally{ setCloud(false); }
+  };
+
+  window.delSoon = function(i){
+    const s = DATA.soon[i];
+    if(!confirm('¿Eliminar "'+s.name+'"?')) return;
+    setCloud(true);
+    deleteDoc(doc(db,"upcoming",s._id)).then(()=>{
+      DATA.soon.splice(i,1); toast("Eliminado"); renderSoon(); renderDash();
+    }).catch(e=>{ console.error(e); toast("No se pudo eliminar"); }).finally(()=>setCloud(false));
+  };
+
+  function renderTexts(){
+    const t = DATA.texts||{};
+    $("p-textos").innerHTML = '<div class="card-form">'+
+      '<h2 style="font-size:17px;margin-bottom:4px">Textos de tu sitio</h2>'+
+      '<label>Subtítulo del inicio</label><textarea id="tHero" style="min-height:70px">'+esc(t.heroSub||"")+'</textarea>'+
+      '<label>Título de "Sobre mí"</label><input id="tAboutH" value="'+esc(t.aboutH||"")+'">'+
+      '<label>Lema</label><input id="tMotto" value="'+esc(t.motto||"")+'">'+
+      '<label>Texto de "Sobre mí"</label><textarea id="tAboutB" style="min-height:100px">'+esc(t.aboutB||"")+'</textarea>'+
+      '<div class="form-acts"><button class="btn btn-solid" onclick="saveTexts()">Guardar en la nube</button></div></div>';
+  }
+
+  window.saveTexts = async function(){
+    const upd = {
+      "texts.heroSub":$("tHero").value.trim(),
+      "texts.aboutH":$("tAboutH").value.trim(),
+      "texts.motto":$("tMotto").value.trim(),
+      "texts.aboutB":$("tAboutB").value.trim()
+    };
+    setCloud(true);
+    try{
+      await updateDoc(doc(db,"settings","public"), upd);
+      DATA.texts.heroSub=$("tHero").value.trim(); DATA.texts.aboutH=$("tAboutH").value.trim();
+      DATA.texts.motto=$("tMotto").value.trim(); DATA.texts.aboutB=$("tAboutB").value.trim();
+      toast("✓ Textos guardados en la nube");
+    }catch(e){ console.error(e); toast("No se pudo guardar"); }
+    finally{ setCloud(false); }
+  };
+
+  // ---------- Tabs ----------
+  window.goTab = function(name){
+    document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on", t.dataset.tab===name));
+    document.querySelectorAll(".panel").forEach(p=>p.classList.remove("on"));
+    const panel = $("p-"+name);
+    if(panel) panel.classList.add("on");
+    window.scrollTo({top:0,behavior:"smooth"});
+  };
+  $("tabs").addEventListener("click",(e)=>{
+    const b=e.target.closest(".tab"); if(!b) return;
+    window.goTab(b.dataset.tab);
+  });
+</script>
+</body>
+</html>
