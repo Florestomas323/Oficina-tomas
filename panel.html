@@ -111,6 +111,24 @@
   .maint-card{margin-top:18px;padding:16px;border:1px dashed var(--line,#d8d2c4);border-radius:14px;background:#faf8f3}
   .maint-t{font-weight:700;font-size:14px;margin-bottom:4px}
   .maint-p{font-size:13px;color:#6b6459;line-height:1.5;margin-bottom:12px}
+
+  /* ---------- Analítica ---------- */
+  .ana-filter{display:flex;gap:8px;margin:16px 0 18px}
+  .ana-chip{flex:1;padding:9px 0;border:1px solid var(--line,#d8d2c4);background:#fff;border-radius:10px;font-size:13px;font-weight:600;color:#6b6459;cursor:pointer}
+  .ana-chip.on{background:#111;color:#fff;border-color:#111}
+  .ana-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px}
+  .ana-card{background:var(--card,#fff);border:1px solid var(--hairline,#eee);border-radius:14px;padding:16px 8px;text-align:center}
+  .ana-card .ana-n{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:26px;letter-spacing:-.02em;color:#111}
+  .ana-card .ana-l{font-size:11.5px;color:#6b6459;margin-top:2px}
+  .ana-h{font-size:14px;font-weight:700;margin:24px 0 12px}
+  .ana-bar{margin-bottom:12px}
+  .ana-bar-top{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:5px}
+  .ana-bar-top b{font-weight:700}
+  .ana-track{height:9px;background:#efeae0;border-radius:6px;overflow:hidden}
+  .ana-fill{height:100%;background:linear-gradient(90deg,#B8860B,#8A672B);border-radius:6px;transition:width .4s ease}
+  .ana-ref{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--hairline,#eee);font-size:14px}
+  .ana-ref b{font-weight:700}
+  .stat-wide{grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between;text-align:left}
 </style>
 </head>
 <body>
@@ -151,6 +169,7 @@
     <button class="tab" data-tab="galeria" type="button">Galería</button>
     <button class="tab" data-tab="proximamente" type="button">Próximamente</button>
     <button class="tab" data-tab="textos" type="button">Textos</button>
+      <button class="tab" data-tab="analitica" type="button">Analítica</button>
   </nav>
   <main class="wrap">
     <div class="panel on" id="p-inicio"></div>
@@ -159,6 +178,7 @@
     <div class="panel" id="p-galeria"></div>
     <div class="panel" id="p-proximamente"></div>
     <div class="panel" id="p-textos"></div>
+    <div class="panel" id="p-analitica"></div>
   </main>
 </div>
 
@@ -383,6 +403,7 @@
         '<button class="stat-card" type="button" onclick="goTab(\'opiniones\')"><div class="sn">'+DATA.reviews.length+'</div><div class="sl">Opiniones</div><span class="go">Ver opiniones ›</span></button>'+
         '<button class="stat-card" type="button" onclick="goTab(\'galeria\')"><div class="sn">'+DATA.gallery.length+'</div><div class="sl">Fotos en galería</div><span class="go">Ver galería ›</span></button>'+
         '<button class="stat-card" type="button" onclick="goTab(\'proximamente\')"><div class="sn">'+DATA.soon.length+'</div><div class="sl">Próximamente</div><span class="go">Ver próximamente ›</span></button>'+
+        '<button class="stat-card stat-wide" type="button" onclick="goTab(\'analitica\')"><div class="sl">📊 Ver analítica de visitas y clics</div><span class="go">Abrir ›</span></button>'+
       '</div>'+
       '<div class="maint-card"><div class="maint-t">Mantenimiento</div><p class="maint-p">Si ves fotos, opiniones o próximos repetidos, toca aquí para quitar las copias. Deja una de cada una; tus originales no se tocan.</p><button class="btn btn-line btn-block" type="button" onclick="cleanDuplicates()">\uD83E\uDDF9 Limpiar duplicados</button></div>'+
       '';
@@ -885,12 +906,91 @@
     finally{ setCloud(false); }
   };
 
+  // ---------- Analítica ----------
+  var ANALYTICS = null, anaRange = 7;
+  function anaEsc(s){ return String(s||'').replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  async function loadAnalytics(force){
+    if(ANALYTICS && !force) return ANALYTICS;
+    const snap = await getDocs(collection(db, "analytics_clicks"));
+    ANALYTICS = snap.docs.map(function(d){
+      const x = d.data() || {};
+      let t = 0;
+      if(x.createdAt && typeof x.createdAt.toMillis === "function") t = x.createdAt.toMillis();
+      else if(x.createdAt && x.createdAt.seconds) t = x.createdAt.seconds * 1000;
+      return { label: x.label || "?", ref: x.referrer || "", t: t };
+    });
+    return ANALYTICS;
+  }
+
+  window.setAnaRange = function(d){ anaRange = d; renderAnalytics(); };
+  window.reloadAnalytics = async function(){ try{ await loadAnalytics(true); }catch(e){} renderAnalytics(); };
+
+  async function renderAnalytics(){
+    const cont = $("p-analitica");
+    if(!ANALYTICS) cont.innerHTML = '<div class="empty-note">Cargando analítica…</div>';
+    let data;
+    try { data = await loadAnalytics(); }
+    catch(e){ cont.innerHTML = '<div class="empty-note">No se pudo cargar la analítica. Revisa tu conexión e inténtalo otra vez.</div>'; return; }
+
+    const now = Date.now();
+    const cut = anaRange > 0 ? now - anaRange*86400000 : 0;
+    const rows = data.filter(function(r){ return anaRange===0 ? true : (r.t>0 && r.t>=cut); });
+
+    const visitas = rows.filter(function(r){ return r.label==="Visita"; }).length;
+    const clickRows = rows.filter(function(r){ return r.label!=="Visita"; });
+    const totalClics = clickRows.length;
+    const byLabel = {};
+    clickRows.forEach(function(r){ byLabel[r.label] = (byLabel[r.label]||0)+1; });
+    const labels = Object.keys(byLabel).sort(function(a,b){ return byLabel[b]-byLabel[a]; });
+    const maxV = Math.max(1, ...labels.map(function(l){ return byLabel[l]; }));
+    const conv = visitas>0 ? Math.round(totalClics/visitas*100) : 0;
+
+    const byRef = {};
+    rows.filter(function(r){ return r.label==="Visita"; }).forEach(function(r){
+      let dom = "Directo";
+      if(r.ref){ try{ dom = new URL(r.ref).hostname.replace(/^www\./,''); }catch(e){ dom = r.ref.slice(0,30); } }
+      byRef[dom] = (byRef[dom]||0)+1;
+    });
+    const refs = Object.keys(byRef).sort(function(a,b){ return byRef[b]-byRef[a]; }).slice(0,6);
+
+    let html = '<div class="dash-hi"><h2>Analítica</h2><p>Qué hacen tus visitantes en tu sitio. Se actualiza solo cuando entran y tocan botones.</p></div>';
+    html += '<div class="ana-filter">' +
+      [[7,'7 días'],[30,'30 días'],[0,'Todo']].map(function(o){
+        return '<button class="ana-chip'+(anaRange===o[0]?' on':'')+'" type="button" onclick="setAnaRange('+o[0]+')">'+o[1]+'</button>';
+      }).join('') + '</div>';
+
+    html += '<div class="ana-cards">' +
+      '<div class="ana-card"><div class="ana-n">'+visitas+'</div><div class="ana-l">Visitas</div></div>' +
+      '<div class="ana-card"><div class="ana-n">'+totalClics+'</div><div class="ana-l">Clics totales</div></div>' +
+      '<div class="ana-card"><div class="ana-n">'+conv+'%</div><div class="ana-l">Interacción</div></div>' +
+      '</div>';
+
+    html += '<h3 class="ana-h">Clics por botón</h3>';
+    if(!labels.length){ html += '<div class="empty-note">Aún no hay clics en este periodo.</div>'; }
+    else { labels.forEach(function(l){
+      const v = byLabel[l]; const pct = Math.round(v/maxV*100);
+      html += '<div class="ana-bar"><div class="ana-bar-top"><span>'+anaEsc(l)+'</span><b>'+v+'</b></div>'+
+              '<div class="ana-track"><div class="ana-fill" style="width:'+pct+'%"></div></div></div>';
+    }); }
+
+    html += '<h3 class="ana-h">De dónde llegan</h3>';
+    if(!refs.length){ html += '<div class="empty-note">Sin datos de origen todavía.</div>'; }
+    else { refs.forEach(function(r){
+      html += '<div class="ana-ref"><span>'+anaEsc(r)+'</span><b>'+byRef[r]+'</b></div>';
+    }); }
+
+    html += '<button class="btn btn-line btn-block" type="button" onclick="reloadAnalytics()" style="margin-top:18px">↻ Actualizar datos</button>';
+    cont.innerHTML = html;
+  }
+
   // ---------- Tabs ----------
   window.goTab = function(name){
     document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on", t.dataset.tab===name));
     document.querySelectorAll(".panel").forEach(p=>p.classList.remove("on"));
     const panel = $("p-"+name);
     if(panel) panel.classList.add("on");
+    if(name==="analitica") renderAnalytics();
     window.scrollTo({top:0,behavior:"smooth"});
   };
   $("tabs").addEventListener("click",(e)=>{

@@ -643,53 +643,53 @@
 <script defer src="/_vercel/insights/script.js"></script>
 <script>
 (function(){
-  // Tracking de clics: guarda en localStorage (para debug) + intenta enviar a Firestore
-  var clickLog = [];
-  try { clickLog = JSON.parse(localStorage.getItem('_clicks') || '[]'); } catch(e) {}
-  
-  function logClick(label, action) {
-    if(!label || !action) return;
-    var now = new Date();
-    var entry = {
-      label: label,
-      action: action,
-      time: now.toISOString(),
-      timestamp: now.getTime(),
-      userAgent: navigator.userAgent.slice(0,100),
-      referrer: document.referrer.slice(0,100)
-    };
-    clickLog.push(entry);
-    if(clickLog.length > 500) clickLog.shift();
-    try { localStorage.setItem('_clicks', JSON.stringify(clickLog)); } catch(e) {}
-    
-    // Intentar enviar a Firestore (si está conectado)
-    if(window.__addDoc && window.__collection && window.__db && window.__serverTimestamp) {
+  // Analítica: cuenta visitas y clics. Guarda en localStorage y en Firestore (nube).
+  var log = [];
+  try { log = JSON.parse(localStorage.getItem('_clicks') || '[]'); } catch(e) {}
+  var queue = [];
+
+  function flush(){
+    if(!(window.__addDoc && window.__collection && window.__db && window.__serverTimestamp)) return;
+    while(queue.length){
+      var e = queue.shift();
       try {
         window.__addDoc(window.__collection(window.__db, 'analytics_clicks'), {
-          label: label,
-          action: action,
+          label: e.label, action: e.action,
           createdAt: window.__serverTimestamp(),
-          userAgent: entry.userAgent,
-          referrer: entry.referrer
-        }).catch(()=>{}); // silencioso si falla
-      } catch(e) {}
+          userAgent: e.userAgent, referrer: e.referrer
+        }).catch(function(){});
+      } catch(_){}
     }
   }
-  
-  window.logClick = logClick;
-  
-  // Event listener global para capturar clics
-  document.addEventListener('click', function(e) {
-    var target = e.target.closest('[data-cal], [data-share], a[href*="wa.me"], a[href*="instagram"], a[href*="tiktok"], .share-btn, [onclick*="openReview"]');
-    if(!target) return;
-    
-    if(target.closest('[data-cal]')) logClick('Agendar', 'click');
-    else if(target.closest('[data-share]')) logClick('Compartir', 'click');
-    else if(target.closest('a[href*="wa.me"]')) logClick('WhatsApp', 'click');
-    else if(target.closest('a[href*="instagram"]')) logClick('Instagram', 'click');
-    else if(target.closest('a[href*="tiktok"]')) logClick('TikTok', 'click');
-    else if(target.closest('.share-btn')) logClick('Comparte oficina', 'click');
-    else if(target.closest('[onclick*="openReview"]')) logClick('Deja reseña', 'click');
+
+  function track(label, action){
+    if(!label) return;
+    var now = new Date();
+    var entry = { label:label, action:action||'', time:now.toISOString(), timestamp:now.getTime(),
+      userAgent:navigator.userAgent.slice(0,100), referrer:document.referrer.slice(0,100) };
+    log.push(entry); if(log.length>500) log.shift();
+    try { localStorage.setItem('_clicks', JSON.stringify(log)); } catch(e) {}
+    queue.push(entry); flush();
+  }
+  window.logClick = track;
+
+  // Reintentar el envío a la nube hasta que Firebase cargue (los primeros eventos esperan en cola)
+  var iv = setInterval(function(){ if(window.__addDoc){ flush(); clearInterval(iv); } }, 300);
+  setTimeout(function(){ clearInterval(iv); }, 15000);
+
+  // Registrar la VISITA (una por carga de página)
+  track('Visita', 'view');
+
+  // Registrar CLICS en los botones principales
+  document.addEventListener('click', function(e){
+    var t = e.target.closest('[data-cal], [data-share], a[href*="wa.me"], a[href*="instagram"], a[href*="tiktok"], [onclick*="openReview"]');
+    if(!t) return;
+    if(t.closest('[data-share]')) track('Comparte oficina','click');
+    else if(t.closest('[data-cal]')) track('Agendar','click');
+    else if(t.closest('a[href*="wa.me"]')) track('WhatsApp','click');
+    else if(t.closest('a[href*="instagram"]')) track('Instagram','click');
+    else if(t.closest('a[href*="tiktok"]')) track('TikTok','click');
+    else if(t.closest('[onclick*="openReview"]')) track('Deja reseña','click');
   }, true);
 })();
 </script>
