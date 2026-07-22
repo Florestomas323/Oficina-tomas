@@ -1070,6 +1070,7 @@ function renderRecipe(r){
   });
 
   $('#shareNative').addEventListener('click', function(){
+    if(window.trackEvent) window.trackEvent('Receta compartida');
     if(navigator.share){
       navigator.share({ title:r.name, text:'Mira esta receta de ' + r.name + ' 😋', url:pageUrl }).catch(function(){});
     } else {
@@ -1077,9 +1078,9 @@ function renderRecipe(r){
     }
   });
 
-  $('#copyLink').addEventListener('click', function(){ copyText(pageUrl); });
+  $('#copyLink').addEventListener('click', function(){ if(window.trackEvent) window.trackEvent('Receta: copia enlace'); copyText(pageUrl); });
 
-  $('#printBtn').addEventListener('click', function(){ window.print(); });
+  $('#printBtn').addEventListener('click', function(){ if(window.trackEvent) window.trackEvent('Receta: guarda PDF'); window.print(); });
 
   var gotos = document.querySelectorAll('[data-goto]');
   for(var i=0;i<gotos.length;i++){
@@ -1108,11 +1109,13 @@ function route(){
   var m = location.hash.match(/^#\/receta\/(.+)$/);
   var r = m && RECIPES.filter(function(x){ return x.id === m[1]; })[0];
   if(r){
+    if(window.trackEvent) window.trackEvent('Receta abierta: ' + r.name);
     renderRecipe(r);
     $('#view-grid').classList.remove('active');
     $('#view-recipe').classList.add('active');
     $('#waLabel').textContent = 'Pregúntame cómo preparar esta receta';
     $('#waBtn').href = wa('Hola Tomás 👋 ¿Me ayudas con la receta "' + r.name + '"?');
+    $('#waBtn').setAttribute('data-tr','WhatsApp desde receta');
     document.title = r.name + ' — Recetas · Tomás Flores';
   } else {
     $('#view-recipe').classList.remove('active');
@@ -1228,6 +1231,81 @@ try{
     window.route();
   }
 }catch(e){ /* sin conexión o sin datos: se muestra el contenido integrado */ }
+</script>
+<script>
+(function(){
+  var VKEY='_vid', SKEY='_sid';
+  function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,9); }
+  var vid='', sid='';
+  try{
+    vid = localStorage.getItem(VKEY)||''; if(!vid){ vid=uid(); localStorage.setItem(VKEY,vid); }
+    sid = sessionStorage.getItem(SKEY)||''; if(!sid){ sid=uid(); sessionStorage.setItem(SKEY,sid); }
+  }catch(e){ vid=vid||uid(); sid=sid||uid(); }
+
+  function fuente(){
+    var p=new URLSearchParams(location.search), u=(p.get('utm_source')||'').toLowerCase();
+    if(u){
+      if(u.indexOf('qr')>=0) return 'QR';
+      if(u.indexOf('insta')>=0||u==='ig') return 'Instagram';
+      if(u.indexOf('tiktok')>=0) return 'TikTok';
+      if(u.indexOf('whats')>=0||u==='wa') return 'WhatsApp';
+      return u.charAt(0).toUpperCase()+u.slice(1);
+    }
+    var r=(document.referrer||'').toLowerCase();
+    if(!r) return 'Directo';
+    if(r.indexOf('instagram')>=0) return 'Instagram';
+    if(r.indexOf('tiktok')>=0) return 'TikTok';
+    if(r.indexOf('whatsapp')>=0||r.indexOf('wa.me')>=0) return 'WhatsApp';
+    if(r.indexOf('google')>=0) return 'Google';
+    if(r.indexOf('tomasflores.com')>=0||r.indexOf('oficina-tomas')>=0) return 'Interno';
+    try{ return new URL(document.referrer).hostname.replace(/^www\./,''); }catch(_){ return 'Otro'; }
+  }
+  function device(){
+    var u=navigator.userAgent;
+    if(/iPad/i.test(u)) return 'iPad';
+    if(/iPhone|iPod/i.test(u)) return 'iPhone';
+    if(/Android/i.test(u)) return /Mobile/i.test(u)?'Android':'Tablet Android';
+    return 'Computadora';
+  }
+  var SRC=fuente(), DEV=device(), Q=[], DB=null, ADD=null, COL=null, TS=null;
+
+  (async function(){
+    try{
+      var CFG={apiKey:"AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",authDomain:"oficina-digital-tomas.firebaseapp.com",projectId:"oficina-digital-tomas",storageBucket:"oficina-digital-tomas.firebasestorage.app",messagingSenderId:"898342341243",appId:"1:898342341243:web:7ee15b8b3533f3889570de"};
+      var a = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+      var f = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+      var app = (a.getApps && a.getApps().length) ? a.getApps()[0] : a.initializeApp(CFG);
+      DB = f.getFirestore(app); ADD = f.addDoc; COL = f.collection; TS = f.serverTimestamp;
+      flush();
+    }catch(e){}
+  })();
+
+  function flush(){
+    if(!(DB&&ADD&&COL&&TS)) return;
+    while(Q.length){
+      var ev=Q.shift();
+      try{ ADD(COL(DB,'analytics_clicks'), {
+        label:ev.label, action:'click', createdAt:TS(),
+        vid:ev.vid, sid:ev.sid, src:ev.src, dev:ev.dev, page:ev.page, referrer:ev.referrer
+      }).catch(function(){}); }catch(_){}
+    }
+  }
+  function track(label){
+    if(!label) return;
+    label = String(label).slice(0,90);
+    Q.push({ label:label, vid:vid, sid:sid, src:SRC, dev:DEV, page:'recetas',
+      referrer:(document.referrer||'').slice(0,100) });
+    flush();
+  }
+  window.trackEvent = track;
+  track('Visita');
+})();
+</script>
+<script>
+document.addEventListener('click', function(e){
+  var b = e.target.closest('#waBtn, a[href*="wa.me"]');
+  if(b && window.trackEvent) window.trackEvent(b.getAttribute('data-tr') || 'WhatsApp');
+}, true);
 </script>
 </body>
 </html>

@@ -704,53 +704,99 @@
 <script defer src="/_vercel/insights/script.js"></script>
 <script>
 (function(){
-  // Analítica: cuenta visitas y clics. Guarda en localStorage y en Firestore (nube).
-  var log = [];
-  try { log = JSON.parse(localStorage.getItem('_clicks') || '[]'); } catch(e) {}
-  var queue = [];
+  // ===== Analítica: visitantes únicos, eventos y origen =====
+  var VKEY='_vid', SKEY='_sid';
+  function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,9); }
+  var vid='', sid='';
+  try{
+    vid = localStorage.getItem(VKEY) || ''; if(!vid){ vid = uid(); localStorage.setItem(VKEY, vid); }
+    sid = sessionStorage.getItem(SKEY) || ''; if(!sid){ sid = uid(); sessionStorage.setItem(SKEY, sid); }
+  }catch(err){ vid = vid || uid(); sid = sid || uid(); }
 
+  // Origen de la visita
+  function fuente(){
+    var p = new URLSearchParams(location.search);
+    var u = (p.get('utm_source')||'').toLowerCase();
+    if(u){
+      if(u.indexOf('qr')>=0) return 'QR';
+      if(u.indexOf('insta')>=0||u==='ig') return 'Instagram';
+      if(u.indexOf('tiktok')>=0) return 'TikTok';
+      if(u.indexOf('whats')>=0||u==='wa') return 'WhatsApp';
+      if(u.indexOf('face')>=0||u==='fb') return 'Facebook';
+      return u.charAt(0).toUpperCase()+u.slice(1);
+    }
+    if(p.get('ref')) return 'Referido';
+    var r = (document.referrer||'').toLowerCase();
+    if(!r) return 'Directo';
+    if(r.indexOf('instagram')>=0) return 'Instagram';
+    if(r.indexOf('tiktok')>=0) return 'TikTok';
+    if(r.indexOf('whatsapp')>=0||r.indexOf('wa.me')>=0) return 'WhatsApp';
+    if(r.indexOf('facebook')>=0||r.indexOf('fb.')>=0) return 'Facebook';
+    if(r.indexOf('google')>=0) return 'Google';
+    if(r.indexOf('tomasflores.com')>=0||r.indexOf('oficina-tomas')>=0) return 'Interno';
+    try{ return new URL(document.referrer).hostname.replace(/^www\./,''); }catch(_){ return 'Otro'; }
+  }
+  // Dispositivo
+  function device(){
+    var u = navigator.userAgent;
+    if(/iPad/i.test(u)) return 'iPad';
+    if(/iPhone|iPod/i.test(u)) return 'iPhone';
+    if(/Android/i.test(u)) return /Mobile/i.test(u) ? 'Android' : 'Tablet Android';
+    return 'Computadora';
+  }
+  var SRC = fuente(), DEV = device();
+
+  var log=[]; try{ log = JSON.parse(localStorage.getItem('_clicks')||'[]'); }catch(err){}
+  var queue=[];
   function flush(){
     if(!(window.__addDoc && window.__collection && window.__db && window.__serverTimestamp)) return;
     while(queue.length){
-      var e = queue.shift();
-      try {
-        window.__addDoc(window.__collection(window.__db, 'analytics_clicks'), {
-          label: e.label, action: e.action,
-          createdAt: window.__serverTimestamp(),
-          userAgent: e.userAgent, referrer: e.referrer
+      var ev = queue.shift();
+      try{
+        window.__addDoc(window.__collection(window.__db,'analytics_clicks'), {
+          label: ev.label, action: ev.action, createdAt: window.__serverTimestamp(),
+          vid: ev.vid, sid: ev.sid, src: ev.src, dev: ev.dev,
+          page: ev.page, referrer: ev.referrer
         }).catch(function(){});
-      } catch(_){}
+      }catch(_){}
     }
   }
-
   function track(label, action){
     if(!label) return;
-    var now = new Date();
-    var entry = { label:label, action:action||'', time:now.toISOString(), timestamp:now.getTime(),
-      userAgent:navigator.userAgent.slice(0,100), referrer:document.referrer.slice(0,100) };
-    log.push(entry); if(log.length>500) log.shift();
-    try { localStorage.setItem('_clicks', JSON.stringify(log)); } catch(e) {}
-    queue.push(entry); flush();
+    label = String(label).slice(0,90);
+    var ev = { label:label, action:action||'click', vid:vid, sid:sid, src:SRC, dev:DEV,
+      page: location.pathname.replace(/^\//,'') || 'inicio',
+      referrer: (document.referrer||'').slice(0,100), timestamp: Date.now() };
+    log.push(ev); if(log.length>400) log.shift();
+    try{ localStorage.setItem('_clicks', JSON.stringify(log)); }catch(err){}
+    queue.push(ev); flush();
   }
   window.logClick = track;
+  window.trackEvent = track;
 
-  // Reintentar el envío a la nube hasta que Firebase cargue (los primeros eventos esperan en cola)
   var iv = setInterval(function(){ if(window.__addDoc){ flush(); clearInterval(iv); } }, 300);
   setTimeout(function(){ clearInterval(iv); }, 15000);
 
-  // Registrar la VISITA (una por carga de página)
-  track('Visita', 'view');
+  track('Visita','view');
 
-  // Registrar CLICS en los botones principales
   document.addEventListener('click', function(e){
-    var t = e.target.closest('[data-cal], [data-share], a[href*="wa.me"], a[href*="instagram"], a[href*="tiktok"], [onclick*="openReview"]');
+    var t = e.target.closest('[data-track], [data-cal], [data-share], a[href*="wa.me"], [onclick*="openReview"], a[href*="instagram"], a[href*="tiktok"], a[href*="recetas.html"], a[href^="receta-"]');
     if(!t) return;
-    if(t.closest('[data-share]')) track('Comparte oficina','click');
-    else if(t.closest('[data-cal]')) track('Agendar','click');
-    else if(t.closest('a[href*="wa.me"]')) track('WhatsApp','click');
-    else if(t.closest('a[href*="instagram"]')) track('Instagram','click');
-    else if(t.closest('a[href*="tiktok"]')) track('TikTok','click');
-    else if(t.closest('[onclick*="openReview"]')) track('Deja reseña','click');
+    var explicit = t.closest('[data-track]');
+    if(explicit){ track(explicit.getAttribute('data-track')); return; }
+    if(t.closest('[data-share]')) track('Comparte oficina');
+    else if(t.closest('[data-cal]')) track('Reservar: abre modal');
+    else if(t.closest('[onclick*="openReview"]')) track('Testimonio: abre formulario');
+    else if(t.closest('a[href*="wa.me"]')){
+      var href = (t.closest('a[href*="wa.me"]').getAttribute('href')||'').toLowerCase();
+      if(href.indexOf('servicio')>=0) track('Solicitar servicio');
+      else if(href.indexOf('ciudad')>=0) track('Consulta ciudad');
+      else track('WhatsApp');
+    }
+    else if(t.closest('a[href*="instagram"]')) track('Instagram');
+    else if(t.closest('a[href*="tiktok"]')) track('TikTok');
+    else if(t.closest('a[href^="receta-"]')) track('Receta abierta');
+    else if(t.closest('a[href*="recetas.html"]')) track('Ver recetas');
   }, true);
 })();
 </script>
@@ -1204,6 +1250,7 @@ document.querySelectorAll('[data-cal]').forEach(function(b){
 });
 var calGoBtn = document.getElementById('calGo');
 if(calGoBtn){ calGoBtn.addEventListener('click', function(){
+  if(window.trackEvent) window.trackEvent('Reserva: abre calendario');
   window.open(buildCalUrl(), '_blank', 'noopener');
   closeCal();
 }); }
@@ -1538,6 +1585,7 @@ try{
         pendiente: true,
         createdAt: serverTimestamp(), consent:true, consentText:"Autorizo que mi nombre y experiencia sean publicados en esta página. Entiendo que mi información de contacto no será mostrada.", consentAt: serverTimestamp()});
       try{ localStorage.setItem("revLast", String(Date.now())); }catch(e){}
+      if(window.trackEvent) window.trackEvent("Testimonio enviado");
       document.getElementById("revFormWrap").style.display = "none";
       document.getElementById("revThanks").style.display = "block";
     }catch(e){

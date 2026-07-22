@@ -129,6 +129,15 @@
   .ana-ref{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--hairline,#eee);font-size:14px}
   .ana-ref b{font-weight:700}
   .stat-wide{grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between;text-align:left}
+
+  .conv-box{background:var(--card,#fff);border:1px solid var(--hairline,#eee);border-radius:16px;padding:6px 16px;margin-top:10px}
+  .conv-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--hairline,#eee)}
+  .conv-row:last-child{border-bottom:0}
+  .conv-row b{font-family:'Inter Tight',sans-serif;font-size:24px;display:block;letter-spacing:-.02em}
+  .conv-row span{font-size:12.5px;color:#6b6459}
+  .conv-d{font-size:12.5px;color:#6b6459;text-align:right;max-width:48%;line-height:1.45}
+  .ana-ref i{font-style:normal;color:#8B857B;font-weight:500;font-size:12.5px}
+  .ana-tip{font-size:12.5px;color:#6b6459;line-height:1.55;background:#faf8f3;border:1px dashed #d8d2c4;border-radius:12px;padding:12px 14px;margin-top:20px}
 </style>
 </head>
 <body>
@@ -926,7 +935,8 @@
       let t = 0;
       if(x.createdAt && typeof x.createdAt.toMillis === "function") t = x.createdAt.toMillis();
       else if(x.createdAt && x.createdAt.seconds) t = x.createdAt.seconds * 1000;
-      return { label: x.label || "?", ref: x.referrer || "", t: t };
+      return { label:x.label||"?", vid:x.vid||"", sid:x.sid||"", src:x.src||"", dev:x.dev||"",
+               page:x.page||"", ref:x.referrer||"", t:t };
     });
     return ANALYTICS;
   }
@@ -934,60 +944,82 @@
   window.setAnaRange = function(d){ anaRange = d; renderAnalytics(); };
   window.reloadAnalytics = async function(){ try{ await loadAnalytics(true); }catch(e){} renderAnalytics(); };
 
+  // Un evento cuenta como CONTACTO si el visitante intentó comunicarse
+  const ES_CONTACTO = ["WhatsApp","Solicitar servicio","Consulta ciudad","WhatsApp desde receta"];
+  const ES_RESERVA  = ["Reserva: abre calendario"];
+
   async function renderAnalytics(){
     const cont = $("p-analitica");
     if(!ANALYTICS) cont.innerHTML = '<div class="empty-note">Cargando analítica…</div>';
     let data;
     try { data = await loadAnalytics(); }
-    catch(e){ cont.innerHTML = '<div class="empty-note">No se pudo cargar la analítica. Revisa tu conexión e inténtalo otra vez.</div>'; return; }
+    catch(e){ cont.innerHTML = '<div class="empty-note">No se pudo cargar la analítica. Revisa tu conexión.</div>'; return; }
 
     const now = Date.now();
     const cut = anaRange > 0 ? now - anaRange*86400000 : 0;
     const rows = data.filter(function(r){ return anaRange===0 ? true : (r.t>0 && r.t>=cut); });
 
-    const visitas = rows.filter(function(r){ return r.label==="Visita"; }).length;
-    const clickRows = rows.filter(function(r){ return r.label!=="Visita"; });
-    const totalClics = clickRows.length;
-    const byLabel = {};
-    clickRows.forEach(function(r){ byLabel[r.label] = (byLabel[r.label]||0)+1; });
-    const labels = Object.keys(byLabel).sort(function(a,b){ return byLabel[b]-byLabel[a]; });
-    const maxV = Math.max(1, ...labels.map(function(l){ return byLabel[l]; }));
-    const conv = visitas>0 ? Math.round(totalClics/visitas*100) : 0;
+    // --- Visitas y visitantes únicos ---
+    const visitas = rows.filter(function(r){ return r.label==="Visita"; });
+    const unicos = new Set(visitas.map(function(r){ return r.vid; }).filter(Boolean)).size;
+    const totalVisitas = visitas.length;
 
-    const byRef = {};
-    rows.filter(function(r){ return r.label==="Visita"; }).forEach(function(r){
-      let dom = "Directo";
-      if(r.ref){ try{ dom = new URL(r.ref).hostname.replace(/^www\./,''); }catch(e){ dom = r.ref.slice(0,30); } }
-      byRef[dom] = (byRef[dom]||0)+1;
-    });
-    const refs = Object.keys(byRef).sort(function(a,b){ return byRef[b]-byRef[a]; }).slice(0,6);
+    // --- Conversión sobre visitantes únicos ---
+    const vidsContacto = new Set(rows.filter(function(r){ return ES_CONTACTO.indexOf(r.label)>=0; }).map(function(r){ return r.vid; }).filter(Boolean));
+    const vidsReserva  = new Set(rows.filter(function(r){ return ES_RESERVA.indexOf(r.label)>=0; }).map(function(r){ return r.vid; }).filter(Boolean));
+    const pctContacto = unicos>0 ? Math.round(vidsContacto.size/unicos*1000)/10 : 0;
+    const pctReserva  = unicos>0 ? Math.round(vidsReserva.size/unicos*1000)/10 : 0;
 
-    let html = '<div class="dash-hi"><h2>Analítica</h2><p>Qué hacen tus visitantes en tu sitio. Se actualiza solo cuando entran y tocan botones.</p></div>';
+    // --- Agrupaciones ---
+    function agrupar(lista, campo){
+      const o = {};
+      lista.forEach(function(r){ const k = r[campo] || "—"; o[k] = (o[k]||0)+1; });
+      return Object.keys(o).sort(function(a,b){ return o[b]-o[a]; }).map(function(k){ return [k,o[k]]; });
+    }
+    const eventos = rows.filter(function(r){ return r.label!=="Visita"; });
+    const porEvento = agrupar(eventos, "label");
+    const porFuente = agrupar(visitas, "src");
+    const porDisp   = agrupar(visitas, "dev");
+    const maxEv = Math.max(1, ...porEvento.map(function(x){ return x[1]; }));
+
+    function esc2(s){ return String(s||"").replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+    function lista(arr, total){
+      if(!arr.length) return '<div class="empty-note">Sin datos todavía.</div>';
+      return arr.map(function(x){
+        const pct = total>0 ? Math.round(x[1]/total*100) : 0;
+        return '<div class="ana-ref"><span>'+esc2(x[0])+'</span><b>'+x[1]+(total>0?' <i>('+pct+'%)</i>':'')+'</b></div>';
+      }).join("");
+    }
+
+    let html = '<div class="dash-hi"><h2>Analítica</h2><p>Qué hacen tus visitantes. Se actualiza solo.</p></div>';
     html += '<div class="ana-filter">' +
       [[7,'7 días'],[30,'30 días'],[0,'Todo']].map(function(o){
         return '<button class="ana-chip'+(anaRange===o[0]?' on':'')+'" type="button" onclick="setAnaRange('+o[0]+')">'+o[1]+'</button>';
       }).join('') + '</div>';
 
     html += '<div class="ana-cards">' +
-      '<div class="ana-card"><div class="ana-n">'+visitas+'</div><div class="ana-l">Visitas</div></div>' +
-      '<div class="ana-card"><div class="ana-n">'+totalClics+'</div><div class="ana-l">Clics totales</div></div>' +
-      '<div class="ana-card"><div class="ana-n">'+conv+'%</div><div class="ana-l">Interacción</div></div>' +
+      '<div class="ana-card"><div class="ana-n">'+unicos+'</div><div class="ana-l">Personas únicas</div></div>' +
+      '<div class="ana-card"><div class="ana-n">'+totalVisitas+'</div><div class="ana-l">Visitas totales</div></div>' +
+      '<div class="ana-card"><div class="ana-n">'+eventos.length+'</div><div class="ana-l">Acciones</div></div>' +
       '</div>';
 
-    html += '<h3 class="ana-h">Clics por botón</h3>';
-    if(!labels.length){ html += '<div class="empty-note">Aún no hay clics en este periodo.</div>'; }
-    else { labels.forEach(function(l){
-      const v = byLabel[l]; const pct = Math.round(v/maxV*100);
-      html += '<div class="ana-bar"><div class="ana-bar-top"><span>'+anaEsc(l)+'</span><b>'+v+'</b></div>'+
+    html += '<div class="conv-box">' +
+      '<div class="conv-row"><div><b>'+pctContacto+'%</b><span>Conversión a contacto</span></div><div class="conv-d">'+vidsContacto.size+' de '+unicos+' personas te escribieron</div></div>' +
+      '<div class="conv-row"><div><b>'+pctReserva+'%</b><span>Conversión a reserva</span></div><div class="conv-d">'+vidsReserva.size+' de '+unicos+' abrieron el calendario</div></div>' +
+      '</div>';
+
+    html += '<h3 class="ana-h">Qué hacen en tu sitio</h3>';
+    if(!porEvento.length) html += '<div class="empty-note">Aún no hay acciones en este periodo.</div>';
+    else porEvento.forEach(function(x){
+      const pct = Math.round(x[1]/maxEv*100);
+      html += '<div class="ana-bar"><div class="ana-bar-top"><span>'+esc2(x[0])+'</span><b>'+x[1]+'</b></div>'+
               '<div class="ana-track"><div class="ana-fill" style="width:'+pct+'%"></div></div></div>';
-    }); }
+    });
 
-    html += '<h3 class="ana-h">De dónde llegan</h3>';
-    if(!refs.length){ html += '<div class="empty-note">Sin datos de origen todavía.</div>'; }
-    else { refs.forEach(function(r){
-      html += '<div class="ana-ref"><span>'+anaEsc(r)+'</span><b>'+byRef[r]+'</b></div>';
-    }); }
+    html += '<h3 class="ana-h">De dónde llegan</h3>' + lista(porFuente, totalVisitas);
+    html += '<h3 class="ana-h">Con qué dispositivo</h3>' + lista(porDisp, totalVisitas);
 
+    html += '<p class="ana-tip">Para saber si tus QR funcionan, usa un enlace con etiqueta: <b>tomasflores.com/?utm_source=qr</b>. Lo mismo para Instagram (<b>?utm_source=instagram</b>) o TikTok (<b>?utm_source=tiktok</b>).</p>';
     html += '<button class="btn btn-line btn-block" type="button" onclick="reloadAnalytics()" style="margin-top:18px">↻ Actualizar datos</button>';
     cont.innerHTML = html;
   }
