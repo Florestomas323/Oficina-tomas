@@ -50,7 +50,12 @@
     {"@type":"Question","name":"¿Cómo agendo una demostración?","acceptedAnswer":{"@type":"Answer","text":"Puedes reservar directamente en mi calendario en línea eligiendo el día y la hora que te convenga, o escribirme por WhatsApp y la coordinamos juntos."}},
     {"@type":"Question","name":"¿Cuánto dura la demostración?","acceptedAnswer":{"@type":"Answer","text":"Entre una hora y hora y media, dependiendo del menú y de tus preguntas."}},
     {"@type":"Question","name":"¿Qué incluye la demostración?","acceptedAnswer":{"@type":"Answer","text":"Preparo un menú completo con los utensilios Royal Prestige para que pruebes la diferencia, y al final resuelvo todas tus preguntas."}},
-    {"@type":"Question","name":"¿Cómo solicito garantía o servicio?","acceptedAnswer":{"@type":"Answer","text":"Escríbeme por WhatsApp con una foto de tu equipo y te acompaño personalmente en todo el proceso de garantía o mantenimiento."}}
+    {"@type":"Question","name":"¿Cómo solicito garantía o servicio?","acceptedAnswer":{"@type":"Answer","text":"Escríbeme por WhatsApp con una foto de tu equipo y te acompaño personalmente en todo el proceso de garantía o mantenimiento."}},
+    {"@type":"Question","name":"¿Tengo que comprar algo?","acceptedAnswer":{"@type":"Answer","text":"No. La demostración es sin compromiso de compra. La decisión siempre es tuya."}},
+    {"@type":"Question","name":"¿Qué pasa si necesito cancelar?","acceptedAnswer":{"@type":"Answer","text":"Avísame por WhatsApp y reagendamos sin cargo ni complicación."}},
+    {"@type":"Question","name":"¿Puedo invitar familiares?","acceptedAnswer":{"@type":"Answer","text":"Sí, solo dime cuántos serán para preparar menú suficiente."}},
+    {"@type":"Question","name":"¿En qué ciudades haces demostraciones?","acceptedAnswer":{"@type":"Answer","text":"Dallas, Irving, Arlington, Grand Prairie, Farmers Branch, Addison, Plano, Fort Worth y otras ciudades del área DFW."}},
+    {"@type":"Question","name":"¿Ofrecen opciones de pago?","acceptedAnswer":{"@type":"Answer","text":"Sí, existen opciones de pago flexibles que se explican con detalle en la demostración."}}
   ]
 }
 </script>
@@ -671,6 +676,22 @@
   .rev-intro{max-width:56ch;margin-bottom:20px}
   .rev-intro p{color:var(--stone);font-size:15.5px;line-height:1.6}
   .rev-note{font-size:12.5px !important;color:#8B857B !important;margin-top:10px;padding-top:10px;border-top:1px solid var(--hairline)}
+
+  .rm-consent{display:flex;gap:10px;align-items:flex-start;margin:14px 0 0;cursor:pointer;font-size:13.5px;line-height:1.5;color:var(--ink)}
+  .rm-consent input{margin-top:3px;width:17px;height:17px;flex:0 0 17px;accent-color:var(--gold-text)}
+  .rm-legal{font-size:12px;color:#8B857B;line-height:1.5;margin-top:10px;padding-top:10px;border-top:1px solid var(--hairline)}
+  .foot-legal{display:block;font-size:11.5px;color:#8B857B;max-width:52ch;margin:10px auto 0;line-height:1.55}
+  .foot-link{display:inline-block;margin-top:10px;color:var(--gold-text);font-weight:600;text-decoration:none;font-size:12.5px;border-bottom:1px solid var(--gold)}
+  .how-list{list-style:none;max-width:560px}
+  .how-list li{display:flex;gap:16px;padding:15px 0;border-bottom:1px solid var(--hairline)}
+  .how-list li:last-child{border-bottom:0}
+  .how-n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;font-family:'Inter Tight',sans-serif}
+  .how-list b{font-size:15.5px;display:block;margin-bottom:2px}
+  .how-list p{font-size:14px;color:var(--stone);line-height:1.5}
+  .cities{margin-top:22px;font-size:14px;color:var(--stone);line-height:1.6;max-width:56ch;background:var(--card);border:1px solid var(--hairline);border-radius:14px;padding:14px 16px}
+  .cities b{color:var(--ink);font-weight:600}
+
+  .foot-sep{color:#C9C3B8;margin:0 6px;font-size:12.5px}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script>
@@ -808,6 +829,22 @@
 </section>
 
 <!-- =============== OPINIONES =============== -->
+<!-- =============== CÓMO FUNCIONA =============== -->
+<section class="block wrap" id="como-funciona">
+  <div class="block-head">
+    <span class="eyebrow rv">Así de fácil</span>
+    <h2 class="sec-h rv">Cómo funciona</h2>
+  </div>
+  <ol class="how-list rv">
+    <li><span class="how-n">1</span><div><b>Eliges una fecha</b><p>En el calendario, la que mejor te acomode.</p></div></li>
+    <li><span class="how-n">2</span><div><b>Confirmamos por WhatsApp</b><p>Te escribo personalmente para afinar dirección, personas y menú.</p></div></li>
+    <li><span class="how-n">3</span><div><b>Preparo el menú en tu hogar</b><p>Yo llevo todo lo necesario para cocinar.</p></div></li>
+    <li><span class="how-n">4</span><div><b>Conoces los productos y pruebas los resultados</b><p>Comes rico mientras ves cómo funcionan.</p></div></li>
+    <li><span class="how-n">5</span><div><b>Tú decides sin compromiso</b><p>Sin presión. Mi trabajo es servirte, no venderte.</p></div></li>
+  </ol>
+  <p class="cities rv">📍 Atiendo familias en <b>Dallas, Irving, Arlington, Grand Prairie, Farmers Branch, Addison, Plano, Fort Worth</b> y otras ciudades del área DFW.</p>
+</section>
+
 <section class="block wrap" id="opiniones">
   <div class="block-head">
     <span class="eyebrow rv">Mi compromiso no termina con la compra</span>
@@ -940,6 +977,26 @@
       <summary>¿Cómo solicito garantía o servicio?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
       <p class="faq-a">Escríbeme por WhatsApp con una foto de tu equipo y cuéntame qué pasa. Yo te acompaño personalmente en todo el proceso de garantía o mantenimiento — para eso estoy.</p>
     </details>
+      <details class="rv">
+        <summary>¿Tengo que comprar algo?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="faq-a">No. La demostración es una experiencia sin compromiso de compra. Mi trabajo es mostrarte cómo funcionan los productos y resolver tus dudas; la decisión siempre es tuya y la respeto.</p>
+      </details>
+      <details class="rv">
+        <summary>¿Qué pasa si necesito cancelar o cambiar la fecha?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="faq-a">No hay problema. Avísame por WhatsApp y reagendamos para el día que mejor te acomode, sin ningún cargo ni complicación.</p>
+      </details>
+      <details class="rv">
+        <summary>¿Puedo invitar familiares o amigos?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="faq-a">¡Claro que sí! Entre más personas disfruten la comida, mejor. Solo dime cuántos serán cuando confirmemos por WhatsApp, para preparar suficiente menú para todos.</p>
+      </details>
+      <details class="rv">
+        <summary>¿En qué ciudades haces demostraciones?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="faq-a">Atiendo familias en Dallas, Irving, Arlington, Grand Prairie, Farmers Branch, Addison, Plano, Fort Worth y otras ciudades del área DFW. Si estás cerca, escríbeme y lo confirmamos.</p>
+      </details>
+      <details class="rv">
+        <summary>¿Ofrecen opciones de pago?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="faq-a">Sí, existen opciones de pago flexibles para que equipar tu cocina sea accesible. En la demostración te explico las alternativas con calma y sin letras chiquitas, para que elijas la que mejor te convenga.</p>
+      </details>
   </div>
 </section>
 
@@ -978,8 +1035,9 @@
 </section>
 
 <footer>
-  <b>Tomas Flores</b> · Distribuidor autorizado Royal Prestige<br>
-  "Más que vender, sirvo."
+  <b>Tomas Flores</b> · "Más que vender, sirvo."<br>
+  <span class="foot-legal">Sitio personal de Tomas Flores, Distribuidor Autorizado Independiente de Royal Prestige®. Royal Prestige® y sus marcas pertenecen a sus respectivos propietarios.</span><br>
+  <a class="foot-link" href="privacidad.html">Política de privacidad</a> <span class="foot-sep">·</span> <a class="foot-link" href="terminos.html">Términos y aviso legal</a>
 </footer>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -1414,6 +1472,8 @@ try{
     if(!stars){ alert("Elige cuántas estrellas 🌟"); return; }
     if(!name){ alert("Escribe tu nombre"); return; }
     if(!text){ alert("Cuéntanos tu experiencia"); return; }
+    const consent = document.getElementById("rmConsent");
+    if(!consent || !consent.checked){ alert("Para publicar tu reseña necesitamos tu autorización. Marca la casilla, por favor."); return; }
     // ---- Protección anti-spam (silenciosa para bots, invisible para humanos) ----
     const hp = document.getElementById("rmWeb");
     const tooFast = Date.now() - openedAt < 4000;
@@ -1449,15 +1509,14 @@ try{
       const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
       const app = (getApps && getApps().length) ? getApps()[0] : initializeApp(CFG);
       const db = getFirestore(app);
-      await addDoc(collection(db,"testimonials"), {
+      await addDoc(collection(db, "testimonials"), {
         name, text, stars, ini, color,
         sub: "Cliente",
         status: "hidden",   // queda oculta hasta que Tomas la apruebe en el panel
         visible: false,
         order: 999,
         pendiente: true,
-        createdAt: serverTimestamp()
-      });
+        createdAt: serverTimestamp(), consent:true, consentText:"Autorizo que mi nombre y experiencia sean publicados en esta página. Entiendo que mi información de contacto no será mostrada.", consentAt: serverTimestamp()});
       try{ localStorage.setItem("revLast", String(Date.now())); }catch(e){}
       document.getElementById("revFormWrap").style.display = "none";
       document.getElementById("revThanks").style.display = "block";
@@ -1496,6 +1555,11 @@ try{
       <input id="rmName" type="text" placeholder="Ej. María G." autocomplete="name">
       <label for="rmText">Tu experiencia</label>
       <textarea id="rmText" placeholder="Cuéntanos cómo te fue con tu equipo o en la demostración…"></textarea>
+      <label class="rm-consent" for="rmConsent">
+        <input id="rmConsent" type="checkbox">
+        <span>Autorizo que mi nombre y experiencia sean publicados en esta página. Entiendo que mi información de contacto no será mostrada.</span>
+      </label>
+      <p class="rm-legal">Los testimonios son revisados antes de publicarse y pueden corregirse únicamente para mejorar ortografía y claridad, sin cambiar la experiencia del cliente.</p>
       <div class="rm-acts">
         <button type="button" class="btn btn-ghost" onclick="closeReview()">Cancelar</button>
         <button type="button" class="btn btn-solid" id="rmSend" onclick="sendReview()">Enviar reseña</button>
