@@ -477,6 +477,12 @@
   .back-home:active{background:#EFECE6;color:var(--ink)}
   @media(hover:hover){.back-home:hover{background:#F3F0EA;color:var(--ink)}}
   .back-home svg{pointer-events:none}
+
+  .seo-card{display:block;background:#fff;border:1px solid #E9E6E0;border-radius:18px;overflow:hidden;text-decoration:none;color:#111}
+  .seo-card img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
+  .seo-card h3{font-size:17px;padding:12px 14px 4px}
+  .seo-card p{font-size:13.5px;color:#66625B;padding:0 14px;line-height:1.45}
+  .seo-card span{display:block;font-size:12px;color:#8A672B;font-weight:600;padding:8px 14px 14px}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
@@ -518,7 +524,44 @@
   </nav>
 
   <main class="wrap">
-    <div class="grid" id="grid"></div>
+    <div class="grid" id="grid">
+    <a class="seo-card" href="receta-costillas-bbq.html">
+      <img src="foto-costillas-bbq.jpg" alt="Costillas BBQ en Olla de Presión" loading="lazy">
+      <h3>Costillas BBQ en Olla de Presión</h3>
+      <p>Costillas increíblemente suaves, jugosas y llenas de sabor gracias a la cocción a presión.</p>
+      <span>35 min &middot; Fácil &middot; Olla de Presión Royal Prestige</span>
+    </a>
+    <a class="seo-card" href="receta-tamales-caseros.html">
+      <img src="foto-tamales-caseros.jpg" alt="Tamales Caseros" loading="lazy">
+      <h3>Tamales Caseros</h3>
+      <p>Tamales tradicionales cocinados al vapor con una textura perfecta.</p>
+      <span>1 h 30 min &middot; Media &middot; Tamalera Royal Prestige</span>
+    </a>
+    <a class="seo-card" href="receta-pollo-romero.html">
+      <img src="foto-pollo-romero.jpg" alt="Pollo al Romero con Papas" loading="lazy">
+      <h3>Pollo al Romero con Papas</h3>
+      <p>Una comida completa, saludable y llena de sabor.</p>
+      <span>45 min &middot; Fácil &middot; Olla Royal Prestige</span>
+    </a>
+    <a class="seo-card" href="receta-ribeye-mantequilla.html">
+      <img src="foto-ribeye-mantequilla.jpg" alt="Ribeye Sellado con Mantequilla y Ajo" loading="lazy">
+      <h3>Ribeye Sellado con Mantequilla y Ajo</h3>
+      <p>Un ribeye perfectamente sellado con un exterior dorado y un interior jugoso.</p>
+      <span>12 min &middot; Fácil &middot; Sartén Royal Prestige</span>
+    </a>
+    <a class="seo-card" href="receta-pasta-alfredo.html">
+      <img src="foto-pasta-alfredo.jpg" alt="Pasta Alfredo con Pollo" loading="lazy">
+      <h3>Pasta Alfredo con Pollo</h3>
+      <p>Una receta cremosa ideal para compartir en familia.</p>
+      <span>25 min &middot; Fácil &middot; Olla Royal Prestige</span>
+    </a>
+    <a class="seo-card" href="receta-flan-casero.html">
+      <img src="foto-flan-casero.jpg" alt="Flan Casero" loading="lazy">
+      <h3>Flan Casero</h3>
+      <p>Un flan suave, cremoso y perfecto preparado a baño María.</p>
+      <span>50 min &middot; Media &middot; Olla Royal Prestige</span>
+    </a>
+  </div>
 
     <section class="mood rv" id="mood">
       <h2>¿Qué quieres cocinar hoy?</h2>
