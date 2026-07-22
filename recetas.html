@@ -1122,6 +1122,7 @@ function route(){
     $('#view-grid').classList.add('active');
     $('#waLabel').textContent = 'Pregúntame qué cocinar hoy';
     $('#waBtn').href = wa('Hola Tomás 👋 ¿Qué me recomiendas cocinar hoy con mi Royal Prestige?');
+    $('#waBtn').removeAttribute('data-tr');
     document.title = 'Recetas para Inspirarte — Tomás Flores · Royal Prestige';
   }
   window.scrollTo({top:0, behavior:'instant'});
