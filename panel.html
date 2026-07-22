@@ -408,7 +408,7 @@
         '<button class="stat-card" type="button" onclick="goTab(\'proximamente\')"><div class="sn">'+DATA.soon.length+'</div><div class="sl">Próximamente</div><span class="go">Ver próximamente ›</span></button>'+
         '<button class="stat-card stat-wide" type="button" onclick="goTab(\'analitica\')"><div class="sl">📊 Ver analítica de visitas y clics</div><span class="go">Abrir ›</span></button>'+
       '</div>'+
-      '<div class="maint-card"><div class="maint-t">Mantenimiento</div><p class="maint-p">Si ves fotos, opiniones o próximos repetidos, toca aquí para quitar las copias. Deja una de cada una; tus originales no se tocan.</p><button class="btn btn-line btn-block" type="button" onclick="cleanDuplicates()">\uD83E\uDDF9 Limpiar duplicados</button><button class="btn btn-line btn-block" type="button" onclick="downloadBackup()" style="margin-top:10px">\uD83D\uDCBE Descargar respaldo de todo</button></div>'+
+      '<div class="maint-card"><div class="maint-t">Mantenimiento</div><p class="maint-p">Si ves fotos, opiniones o próximos repetidos, toca aquí para quitar las copias. Deja una de cada una; tus originales no se tocan.</p><button class="btn btn-line btn-block" type="button" onclick="cleanDuplicates()">\uD83E\uDDF9 Limpiar duplicados</button><button class="btn btn-line btn-block" type="button" onclick="downloadBackup()" style="margin-top:10px">\uD83D\uDCBE Descargar respaldo de todo</button><button class="btn btn-line btn-block" type="button" onclick="downloadSitemap()" style="margin-top:10px">\uD83D\uDDFA Descargar sitemap actualizado</button></div>'+
       '';
   }
 
@@ -424,7 +424,7 @@
         '<div class="ti"><b>'+esc(r.name)+'</b><span class="sub">'+statusChip(r)+'<span>'+esc(r.time||"")+'</span></span></div>'+
         '<div class="acts"><button class="icon-btn" onclick="editRecipe('+i+')" aria-label="Editar">✎</button>'+
         '<button class="icon-btn" onclick="toggleRecipe('+i+')" aria-label="Ocultar o publicar">'+(r.status==="hidden"?"◯":"●")+'</button>'+
-        '<button class="icon-btn" onclick="delRecipe('+i+')" aria-label="Eliminar">🗑</button></div></div>';
+        '<button class="icon-btn" onclick="downloadRecipePage('+i+')" aria-label="Descargar página web" title="Descargar página web">⬇</button><button class="icon-btn" onclick="delRecipe('+i+')" aria-label="Eliminar">🗑</button></div></div>';
     });
     $("p-recetas").innerHTML = h;
   }
@@ -441,9 +441,12 @@
       '<div><label>Utensilio</label><input id="nUt" placeholder="Olla Royal Prestige"></div></div>'+
       '<label>Consejo del Chef</label><textarea id="nChef" style="min-height:60px"></textarea>'+
       '<label>Tip Royal Prestige</label><textarea id="nRoyal" style="min-height:60px"></textarea>'+
+      '<label>Foto (nombre de archivo o URL)</label><input id="nImg" placeholder="Ej. foto-sopa-tortilla.jpg">'+
+      '<label>Ingredientes (uno por línea: Ingrediente | cantidad)</label><textarea id="nIngs" style="min-height:110px" placeholder="Pollo | 500 g\nCebolla | media pieza\nSal | al gusto"></textarea>'+
+      '<label>Pasos (uno por línea)</label><textarea id="nSteps" style="min-height:130px" placeholder="Sazona el pollo con sal y pimienta.\nCalienta la olla a fuego medio…"></textarea>'+
       '<div class="form-acts"><button class="btn btn-solid" onclick="saveNewRecipe()">Crear receta</button>'+
       '<button class="btn btn-line" onclick="renderRecipes()">Cancelar</button></div>'+
-      '<p class="hint">La foto, los ingredientes y los pasos los podrás añadir editando la receta después. Por ahora se crea con los datos principales.</p></div>';
+      '<p class="hint">Si usas una foto nueva, súbela también a GitHub con ese mismo nombre de archivo.</p></div>';
   };
 
   function slugify(s){
@@ -459,7 +462,8 @@
       name, desc:$("nDesc").value.trim(), time:$("nTime").value.trim(),
       servings:$("nServ").value.trim(), diff:$("nDiff").value.trim(), utensil:$("nUt").value.trim(),
       chefTip:$("nChef").value.trim(), royalTip:$("nRoyal").value.trim(),
-      cats:[], badge:"", img:"", tone:"#5A4630", video:"", ingredients:[], steps:[],
+      cats:[], badge:"", img:$("nImg").value.trim(), tone:"#5A4630", video:"",
+      ingredients: parseIngs($("nIngs").value), steps: parseSteps($("nSteps").value),
       order: DATA.recipes.length, status:"published", visible:true, updatedAt: serverTimestamp()
     };
     setCloud(true);
@@ -493,9 +497,12 @@
       '<div><label>Utensilio</label><input id="rUt" value="'+esc(r.utensil||"")+'"></div></div>'+
       '<label>Consejo del Chef</label><textarea id="rChef" style="min-height:70px">'+esc(r.chefTip||r.chef||"")+'</textarea>'+
       '<label>Tip Royal Prestige</label><textarea id="rRoyal" style="min-height:70px">'+esc(r.royalTip||r.royal||"")+'</textarea>'+
+      '<label>Foto (nombre de archivo o URL)</label><input id="rImg" value="'+esc(r.img||"")+'" placeholder="Ej. foto-sopa-tortilla.jpg">'+
+      '<label>Ingredientes (uno por línea: Ingrediente | cantidad)</label><textarea id="rIngs" style="min-height:110px">'+esc(ingsToText(r.ingredients))+'</textarea>'+
+      '<label>Pasos (uno por línea)</label><textarea id="rSteps" style="min-height:130px">'+esc(stepsToText(r.steps))+'</textarea>'+
       '<div class="form-acts"><button class="btn btn-solid" onclick="saveRecipe('+i+')">Guardar en la nube</button>'+
       '<button class="btn btn-line" onclick="renderRecipes()">Cancelar</button></div>'+
-      '<p class="hint">Los ingredientes y pasos se editarán en la próxima versión. Por ahora puedes ajustar los datos principales.</p></div>';
+      '<p class="hint">Si usas una foto nueva, súbela también a GitHub con ese mismo nombre de archivo.</p></div>';
   };
 
   window.saveRecipe = async function(i){
@@ -505,6 +512,8 @@
       time:$("rTime").value.trim(), servings:$("rServ").value.trim(),
       diff:$("rDiff").value.trim(), utensil:$("rUt").value.trim(),
       chefTip:$("rChef").value.trim(), royalTip:$("rRoyal").value.trim(),
+      img:$("rImg").value.trim(),
+      ingredients: parseIngs($("rIngs").value), steps: parseSteps($("rSteps").value),
       updatedAt: serverTimestamp()
     };
     setCloud(true);
@@ -982,6 +991,88 @@
     html += '<button class="btn btn-line btn-block" type="button" onclick="reloadAnalytics()" style="margin-top:18px">↻ Actualizar datos</button>';
     cont.innerHTML = html;
   }
+
+  // ---------- Generador de páginas de recetas ----------
+  function parseIngs(txt){
+    return String(txt||"").split("\n").map(function(l){
+      var p = l.split("|"); var n=(p[0]||"").trim(); var c=(p[1]||"").trim();
+      return n ? [n, c || "al gusto"] : null;
+    }).filter(Boolean);
+  }
+  function parseSteps(txt){
+    return String(txt||"").split("\n").map(function(l){ return l.trim(); }).filter(Boolean);
+  }
+  function ingsToText(a){ return (a||[]).map(function(x){ return x[0]+" | "+x[1]; }).join("\n"); }
+  function stepsToText(a){ return (a||[]).join("\n"); }
+  function stripHtml(s){ return String(s||"").replace(/<[^>]*>/g,""); }
+  function escA(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+  function recipeSlug(r){
+    var id = r._id || "";
+    return /^[a-z0-9-]{3,}$/.test(id) ? id : slugify(r.name);
+  }
+
+  function recipePageHTML(r){
+    var slug = recipeSlug(r);
+    var url = "https://tomasflores.com/receta-" + slug + ".html";
+    var img = r.img || "og-image.jpeg";
+    var imgUrl = /^https?:|^data:/.test(img) ? img : ("https://tomasflores.com/" + img);
+    var WA = "16823811576";
+    var askMsg = encodeURIComponent("Hola Tomas \ud83d\udc4b Tengo una pregunta sobre tu receta de " + stripHtml(r.name));
+    var prodMsg = encodeURIComponent("Hola Tomas \ud83d\udc4b Quiero conocer m\u00e1s sobre la " + stripHtml(r.utensil||"l\u00ednea Royal Prestige"));
+    var ings = r.ingredients || [];
+    var steps = r.steps || [];
+    var ld = {
+      "@context":"https://schema.org","@type":"Recipe",
+      "name":stripHtml(r.name),"description":stripHtml(r.desc||""),
+      "image":imgUrl,
+      "author":{"@type":"Person","name":"Tomas Flores"},
+      "recipeYield":stripHtml(r.servings||""),
+      "recipeIngredient":ings.map(function(x){ return (x[1]+" de "+x[0]).replace(/^al gusto de /,"").trim(); }),
+      "recipeInstructions":steps.map(function(s,i){ return {"@type":"HowToStep","position":i+1,"text":stripHtml(s)}; }),
+      "keywords":stripHtml(r.name)+", Royal Prestige, recetas"
+    };
+    var tm = String(r.time||"").match(/(?:(\d+)\s*h)?\s*(\d+)?\s*min/);
+    if(tm && (tm[1]||tm[2])) ld.totalTime = "PT"+(tm[1]?tm[1]+"H":"")+(tm[2]?tm[2]+"M":"");
+    var ingRows = ings.map(function(x){ return '      <li><span>'+escA(x[0])+'</span><b>'+escA(x[1])+'</b></li>'; }).join("\n");
+    var stepRows = steps.map(function(s,i){ return '      <li><span class="stp-n">'+(i+1)+'</span><p>'+s+'</p></li>'; }).join("\n");
+    var tip = r.chefTip || r.tip || "";
+    var royal = r.royalTip || "";
+    return '<!DOCTYPE html>\n<html lang="es">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">\n<title>'+escA(stripHtml(r.name))+' \u2014 Receta de Tomas Flores | Royal Prestige</title>\n<meta name="description" content="'+escA(stripHtml(r.desc||""))+' Receta paso a paso'+(r.utensil?' con '+escA(stripHtml(r.utensil)):'')+'.'+(r.time?' '+escA(r.time)+'.':'')+'">\n<link rel="canonical" href="'+url+'">\n<meta property="og:type" content="article">\n<meta property="og:site_name" content="Tomas Flores \u2014 Royal Prestige">\n<meta property="og:title" content="'+escA(stripHtml(r.name))+' \u2014 Receta de Tomas Flores">\n<meta property="og:description" content="'+escA(stripHtml(r.desc||""))+'">\n<meta property="og:url" content="'+url+'">\n<meta property="og:image" content="'+escA(imgUrl)+'">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:image" content="'+escA(imgUrl)+'">\n<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@700&family=Fraunces:ital,wght@1,400;1,500&display=swap" rel="stylesheet">\n<script type="application/ld+json">\n'+JSON.stringify(ld,null,1)+'\n<\/script>\n<style>\n  :root{--paper:#FAFAF8;--card:#FFF;--ink:#111110;--stone:#66625B;--hairline:#E9E6E0;--gold:#B08D4F;--gold-text:#8A672B;--shadow:0 1px 2px rgba(17,17,16,.04),0 8px 24px rgba(17,17,16,.06)}\n  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}\n  body{background:var(--paper);color:var(--ink);font-family:\'Inter\',sans-serif;-webkit-font-smoothing:antialiased}\n  .wrap{max-width:760px;margin:0 auto;padding:0 20px}\n  .top{display:flex;align-items:center;gap:12px;padding:16px 0}\n  .back{display:inline-flex;align-items:center;gap:7px;color:var(--ink);text-decoration:none;font-weight:600;font-size:14.5px;padding:9px 15px;border:1px solid var(--hairline);border-radius:999px;background:#fff}\n  .heroimg{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:22px;box-shadow:var(--shadow)}\n  .eyebrow{font-family:\'Fraunces\',serif;font-style:italic;color:var(--gold-text);font-size:16px;display:block;margin:22px 0 6px}\n  h1{font-family:\'Inter Tight\',sans-serif;font-size:clamp(28px,7vw,40px);letter-spacing:-.03em;line-height:1.05}\n  .desc{color:var(--stone);font-size:16px;line-height:1.55;margin-top:10px;max-width:56ch}\n  .meta{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px}\n  .chip{background:#fff;border:1px solid var(--hairline);border-radius:999px;padding:8px 14px;font-size:13.5px;font-weight:600}\n  .chip b{color:var(--gold-text)}\n  .card{background:var(--card);border:1px solid var(--hairline);border-radius:20px;padding:22px;margin-top:18px;box-shadow:var(--shadow)}\n  h2{font-family:\'Inter Tight\',sans-serif;font-size:20px;letter-spacing:-.02em;margin-bottom:14px}\n  .ing{list-style:none}\n  .ing li{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid var(--hairline);font-size:15px}\n  .ing li:last-child{border-bottom:0}\n  .ing b{color:var(--stone);font-weight:600;white-space:nowrap}\n  .steps{list-style:none}\n  .steps li{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--hairline)}\n  .steps li:last-child{border-bottom:0}\n  .stp-n{flex:0 0 30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}\n  .steps p{font-size:15.5px;line-height:1.6;padding-top:3px}\n  .tipbox{background:#F6F1E7;border:1px solid #EADFC9;border-radius:16px;padding:16px 18px;margin-top:18px}\n  .tipbox .t{font-weight:700;font-size:14px;color:var(--gold-text);margin-bottom:5px}\n  .tipbox p{font-size:14.5px;line-height:1.55}\n  .cta{display:flex;flex-direction:column;gap:10px;margin:26px 0 14px}\n  .btn{display:flex;align-items:center;justify-content:center;gap:9px;border-radius:16px;padding:16px 20px;font-size:15.5px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font-family:inherit}\n  .btn-solid{background:var(--ink);color:#fff}\n  .btn-line{background:#fff;color:var(--ink);border:1.5px solid var(--gold)}\n  .foot{color:var(--stone);text-align:center;font-size:13px;padding:26px 0 40px}\n  .foot a{color:var(--gold-text);font-weight:600;text-decoration:none}\n</style>\n</head>\n<body>\n<div class="wrap">\n  <div class="top"><a class="back" href="recetas.html">\u2190 Todas las recetas</a></div>\n  <img class="heroimg" src="'+escA(img)+'" alt="'+escA(stripHtml(r.name))+(r.utensil?' preparada con '+escA(stripHtml(r.utensil)):'')+'">\n  <span class="eyebrow">Receta de Tomas Flores</span>\n  <h1>'+escA(stripHtml(r.name))+'</h1>\n  <p class="desc">'+(r.desc||"")+'</p>\n  <div class="meta">\n'+(r.time?'    <span class="chip">\u23f1 '+escA(r.time)+'</span>\n':'')+(r.servings?'    <span class="chip">'+escA(r.servings)+'</span>\n':'')+(r.diff?'    <span class="chip">Dificultad: <b>'+escA(r.diff)+'</b></span>\n':'')+(r.utensil?'    <span class="chip">\ud83c\udf72 '+escA(stripHtml(r.utensil))+'</span>\n':'')+'  </div>\n'+(ings.length?'  <div class="card">\n    <h2>Ingredientes</h2>\n    <ul class="ing">\n'+ingRows+'\n    </ul>\n  </div>\n':'')+(steps.length?'  <div class="card">\n    <h2>Preparaci\u00f3n</h2>\n    <ol class="steps">\n'+stepRows+'\n    </ol>\n  </div>\n':'')+(tip?'  <div class="tipbox"><div class="t">Consejo de Tomas</div><p>'+tip+'</p></div>\n':'')+(royal?'  <div class="tipbox"><div class="t">El toque Royal Prestige</div><p>'+royal+'</p></div>\n':'')+'  <div class="cta">\n    <a class="btn btn-solid" href="https://wa.me/'+WA+'?text='+askMsg+'" target="_blank" rel="noopener">\ud83d\udcac Preguntarle a Tomas</a>\n    <a class="btn btn-line" href="https://wa.me/'+WA+'?text='+prodMsg+'" target="_blank" rel="noopener">Quiero conocer este producto</a>\n  </div>\n  <p class="foot">Tomas Flores \u00b7 Distribuidor autorizado Royal Prestige \u00b7 DFW, Texas<br><a href="index.html">tomasflores.com</a> \u00b7 <a href="index.html">Reservar demostraci\u00f3n gratuita</a></p>\n</div>\n</body>\n</html>';
+  }
+
+  function downloadFile(name, content, mime){
+    var blob = new Blob([content], {type: mime || "text/html"});
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 2000);
+  }
+
+  window.downloadRecipePage = function(i){
+    var r = DATA.recipes[i];
+    var faltan = [];
+    if(!(r.ingredients||[]).length) faltan.push("ingredientes");
+    if(!(r.steps||[]).length) faltan.push("pasos");
+    if(!r.img) faltan.push("foto");
+    var slug = recipeSlug(r);
+    downloadFile("receta-"+slug+".html", recipePageHTML(r));
+    if(faltan.length) toast("\u26a0 Descargada, pero le faltan: "+faltan.join(", ")+". Ed\u00edtala y vuelve a descargar.");
+    else toast("\u2713 P\u00e1gina descargada. S\u00fabela a GitHub junto con el sitemap actualizado.");
+  };
+
+  window.downloadSitemap = function(){
+    var today = new Date().toISOString().slice(0,10);
+    var urls = ["", "recetas.html"];
+    DATA.recipes.forEach(function(r){
+      if(r.visible !== false) urls.push("receta-"+recipeSlug(r)+".html");
+    });
+    var xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+      urls.map(function(u){ return '  <url><loc>https://tomasflores.com/'+u+'</loc><lastmod>'+today+'</lastmod></url>'; }).join('\n') +
+      '\n</urlset>';
+    downloadFile("sitemap.xml", xml, "application/xml");
+    toast("\u2713 Sitemap con "+urls.length+" p\u00e1ginas. S\u00fabelo a GitHub.");
+  };
 
   // ---------- Papelera (30 días) ----------
   const TRASH_DAYS = 30;
