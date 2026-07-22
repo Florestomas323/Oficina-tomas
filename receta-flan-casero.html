@@ -110,7 +110,7 @@
 </head>
 <body>
 <div class="wrap">
-  <div class="top"><a class="back" href="recetas.html">&#8592; Todas las recetas</a></div>
+  <div class="top"><a class="back" href="recetas.html" data-tr="Receta: ver todas">&#8592; Todas las recetas</a></div>
   <img class="heroimg" src="foto-flan-casero.jpg" alt="Flan Casero preparada con Olla Royal Prestige">
   <span class="eyebrow">Receta de Tomas Flores</span>
   <h1>Flan Casero</h1>
@@ -145,10 +145,77 @@
   <div class="tipbox"><div class="t">Consejo de Tomas</div><p>La paciencia hace el flan: fuego bajo y refrigeración completa. Si lo desmoldas tibio, se rompe. Frío de un día para otro queda aún mejor.</p></div>
   <div class="tipbox"><div class="t">El toque Royal Prestige</div><p>La tapa de tu olla Royal Prestige sella el calor y mantiene el baño María a temperatura constante — el secreto de un flan sin burbujas, con textura sedosa de principio a fin.</p></div>
   <div class="cta">
-    <a class="btn btn-solid" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Tengo%20una%20pregunta%20sobre%20tu%20receta%20de%20Flan%20Casero" target="_blank" rel="noopener">&#128172; Preguntarle a Tomas</a>
-    <a class="btn btn-line" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Quiero%20conocer%20m%C3%A1s%20sobre%20la%20Olla%20Royal%20Prestige" target="_blank" rel="noopener">Quiero conocer este producto</a>
+    <a class="btn btn-solid" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Tengo%20una%20pregunta%20sobre%20tu%20receta%20de%20Flan%20Casero" target="_blank" rel="noopener" data-tr="Receta: pregunta a Tomas">&#128172; Preguntarle a Tomas</a>
+    <a class="btn btn-line" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Quiero%20conocer%20m%C3%A1s%20sobre%20la%20Olla%20Royal%20Prestige" target="_blank" rel="noopener" data-tr="Receta: conocer producto">Quiero conocer este producto</a>
   </div>
-  <p class="foot">Tomas Flores &middot; Distribuidor autorizado Royal Prestige &middot; DFW, Texas<br><a href="index.html">tomasflores.com</a> &middot; <a href="index.html#agendar">Reservar demostraci&oacute;n gratuita</a></p>
+  <p class="foot">Tomas Flores &middot; Distribuidor autorizado Royal Prestige &middot; DFW, Texas<br><a href="index.html">tomasflores.com</a> &middot; <a href="index.html" data-tr="Receta: ir a reservar">Reservar demostraci&oacute;n gratuita</a></p>
 </div>
+<script>
+window.__RECETA="Flan Casero";
+(function(){
+  var VKEY='_vid', SKEY='_sid';
+  function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,9); }
+  var vid='', sid='';
+  try{
+    vid = localStorage.getItem(VKEY)||''; if(!vid){ vid=uid(); localStorage.setItem(VKEY,vid); }
+    sid = sessionStorage.getItem(SKEY)||''; if(!sid){ sid=uid(); sessionStorage.setItem(SKEY,sid); }
+  }catch(e){ vid=vid||uid(); sid=sid||uid(); }
+  function fuente(){
+    var p=new URLSearchParams(location.search), u=(p.get('utm_source')||'').toLowerCase();
+    if(u){
+      if(u.indexOf('qr')>=0) return 'QR';
+      if(u.indexOf('insta')>=0||u==='ig') return 'Instagram';
+      if(u.indexOf('tiktok')>=0) return 'TikTok';
+      if(u.indexOf('whats')>=0||u==='wa') return 'WhatsApp';
+      return u.charAt(0).toUpperCase()+u.slice(1);
+    }
+    var r=(document.referrer||'').toLowerCase();
+    if(!r) return 'Directo';
+    if(r.indexOf('instagram')>=0) return 'Instagram';
+    if(r.indexOf('tiktok')>=0) return 'TikTok';
+    if(r.indexOf('whatsapp')>=0||r.indexOf('wa.me')>=0) return 'WhatsApp';
+    if(r.indexOf('google')>=0) return 'Google';
+    if(r.indexOf('tomasflores.com')>=0||r.indexOf('oficina-tomas')>=0) return 'Interno';
+    try{ return new URL(document.referrer).hostname.replace(/^www\./,''); }catch(_){ return 'Otro'; }
+  }
+  function device(){
+    var u=navigator.userAgent;
+    if(/iPad/i.test(u)) return 'iPad';
+    if(/iPhone|iPod/i.test(u)) return 'iPhone';
+    if(/Android/i.test(u)) return /Mobile/i.test(u)?'Android':'Tablet Android';
+    return 'Computadora';
+  }
+  var SRC=fuente(), DEV=device(), Q=[], DB=null, ADD=null, COL=null, TS=null;
+  (async function(){
+    try{
+      var CFG={apiKey:"AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",authDomain:"oficina-digital-tomas.firebaseapp.com",projectId:"oficina-digital-tomas",storageBucket:"oficina-digital-tomas.firebasestorage.app",messagingSenderId:"898342341243",appId:"1:898342341243:web:7ee15b8b3533f3889570de"};
+      var a=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+      var f=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+      var app=(a.getApps&&a.getApps().length)?a.getApps()[0]:a.initializeApp(CFG);
+      DB=f.getFirestore(app); ADD=f.addDoc; COL=f.collection; TS=f.serverTimestamp; flush();
+    }catch(e){}
+  })();
+  function flush(){
+    if(!(DB&&ADD&&COL&&TS)) return;
+    while(Q.length){
+      var ev=Q.shift();
+      try{ ADD(COL(DB,'analytics_clicks'),{label:ev.label,action:'click',createdAt:TS(),
+        vid:ev.vid,sid:ev.sid,src:ev.src,dev:ev.dev,page:ev.page,referrer:ev.referrer}).catch(function(){}); }catch(_){}
+    }
+  }
+  function track(label){
+    if(!label) return;
+    label=String(label).slice(0,90);
+    Q.push({label:label,vid:vid,sid:sid,src:SRC,dev:DEV,page:'receta',referrer:(document.referrer||'').slice(0,100)});
+    flush();
+  }
+  window.trackEvent=track;
+  track('Receta abierta: '+(window.__RECETA||'receta'));
+  document.addEventListener('click', function(e){
+    var t=e.target.closest('[data-tr]');
+    if(t) track(t.getAttribute('data-tr'));
+  }, true);
+})();
+</script>
 </body>
 </html>
