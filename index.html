@@ -51,9 +51,10 @@
     {"@type":"Question","name":"¿Cuánto dura la demostración?","acceptedAnswer":{"@type":"Answer","text":"Entre una hora y hora y media, dependiendo del menú y de tus preguntas."}},
     {"@type":"Question","name":"¿Qué incluye la demostración?","acceptedAnswer":{"@type":"Answer","text":"Preparo un menú completo con los utensilios Royal Prestige para que pruebes la diferencia, y al final resuelvo todas tus preguntas."}},
     {"@type":"Question","name":"¿Cómo solicito garantía o servicio?","acceptedAnswer":{"@type":"Answer","text":"Escríbeme por WhatsApp con una foto de tu equipo y te acompaño personalmente en todo el proceso de garantía o mantenimiento."}},
-    {"@type":"Question","name":"¿Tengo que comprar algo?","acceptedAnswer":{"@type":"Answer","text":"No. La demostración es sin compromiso de compra. La decisión siempre es tuya."}},
+    {"@type":"Question","name":"¿Tengo que comprar algo?","acceptedAnswer":{"@type":"Answer","text":"No. La demostración es gratuita y sin compromiso de compra. Conocerás los productos, probarás el resultado y al final tú decides con tranquilidad."}},
     {"@type":"Question","name":"¿Qué pasa si necesito cancelar?","acceptedAnswer":{"@type":"Answer","text":"Avísame por WhatsApp y reagendamos sin cargo ni complicación."}},
     {"@type":"Question","name":"¿Puedo invitar familiares?","acceptedAnswer":{"@type":"Answer","text":"Sí, solo dime cuántos serán para preparar menú suficiente."}},
+    {"@type":"Question","name":"¿Qué menú se prepara?","acceptedAnswer":{"@type":"Answer","text":"Un menú completo con carne o pollo, guarnición y postre, cocinado frente a ti. Se ajusta a alergias y preferencias de tu familia."}},
     {"@type":"Question","name":"¿En qué ciudades haces demostraciones?","acceptedAnswer":{"@type":"Answer","text":"Dallas, Irving, Arlington, Grand Prairie, Farmers Branch, Addison, Plano, Fort Worth y otras ciudades del área DFW."}},
     {"@type":"Question","name":"¿Ofrecen opciones de pago?","acceptedAnswer":{"@type":"Answer","text":"Sí, existen opciones de pago flexibles que se explican con detalle en la demostración."}}
   ]
@@ -692,6 +693,13 @@
   .cities b{color:var(--ink);font-weight:600}
 
   .foot-sep{color:#C9C3B8;margin:0 6px;font-size:12.5px}
+
+  .zona{margin-top:26px;background:var(--card);border:1px solid var(--hairline);border-radius:20px;padding:22px;box-shadow:var(--shadow-soft);max-width:600px}
+  .zona-h{font-family:'Inter Tight',sans-serif;font-size:clamp(18px,4.6vw,21px);letter-spacing:-.02em;margin-bottom:8px}
+  .zona-p{font-size:14.5px;line-height:1.6;color:var(--stone)}
+  .zona-p b{color:var(--ink);font-weight:600}
+  .zona-q{font-size:14px;line-height:1.55;color:var(--stone);margin-top:12px;padding-top:12px;border-top:1px solid var(--hairline)}
+  .zona-btn{margin-top:14px;width:100%;justify-content:center}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script>
@@ -842,7 +850,15 @@
     <li><span class="how-n">4</span><div><b>Conoces los productos y pruebas los resultados</b><p>Comes rico mientras ves cómo funcionan.</p></div></li>
     <li><span class="how-n">5</span><div><b>Tú decides sin compromiso</b><p>Sin presión. Mi trabajo es servirte, no venderte.</p></div></li>
   </ol>
-  <p class="cities rv">📍 Atiendo familias en <b>Dallas, Irving, Arlington, Grand Prairie, Farmers Branch, Addison, Plano, Fort Worth</b> y otras ciudades del área DFW.</p>
+  <div class="zona rv" id="zona-servicio">
+    <h3 class="zona-h">Demostraciones en Dallas–Fort Worth</h3>
+    <p class="zona-p">Atiendo familias en <b>Dallas, Irving, Arlington, Grand Prairie, Farmers Branch, Addison, Plano, Fort Worth</b> y otras ciudades del área DFW.</p>
+    <p class="zona-q">¿No ves tu ciudad? Escríbeme por WhatsApp para confirmar disponibilidad.</p>
+    <a class="btn btn-line zona-btn" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Quiero%20saber%20si%20haces%20demostraciones%20en%20mi%20ciudad" target="_blank" rel="noopener">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.55 2 2.1 6.44 2.1 11.93c0 1.76.46 3.47 1.34 4.98L2 22l5.22-1.37a9.9 9.9 0 0 0 4.82 1.23h.01c5.49 0 9.94-4.45 9.94-9.93A9.88 9.88 0 0 0 12.04 2z"/></svg>
+      Consultar disponibilidad en mi ciudad
+    </a>
+  </div>
 </section>
 
 <section class="block wrap" id="opiniones">
@@ -979,7 +995,7 @@
     </details>
       <details class="rv">
         <summary>¿Tengo que comprar algo?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
-        <p class="faq-a">No. La demostración es una experiencia sin compromiso de compra. Mi trabajo es mostrarte cómo funcionan los productos y resolver tus dudas; la decisión siempre es tuya y la respeto.</p>
+        <p class="faq-a">No. La demostración es gratuita y sin compromiso de compra. Conocerás los productos, probarás el resultado y al final tú decides con tranquilidad.</p>
       </details>
       <details class="rv">
         <summary>¿Qué pasa si necesito cancelar o cambiar la fecha?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
@@ -988,6 +1004,10 @@
       <details class="rv">
         <summary>¿Puedo invitar familiares o amigos?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
         <p class="faq-a">¡Claro que sí! Entre más personas disfruten la comida, mejor. Solo dime cuántos serán cuando confirmemos por WhatsApp, para preparar suficiente menú para todos.</p>
+      </details>
+      <details class="rv">
+        <summary>¿Qué menú se prepara?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="faq-a">Preparamos un menú completo — normalmente una carne o pollo, guarnición y un postre — cocinado frente a ti con los utensilios Royal Prestige. Cuando confirmemos por WhatsApp me dices si hay alergias, preferencias o algún antojo especial, y lo ajusto para tu familia.</p>
       </details>
       <details class="rv">
         <summary>¿En qué ciudades haces demostraciones?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
