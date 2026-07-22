@@ -700,6 +700,12 @@
   .zona-p b{color:var(--ink);font-weight:600}
   .zona-q{font-size:14px;line-height:1.55;color:var(--stone);margin-top:12px;padding-top:12px;border-top:1px solid var(--hairline)}
   .zona-btn{margin-top:14px;width:100%;justify-content:center}
+
+  .faq-more[hidden]{display:none}
+  .faq-toggle{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:14px;padding:14px;background:transparent;border:1px solid var(--hairline);border-radius:14px;font-family:inherit;font-size:14.5px;font-weight:600;color:var(--ink);cursor:pointer}
+  .faq-toggle:active{background:#F4F1EA}
+  .ft-ic{display:inline-block;transform:rotate(90deg);transition:transform .25s var(--ease);font-size:17px;line-height:1}
+  .faq-toggle.open .ft-ic{transform:rotate(-90deg)}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script>
@@ -1019,50 +1025,53 @@
     <h2 class="sec-h rv">Preguntas frecuentes</h2>
   </div>
   <div class="faq-list">
-    <details class="rv">
+      <details class="rv">
       <summary>¿La demostración tiene costo?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
       <p class="faq-a">No, es completamente gratuita y sin compromiso. Cocino para ti y tu familia, prueban la comida y resuelvo todas sus dudas. Tú decides si te interesa, sin ninguna presión.</p>
     </details>
-    <details class="rv">
+      <details class="rv">
       <summary>¿Cómo agendo una demostración?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
       <p class="faq-a">Muy fácil: <button data-cal type="button" style="font-weight:600;border-bottom:1px solid var(--gold);padding:0">reserva aquí en mi calendario</button> eligiendo el día y la hora que te convenga, o escríbeme por WhatsApp y la coordinamos juntos.</p>
     </details>
-    <details class="rv">
+      <details class="rv">
       <summary>¿Cuánto dura?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
       <p class="faq-a">Entre una hora y hora y media, dependiendo del menú y de tus preguntas. Es un momento agradable en tu cocina, no una junta de ventas.</p>
     </details>
-    <details class="rv">
-      <summary>¿Qué incluye?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
-      <p class="faq-a">Preparo un menú completo con los utensilios Royal Prestige para que pruebes la diferencia en sabor, tiempo y salud. Al final respondo todas tus preguntas sobre los productos.</p>
-    </details>
-    <details class="rv">
-      <summary>¿Cómo solicito garantía o servicio?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
-      <p class="faq-a">Escríbeme por WhatsApp con una foto de tu equipo y cuéntame qué pasa. Yo te acompaño personalmente en todo el proceso de garantía o mantenimiento — para eso estoy.</p>
-    </details>
-      <details class="rv">
-        <summary>¿Tengo que comprar algo?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
-        <p class="faq-a">No. La demostración es gratuita y sin compromiso de compra. Conocerás los productos, probarás el resultado y al final tú decides con tranquilidad.</p>
-      </details>
-      <details class="rv">
-        <summary>¿Qué pasa si necesito cancelar o cambiar la fecha?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
-        <p class="faq-a">No hay problema. Avísame por WhatsApp y reagendamos para el día que mejor te acomode, sin ningún cargo ni complicación.</p>
-      </details>
-      <details class="rv">
-        <summary>¿Puedo invitar familiares o amigos?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
-        <p class="faq-a">¡Claro que sí! Entre más personas disfruten la comida, mejor. Solo dime cuántos serán cuando confirmemos por WhatsApp, para preparar suficiente menú para todos.</p>
-      </details>
-      <details class="rv">
-        <summary>¿Qué menú se prepara?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
-        <p class="faq-a">Preparamos un menú completo — normalmente una carne o pollo, guarnición y un postre — cocinado frente a ti con los utensilios Royal Prestige. Cuando confirmemos por WhatsApp me dices si hay alergias, preferencias o algún antojo especial, y lo ajusto para tu familia.</p>
-      </details>
-      <details class="rv">
-        <summary>¿En qué ciudades haces demostraciones?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
-        <p class="faq-a">Atiendo familias en Dallas, Irving, Arlington, Grand Prairie, Farmers Branch, Addison, Plano, Fort Worth y otras ciudades del área DFW. Si estás cerca, escríbeme y lo confirmamos.</p>
-      </details>
       <details class="rv">
         <summary>¿Ofrecen opciones de pago?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
         <p class="faq-a">Sí, existen opciones de pago flexibles para que equipar tu cocina sea accesible. En la demostración te explico las alternativas con calma y sin letras chiquitas, para que elijas la que mejor te convenga.</p>
       </details>
+      <div class="faq-more" id="faqMore" hidden>
+        <details class="rv">
+      <summary>¿Qué incluye?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+      <p class="faq-a">Preparo un menú completo con los utensilios Royal Prestige para que pruebes la diferencia en sabor, tiempo y salud. Al final respondo todas tus preguntas sobre los productos.</p>
+    </details>
+        <details class="rv">
+      <summary>¿Cómo solicito garantía o servicio?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+      <p class="faq-a">Escríbeme por WhatsApp con una foto de tu equipo y cuéntame qué pasa. Yo te acompaño personalmente en todo el proceso de garantía o mantenimiento — para eso estoy.</p>
+    </details>
+        <details class="rv">
+        <summary>¿Tengo que comprar algo?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="faq-a">No. La demostración es gratuita y sin compromiso de compra. Conocerás los productos, probarás el resultado y al final tú decides con tranquilidad.</p>
+      </details>
+        <details class="rv">
+        <summary>¿Qué pasa si necesito cancelar o cambiar la fecha?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="faq-a">No hay problema. Avísame por WhatsApp y reagendamos para el día que mejor te acomode, sin ningún cargo ni complicación.</p>
+      </details>
+        <details class="rv">
+        <summary>¿Puedo invitar familiares o amigos?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="faq-a">¡Claro que sí! Entre más personas disfruten la comida, mejor. Solo dime cuántos serán cuando confirmemos por WhatsApp, para preparar suficiente menú para todos.</p>
+      </details>
+        <details class="rv">
+        <summary>¿Qué menú se prepara?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="faq-a">Preparamos un menú completo — normalmente una carne o pollo, guarnición y un postre — cocinado frente a ti con los utensilios Royal Prestige. Cuando confirmemos por WhatsApp me dices si hay alergias, preferencias o algún antojo especial, y lo ajusto para tu familia.</p>
+      </details>
+        <details class="rv">
+        <summary>¿En qué ciudades haces demostraciones?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="faq-a">Atiendo familias en Dallas, Irving, Arlington, Grand Prairie, Farmers Branch, Addison, Plano, Fort Worth y otras ciudades del área DFW. Si estás cerca, escríbeme y lo confirmamos.</p>
+      </details>
+      </div>
+      <button class="faq-toggle" id="faqToggle" type="button" aria-expanded="false" aria-controls="faqMore">Ver más preguntas <span class="ft-ic">›</span></button>
   </div>
 </section>
 
@@ -1730,6 +1739,17 @@ try{
   // construir con el contenido inicial
   if(document.readyState !== 'loading') buildGalFilters();
   else document.addEventListener('DOMContentLoaded', buildGalFilters);
+})();
+</script>
+<script>
+(function(){
+  var btn = document.getElementById('faqToggle'), box = document.getElementById('faqMore');
+  if(!btn || !box) return;
+  btn.addEventListener('click', function(){
+    var abierto = !box.hasAttribute('hidden');
+    if(abierto){ box.setAttribute('hidden',''); btn.classList.remove('open'); btn.setAttribute('aria-expanded','false'); btn.firstChild.nodeValue = 'Ver más preguntas '; }
+    else { box.removeAttribute('hidden'); btn.classList.add('open'); btn.setAttribute('aria-expanded','true'); btn.firstChild.nodeValue = 'Ver menos '; if(window.trackEvent) window.trackEvent('FAQ: ver más'); }
+  });
 })();
 </script>
 </body>
