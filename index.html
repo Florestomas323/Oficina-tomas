@@ -706,6 +706,26 @@
   .faq-toggle:active{background:#F4F1EA}
   .ft-ic{display:inline-block;transform:rotate(90deg);transition:transform .25s var(--ease);font-size:17px;line-height:1}
   .faq-toggle.open .ft-ic{transform:rotate(-90deg)}
+
+  /* ---------- CTA tras testimonios ---------- */
+  .post-rev-cta{margin-top:22px;background:var(--card);border:1px solid var(--hairline);border-radius:20px;padding:24px 20px;text-align:center;box-shadow:var(--shadow-soft)}
+  .post-rev-cta h3{font-family:'Inter Tight',sans-serif;font-size:clamp(19px,5vw,23px);letter-spacing:-.02em;margin-bottom:16px}
+  .prc-btns{display:flex;flex-direction:column;gap:10px}
+  .prc-btns .btn{width:100%;justify-content:center}
+  @media(min-width:640px){ .prc-btns{flex-direction:row;justify-content:center} .prc-btns .btn{width:auto} }
+  .opt{font-weight:400;color:#8B857B;font-size:12px}
+  .rev-city{font-weight:500;color:var(--stone);font-size:13px}
+  /* ---------- Galería deslizable en móvil ---------- */
+  @media(max-width:639px){
+    .gal-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:12px;padding-bottom:8px}
+    .gal-grid::-webkit-scrollbar{display:none}
+    .gal-grid .gal-item{flex:0 0 78%;scroll-snap-align:start}
+  }
+  /* ---------- Comparador compacto en móvil ---------- */
+  @media(max-width:639px){
+    .vs-cell{padding:12px 12px;font-size:13px;line-height:1.4}
+    .vs-label{font-size:12.5px}
+  }
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script>
@@ -898,7 +918,7 @@
   <ol class="how-list rv">
     <li><span class="how-n">1</span><div><b>Eliges una fecha</b><p>En el calendario, la que mejor te acomode.</p></div></li>
     <li><span class="how-n">2</span><div><b>Confirmamos por WhatsApp</b><p>Te escribo personalmente para afinar dirección, personas y menú.</p></div></li>
-    <li><span class="how-n">3</span><div><b>Preparo el menú en tu hogar</b><p>Yo llevo todo lo necesario para cocinar.</p></div></li>
+    <li><span class="how-n">3</span><div><b>Preparo el menú en tu hogar</b><p>Llevo los utensilios y coordinamos previamente todo lo necesario.</p></div></li>
     <li><span class="how-n">4</span><div><b>Conoces los productos y pruebas los resultados</b><p>Comes rico mientras ves cómo funcionan.</p></div></li>
     <li><span class="how-n">5</span><div><b>Tú decides sin compromiso</b><p>Sin presión. Mi trabajo es servirte, no venderte.</p></div></li>
   </ol>
@@ -930,6 +950,14 @@
     <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#4E6B9B">RT</span><div><div class="rev-name">Rosa T.</div><div class="rev-sub">Cliente desde 2023</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Mi ribeye nunca había quedado así. El sartén es otra cosa y Tomas siempre está pendiente de que le saquemos provecho a todo el equipo.</p></article>
   </div>
   <p class="rev-note rv">¿Ya cocinas con tu Royal Prestige? <button type="button" class="rev-open" onclick="openReview()" style="font-weight:600;color:var(--ink);border-bottom:1px solid var(--gold);background:none;cursor:pointer">Deja tu reseña ⭐</button></p>
+
+  <div class="post-rev-cta rv">
+    <h3>Vive tu propia demostración en casa</h3>
+    <div class="prc-btns">
+      <button class="btn btn-solid" data-cal type="button">Reservar demostración gratuita</button>
+      <a class="btn btn-ghost" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Tengo%20una%20pregunta" target="_blank" rel="noopener">Preguntar por WhatsApp</a>
+    </div>
+  </div>
 </section>
 
 <!-- =============== COMPARADOR =============== -->
@@ -1060,7 +1088,7 @@
       </details>
         <details class="rv">
         <summary>¿Puedo invitar familiares o amigos?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
-        <p class="faq-a">¡Claro que sí! Entre más personas disfruten la comida, mejor. Solo dime cuántos serán cuando confirmemos por WhatsApp, para preparar suficiente menú para todos.</p>
+        <p class="faq-a">¡Claro que sí! Puedes invitar a familiares o amigos; solo indícame cuántas personas asistirán cuando confirmemos por WhatsApp, para preparar suficiente comida para todos.</p>
       </details>
         <details class="rv">
         <summary>¿Qué menú se prepara?<span class="faq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
@@ -1164,7 +1192,7 @@
 <!-- =============== FAB =============== -->
 <div class="fab-backdrop" id="fabBackdrop"></div>
 <div class="fab-wrap" id="fabWrap">
-  <div class="fab-note" id="fabNote"><span class="live-dot" aria-hidden="true"></span>Normalmente respondo en menos de 10 minutos</div>
+  <div class="fab-note" id="fabNote"><span class="live-dot" aria-hidden="true"></span>Normalmente respondo rápido por WhatsApp</div>
   <div class="fab-menu" id="fabMenu" role="menu" aria-label="Opciones de contacto">
     <button class="fab-opt" data-cal role="menuitem" type="button"><span class="icon-3d sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21a1 1 0 0 0 1-1v-5.35c1.78-.47 3-2.08 3-3.9a4 4 0 0 0-4-4 4.5 4.5 0 0 0-8 0 4 4 0 0 0-4 4c0 1.82 1.22 3.43 3 3.9V20a1 1 0 0 0 1 1z"/><path d="M6 17h12"/></svg></span>Reservar demostración</button>
     <a class="fab-opt" role="menuitem" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Necesito%20un%20servicio%20para%20mi%20equipo%20Royal%20Prestige" target="_blank" rel="noopener"><span class="icon-3d sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>Solicitar servicio</a>
@@ -1451,7 +1479,7 @@ try{
     rt.innerHTML = revs.map(v=>
       '<article class="rev-card"><div class="rev-top">'+
       '<span class="avatar" style="background:'+(v.color||"#8A6FB4")+'">'+esc(v.ini)+'</span>'+
-      '<div><div class="rev-name">'+esc(v.name)+'</div><div class="rev-sub">'+esc(v.sub)+'</div></div></div>'+
+      '<div><div class="rev-name">'+esc(v.name)+(v.city?' <span class="rev-city">\u00b7 '+esc(v.city)+'</span>':'')+'</div><div class="rev-sub">'+esc(v.sub)+'</div></div></div>'+
       '<div class="stars" aria-label="'+(v.stars||5)+' estrellas">'+"★".repeat(v.stars||5)+'</div>'+
       '<p class="rev-txt">'+esc(v.text||v.txt||"")+'</p></article>'
     ).join("");
@@ -1592,7 +1620,7 @@ try{
         visible: false,
         order: 999,
         pendiente: true,
-        createdAt: serverTimestamp(), consent:true, consentText:"Autorizo que mi nombre y experiencia sean publicados en esta página. Entiendo que mi información de contacto no será mostrada.", consentAt: serverTimestamp()});
+        createdAt: serverTimestamp(), city:(document.getElementById("rmCity")&&document.getElementById("rmCity").value.trim().slice(0,40))||"", consent:true, consentText:"Autorizo que mi nombre y experiencia sean publicados en esta página. Entiendo que mi información de contacto no será mostrada.", consentAt: serverTimestamp()});
       try{ localStorage.setItem("revLast", String(Date.now())); }catch(e){}
       if(window.trackEvent) window.trackEvent("Testimonio enviado");
       document.getElementById("revFormWrap").style.display = "none";
@@ -1630,6 +1658,8 @@ try{
       <input id="rmWeb" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;height:1px;width:1px;opacity:0;pointer-events:none">
 <label for="rmName">Tu nombre</label>
       <input id="rmName" type="text" placeholder="Ej. María G." autocomplete="name">
+      <label for="rmCity">Tu ciudad <span class="opt">(opcional)</span></label>
+      <input id="rmCity" type="text" placeholder="Ej. Irving, TX" autocomplete="address-level2">
       <label for="rmText">Tu experiencia</label>
       <textarea id="rmText" placeholder="Cuéntanos cómo te fue con tu equipo o en la demostración…"></textarea>
       <label class="rm-consent" for="rmConsent">
