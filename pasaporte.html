@@ -55,7 +55,11 @@
   .btn-line{background:var(--card);color:var(--ink);border:1.5px solid var(--hairline)}
   .btn-navy{background:var(--navy);color:#fff}
   .btn-wa{background:#1F7A33;color:#fff}
+  .more-btn{margin-top:14px;background:linear-gradient(180deg,#FBF6EA,#F1E7CE);color:var(--gold-text);border:1.5px solid rgba(176,141,79,.55);border-radius:999px;font-size:14px;box-shadow:0 3px 12px rgba(176,141,79,.16)}
+  .more-btn svg{transition:transform .2s var(--ease)}
   .cover .btn{margin-top:22px}
+  /* Botón dorado coleccionable con brillo cálido */
+  .btn-gold{background:linear-gradient(180deg,#C6A25C,#B08D4F 60%,#9C7A3F);box-shadow:0 8px 22px rgba(176,141,79,.42),inset 0 1px 0 rgba(255,255,255,.35)}
   .how{margin-top:22px;background:var(--card);border:1px solid var(--hairline);border-radius:20px;padding:20px;box-shadow:var(--shadow)}
   .how h2{font-family:'Inter Tight',sans-serif;font-size:17px;margin-bottom:12px}
   .how ol{list-style:none}
@@ -286,6 +290,7 @@
     </div>
     <div id="routePick" class="route-pick"></div>
     <div class="grid" id="ppGrid"></div>
+    <div id="ppMore"></div>
     <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
       <button class="btn btn-line" id="btnRewards" type="button">Ver mi regalo</button>
       <button class="btn btn-line" id="btnShare" type="button">Invitar a un amigo</button>
@@ -563,7 +568,11 @@ function renderPassport(){
   $('routePick').innerHTML = ROUTES.length>1
     ? ROUTES.map(r=>'<button class="rchip'+(r.id===ROUTE.id?' on':'')+'" data-route="'+esc(r.id)+'" type="button">'+esc(r.name)+'</button>').join('')
     : '';
-  $('ppGrid').innerHTML = CTS.map((c,i)=>{
+  // Mostrar 3 destinos por defecto; el destino activo siempre visible; el resto tras "Ver más".
+  const nx = nextIndex();
+  const baseN = Math.max(3, nx>=0 ? nx+1 : 0);
+  const visN = renderPassport.showAll ? CTS.length : Math.min(CTS.length, baseN);
+  $('ppGrid').innerHTML = CTS.slice(0, visN).map((c,i)=>{
     const st = estadoPais(i);
     let visual;
     if(st==='done'){
@@ -582,6 +591,19 @@ function renderPassport(){
     return '<div class="country '+st+'" role="button" tabindex="0" data-country="'+c.id+'">'+
       visual+'<h3>'+esc(c.co)+'</h3><div class="dish">'+esc(c.dish)+'</div>'+pie+'</div>';
   }).join('');
+  // Botón Ver más / Ver menos
+  const hidden = CTS.length - visN;
+  if(CTS.length > 3){
+    if(!renderPassport.showAll && hidden > 0){
+      $('ppMore').innerHTML = '<button class="btn more-btn" id="ppMoreBtn" type="button">Ver más destinos ('+hidden+') '+
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>';
+    } else if(renderPassport.showAll){
+      $('ppMore').innerHTML = '<button class="btn more-btn" id="ppMoreBtn" type="button">Ver menos '+
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg></button>';
+    } else { $('ppMore').innerHTML=''; }
+    const mb=$('ppMoreBtn');
+    if(mb) mb.addEventListener('click', ()=>{ renderPassport.showAll=!renderPassport.showAll; renderPassport(); track('Pasaporte: '+(renderPassport.showAll?'ver más destinos':'ver menos')); });
+  } else { $('ppMore').innerHTML=''; }
 }
 document.addEventListener('click', e=>{
   const rc=e.target.closest('[data-route]');
@@ -754,6 +776,7 @@ function renderGift(){
   '</div>';
   if(!ok) html+='<div style="margin-top:14px"><button class="btn btn-navy" data-nav="#/pasaporte" type="button">Seguir mi viaje</button></div>';
   $('giftBox').innerHTML=html;
+  if(ok && !renderGift._party){ renderGift._party=true; setTimeout(()=>confetti(true), 250); }
 }
 
 // ---------- Certificado ----------
@@ -767,6 +790,7 @@ function renderCert(){
     return ph ? '<img src="'+ph+'" alt="'+esc(c.dish)+'">'
               : '<div style="aspect-ratio:1/1;border-radius:10px;background:'+c.color+';color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px">'+c.mono+'</div>';
   }).join('');
+  setTimeout(()=>confetti(true), 300);
 }
 
 // ---------- Comprobante ----------
@@ -843,14 +867,40 @@ function confetti(big){
   if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const cv=$('confetti'); const ctx=cv.getContext('2d');
   cv.width=innerWidth; cv.height=innerHeight; cv.style.display='block';
-  const P=[]; const colors=['#B08D4F','#7A2E3B','#1B2A4A','#D2B279','#F2ECDD'];
-  const N = big ? 130 : 55;
-  for(let i=0;i<N;i++) P.push({x:Math.random()*cv.width,y:-20-Math.random()*cv.height*0.3,r:4+Math.random()*5,c:colors[i%5],v:2+Math.random()*3,a:Math.random()*Math.PI});
+  const colors=['#B08D4F','#D2B279','#F2ECDD','#7A2E3B','#1B2A4A','#E8C46A','#2E6FA3','#1F7A33'];
+  const W=cv.width, H=cv.height;
+  const P=[];
+  function make(x,y,vx,vy){
+    return {
+      x:x, y:y, vx:vx, vy:vy,
+      r:5+Math.random()*7,
+      c:colors[(Math.random()*colors.length)|0],
+      rot:Math.random()*Math.PI, vr:(-0.2+Math.random()*0.4),
+      shape:Math.random()<0.35?'circle':'rect',
+      sway:Math.random()*Math.PI, life:1
+    };
+  }
+  // Lluvia festiva desde arriba
+  const N = big ? 240 : 70;
+  for(let i=0;i<N;i++) P.push(make(Math.random()*W, -20-Math.random()*H*0.4, (-1+Math.random()*2), 2.2+Math.random()*3.4));
+  // Fiesta: cañones laterales al completar la ruta
+  if(big){
+    for(let i=0;i<70;i++) P.push(make(0, H*0.72, 4+Math.random()*7, -6-Math.random()*7));
+    for(let i=0;i<70;i++) P.push(make(W, H*0.72, -(4+Math.random()*7), -6-Math.random()*7));
+  }
+  const GRAV=0.12, DUR = big?360:150;
   let t=0;
   (function anim(){
-    t++; ctx.clearRect(0,0,cv.width,cv.height);
-    P.forEach(p=>{ p.y+=p.v; p.x+=Math.sin(p.a+t/14)*1.4; ctx.fillStyle=p.c; ctx.fillRect(p.x,p.y,p.r,p.r*0.62); });
-    if(t < (big?200:130)) requestAnimationFrame(anim); else cv.style.display='none';
+    t++; ctx.clearRect(0,0,W,H);
+    for(const p of P){
+      p.vy+=GRAV; p.x+=p.vx+Math.sin(p.sway+t/16)*1.1; p.y+=p.vy; p.rot+=p.vr;
+      if(t>DUR-60) p.life=Math.max(0,(DUR-t)/60);
+      ctx.save(); ctx.globalAlpha=p.life; ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.fillStyle=p.c;
+      if(p.shape==='circle'){ ctx.beginPath(); ctx.arc(0,0,p.r*0.5,0,Math.PI*2); ctx.fill(); }
+      else ctx.fillRect(-p.r/2,-p.r*0.3,p.r,p.r*0.6);
+      ctx.restore();
+    }
+    if(t < DUR) requestAnimationFrame(anim); else cv.style.display='none';
   })();
 }
 
