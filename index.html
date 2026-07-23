@@ -118,18 +118,19 @@
   }
   .hero-content{
     position:relative;z-index:2;width:100%;
-    padding:0 26px calc(60px + env(safe-area-inset-bottom));
+    padding:0 26px calc(34px + env(safe-area-inset-bottom));
     max-width:1120px;margin:0 auto;
   }
   .hero .eyebrow{display:block;margin-bottom:14px;color:var(--gold-text);letter-spacing:.015em}
   .hero h1{
-    font-family:'Inter Tight',sans-serif;font-weight:700;
-    font-size:clamp(48px,13vw,92px);letter-spacing:-.04em;line-height:.96;
-    -webkit-text-stroke:5px #fff;paint-order:stroke fill;
-    text-shadow:0 0 1px #fff, 1.5px 1.5px 0 rgba(255,255,255,.55), -1.5px -1.5px 0 rgba(255,255,255,.55), 0 3px 14px rgba(255,255,255,.35);
+    font-family:'Inter Tight',sans-serif;font-weight:700;color:var(--ink);
+    font-size:clamp(41px,11vw,75px);letter-spacing:-.042em;line-height:.97;margin-top:2px;
+    -webkit-text-stroke:1.6px rgba(255,255,255,.92);paint-order:stroke fill;
+    text-shadow:0 2px 14px rgba(255,255,255,.55), 0 1px 3px rgba(255,255,255,.7);
   }
-  .hero .sub{margin-top:16px;font-size:clamp(16px,4.2vw,19px);line-height:1.5;color:#B8860B;max-width:32ch;font-weight:600;-webkit-text-stroke:2.5px #000;paint-order:stroke fill;text-shadow:0 1px 3px rgba(0,0,0,.35)}
-  .hero-cta{display:flex;gap:11px;margin-top:24px;flex-wrap:wrap}
+  .hero .sub{margin-top:14px;font-size:clamp(15px,4vw,18px);line-height:1.45;color:#8A672B;max-width:17ch;font-weight:600;text-shadow:0 1px 4px rgba(255,255,255,.95)}
+  @media(min-width:640px){.hero .sub{max-width:24ch}}
+  .hero-cta{display:flex;gap:11px;margin-top:20px;flex-wrap:wrap}
   .btn{
     display:inline-flex;align-items:center;justify-content:center;gap:9px;
     border-radius:999px;padding:16px 26px;font-size:15.5px;font-weight:600;
@@ -441,13 +442,20 @@
   }
   .fab-backdrop.show{opacity:1;pointer-events:auto}
   .fab-wrap{
-    position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));
-    z-index:90;display:flex;flex-direction:column;align-items:flex-end;gap:12px;
-    transition:transform .4s var(--ease), opacity .4s var(--ease);
-    pointer-events:none; /* la caja no intercepta toques */
+    position:fixed;right:14px;bottom:calc(18px + env(safe-area-inset-bottom));
+    z-index:90;display:flex;flex-direction:column;align-items:flex-end;gap:10px;
+    opacity:0;transform:translateY(8px);pointer-events:none; /* oculto sobre el hero */
+    transition:transform .4s var(--ease), opacity .4s var(--ease), bottom .4s var(--ease);
   }
+  /* Aparece solo cuando el hero deja de estar en pantalla, elevado sobre la barra inferior */
+  body.bar-on .fab-wrap{opacity:1;transform:none;bottom:calc(90px + env(safe-area-inset-bottom))}
   .fab-wrap .fab, .fab-wrap #fabBtn{pointer-events:auto} /* solo el botón recibe toques */
+  body.bar-on .fab-wrap .fab, body.bar-on .fab-wrap #fabBtn{pointer-events:auto}
   .fab-wrap.hidden-dock{transform:translateY(140%);opacity:0;pointer-events:none}
+  @media(min-width:768px){
+    .fab-wrap{opacity:1;transform:none;bottom:calc(18px + env(safe-area-inset-bottom))}
+    body.bar-on .fab-wrap{bottom:calc(18px + env(safe-area-inset-bottom))}
+  }
   .fab-note{
     background:var(--card);border:1px solid var(--hairline);border-radius:14px;
     padding:10px 14px;font-size:13px;font-weight:500;color:var(--ink);
@@ -654,7 +662,7 @@
   .bottombar .bb-wa{display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:14px;background:#fff;border:1px solid var(--hairline);color:var(--ink)}
   .bottombar .bb-wa svg{width:22px;height:22px}
   @media(min-width:768px){ .bottombar{display:none} }
-  body.bar-on .fab-wrap{opacity:0;pointer-events:none;transition:opacity .25s ease}
+  /* (El FAB ahora aparece junto con la barra, elevado sobre ella; ver regla body.bar-on .fab-wrap arriba) */
 
   /* ---------- Filtros de galería ---------- */
   .gal-filters{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 0 18px;padding-bottom:4px}
@@ -1541,13 +1549,20 @@ fabMenu.querySelectorAll('.fab-opt').forEach(function(o){
   o.addEventListener('click', function(){ setTimeout(closeFab, 150); });
 });
 
-/* Nota "respondo en 10 min": aparece a los 2.5s, se oculta a los 9s o al abrir */
-var noteTimer1 = setTimeout(function(){ fabNote.classList.add('show'); }, 2500);
-var noteTimer2 = setTimeout(hideNote, 11000);
+/* Nota "respondo en 10 min": aparece en zona limpia (tras salir del hero), no sobre la portada */
+var noteShownOnce = false;
+var noteTimer2;
+function maybeShowNote(){
+  if(noteShownOnce) return;
+  if(window.pageYOffset < window.innerHeight * 0.6) return; /* aún en el hero: no mostrar */
+  noteShownOnce = true;
+  fabNote.classList.add('show');
+  noteTimer2 = setTimeout(hideNote, 8000);
+}
 function hideNote(){
   fabNote.classList.remove('show');
-  document.getElementById('fabDot').style.display = 'none';
-  clearTimeout(noteTimer1); clearTimeout(noteTimer2);
+  var dot = document.getElementById('fabDot'); if(dot) dot.style.display = 'none';
+  clearTimeout(noteTimer2);
 }
 
 /* Ocultar al hacer scroll, reaparecer al detenerse */
@@ -1556,6 +1571,7 @@ var scrollStop;
 window.addEventListener('scroll', function(){
   if(fabOpen) return;
   var y = window.pageYOffset;
+  maybeShowNote();
   if(y > lastY + 6 && y > 300){ fabWrap.classList.add('hidden-dock'); fabNote.classList.remove('show'); }
   else if(y < lastY - 6){ fabWrap.classList.remove('hidden-dock'); }
   lastY = y;
