@@ -740,6 +740,64 @@
   .pass-chip{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#B8A87E;border:1px solid rgba(176,141,79,.5);border-radius:999px;padding:6px 11px}
   .pass-cta{display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:#B08D4F;color:#fff;font-weight:700;font-size:14.5px;border-radius:14px;padding:13px 20px;min-height:44px;box-shadow:0 6px 20px rgba(176,141,79,.4)}
   @media(max-width:520px){.pass-in{flex-direction:column;text-align:center}.pass-chips{justify-content:center}}
+
+  /* ---- Nav superior ---- */
+  .topnav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(250,250,248,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--hairline);transform:translateY(-100%);transition:transform .35s var(--ease)}
+  .topnav.show{transform:none}
+  .tn-in{display:flex;align-items:center;gap:14px;padding:10px 20px}
+  .tn-logo{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:17px;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+  .tn-logo b{color:var(--gold-text)}
+  .tn-links{display:flex;gap:4px;margin-left:auto}
+  .tn-links a{color:var(--ink);text-decoration:none;font-size:13.5px;font-weight:600;padding:9px 11px;border-radius:10px}
+  .tn-links a:hover{background:#F1EDE4}
+  .tn-cta{background:var(--ink);color:#fff;font-size:13.5px;font-weight:700;padding:10px 16px;border-radius:12px;min-height:40px}
+  .tn-burger{display:none;flex-direction:column;gap:4.5px;background:none;border:0;padding:10px;cursor:pointer;margin-left:auto}
+  .tn-burger span{width:22px;height:2.2px;background:var(--ink);border-radius:2px;transition:all .25s var(--ease)}
+  .tn-burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6.7px) rotate(45deg)}
+  .tn-burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+  .tn-burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.7px) rotate(-45deg)}
+  @media(max-width:760px){
+    .tn-burger{display:flex}
+    .tn-links{position:fixed;top:56px;left:0;right:0;background:#FAFAF8;border-bottom:1px solid var(--hairline);flex-direction:column;gap:0;padding:8px 14px 14px;display:none}
+    .tn-links.open{display:flex}
+    .tn-links a{padding:13px 12px;font-size:15px;border-radius:12px}
+    .tn-cta{margin-left:auto}
+  }
+  /* ---- Franja de confianza ---- */
+  .trust-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:18px 20px 4px}
+  .ts-item{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--hairline);border-radius:14px;padding:12px 13px;font-size:12.5px;font-weight:600;color:var(--ink);box-shadow:var(--shadow-soft)}
+  .ts-item svg{flex:0 0 auto;color:var(--gold-text)}
+  @media(max-width:760px){.trust-strip{grid-template-columns:1fr 1fr;gap:8px}.ts-item{font-size:12px;padding:11px 12px}}
+  /* ---- Beneficios ---- */
+  .ben-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+  .ben-card{background:#fff;border:1px solid var(--hairline);border-radius:18px;padding:20px;box-shadow:var(--shadow-soft)}
+  .ben-ic{width:44px;height:44px;border-radius:13px;background:#F6F1E7;color:var(--gold-text);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+  .ben-card h3{font-family:'Inter Tight',sans-serif;font-size:16.5px;letter-spacing:-.01em}
+  .ben-card p{font-size:13.5px;color:var(--stone);line-height:1.55;margin-top:6px}
+  .ben-cta{margin-top:16px;display:flex;justify-content:center}
+  .comp-details{margin-top:18px;border:1px solid var(--hairline);border-radius:16px;background:#fff;overflow:hidden}
+  .comp-details summary{padding:15px 18px;font-weight:600;font-size:14px;cursor:pointer;color:var(--stone);list-style:none;display:flex;justify-content:space-between;align-items:center}
+  .comp-details summary::after{content:"+";font-size:19px;color:var(--gold-text)}
+  .comp-details[open] summary::after{content:"–"}
+  .comp-details > #comparador{padding:0 16px 16px}
+  /* ---- Mini CTA ---- */
+  .mini-cta{text-align:center;margin-top:18px}
+  .mini-cta p{font-family:'Fraunces',serif;font-style:italic;font-size:16px;color:var(--stone);margin-bottom:12px}
+  .mini-cta .btn{display:inline-flex}
+  .btn-line-g{background:#fff;color:var(--ink);border:1.5px solid var(--gold);display:inline-flex}
+  /* ---- CTA final ---- */
+  .final-cta{background:linear-gradient(160deg,#191917,#111110);color:#FAFAF8;text-align:center;padding:52px 20px;margin-top:34px}
+  .final-cta h2{font-family:'Inter Tight',sans-serif;font-size:clamp(23px,6vw,32px);letter-spacing:-.02em;line-height:1.15;max-width:560px;margin:0 auto}
+  .final-cta p{color:#B9B5AC;font-size:15px;line-height:1.6;max-width:480px;margin:14px auto 0}
+  .fc-btns{display:flex;gap:11px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+  .final-cta .btn-ghost{border-color:rgba(250,250,248,.35);color:#FAFAF8}
+  /* ---- Hero: jerarquía y scroll ---- */
+  .btn-save{opacity:.82;font-size:13.5px;padding:11px 16px}
+  .scroll-cue{position:absolute;left:50%;transform:translateX(-50%);bottom:14px;color:#FAFAF8;opacity:.75;animation:cueBob 2.2s ease-in-out infinite;z-index:3}
+  @keyframes cueBob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
+  @media(prefers-reduced-motion:reduce){.scroll-cue{animation:none}}
+  /* ---- Pasaporte: detalles ---- */
+  .pass-mini-b{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;color:#D8C9A4;margin-top:12px;font-weight:600}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script>
@@ -843,6 +901,48 @@
 </head>
 <body>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- =============== NAV SUPERIOR =============== -->
+<header class="topnav" id="topnav">
+  <div class="tn-in wrap">
+    <a class="tn-logo" href="#" aria-label="Inicio">Tomas<b>Flores</b></a>
+    <nav class="tn-links" id="tnLinks" aria-label="Navegaci&oacute;n principal">
+      <a href="#como-funciona">Demostraci&oacute;n</a>
+      <a href="#galeria">Experiencias</a>
+      <a href="pasaporte.html">Pasaporte</a>
+      <a href="recetas.html">Recetas</a>
+      <a href="#sobre-mi">Sobre m&iacute;</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <button class="btn tn-cta" data-cal type="button">Reservar</button>
+    <button class="tn-burger" id="tnBurger" aria-label="Abrir men&uacute;" aria-expanded="false" type="button"><span></span><span></span><span></span></button>
+  </div>
+</header>
 <!-- =============== HERO =============== -->
 <section class="hero">
   <div class="hero-photo"><img id="heroImg" src="foto-hero.jpg" alt="Tomas Flores cocinando con utensilios Royal Prestige" fetchpriority="high"></div>
@@ -867,25 +967,15 @@
       </button>
     </div>
   </div>
+  <a class="scroll-cue" href="#ayuda" aria-label="Bajar para ver más"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></a>
 </section>
-
-<!-- =============== PASAPORTE DE SABORES =============== -->
-<section class="block wrap pass-sec" id="pasaporte">
-  <a class="pass-card rv" href="pasaporte.html" data-track="Pasaporte desde inicio" aria-label="Comenzar el Pasaporte de Sabores">
-    <div class="pass-in">
-      <img class="pass-emb" src="emblema-pasaporte.jpeg" alt="Pasaporte de Sabores" loading="lazy" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='emblema-pasaporte.jpg'}else{this.style.display='none'}">
-      <div>
-        <span class="pass-eyebrow">Nuevo &middot; Una aventura en tu cocina</span>
-        <h2 class="pass-h">&iquest;Te atreves a viajar por Latinoam&eacute;rica sin salir de tu cocina?</h2>
-        <p class="pass-p">Seis pa&iacute;ses, seis recetas, un sello por cada platillo que logres&hellip; y al completar la ruta, un <b style="color:#F2ECDD">regalo sorpresa</b> que te entrego personalmente.</p>
-        <div class="pass-chips"><span class="pass-chip">Gratis</span><span class="pass-chip">Sin compras</span><span class="pass-chip">A tu ritmo</span></div>
-        <span class="pass-cta">Comenzar mi viaje &rarr;</span>
-      </div>
-    </div>
-  </a>
+<!-- =============== FRANJA DE CONFIANZA =============== -->
+<section class="trust-strip wrap" aria-label="Por qué confiar">
+  <div class="ts-item rv"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Demostraci&oacute;n sin costo</span></div>
+  <div class="ts-item rv"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Atenci&oacute;n personalizada</span></div>
+  <div class="ts-item rv"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg><span>Servicio despu&eacute;s de la compra</span></div>
+  <div class="ts-item rv"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Dallas&ndash;Fort Worth</span></div>
 </section>
-
-
 <!-- =============== AYUDA =============== -->
 <section class="block wrap" id="ayuda">
   <div class="block-head">
@@ -914,33 +1004,7 @@
       <svg class="h-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
     </a>
   </div>
-</section>
-
-<!-- =============== RECETAS =============== -->
-<section class="block wrap" id="recetas">
-  <div class="block-head">
-    <span class="eyebrow rv">Cocina con tu Royal Prestige</span>
-    <h2 class="sec-h rv">Recetas para inspirarte</h2>
-  </div>
-  <div class="rec-grid" id="recGrid">
-    <a class="rec-card rv" href="recetas.html#/receta/costillas-bbq"><div class="rec-img"><img src="foto-costillas-bbq.jpg" alt="Costillas BBQ en Olla de Presión" loading="lazy"></div><div class="rec-body"><h3>Costillas BBQ en Olla de Presión</h3><p>35 min · Fácil</p></div></a>
-    <a class="rec-card rv" href="recetas.html#/receta/pasta-alfredo" style="transition-delay:80ms"><div class="rec-img"><img src="foto-pasta-alfredo.jpg" alt="Pasta Alfredo con Pollo" loading="lazy"></div><div class="rec-body"><h3>Pasta Alfredo con Pollo</h3><p>25 min · Fácil</p></div></a>
-    <a class="rec-card rv" href="recetas.html#/receta/flan-casero" style="transition-delay:160ms"><div class="rec-img"><img src="foto-flan-casero.jpg" alt="Flan Casero" loading="lazy"></div><div class="rec-body"><h3>Flan Casero</h3><p>50 min · Media</p></div></a>
-  </div>
-  <a class="see-all rv" href="recetas.html">Ver todas las recetas
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-  </a>
-  <div class="home-soon rv" id="homeSoon" style="display:none">
-    <div class="hs-head">
-      <h3>Próximamente</h3>
-      <a class="hs-link" href="recetas.html#soon">Ver más ›</a>
-    </div>
-    <div class="hs-row" id="hsRow"></div>
-  </div>
-</section>
-
-<!-- =============== OPINIONES =============== -->
-<!-- =============== CÓMO FUNCIONA =============== -->
+</section><!-- =============== CÓMO FUNCIONA =============== -->
 <section class="block wrap" id="como-funciona">
   <div class="block-head">
     <span class="eyebrow rv">Así de fácil</span>
@@ -963,40 +1027,22 @@
     </a>
   </div>
 </section>
-
-<section class="block wrap" id="opiniones">
+<!-- =============== BENEFICIOS =============== -->
+<section class="block wrap" id="beneficios">
   <div class="block-head">
-    <span class="eyebrow rv">Mi compromiso no termina con la compra</span>
-      <h2 class="sec-h rv">Experiencias reales de mis clientes</h2>
+    <span class="eyebrow rv">M&aacute;s que utensilios</span>
+    <h2 class="sec-h rv">Una nueva experiencia en tu cocina</h2>
   </div>
-  <div class="rev-intro rv">
-      <p>Estas son experiencias compartidas por personas a quienes he acompañado durante su demostración y después de recibir sus productos.</p>
-      <p class="rev-note">Cada testimonio fue enviado directamente por el cliente y solo puede haberse editado para mejorar su claridad, sin cambiar su experiencia.</p>
-    </div>
-  <div class="rev-track rv" aria-label="Opiniones de clientes" id="revTrack">
-    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#8A6FB4">MG</span><div><div class="rev-name">María G.</div><div class="rev-sub">Cliente desde 2024</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">La demostración fue increíble. Tomas cocinó para toda mi familia y nos explicó todo con muchísima paciencia. Ahora cocino más rápido y más saludable.</p></article>
-    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#B08D4F">CR</span><div><div class="rev-name">Carlos R.</div><div class="rev-sub">Cliente desde 2023</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Lo que más valoro es el servicio después de la compra. Tuve una duda con mi olla de presión, le escribí y me respondió en minutos. Así se atiende a un cliente.</p></article>
-    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#5B8A72">AP</span><div><div class="rev-name">Ana P.</div><div class="rev-sub">Cliente desde 2025</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Las recetas de su página son mi salvación entre semana. Los tamales me quedaron perfectos a la primera con su tamalera y sus consejos.</p></article>
-    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#7A6A5A">LM</span><div><div class="rev-name">Luis M.</div><div class="rev-sub">Cliente desde 2024</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Comparé con otros distribuidores y me quedé con Tomas por su seriedad. Todo lo que prometió en la demostración se cumplió.</p></article>
-    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#4E6B9B">RT</span><div><div class="rev-name">Rosa T.</div><div class="rev-sub">Cliente desde 2023</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Mi ribeye nunca había quedado así. El sartén es otra cosa y Tomas siempre está pendiente de que le saquemos provecho a todo el equipo.</p></article>
+  <div class="ben-grid">
+    <div class="ben-card rv"><div class="ben-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.7c-3.5 3.2-5.5 6-5.5 9a5.5 5.5 0 0 0 11 0c0-3-2-5.8-5.5-9z"/></svg></div><h3>Menos agua y aceite</h3><p>Un m&eacute;todo de cocina que aprovecha los jugos naturales de los alimentos.</p></div>
+    <div class="ben-card rv"><div class="ben-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></div><h3>Calor uniforme</h3><p>Distribuci&oacute;n pareja para dorar sin quemar y cocinar sin vigilar tanto.</p></div>
+    <div class="ben-card rv"><div class="ben-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Hechos para durar</h3><p>Acero de alta calidad pensado para acompa&ntilde;arte muchos a&ntilde;os.</p></div>
+    <div class="ben-card rv"><div class="ben-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-7.6-4.7L2 22l6.7-2.9"/><path d="M8.5 3.3A8.5 8.5 0 0 1 21 11.5"/></svg></div><h3>Acompa&ntilde;amiento personal</h3><p>Estoy contigo antes, durante y despu&eacute;s de cada experiencia.</p></div>
   </div>
-  <p class="rev-note rv">¿Ya cocinas con tu Royal Prestige? <button type="button" class="rev-open" onclick="openReview()" style="font-weight:600;color:var(--ink);border-bottom:1px solid var(--gold);background:none;cursor:pointer">Deja tu reseña ⭐</button></p>
-
-  <div class="post-rev-cta rv">
-    <h3>Vive tu propia demostración en casa</h3>
-    <div class="prc-btns">
-      <button class="btn btn-solid" data-cal type="button">Reservar demostración gratuita</button>
-      <a class="btn btn-ghost" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Tengo%20una%20pregunta" target="_blank" rel="noopener">Preguntar por WhatsApp</a>
-    </div>
-  </div>
-</section>
-
-<!-- =============== COMPARADOR =============== -->
-<section class="block wrap" id="comparador">
-  <div class="block-head">
-    <span class="eyebrow rv">La diferencia se nota todos los días</span>
-    <h2 class="sec-h rv">Royal Prestige vs. utensilios tradicionales</h2>
-  </div>
+  <div class="ben-cta rv"><button class="btn btn-solid" data-cal type="button">Quiero conocerlos en acci&oacute;n</button></div>
+  <details class="comp-details rv">
+    <summary>Ver comparaci&oacute;n completa con utensilios tradicionales</summary>
+<div id="comparador">
   <div class="vs-card rv">
     <div class="vs-head">
       <div class="empty-c"></div>
@@ -1031,11 +1077,9 @@
   </div>
   <p class="rv" style="margin-top:18px"><button class="see-all" data-cal type="button" style="border-bottom:1px solid var(--gold)">Compruébalo en una demostración gratuita
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></p>
-</section>
-
-
-
-<!-- =============== GALERÍA =============== -->
+</div>
+  </details>
+</section><!-- =============== GALERÍA =============== -->
 <section class="block wrap" id="galeria">
   <div class="block-head">
     <span class="eyebrow rv">Momentos reales</span>
@@ -1048,9 +1092,74 @@
     <button class="gal-item rv" data-lb="2" type="button" style="transition-delay:120ms" aria-label="Ver foto: El toque del chef"><img src="foto-galeria-3.jpg" alt="Tomas sazonando durante una demostración" loading="lazy"><span class="gal-tag">El toque del chef</span></button>
     <button class="gal-item rv" data-lb="3" type="button" style="transition-delay:180ms" aria-label="Ver foto: Tomas Flores"><img src="foto-galeria-4.jpg" alt="Retrato de Tomas Flores" loading="lazy"><span class="gal-tag">Tomas Flores</span></button>
   </div>
-</section>
 
-<!-- =============== SOBRE MÍ =============== -->
+  <div class="mini-cta rv">
+    <p>&iquest;Te gustar&iacute;a vivir tu propia experiencia?</p>
+    <button class="btn btn-solid" data-cal type="button">Reservar mi demostraci&oacute;n</button>
+  </div>
+</section><!-- =============== PASAPORTE DE SABORES =============== -->
+<section class="block wrap pass-sec" id="pasaporte">
+  <a class="pass-card rv" href="pasaporte.html" data-track="Pasaporte desde inicio" aria-label="Comenzar el Pasaporte de Sabores">
+    <div class="pass-in">
+      <img class="pass-emb" src="emblema-pasaporte.jpeg" alt="Pasaporte de Sabores" loading="lazy" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='emblema-pasaporte.jpg'}else{this.style.display='none'}">
+      <div>
+        <span class="pass-eyebrow">Nuevo &middot; Una aventura en tu cocina</span>
+        <h2 class="pass-h">&iquest;Te atreves a viajar por Latinoam&eacute;rica sin salir de tu cocina?</h2>
+        <p class="pass-p">Seis pa&iacute;ses, seis recetas, un sello por cada platillo que logres&hellip; y al completar la ruta, un <b style="color:#F2ECDD">regalo sorpresa</b> que te entrego personalmente.</p>
+        <div class="pass-chips"><span class="pass-chip">Gratis</span><span class="pass-chip">Sin compras</span><span class="pass-chip">A tu ritmo</span></div>
+        <div class="pass-mini-b"><span>Nuevas recetas</span><span>&middot;</span><span>Sellos por logro</span><span>&middot;</span><span>Regalo al completar</span></div>
+        <span class="pass-cta">Comenzar mi pasaporte &rarr;</span>
+      </div>
+    </div>
+  </a>
+</section><!-- =============== RECETAS =============== -->
+<section class="block wrap" id="recetas">
+  <div class="block-head">
+    <span class="eyebrow rv">Cocina con tu Royal Prestige</span>
+    <h2 class="sec-h rv">Recetas para inspirarte</h2>
+  </div>
+  <div class="rec-grid" id="recGrid">
+    <a class="rec-card rv" href="recetas.html#/receta/costillas-bbq"><div class="rec-img"><img src="foto-costillas-bbq.jpg" alt="Costillas BBQ en Olla de Presión" loading="lazy"></div><div class="rec-body"><h3>Costillas BBQ en Olla de Presión</h3><p>35 min · Fácil</p></div></a>
+    <a class="rec-card rv" href="recetas.html#/receta/pasta-alfredo" style="transition-delay:80ms"><div class="rec-img"><img src="foto-pasta-alfredo.jpg" alt="Pasta Alfredo con Pollo" loading="lazy"></div><div class="rec-body"><h3>Pasta Alfredo con Pollo</h3><p>25 min · Fácil</p></div></a>
+    <a class="rec-card rv" href="recetas.html#/receta/flan-casero" style="transition-delay:160ms"><div class="rec-img"><img src="foto-flan-casero.jpg" alt="Flan Casero" loading="lazy"></div><div class="rec-body"><h3>Flan Casero</h3><p>50 min · Media</p></div></a>
+  </div>
+  <a class="see-all rv" href="recetas.html">Ver todas las recetas
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+  </a>
+  <div class="home-soon rv" id="homeSoon" style="display:none">
+    <div class="hs-head">
+      <h3>Próximamente</h3>
+      <a class="hs-link" href="recetas.html#soon">Ver más ›</a>
+    </div>
+    <div class="hs-row" id="hsRow"></div>
+  </div>
+  <div class="mini-cta rv" style="margin-top:8px"><a class="btn btn-line-g" href="recetas.html" data-track="Ver recetas">Ver todas las recetas</a></div>
+</section><section class="block wrap" id="opiniones">
+  <div class="block-head">
+    <span class="eyebrow rv">Mi compromiso no termina con la compra</span>
+      <h2 class="sec-h rv">Experiencias reales de mis clientes</h2>
+  </div>
+  <div class="rev-intro rv">
+      <p>Estas son experiencias compartidas por personas a quienes he acompañado durante su demostración y después de recibir sus productos.</p>
+      <p class="rev-note">Cada testimonio fue enviado directamente por el cliente y solo puede haberse editado para mejorar su claridad, sin cambiar su experiencia.</p>
+    </div>
+  <div class="rev-track rv" aria-label="Opiniones de clientes" id="revTrack">
+    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#8A6FB4">MG</span><div><div class="rev-name">María G.</div><div class="rev-sub">Cliente desde 2024</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">La demostración fue increíble. Tomas cocinó para toda mi familia y nos explicó todo con muchísima paciencia. Ahora cocino más rápido y más saludable.</p></article>
+    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#B08D4F">CR</span><div><div class="rev-name">Carlos R.</div><div class="rev-sub">Cliente desde 2023</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Lo que más valoro es el servicio después de la compra. Tuve una duda con mi olla de presión, le escribí y me respondió en minutos. Así se atiende a un cliente.</p></article>
+    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#5B8A72">AP</span><div><div class="rev-name">Ana P.</div><div class="rev-sub">Cliente desde 2025</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Las recetas de su página son mi salvación entre semana. Los tamales me quedaron perfectos a la primera con su tamalera y sus consejos.</p></article>
+    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#7A6A5A">LM</span><div><div class="rev-name">Luis M.</div><div class="rev-sub">Cliente desde 2024</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Comparé con otros distribuidores y me quedé con Tomas por su seriedad. Todo lo que prometió en la demostración se cumplió.</p></article>
+    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#4E6B9B">RT</span><div><div class="rev-name">Rosa T.</div><div class="rev-sub">Cliente desde 2023</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Mi ribeye nunca había quedado así. El sartén es otra cosa y Tomas siempre está pendiente de que le saquemos provecho a todo el equipo.</p></article>
+  </div>
+  <p class="rev-note rv">¿Ya cocinas con tu Royal Prestige? <button type="button" class="rev-open" onclick="openReview()" style="font-weight:600;color:var(--ink);border-bottom:1px solid var(--gold);background:none;cursor:pointer">Deja tu reseña ⭐</button></p>
+
+  <div class="post-rev-cta rv">
+    <h3>Vive tu propia demostración en casa</h3>
+    <div class="prc-btns">
+      <button class="btn btn-solid" data-cal type="button">Reservar demostración gratuita</button>
+      <a class="btn btn-ghost" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Tengo%20una%20pregunta" target="_blank" rel="noopener">Preguntar por WhatsApp</a>
+    </div>
+  </div>
+</section><!-- =============== SOBRE MÍ =============== -->
 <section class="about" id="sobre-mi">
   <div class="about-inner">
     <div class="about-photo rv"><img id="aboutImg" src="foto-about.jpg" alt="Tomas Flores" loading="lazy"></div>
@@ -1061,9 +1170,7 @@
       <p class="body rv" id="aboutBody">Soy Tomas. Cuando compras conmigo, no termina la relación: empieza. Recetas, servicio, dudas — cuenta conmigo antes, durante y después.</p>
     </div>
   </div>
-</section>
-
-<!-- =============== COMPARTIR =============== -->
+</section><!-- =============== COMPARTIR =============== -->
 <section class="block wrap">
   <div class="share-card rv">
     <span class="share-emoji" aria-hidden="true">📣</span>
@@ -1075,9 +1182,7 @@
     </button>
     <span class="share-ok" id="shareOk" hidden>¡Listo, link copiado!</span>
   </div>
-</section>
-
-<!-- =============== FAQ =============== -->
+</section><!-- =============== FAQ =============== -->
 <section class="block wrap" id="faq">
   <div class="block-head">
     <span class="eyebrow rv">Centro de ayuda</span>
@@ -1131,6 +1236,17 @@
       </details>
       </div>
       <button class="faq-toggle" id="faqToggle" type="button" aria-expanded="false" aria-controls="faqMore">Ver más preguntas <span class="ft-ic">›</span></button>
+  </div>
+</section>
+<!-- =============== CTA FINAL =============== -->
+<section class="final-cta">
+  <div class="wrap">
+    <h2 class="rv">Tu pr&oacute;xima experiencia puede comenzar en tu propia cocina</h2>
+    <p class="rv">Reserva una demostraci&oacute;n y descubre los productos mientras compartimos una receta con tu familia.</p>
+    <div class="fc-btns rv">
+      <button class="btn btn-solid btn-hero" data-cal type="button">Reservar demostraci&oacute;n</button>
+      <a class="btn btn-ghost" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B" target="_blank" rel="noopener">Hablar por WhatsApp</a>
+    </div>
   </div>
 </section>
 
@@ -1811,6 +1927,28 @@ try{
     if(abierto){ box.setAttribute('hidden',''); btn.classList.remove('open'); btn.setAttribute('aria-expanded','false'); btn.firstChild.nodeValue = 'Ver más preguntas '; }
     else { box.removeAttribute('hidden'); btn.classList.add('open'); btn.setAttribute('aria-expanded','true'); btn.firstChild.nodeValue = 'Ver menos '; if(window.trackEvent) window.trackEvent('FAQ: ver más'); }
   });
+})();
+</script>
+
+<script>
+(function(){
+  var nav=document.getElementById('topnav'), burger=document.getElementById('tnBurger'), links=document.getElementById('tnLinks');
+  if(!nav) return;
+  var hero=document.querySelector('.hero');
+  function onScroll(){
+    var y=window.scrollY, h=hero?hero.offsetHeight*0.55:280;
+    nav.classList.toggle('show', y>h);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  if(burger){
+    burger.addEventListener('click', function(){
+      var open=links.classList.toggle('open');
+      burger.setAttribute('aria-expanded', open?'true':'false');
+    });
+    links.addEventListener('click', function(e){
+      if(e.target.closest('a')){ links.classList.remove('open'); burger.setAttribute('aria-expanded','false'); }
+    });
+  }
 })();
 </script>
 </body>
