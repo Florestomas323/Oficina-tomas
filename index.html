@@ -122,22 +122,25 @@
   .hero-photo::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 12%, transparent 55%, rgba(17,17,16,.10) 100%)}
   .hero-veil{
     position:absolute;inset:0;
-    background:linear-gradient(to top, rgba(250,250,248,.99) 0%, rgba(250,250,248,.98) 18%, rgba(250,250,248,.90) 28%, rgba(250,250,248,.60) 40%, rgba(250,250,248,.28) 50%, rgba(250,250,248,.08) 60%, rgba(250,250,248,0) 74%);
+    background:linear-gradient(to top, rgba(250,250,248,.96) 0%, rgba(250,250,248,.93) 20%, rgba(250,250,248,.80) 32%, rgba(250,250,248,.52) 44%, rgba(250,250,248,.24) 56%, rgba(250,250,248,.06) 67%, rgba(250,250,248,0) 79%);
   }
   .hero-content{
     position:relative;z-index:2;width:100%;
-    padding:0 26px calc(68px + env(safe-area-inset-bottom));
+    padding:0 26px calc(44px + env(safe-area-inset-bottom));
     max-width:1120px;margin:0 auto;
   }
   .hero .eyebrow{display:block;margin-bottom:14px;color:var(--gold-text);letter-spacing:.015em}
   .hero h1{
-    font-family:'Inter Tight',sans-serif;font-weight:700;
-    font-size:clamp(48px,13vw,92px);letter-spacing:-.04em;line-height:.96;
-    -webkit-text-stroke:5px #fff;paint-order:stroke fill;
-    text-shadow:0 0 1px #fff, 1.5px 1.5px 0 rgba(255,255,255,.55), -1.5px -1.5px 0 rgba(255,255,255,.55), 0 3px 14px rgba(255,255,255,.35);
+    font-family:'Inter Tight',sans-serif;font-weight:700;color:var(--ink);
+    font-size:clamp(48px,13vw,88px);letter-spacing:-.042em;line-height:.95;
+    -webkit-text-stroke:1.4px rgba(255,255,255,.85);paint-order:stroke fill;
+    text-shadow:0 2px 12px rgba(255,255,255,.4), 0 1px 3px rgba(255,255,255,.55);
   }
-  .hero .sub{margin-top:18px;font-size:clamp(16.5px,4.3vw,20px);line-height:1.5;color:#8A672B;max-width:26ch;font-weight:600;-webkit-text-stroke:1.4px #fff;paint-order:stroke fill;text-shadow:0 1px 2px rgba(255,255,255,.6)}
-  .hero-cta{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+  .hero .sub{margin-top:16px;font-size:clamp(16.5px,4.3vw,20px);line-height:1.5;color:#8A672B;max-width:26ch;font-weight:650;text-shadow:0 1px 8px rgba(255,255,255,.8), 0 1px 2px rgba(255,255,255,.95)}
+  .hero-cta{display:flex;flex-direction:column;align-items:stretch;gap:12px;margin-top:26px;max-width:380px}
+  @media(min-width:640px){.hero-cta{flex-direction:row;flex-wrap:wrap;align-items:center;max-width:none}}
+  .hero-cta .btn{width:100%}
+  @media(min-width:640px){.hero-cta .btn{width:auto}}
   .btn{
     display:inline-flex;align-items:center;justify-content:center;gap:9px;
     border-radius:999px;padding:16px 26px;min-height:52px;font-size:15.5px;font-weight:650;
@@ -146,8 +149,8 @@
   .btn svg{flex:0 0 auto}
   .btn:active{transform:scale(.97)}
   .btn-solid{background:linear-gradient(180deg,#26241f,var(--ink));color:#fff;box-shadow:0 8px 22px rgba(17,17,16,.20), inset 0 1px 0 rgba(255,255,255,.08)}
-  .btn-save{background:#fff;color:var(--ink);border:1.5px solid var(--gold);box-shadow:0 6px 20px rgba(176,141,79,.15)}
-  @media(hover:hover){.btn-save:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(176,141,79,.22)}}
+  .btn-save{background:rgba(255,255,255,.72);color:var(--gold-text);border:1.5px solid rgba(176,141,79,.55);box-shadow:0 4px 14px rgba(176,141,79,.14);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+  @media(hover:hover){.btn-save:hover{transform:translateY(-2px);background:#fff;box-shadow:0 10px 26px rgba(176,141,79,.22)}}
 
   @media(hover:hover){.btn-solid:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(17,17,16,.28), inset 0 1px 0 rgba(255,255,255,.08)}}
   .btn-ghost{
@@ -458,7 +461,7 @@
   }
   .fab-backdrop.show{opacity:1;pointer-events:auto}
   .fab-wrap{
-    position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));
+    position:fixed;right:16px;bottom:calc(22px + env(safe-area-inset-bottom));
     z-index:90;display:flex;flex-direction:column;align-items:flex-end;gap:12px;
     transition:transform .4s var(--ease), opacity .4s var(--ease);
     pointer-events:none; /* la caja no intercepta toques */
@@ -490,10 +493,10 @@
   @media(hover:hover){.fab-opt:hover{transform:translateX(-4px)}}
   .fab-opt .fo-ic{font-size:20px;line-height:1}
   .fab{
-    width:58px;height:58px;border-radius:50%;
-    background:var(--ink);color:#fff;
+    width:54px;height:54px;border-radius:50%;
+    background:linear-gradient(180deg,#26241f,var(--ink));color:#fff;
     display:flex;align-items:center;justify-content:center;
-    box-shadow:0 8px 24px rgba(17,17,16,.3), 0 2px 8px rgba(17,17,16,.2);
+    box-shadow:0 8px 22px rgba(17,17,16,.28), 0 2px 8px rgba(17,17,16,.18);
     transition:transform .3s var(--ease), box-shadow .3s var(--ease);
     position:relative;
   }
@@ -643,10 +646,12 @@
   .hs-name{display:block;font-size:13.5px;font-weight:600;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
 
   /* ---- Señal de confianza en el hero ---- */
-  .hero-trust{display:inline-flex;align-items:center;gap:9px;margin:14px 0 0;font-size:13.5px;font-weight:700;color:var(--ink);opacity:1;touch-action:manipulation;text-decoration:none}
+  .hero-trust{display:inline-flex;align-items:center;gap:8px;margin:18px 0 0;min-height:44px;padding:10px 16px;font-size:14px;font-weight:700;letter-spacing:-.01em;color:var(--gold-text);opacity:1;touch-action:manipulation;text-decoration:none;background:rgba(255,255,255,.55);border:1px solid rgba(176,141,79,.32);border-radius:999px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:transform .25s var(--ease), background .25s ease, box-shadow .25s ease}
   .hero-trust .stars{color:#B8860B;letter-spacing:1.5px;font-size:14.5px}
+  .hero-trust .ht-arrow{transition:transform .3s var(--ease);flex:0 0 auto}
   .hero-trust *{pointer-events:none}
-  .hero-trust:active{opacity:.7}
+  .hero-trust:active{transform:scale(.97);opacity:.85}
+  @media(hover:hover){.hero-trust:hover{background:rgba(255,255,255,.8);box-shadow:0 6px 18px rgba(176,141,79,.16)}.hero-trust:hover .ht-arrow{transform:translateX(3px)}}
 
   /* ---------- Tarjeta Compartir ---------- */
   .share-card{background:var(--card);border:1px solid var(--hairline);border-radius:24px;padding:clamp(30px,7vw,46px) 26px;text-align:center;box-shadow:var(--shadow-soft);max-width:620px;margin:0 auto;position:relative;overflow:hidden}
@@ -681,8 +686,7 @@
 
   /* ---------- Jerarquía CTA hero ---------- */
   .btn-hero{font-size:17px;padding:18px 28px;box-shadow:0 10px 26px rgba(17,17,16,.24), inset 0 1px 0 rgba(255,255,255,.08)}
-  .hero .btn-save{background:transparent;border:0;color:var(--stone);font-size:14.5px;padding:10px 6px;text-decoration:underline;text-underline-offset:3px;box-shadow:none}
-  .hero .btn-save svg{width:15px;height:15px;opacity:.75}
+  .hero .btn-save svg{width:18px;height:18px;opacity:.9}
 
   /* ---------- Modal de confianza (pre-Calendly) ---------- */
   .cal-pre{padding:22px 22px calc(22px + env(safe-area-inset-bottom))}
@@ -858,7 +862,7 @@
   <div class="hero-content">
     <h1 class="rv in">Tomas<br>Flores</h1>
     <p class="sub rv in" id="heroSub">Cocina más rápido, saludable y con mejor sabor.</p>
-    <a class="hero-trust rv in" href="#opiniones" aria-label="Ver experiencias de clientes"><span>Experiencias reales de mis clientes ›</span></a>
+    <a class="hero-trust rv in" href="#opiniones" aria-label="Ver experiencias de clientes"><span>Experiencias reales de mis clientes</span><svg class="ht-arrow" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
 <div class="hero-cta rv in">
       <button class="btn btn-solid btn-hero" data-cal type="button">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
