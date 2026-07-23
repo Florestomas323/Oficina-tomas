@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Pasaporte de Sabores Latinos — Tomas Flores</title>
+<meta name="description" content="Un continente. Muchas cocinas. Un viaje para compartir. Prepara 6 recetas latinoamericanas, colecciona sellos digitales y desbloquea recompensas.">
+<link rel="canonical" href="https://tomasflores.com/pasaporte.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Tomas Flores — Royal Prestige">
+<meta property="og:title" content="Pasaporte de Sabores Latinos">
+<meta property="og:description" content="Un continente. Muchas cocinas. Un viaje para compartir. Seis países, seis recetas, un pasaporte.">
+<meta property="og:url" content="https://tomasflores.com/pasaporte.html">
+<meta property="og:image" content="https://tomasflores.com/og-image.jpeg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@700;800&family=Fraunces:ital,wght@0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F0E2; --card:#FFFDF7; --ink:#1B2A4A; --navy:#1B2A4A; --stone:#5E6478;
+    --hairline:#E4DCC8; --gold:#B08D4F; --gold-text:#8A672B; --wine:#7A2E3B;
+    --ok:#1F7A33; --shadow:0 2px 4px rgba(27,42,74,.06),0 14px 34px rgba(27,42,74,.10);
+    --ease:cubic-bezier(.22,.8,.24,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+  .wrap{max-width:640px;margin:0 auto;padding:0 18px 90px}
+  .view{display:none;animation:fadeIn .35s var(--ease)}
+  .view.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  /* ---------- Barra superior ---------- */
+  .top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 0}
+  .back-link{display:inline-flex;align-items:center;gap:7px;color:var(--ink);text-decoration:none;font-weight:600;font-size:13.5px;padding:9px 14px;border:1px solid var(--hairline);border-radius:999px;background:var(--card)}
+  .top-title{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:var(--gold-text)}
+
+  /* ---------- Portada ---------- */
+  .cover{background:linear-gradient(160deg,#22335A 0%,#1B2A4A 55%,#15213B 100%);border-radius:26px;padding:38px 26px 34px;color:#F2ECDD;text-align:center;box-shadow:var(--shadow);position:relative;overflow:hidden;margin-top:6px}
+  .cover::before{content:"";position:absolute;inset:10px;border:1.5px solid rgba(176,141,79,.55);border-radius:20px;pointer-events:none}
+  .cover-crest{width:74px;height:74px;margin:0 auto 16px;display:block}
+  .cover h1{font-family:'Inter Tight',sans-serif;font-size:clamp(27px,7.4vw,36px);letter-spacing:-.02em;line-height:1.06}
+  .cover .motto{font-family:'Fraunces',serif;font-style:italic;font-size:15.5px;color:#D8C9A4;margin-top:12px;line-height:1.5}
+  .cover .season{display:inline-block;margin-top:16px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:#B8A87E;border:1px solid rgba(176,141,79,.5);border-radius:999px;padding:7px 14px}
+  .cover-note{margin-top:18px;font-size:13px;color:#C7BFA9;line-height:1.55}
+  .btn{display:flex;align-items:center;justify-content:center;gap:9px;border-radius:16px;padding:16px 20px;font-size:15.5px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font-family:inherit;min-height:44px;width:100%;transition:transform .15s var(--ease)}
+  .btn:active{transform:scale(.98)}
+  .btn-gold{background:var(--gold);color:#fff;box-shadow:0 6px 20px rgba(176,141,79,.35)}
+  .btn-line{background:var(--card);color:var(--ink);border:1.5px solid var(--hairline)}
+  .btn-navy{background:var(--navy);color:#fff}
+  .btn-wa{background:#1F7A33;color:#fff}
+  .cover .btn{margin-top:22px}
+  .how{margin-top:22px;background:var(--card);border:1px solid var(--hairline);border-radius:20px;padding:20px;box-shadow:var(--shadow)}
+  .how h2{font-family:'Inter Tight',sans-serif;font-size:17px;margin-bottom:12px}
+  .how ol{list-style:none}
+  .how li{display:flex;gap:12px;padding:9px 0;font-size:14px;line-height:1.5;color:#3A4258}
+  .how .n{flex:0 0 26px;height:26px;border-radius:50%;background:var(--navy);color:#F2ECDD;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:12.5px}
+
+  /* ---------- Registro ---------- */
+  .form-card{background:var(--card);border:1px solid var(--hairline);border-radius:22px;padding:24px;box-shadow:var(--shadow);margin-top:10px}
+  .form-card h2{font-family:'Inter Tight',sans-serif;font-size:22px;letter-spacing:-.02em;margin-bottom:6px}
+  .form-card .sub{font-size:14px;color:var(--stone);margin-bottom:16px;line-height:1.5}
+  label{display:block;font-size:13px;font-weight:600;margin:14px 0 6px}
+  input[type=text]{width:100%;border:1.5px solid var(--hairline);border-radius:13px;padding:14px;font-size:16px;font-family:inherit;background:#FFFEFB;color:var(--ink)}
+  input[type=text]:focus{outline:none;border-color:var(--gold)}
+  .hint{font-size:12px;color:#8B8672;margin-top:8px;line-height:1.5}
+  .err{display:none;background:#FBEBE9;color:#8E2F26;border-radius:12px;padding:11px 14px;font-size:13.5px;margin-top:12px;line-height:1.5}
+  .err.show{display:block}
+
+  /* ---------- Pasaporte ---------- */
+  .pass-head{background:linear-gradient(160deg,#22335A,#1B2A4A);border-radius:22px;padding:22px;color:#F2ECDD;box-shadow:var(--shadow);margin-top:6px}
+  .pass-head .who{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .pass-head .name{font-family:'Inter Tight',sans-serif;font-size:19px;letter-spacing:-.01em}
+  .pass-head .city{font-size:12.5px;color:#C7BFA9}
+  .prog-wrap{margin-top:16px}
+  .prog-top{display:flex;justify-content:space-between;font-size:12.5px;color:#D8C9A4;margin-bottom:7px}
+  .prog{height:10px;background:rgba(242,236,221,.18);border-radius:999px;overflow:hidden}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),#D2B279);border-radius:999px;transition:width .6s var(--ease)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .country{background:var(--card);border:1px solid var(--hairline);border-radius:18px;padding:16px 14px;text-align:center;cursor:pointer;box-shadow:var(--shadow);border-bottom:3px solid var(--hairline);transition:transform .15s var(--ease)}
+  .country:active{transform:scale(.97)}
+  .country .mono{width:52px;height:52px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-family:'Inter Tight',sans-serif;font-weight:800;font-size:16px;letter-spacing:.04em;color:#fff}
+  .country h3{font-size:14.5px;letter-spacing:-.01em}
+  .country .dish{font-size:12px;color:var(--stone);margin-top:3px;line-height:1.35}
+  .country .st{margin-top:9px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .country.done{border-bottom-color:var(--ok)}
+  .country.done .st{color:var(--ok)}
+  .country:not(.done) .st{color:var(--gold-text)}
+  .stamp-mini{display:inline-block;transform:rotate(-8deg);border:2px solid var(--ok);color:var(--ok);border-radius:8px;padding:2px 7px;font-size:10.5px;font-weight:800;letter-spacing:.05em}
+
+  /* ---------- Detalle país / receta ---------- */
+  .rec-head{border-radius:22px;padding:24px 20px;color:#fff;box-shadow:var(--shadow);margin-top:6px}
+  .rec-head .co{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+  .rec-head h2{font-family:'Inter Tight',sans-serif;font-size:clamp(23px,6.4vw,30px);letter-spacing:-.02em;margin-top:5px;line-height:1.1}
+  .rec-head .meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+  .rec-head .chip{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:600}
+  .card{background:var(--card);border:1px solid var(--hairline);border-radius:20px;padding:20px;margin-top:14px;box-shadow:var(--shadow)}
+  .card h3{font-family:'Inter Tight',sans-serif;font-size:17px;margin-bottom:12px}
+  .ing{list-style:none}
+  .ing li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--hairline);font-size:14.5px}
+  .ing li:last-child{border-bottom:0}
+  .ing b{color:var(--stone);font-weight:600;white-space:nowrap;font-size:13.5px}
+  .steps{list-style:none}
+  .steps li{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--hairline)}
+  .steps li:last-child{border-bottom:0}
+  .stp{flex:0 0 27px;height:27px;border-radius:50%;background:var(--navy);color:#F2ECDD;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+  .steps p{font-size:14.5px;line-height:1.6;padding-top:2px}
+  .tipbox{background:#F3EBD9;border:1px solid #E2D5B4;border-radius:15px;padding:14px 16px;margin-top:13px}
+  .tipbox .t{font-weight:700;font-size:13px;color:var(--gold-text);margin-bottom:4px}
+  .tipbox p{font-size:13.5px;line-height:1.55}
+  .done-note{display:none;background:#EAF6EC;color:#1F7A33;border-radius:14px;padding:13px 15px;font-size:14px;font-weight:600;margin-top:14px;text-align:center}
+  .rec-acts{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+
+  /* ---------- Modal confirmación ---------- */
+  .modal{position:fixed;inset:0;background:rgba(21,29,49,.55);display:none;align-items:flex-end;justify-content:center;z-index:60;padding:14px}
+  .modal.open{display:flex}
+  .modal-card{background:var(--card);border-radius:22px;padding:24px 20px calc(22px + env(safe-area-inset-bottom));max-width:520px;width:100%;box-shadow:var(--shadow);animation:up .3s var(--ease)}
+  @keyframes up{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+  .modal-card h3{font-family:'Inter Tight',sans-serif;font-size:19px;margin-bottom:8px}
+  .modal-card p{font-size:14px;color:var(--stone);line-height:1.55;margin-bottom:16px}
+  .modal-card .btn + .btn{margin-top:9px}
+
+  /* ---------- Overlay sello ---------- */
+  .stamp-ov{position:fixed;inset:0;background:rgba(21,29,49,.78);display:none;align-items:center;justify-content:center;z-index:70;padding:22px}
+  .stamp-ov.open{display:flex}
+  .stamp-box{text-align:center;color:#F2ECDD;max-width:400px;width:100%}
+  .stamp-svg{width:200px;height:200px;margin:0 auto 6px;display:block;animation:stampIn .55s var(--ease)}
+  @keyframes stampIn{0%{transform:scale(2.2) rotate(-18deg);opacity:0}60%{transform:scale(.94) rotate(-8deg);opacity:1}100%{transform:scale(1) rotate(-8deg)}}
+  .stamp-box h3{font-family:'Inter Tight',sans-serif;font-size:23px;margin-top:8px}
+  .stamp-box p{font-size:14px;color:#C7BFA9;margin-top:6px;line-height:1.5}
+  .stamp-box .btn{margin-top:20px}
+
+  /* ---------- Recompensas ---------- */
+  .rw{display:flex;gap:14px;background:var(--card);border:1px solid var(--hairline);border-radius:18px;padding:17px;margin-top:12px;box-shadow:var(--shadow);align-items:center}
+  .rw .ic{flex:0 0 46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center}
+  .rw .ic.lock{background:#EEE8D6;color:#A79E85}
+  .rw .ic.ok{background:#EAF6EC;color:var(--ok)}
+  .rw h3{font-size:15px}
+  .rw p{font-size:12.5px;color:var(--stone);margin-top:3px;line-height:1.45}
+  .rw .go{margin-left:auto;flex:0 0 auto;font-size:13px;font-weight:700;color:var(--gold-text);text-decoration:none;border:1.5px solid var(--gold);border-radius:999px;padding:8px 14px;background:transparent;cursor:pointer;font-family:inherit}
+  .rw.locked{opacity:.62}
+
+  /* ---------- Certificado / recetario ---------- */
+  .cert{background:var(--card);border:2px solid var(--gold);border-radius:22px;padding:30px 24px;text-align:center;box-shadow:var(--shadow);margin-top:10px;position:relative}
+  .cert::before{content:"";position:absolute;inset:8px;border:1px solid var(--hairline);border-radius:16px;pointer-events:none}
+  .cert .lbl{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-text)}
+  .cert h2{font-family:'Fraunces',serif;font-size:clamp(24px,6.6vw,32px);margin:12px 0 4px;font-weight:500}
+  .cert .who{font-family:'Inter Tight',sans-serif;font-size:clamp(21px,6vw,27px);letter-spacing:-.01em;margin:14px 0 4px}
+  .cert .d{font-size:13px;color:var(--stone);line-height:1.6}
+  .cert .seal{width:90px;height:90px;margin:16px auto 4px;display:block}
+  .toolbar{display:flex;gap:10px;margin-top:16px}
+  .toolbar .btn{flex:1}
+
+  /* ---------- Banner estado ---------- */
+  .net{position:fixed;top:0;left:0;right:0;background:var(--wine);color:#fff;font-size:13px;text-align:center;padding:9px;z-index:80;display:none}
+  .net.show{display:block}
+  .loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:60px 0;color:var(--stone);font-size:14px}
+  .spin{width:20px;height:20px;border:2.5px solid var(--hairline);border-top-color:var(--gold);border-radius:50%;animation:sp 1s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--navy);color:#F2ECDD;border-radius:999px;padding:12px 22px;font-size:13.5px;font-weight:600;z-index:90;display:none;max-width:88%;text-align:center}
+  .toast.show{display:block}
+  .legal-foot{margin-top:26px;text-align:center;font-size:12px;color:#8B8672;line-height:1.6}
+  .legal-foot a{color:var(--gold-text)}
+  @media print{
+    body{background:#fff}
+    .top,.toolbar,.btn,.net,.toast,.legal-foot{display:none!important}
+    .wrap{padding:0;max-width:100%}
+    .view{display:none}
+    .view.active{display:block}
+  }
+
+  .country.locked{opacity:.55;cursor:default}
+  .country.locked:active{transform:none}
+  .lockmono{background:#E7E0CE!important;color:#A79E85}
+  .lockst{color:#A79E85!important}
+  .country.open{border-bottom-color:var(--gold)}
+  .country .ph{position:relative;width:100%;aspect-ratio:16/11;border-radius:12px;overflow:hidden;margin-bottom:9px;background:#EFE8D6}
+  .country .ph img{width:100%;height:100%;object-fit:cover;display:block}
+  .country .ph .ph-mono{position:absolute;right:6px;bottom:6px;width:30px;height:30px;border-radius:50%;display:none;align-items:center;justify-content:center;color:#fff;font-family:'Inter Tight',sans-serif;font-weight:800;font-size:11.5px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+  .country .ph img[src]:not([style*="none"]) + .ph-mono{display:flex}
+  .country .ph.noimg{aspect-ratio:auto;background:transparent;margin-bottom:0}
+  .country .ph.noimg .ph-mono{position:static;display:flex;width:52px;height:52px;font-size:16px;margin:0 auto 10px;box-shadow:none}
+  .rec-photo{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:20px;display:block;margin-top:6px;box-shadow:var(--shadow)}
+  .rec-photo + .rec-head{margin-top:-18px;position:relative;border-top-left-radius:20px;border-top-right-radius:20px}
+</style>
+</head>
+<body>
+<div class="net" id="netBanner">Sin conexión — tus sellos se guardarán al reconectar</div>
+<div class="wrap">
+  <div class="top">
+    <a class="back-link" href="index.html" id="backHome">&#8592; tomasflores.com</a>
+    <span class="top-title" id="topTitle">Pasaporte de Sabores</span>
+  </div>
+
+  <!-- ============ PORTADA ============ -->
+  <section class="view" id="v-cover">
+    <div class="cover">
+      <svg class="cover-crest" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+        <circle cx="40" cy="40" r="37" stroke="#B08D4F" stroke-width="2.5"/>
+        <circle cx="40" cy="40" r="30" stroke="#B08D4F" stroke-width="1" opacity=".5"/>
+        <path d="M40 16c-9 7-14 14-14 23 0 9 6 17 14 25 8-8 14-16 14-25 0-9-5-16-14-23z" stroke="#D8C9A4" stroke-width="2" fill="none"/>
+        <circle cx="40" cy="39" r="5.5" fill="#B08D4F"/>
+      </svg>
+      <h1>Pasaporte de<br>Sabores Latinos</h1>
+      <p class="motto">"Un continente. Muchas cocinas.<br>Un viaje para compartir."</p>
+      <span class="season">Temporada 1 &middot; Seis pa&iacute;ses</span>
+      <p class="cover-note">Prepara seis recetas latinoamericanas en tu cocina, colecciona los seis sellos y conviértete en Embajador de Sabores.</p>
+      <button class="btn btn-gold" id="btnStart" type="button">Comenzar mi viaje</button>
+    </div>
+    <div class="how">
+      <h2>C&oacute;mo funciona</h2>
+      <ol>
+        <li><span class="n">1</span>Empiezas en Venezuela y avanzas pa&iacute;s por pa&iacute;s.</li>
+        <li><span class="n">2</span>Prep&aacute;rala en tu cocina, a tu ritmo.</li>
+        <li><span class="n">3</span>Marca &quot;Ya la prepar&eacute;&quot; y estampa tu sello.</li>
+        <li><span class="n">4</span>Cada sello desbloquea el siguiente destino. Al llegar a seis, tu recompensa.</li>
+      </ol>
+    </div>
+    <p class="legal-foot">Participar es gratis y no requiere ninguna compra. Las recompensas est&aacute;n sujetas a las <a href="#/reglas">reglas del pasaporte</a>.</p>
+  </section>
+
+  <!-- ============ REGISTRO ============ -->
+  <section class="view" id="v-reg">
+    <div class="form-card">
+      <h2>Tu pasaporte, tu nombre</h2>
+      <p class="sub">Solo necesito dos datos para estampar tus sellos. Nada m&aacute;s.</p>
+      <label for="regName">Tu nombre</label>
+      <input type="text" id="regName" maxlength="40" placeholder="Ej. Mar&iacute;a" autocomplete="given-name">
+      <label for="regCity">Tu ciudad</label>
+      <input type="text" id="regCity" maxlength="40" placeholder="Ej. Irving, TX" autocomplete="address-level2">
+      <div class="err" id="regErr"></div>
+      <div style="margin-top:18px">
+        <button class="btn btn-navy" id="btnReg" type="button">Crear mi pasaporte</button>
+      </div>
+      <p class="hint">Tu progreso se guarda en este dispositivo de forma an&oacute;nima. No pedimos tel&eacute;fono ni correo para participar.</p>
+    </div>
+  </section>
+
+  <!-- ============ MI PASAPORTE ============ -->
+  <section class="view" id="v-pass">
+    <div class="pass-head">
+      <div class="who">
+        <div>
+          <div class="name" id="ppName">—</div>
+          <div class="city" id="ppCity"></div>
+        </div>
+        <svg width="46" height="46" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+          <circle cx="40" cy="40" r="36" stroke="#B08D4F" stroke-width="2.5"/>
+          <path d="M40 20c-7 5.5-11 11-11 18s4.7 13.3 11 19.5C46.3 51.3 51 45 51 38s-4-12.5-11-18z" stroke="#D8C9A4" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="prog-wrap">
+        <div class="prog-top"><span>Tu viaje</span><b id="ppCount">0 de 6 destinos</b></div>
+        <div class="prog"><div class="prog-fill" id="ppFill" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="grid" id="ppGrid"></div>
+    <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
+      <button class="btn btn-line" id="btnRewards" type="button">Ver mi recompensa</button>
+      <button class="btn btn-line" id="btnShare" type="button">Invitar a un amigo</button>
+    </div>
+    <p class="legal-foot"><a href="#/reglas">Reglas y privacidad del pasaporte</a></p>
+  </section>
+
+  <!-- ============ DETALLE PAÍS ============ -->
+  <section class="view" id="v-country"></section>
+
+  <!-- ============ RECOMPENSAS ============ -->
+  <section class="view" id="v-rewards">
+    <div class="form-card">
+      <h2>Tu recompensa</h2>
+      <p class="sub" id="rwSub">Cada sello te acerca a algo especial.</p>
+      <div id="rwList"></div>
+    </div>
+    <p class="legal-foot">La recompensa se desbloquea con los seis sellos. La sorpresa especial est&aacute; sujeta a disponibilidad y ubicaci&oacute;n &mdash; ver <a href="#/reglas">reglas</a>.</p>
+  </section>
+
+  <!-- ============ RECETA SECRETA (1 sello) ============ -->
+  <section class="view" id="v-secret">
+    <div class="rec-head" style="background:linear-gradient(150deg,#7A2E3B,#5C1F2A)">
+      <span class="co">Recompensa &middot; Receta secreta</span>
+      <h2>Salsa Taquera de la Casa</h2>
+      <div class="meta"><span class="chip">10 min</span><span class="chip">F&aacute;cil</span><span class="chip">Rinde 1 taza</span></div>
+    </div>
+    <div class="card">
+      <h3>Ingredientes</h3>
+      <ul class="ing">
+        <li><span>Tomates verdes (tomatillos)</span><b>5 piezas</b></li>
+        <li><span>Chile serrano</span><b>2 piezas</b></li>
+        <li><span>Diente de ajo</span><b>1 pieza</b></li>
+        <li><span>Cebolla blanca</span><b>un cuarto</b></li>
+        <li><span>Cilantro fresco</span><b>un manojo chico</b></li>
+        <li><span>Sal</span><b>al gusto</b></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Preparaci&oacute;n</h3>
+      <ol class="steps">
+        <li><span class="stp">1</span><p>Asa los tomates verdes, los chiles y el ajo en un sart&eacute;n seco a fuego medio hasta que tomen color.</p></li>
+        <li><span class="stp">2</span><p>Lic&uacute;a todo con la cebolla, el cilantro y una pizca de sal. Usa poca agua: la textura debe quedar espesa.</p></li>
+        <li><span class="stp">3</span><p>Prueba y ajusta la sal. Deja reposar 10 minutos antes de servir para que los sabores se integren.</p></li>
+      </ol>
+    </div>
+    <div class="tipbox"><div class="t">El toque de Tomas</div><p>En un sart&eacute;n de acero inoxidable el asado queda parejo y sin humo excesivo. Esta salsa acompa&ntilde;a cualquier receta de tu pasaporte.</p></div>
+    <div class="rec-acts"><button class="btn btn-line" data-nav="#/recompensas" type="button">Volver a recompensas</button></div>
+  </section>
+
+  <!-- ============ RECETARIO (3 sellos) ============ -->
+  <section class="view" id="v-book">
+    <div class="cert">
+      <span class="lbl">Mini recetario latino</span>
+      <h2>Mis Sabores del Viaje</h2>
+      <p class="d">Las recetas que has conquistado, listas para guardar o imprimir.</p>
+    </div>
+    <div id="bookList"></div>
+    <div class="toolbar">
+      <button class="btn btn-navy" onclick="window.print()" type="button">Guardar en PDF</button>
+      <button class="btn btn-line" data-nav="#/recompensas" type="button">Volver</button>
+    </div>
+  </section>
+
+  <!-- ============ CERTIFICADO (6 sellos) ============ -->
+  <section class="view" id="v-cert">
+    <div class="cert">
+      <span class="lbl">Certificado digital</span>
+      <h2>Embajador de Sabores</h2>
+      <svg class="seal" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+        <circle cx="50" cy="50" r="46" stroke="#B08D4F" stroke-width="3"/>
+        <circle cx="50" cy="50" r="38" stroke="#B08D4F" stroke-width="1.2" opacity=".55"/>
+        <path d="M50 24c-9 7-14 14-14 22.5C36 56 42 64 50 72c8-8 14-15.5 14-25.5C64 38 59 31 50 24z" stroke="#7A2E3B" stroke-width="2.4"/>
+        <circle cx="50" cy="47" r="5" fill="#B08D4F"/>
+      </svg>
+      <div class="who" id="certName">—</div>
+      <p class="d">complet&oacute; los seis destinos del<br><b>Pasaporte de Sabores Latinos &middot; Temporada 1</b><br><span id="certDate"></span></p>
+    </div>
+    <div class="card">
+      <h3>Tu sorpresa especial</h3>
+      <p style="font-size:14px;color:var(--stone);line-height:1.6">Como Embajador de Sabores puedes solicitar una sorpresa especial. Est&aacute; sujeta a disponibilidad y ubicaci&oacute;n dentro del &aacute;rea DFW, y no requiere ninguna compra.</p>
+      <div style="margin-top:14px">
+        <button class="btn btn-wa" id="btnClaim" type="button">Solicitar por WhatsApp</button>
+      </div>
+    </div>
+    <div class="toolbar">
+      <button class="btn btn-navy" onclick="window.print()" type="button">Guardar certificado</button>
+      <button class="btn btn-line" data-nav="#/pasaporte" type="button">Mi pasaporte</button>
+    </div>
+  </section>
+
+  <!-- ============ REGLAS ============ -->
+  <section class="view" id="v-rules">
+    <div class="form-card">
+      <h2>Reglas y privacidad</h2>
+      <p class="sub">Claridad ante todo.</p>
+      <div style="font-size:14px;line-height:1.65;color:#3A4258">
+        <p><b>Participaci&oacute;n.</b> El Pasaporte de Sabores Latinos es gratuito y no requiere ninguna compra. Es una experiencia del sitio personal de Tomas Flores, Distribuidor Autorizado Independiente de Royal Prestige&reg;.</p>
+        <p style="margin-top:10px"><b>Sellos.</b> Los sellos se obtienen al marcar una receta como preparada. Funcionan con base en la confianza: el viaje es tuyo.</p>
+        <p style="margin-top:10px"><b>La recompensa se desbloquea al completar los seis destinos.</b> Incluye el certificado digital, el recetario completo y una receta secreta, disponibles de inmediato. <b>La sorpresa especial</b> se coordina por WhatsApp, est&aacute; sujeta a disponibilidad y ubicaci&oacute;n, y no est&aacute; garantizada como premio f&iacute;sico espec&iacute;fico.</p>
+        <p style="margin-top:10px"><b>Tus datos.</b> Solo guardamos el nombre y la ciudad que escribas, junto con tu progreso, con un identificador an&oacute;nimo. No pedimos tel&eacute;fono ni correo para participar. Si solicitas la sorpresa, la conversaci&oacute;n ocurre en WhatsApp y tu n&uacute;mero no se publica en el sitio.</p>
+        <p style="margin-top:10px"><b>Eliminaci&oacute;n.</b> Puedes pedir que borre tu pasaporte y tus datos escribi&eacute;ndome por WhatsApp. M&aacute;s detalles en la <a href="privacidad.html" style="color:var(--gold-text)">pol&iacute;tica de privacidad</a>.</p>
+      </div>
+      <div style="margin-top:18px"><button class="btn btn-line" data-nav="#/pasaporte" type="button">Volver</button></div>
+    </div>
+  </section>
+
+  <div class="loading" id="loading" style="display:none"><span class="spin"></span>Cargando tu pasaporte…</div>
+</div>
+
+<!-- Modal confirmación -->
+<div class="modal" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+  <div class="modal-card">
+    <h3 id="cmTitle">&iquest;Ya preparaste esta receta?</h3>
+    <p id="cmText">Confirma para estampar tu sello. El viaje funciona con base en la confianza.</p>
+    <button class="btn btn-gold" id="cmYes" type="button">S&iacute;, estampar mi sello</button>
+    <button class="btn btn-line" id="cmNo" type="button">Todav&iacute;a no</button>
+  </div>
+</div>
+
+<!-- Overlay sello -->
+<div class="stamp-ov" id="stampOv" role="dialog" aria-modal="true">
+  <div class="stamp-box">
+    <svg class="stamp-svg" viewBox="0 0 200 200" fill="none" id="stampSvg"></svg>
+    <h3 id="stampTitle">&iexcl;Sello desbloqueado!</h3>
+    <p id="stampSub"></p>
+    <button class="btn btn-gold" id="stampOk" type="button">Continuar mi viaje</button>
+    <button class="btn btn-line" id="stampShare" type="button" style="margin-top:9px;background:transparent;color:#F2ECDD;border-color:rgba(242,236,221,.4)">Compartir este sello</button>
+  </div>
+</div>
+
+<canvas id="confetti" style="position:fixed;inset:0;pointer-events:none;z-index:100;display:none"></canvas>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const CFG = {
+  apiKey:"AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",
+  authDomain:"oficina-digital-tomas.firebaseapp.com",
+  projectId:"oficina-digital-tomas",
+  storageBucket:"oficina-digital-tomas.firebasestorage.app",
+  messagingSenderId:"898342341243",
+  appId:"1:898342341243:web:7ee15b8b3533f3889570de"
+};
+const WA = "16823811576";
+
+// ---------- Países y recetas (Temporada 1) ----------
+const COUNTRIES = [
+ { id:"ve", img:"foto-arepas.jpg", co:"Venezuela", mono:"VE", color:"#8A2432", dish:"Arepas rellenas", stamp:"Alma Venezolana",
+   time:"45 min", serv:"4 porciones", diff:"Media",
+   ings:[["Harina de maíz precocida","2 tazas"],["Agua tibia","2 tazas y media"],["Sal","1 cdta"],["Pechuga de pollo cocida y deshebrada","2 tazas"],["Aguacate maduro","1 pieza"],["Mayonesa","3 cdas"],["Cebolla finamente picada","2 cdas"]],
+   steps:["Mezcla la harina con el agua tibia y la sal. Amasa hasta lograr una masa suave y sin grumos; deja reposar 5 minutos.","Forma bolas y aplánalas en discos de un dedo de grosor.","Cocina las arepas en un sartén a fuego medio, unos 5 a 7 minutos por lado, hasta que suenen huecas al golpearlas suavemente.","Mezcla el pollo con el aguacate machacado, la mayonesa y la cebolla para el relleno estilo reina pepiada.","Abre cada arepa por un costado, rellena generosamente y sirve caliente."],
+   tip:"En un sartén de fondo grueso el dorado queda parejo por fuera y la masa se cuece bien por dentro sin quemarse." },
+ { id:"mx", img:"foto-pollo-mexicano.jpg", co:"México", mono:"MX", color:"#1E5B3A", dish:"Pollo en salsa mexicana", stamp:"Corazón Mexicano",
+   time:"40 min", serv:"4 porciones", diff:"Fácil",
+   ings:[["Piezas de pollo","8 piezas"],["Jitomates","5 piezas"],["Chile serrano","2 piezas"],["Cebolla","media pieza"],["Dientes de ajo","2 piezas"],["Caldo de pollo","1 taza"],["Sal y pimienta","al gusto"]],
+   steps:["Sella las piezas de pollo en una olla a fuego medio-alto hasta dorarlas; resérvalas.","Asa los jitomates, chiles, cebolla y ajo; licúalos con el caldo hasta obtener una salsa tersa.","Vierte la salsa en la olla y cocina 5 minutos para que tome cuerpo.","Regresa el pollo, sazona, tapa y cocina a fuego bajo unos 20 minutos hasta que esté suave.","Sirve con arroz o tortillas recién hechas."],
+   tip:"Con la tapa bien ajustada, el vapor circula y el pollo se cocina en su propio jugo con la salsa: queda jugoso sin vigilarlo tanto." },
+ { id:"co", img:"foto-arroz-colombiano.jpg", co:"Colombia", mono:"CO", color:"#B38414", dish:"Arroz con pollo colombiano", stamp:"Sabor Cafetero",
+   time:"50 min", serv:"6 porciones", diff:"Media",
+   ings:[["Arroz","2 tazas"],["Pechuga de pollo","2 piezas"],["Zanahoria en cubitos","1 pieza"],["Arveja (chícharo)","media taza"],["Pimentón rojo picado","1 pieza"],["Cebolla larga picada","2 tallos"],["Dientes de ajo","2 piezas"],["Color o achiote","1 cdta"],["Caldo de pollo","4 tazas"]],
+   steps:["Cocina las pechugas en el caldo hasta que estén suaves; deshébralas y reserva el caldo.","Sofríe la cebolla, el ajo y el pimentón; agrega la zanahoria y la arveja por 3 minutos.","Añade el arroz y el color; revuelve para que tome el tono dorado.","Vierte 4 tazas del caldo reservado, tapa y cocina a fuego bajo unos 20 minutos.","Integra el pollo deshebrado, mezcla con suavidad y deja reposar 5 minutos antes de servir."],
+   tip:"Un fondo que distribuye bien el calor evita que el arroz se pegue en el centro: grano suelto sin estar moviéndolo." },
+ { id:"sv", img:"foto-pupusas.jpg", co:"El Salvador", mono:"SV", color:"#25498C", dish:"Pupusas con curtido", stamp:"Orgullo Cuscatleco",
+   time:"60 min", serv:"10 pupusas", diff:"Media",
+   ings:[["Harina de maíz","3 tazas"],["Agua tibia","2 tazas y media"],["Queso que derrita, rallado","2 tazas"],["Frijoles molidos refritos","1 taza"],["Repollo rallado","2 tazas"],["Zanahoria rallada","1 pieza"],["Vinagre blanco","media taza"],["Orégano","1 cdta"],["Sal","al gusto"]],
+   steps:["Prepara el curtido: mezcla repollo, zanahoria, vinagre, orégano y sal; deja reposar mientras cocinas (mejor si es desde la víspera).","Mezcla la harina con agua y sal hasta lograr una masa manejable.","Toma una bola de masa, haz un hueco, rellena con queso y frijoles, y cierra con cuidado.","Aplana con las palmas humedecidas hasta formar una tortilla gruesa.","Cocina en sartén o comal a fuego medio, 4 a 5 minutos por lado, hasta dorar.","Sirve calientes con el curtido encima."],
+   tip:"La temperatura constante del sartén es clave: si el calor sube y baja, la pupusa se abre. Un fondo grueso mantiene el punto." },
+ { id:"hn", img:"foto-pollo-tajadas.jpg", co:"Honduras", mono:"HN", color:"#2E6FA3", dish:"Pollo con tajadas", stamp:"Sazón Catracha",
+   time:"45 min", serv:"4 porciones", diff:"Media",
+   ings:[["Piezas de pollo","8 piezas"],["Plátanos verdes","3 piezas"],["Repollo rallado","2 tazas"],["Jitomate","2 piezas"],["Limón","1 pieza"],["Ajo en polvo y comino","1 cdta de cada uno"],["Aceite para freír","el necesario"],["Sal","al gusto"]],
+   steps:["Sazona el pollo con ajo, comino y sal; cocínalo hasta dorar por fuera y quedar suave por dentro.","Corta los plátanos verdes en tajadas largas y delgadas.","Fríe las tajadas hasta que estén doradas y crujientes; escúrrelas.","Prepara la ensalada: repollo, jitomate picado, limón y sal.","Sirve las tajadas como base, el pollo encima y corona con la ensalada fresca."],
+   tip:"Escurre las tajadas sobre rejilla en lugar de papel: conservan lo crujiente por más tiempo." },
+ { id:"gt", img:"foto-pepian.jpg", co:"Guatemala", mono:"GT", color:"#3B6E8F", dish:"Pepián de pollo", stamp:"Herencia Chapina",
+   time:"70 min", serv:"6 porciones", diff:"Media",
+   ings:[["Piezas de pollo","8 piezas"],["Jitomates","4 piezas"],["Miltomate (tomatillo)","6 piezas"],["Chile guaque o guajillo","2 piezas"],["Pepitoria (semilla de calabaza)","4 cdas"],["Ajonjolí","3 cdas"],["Tortilla dorada","1 pieza"],["Cebolla","media pieza"],["Papa y ejote cocidos","2 papas y 1 taza"]],
+   steps:["Cocina el pollo en agua con sal hasta que esté suave; reserva el caldo.","Asa jitomates, miltomates, chiles, cebolla, pepitoria, ajonjolí y la tortilla hasta que tomen aroma.","Licúa todo lo asado con un poco del caldo hasta obtener una salsa espesa.","Cuela la salsa y cocínala 10 minutos a fuego medio, moviendo de vez en cuando.","Agrega el pollo, las papas y los ejotes; cocina 10 minutos más para integrar.","Sirve con arroz blanco y tortillas."],
+   tip:"Tostar bien las semillas es el secreto del pepián: en un sartén que reparte el calor no se queman en las orillas." }
+];
+
+// ---------- Estado ----------
+let db=null, auth=null, uid=null, USER=null, pendingCountry=null, online=true;
+const $ = id => document.getElementById(id);
+const VALID = COUNTRIES.map(c=>c.id);
+
+// ---------- Analítica (reutiliza analytics_clicks) ----------
+let anaQ=[]; let anaReady=false; let _add=null,_col=null,_ts=null;
+function vidGet(){ try{ let v=localStorage.getItem('_vid'); if(!v){ v=Date.now().toString(36)+Math.random().toString(36).slice(2,9); localStorage.setItem('_vid',v);} return v; }catch(e){ return 'x'; } }
+function srcGet(){
+  try{
+    const p=new URLSearchParams(location.search), u=(p.get('utm_source')||'').toLowerCase();
+    if(u){ if(u.includes('qr'))return'QR'; if(u.includes('insta'))return'Instagram'; if(u.includes('tiktok'))return'TikTok'; if(u.includes('whats'))return'WhatsApp'; return u.charAt(0).toUpperCase()+u.slice(1); }
+    if(p.get('inv')) return 'Invitación';
+    const r=(document.referrer||'').toLowerCase();
+    if(!r) return 'Directo';
+    if(r.includes('instagram'))return'Instagram'; if(r.includes('tiktok'))return'TikTok';
+    if(r.includes('wa.me')||r.includes('whatsapp'))return'WhatsApp'; if(r.includes('google'))return'Google';
+    if(r.includes('tomasflores')||r.includes('oficina-tomas'))return'Interno';
+    return 'Otro';
+  }catch(e){ return 'Otro'; }
+}
+function devGet(){ const u=navigator.userAgent; if(/iPad/i.test(u))return'iPad'; if(/iPhone|iPod/i.test(u))return'iPhone'; if(/Android/i.test(u))return/Mobile/i.test(u)?'Android':'Tablet Android'; return'Computadora'; }
+const VID=vidGet(), SRC=srcGet(), DEV=devGet();
+function track(label){
+  if(!label) return;
+  anaQ.push(String(label).slice(0,90));
+  flushAna();
+}
+function flushAna(){
+  if(!anaReady) return;
+  while(anaQ.length){
+    const l=anaQ.shift();
+    try{ _add(_col(db,'analytics_clicks'),{label:l,action:'click',createdAt:_ts(),vid:VID,sid:'',src:SRC,dev:DEV,page:'pasaporte',referrer:(document.referrer||'').slice(0,100)}).catch(()=>{}); }catch(e){}
+  }
+}
+
+// ---------- Utilidades ----------
+function esc(s){ return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),3200); }
+function cacheSave(){ try{ localStorage.setItem('_pp', JSON.stringify({name:USER.name,city:USER.city,stamps:USER.stamps})); }catch(e){} }
+function cacheLoad(){ try{ return JSON.parse(localStorage.getItem('_pp')||'null'); }catch(e){ return null; } }
+function stampCount(){ return USER ? Object.keys(USER.stamps||{}).length : 0; }
+
+// ---------- Navegación (hash router) ----------
+const VIEWS = { '':'v-cover','#/':'v-cover','#/registro':'v-reg','#/pasaporte':'v-pass','#/recompensas':'v-rewards','#/secreta':'v-secret','#/recetario':'v-book','#/certificado':'v-cert','#/reglas':'v-rules' };
+function show(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  const el=$(id); if(el) el.classList.add('active');
+  window.scrollTo({top:0,behavior:'auto'});
+}
+function route(){
+  const h=location.hash||'';
+  if(h.startsWith('#/pais/')){
+    const cid=h.split('/')[2];
+    const idx=COUNTRIES.findIndex(x=>x.id===cid);
+    if(idx>=0 && USER){
+      if(estadoPais(idx)==='locked'){ location.hash='#/pasaporte'; toast('Ese destino aún está bloqueado'); return; }
+      renderCountry(COUNTRIES[idx]); show('v-country'); track('Pasaporte: abre '+COUNTRIES[idx].co); return;
+    }
+  }
+  if(h==='#/recompensas'){ renderRewards(); }
+  if(h==='#/pasaporte'){ renderPassport(); }
+  if(h==='#/recetario'){ if(stampCount()<6){ location.hash='#/recompensas'; return; } renderBook(); }
+  if(h==='#/secreta'){ if(stampCount()<6){ location.hash='#/recompensas'; return; } }
+  if(h==='#/certificado'){ if(stampCount()<6){ location.hash='#/recompensas'; return; } renderCert(); }
+  if((h==='#/pasaporte'||h==='') && !USER && !$('loading').style.display.includes('flex')){ /* portada si no hay usuario */ }
+  const target = VIEWS[h] || 'v-cover';
+  if((target==='v-pass'||h==='#/recompensas') && !USER){ show('v-cover'); return; }
+  show(target);
+}
+window.addEventListener('hashchange', route);
+document.addEventListener('click', e=>{
+  const n=e.target.closest('[data-nav]');
+  if(n){ location.hash=n.getAttribute('data-nav'); }
+});
+
+// ---------- Renders ----------
+function nextIndex(){
+  const s = (USER && USER.stamps) || {};
+  for(let i=0;i<COUNTRIES.length;i++){ if(!s[COUNTRIES[i].id]) return i; }
+  return -1;
+}
+function estadoPais(i){
+  const c = COUNTRIES[i];
+  const s = (USER && USER.stamps) || {};
+  if(s[c.id]) return 'done';
+  return i === nextIndex() ? 'open' : 'locked';
+}
+function renderPassport(){
+  if(!USER) return;
+  $('ppName').textContent = USER.name;
+  $('ppCity').textContent = USER.city || '';
+  const n = stampCount();
+  $('ppCount').textContent = n + ' de 6 destinos';
+  $('ppFill').style.width = Math.round(n/6*100)+'%';
+  $('ppGrid').innerHTML = COUNTRIES.map(function(c,i){
+    const st = estadoPais(i);
+    let visual;
+    if(st === 'done'){
+      visual = '<div class="ph"><img src="' + esc(c.img) + '" alt="' + esc(c.dish) + '" loading="lazy" onerror="this.style.display=\'none\';this.parentNode.classList.add(\'noimg\')">' +
+               '<span class="ph-mono" style="background:' + c.color + '">' + c.mono + '</span></div>';
+    } else if(st === 'open'){
+      visual = '<div class="mono" style="background:' + c.color + '">' + c.mono + '</div>';
+    } else {
+      visual = '<div class="mono lockmono">' +
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>';
+    }
+    const pie = st === 'done'
+      ? '<div class="st"><span class="stamp-mini">' + esc(c.stamp) + '</span></div>'
+      : (st === 'open' ? '<div class="st">Tu siguiente destino</div>' : '<div class="st lockst">Bloqueado</div>');
+    return '<div class="country ' + st + '" role="button" tabindex="0" data-country="' + c.id + '">' +
+      visual + '<h3>' + esc(c.co) + '</h3><div class="dish">' + esc(c.dish) + '</div>' + pie + '</div>';
+  }).join('');
+}
+document.addEventListener('click', e=>{
+  const el=e.target.closest('[data-country]');
+  if(!el) return;
+  const id=el.getAttribute('data-country');
+  const i=COUNTRIES.findIndex(x=>x.id===id);
+  if(estadoPais(i)==='locked'){
+    const prev=COUNTRIES[nextIndex()];
+    toast('Primero completa ' + (prev ? prev.co : 'el destino anterior'));
+    return;
+  }
+  location.hash = '#/pais/'+id;
+});
+
+function renderCountry(c){
+  const done = USER && (USER.stamps||{})[c.id];
+  $('v-country').innerHTML =
+    (c.img ? '<img class="rec-photo" src="'+esc(c.img)+'" alt="'+esc(c.dish)+'" onerror="this.style.display=\'none\'">' : '')+
+    '<div class="rec-head" style="background:linear-gradient(150deg,'+c.color+'E6,'+c.color+')">'+
+      '<span class="co">'+esc(c.co)+' &middot; Sello: '+esc(c.stamp)+'</span>'+
+      '<h2>'+esc(c.dish)+'</h2>'+
+      '<div class="meta"><span class="chip">'+esc(c.time)+'</span><span class="chip">'+esc(c.serv)+'</span><span class="chip">Dificultad: '+esc(c.diff)+'</span></div>'+
+    '</div>'+
+    '<div class="card"><h3>Ingredientes</h3><ul class="ing">'+
+      c.ings.map(x=>'<li><span>'+esc(x[0])+'</span><b>'+esc(x[1])+'</b></li>').join('')+
+    '</ul></div>'+
+    '<div class="card"><h3>Preparaci&oacute;n</h3><ol class="steps">'+
+      c.steps.map((s,i)=>'<li><span class="stp">'+(i+1)+'</span><p>'+esc(s)+'</p></li>').join('')+
+    '</ol></div>'+
+    '<div class="tipbox"><div class="t">El toque de Tomas</div><p>'+esc(c.tip)+'</p></div>'+
+    (done
+      ? '<div class="done-note" style="display:block">Sello estampado: '+esc(c.stamp)+' &#10003;</div>'+
+        '<div class="rec-acts"><button class="btn btn-line" data-nav="#/pasaporte" type="button">Volver a mi pasaporte</button></div>'
+      : '<div class="rec-acts">'+
+          '<button class="btn btn-gold" id="btnDone" type="button">Ya prepar&eacute; esta receta</button>'+
+          '<button class="btn btn-line" data-nav="#/pasaporte" type="button">Volver a mi pasaporte</button>'+
+        '</div>')+
+    '<div class="rec-acts" style="margin-top:10px">'+
+      '<a class="btn btn-wa" href="https://wa.me/'+WA+'?text='+encodeURIComponent('Hola Tomas, tengo una duda con la receta de '+c.dish+' del Pasaporte de Sabores')+'" target="_blank" rel="noopener" data-tr="WhatsApp desde pasaporte">Preguntarle a Tomas</a>'+
+    '</div>';
+  const b=$('btnDone');
+  if(b) b.addEventListener('click', ()=>{ pendingCountry=c; $('confirmModal').classList.add('open'); });
+}
+
+function renderRewards(){
+  const n = stampCount();
+  const falta = 6 - n;
+  const ok = n >= 6;
+  $('rwSub').textContent = ok
+    ? '¡Completaste el viaje! Tu recompensa está lista.'
+    : (falta === 1 ? 'Te falta 1 destino para desbloquear tu recompensa.' : 'Te faltan ' + falta + ' destinos para desbloquear tu recompensa.');
+
+  const piezas = [
+    { t:'Certificado Embajador de Sabores', d:'Tu certificado digital con tu nombre, listo para guardar o compartir.', nav:'#/certificado' },
+    { t:'Recetario completo del viaje', d:'Las seis recetas de tu pasaporte en un solo documento.', nav:'#/recetario' },
+    { t:'Receta secreta de la casa', d:'La salsa taquera que acompaña cualquier receta del viaje.', nav:'#/secreta' },
+    { t:'Sorpresa especial', d:'Puedes solicitarla por WhatsApp. Sujeta a disponibilidad y ubicación.', nav:'#/certificado' }
+  ];
+
+  let html = '<div class="rw' + (ok ? '' : ' locked') + '" style="flex-direction:column;align-items:stretch;text-align:center;padding:22px">' +
+    '<div class="ic ' + (ok ? 'ok' : 'lock') + '" style="margin:0 auto 12px">' +
+      (ok
+       ? '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'
+       : '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>') +
+    '</div>' +
+    '<h3 style="font-family:\'Inter Tight\',sans-serif;font-size:19px">Embajador de Sabores</h3>' +
+    '<p style="margin-top:6px">Se desbloquea al completar los seis destinos.</p>' +
+    '<div class="prog" style="margin-top:14px;background:var(--hairline)"><div class="prog-fill" style="width:' + Math.round(n/6*100) + '%"></div></div>' +
+    '<div style="font-size:12.5px;color:var(--stone);margin-top:8px;font-weight:600">' + n + ' de 6 sellos</div>' +
+  '</div>';
+
+  html += '<h3 style="font-family:\'Inter Tight\',sans-serif;font-size:15px;margin:20px 0 4px;color:' + (ok ? 'var(--ink)' : '#A79E85') + '">Tu recompensa incluye</h3>';
+  html += piezas.map(function(r){
+    return '<div class="rw' + (ok ? '' : ' locked') + '">' +
+      '<div class="ic ' + (ok ? 'ok' : 'lock') + '">' +
+        (ok
+         ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'
+         : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>') +
+      '</div>' +
+      '<div><h3>' + esc(r.t) + '</h3><p>' + esc(r.d) + '</p></div>' +
+      (ok ? '<button class="go" data-nav="' + r.nav + '" type="button">Abrir</button>' : '') +
+    '</div>';
+  }).join('');
+
+  if(!ok){
+    html += '<div style="margin-top:16px"><button class="btn btn-navy" data-nav="#/pasaporte" type="button">Seguir mi viaje</button></div>';
+  }
+  $('rwList').innerHTML = html;
+}
+
+function renderBook(){
+  const got = COUNTRIES.filter(c=>(USER.stamps||{})[c.id]);
+  $('bookList').innerHTML = got.map(c=>
+    '<div class="card"><h3>'+esc(c.dish)+' <span style="font-weight:500;color:var(--stone);font-size:13px">&middot; '+esc(c.co)+'</span></h3>'+
+    '<ul class="ing">'+c.ings.map(x=>'<li><span>'+esc(x[0])+'</span><b>'+esc(x[1])+'</b></li>').join('')+'</ul>'+
+    '<ol class="steps" style="margin-top:10px">'+c.steps.map((s,i)=>'<li><span class="stp">'+(i+1)+'</span><p>'+esc(s)+'</p></li>').join('')+'</ol></div>'
+  ).join('');
+}
+
+function renderCert(){
+  $('certName').textContent = USER.name + (USER.city ? ' · ' + USER.city : '');
+  const d = new Date();
+  $('certDate').textContent = d.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
+}
+
+// ---------- Sello: confirmación y guardado ----------
+$('cmNo').addEventListener('click', ()=>{ $('confirmModal').classList.remove('open'); pendingCountry=null; });
+$('cmYes').addEventListener('click', async ()=>{
+  const c = pendingCountry; if(!c || !USER) return;
+  $('confirmModal').classList.remove('open');
+  if((USER.stamps||{})[c.id]){ toast('Este sello ya estaba estampado'); return; }
+  USER.stamps = USER.stamps || {};
+  USER.stamps[c.id] = Date.now();
+  cacheSave();
+  try{
+    const upd = {}; upd['stamps.'+c.id] = USER.stamps[c.id]; upd.updatedAt = serverTimestamp();
+    await updateDoc(doc(db,'passportUsers',uid), upd);
+  }catch(e){ toast('Se guardó en tu dispositivo; se sincronizará al reconectar'); }
+  track('Pasaporte: sello '+c.co);
+  const n = stampCount();
+  if(n===6) track('Pasaporte: viaje completado');
+  showStamp(c, n);
+});
+
+function showStamp(c, n){
+  $('stampSvg').innerHTML =
+    '<circle cx="100" cy="100" r="88" stroke="'+c.color+'" stroke-width="5" fill="none" opacity=".92"/>'+
+    '<circle cx="100" cy="100" r="72" stroke="'+c.color+'" stroke-width="1.6" fill="none" opacity=".55"/>'+
+    '<text x="100" y="88" text-anchor="middle" font-family="Inter Tight,sans-serif" font-weight="800" font-size="30" fill="'+c.color+'">'+c.mono+'</text>'+
+    '<text x="100" y="116" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="12.5" letter-spacing="1.5" fill="'+c.color+'">'+esc(c.stamp).toUpperCase()+'</text>'+
+    '<text x="100" y="140" text-anchor="middle" font-family="Fraunces,serif" font-style="italic" font-size="11" fill="'+c.color+'" opacity=".8">Pasaporte de Sabores</text>';
+  $('stampTitle').textContent = n>=6 ? '¡Viaje completado!' : '¡Sello desbloqueado!';
+  const sig = nextIndex();
+  $('stampSub').textContent = n>=6
+    ? c.stamp + ' · ' + c.co + '  —  ¡Completaste los seis destinos!'
+    : c.stamp + ' · ' + c.co + '  —  ' + n + ' de 6  ·  Desbloqueaste ' + (sig>=0 ? COUNTRIES[sig].co : '');
+  $('stampOv').classList.add('open');
+  confetti(n===6);
+}
+$('stampOk').addEventListener('click', ()=>{
+  $('stampOv').classList.remove('open');
+  const n = stampCount();
+  if(n===6){ location.hash='#/recompensas'; } else { location.hash='#/pasaporte'; renderPassport(); }
+});
+$('stampShare').addEventListener('click', ()=>{ shareInvite(pendingCountry); });
+
+// ---------- Compartir / invitar ----------
+function shareInvite(c){
+  const inv = (uid||'').slice(0,8);
+  const url = 'https://tomasflores.com/pasaporte.html' + (c ? '?p='+c.id+'&inv='+inv : '?inv='+inv);
+  const text = (USER?USER.name:'Alguien') + ' te invita a viajar por ' + (c?c.co:'Latinoamérica') + ' desde tu cocina. Prepara la receta, gana tu sello y comienza tu Pasaporte de Sabores Latinos.';
+  track('Pasaporte: comparte');
+  if(navigator.share){ navigator.share({title:'Pasaporte de Sabores Latinos', text:text, url:url}).catch(()=>{}); }
+  else {
+    window.open('https://wa.me/?text='+encodeURIComponent(text+' '+url), '_blank', 'noopener');
+  }
+}
+$('btnShare').addEventListener('click', ()=>shareInvite(null));
+$('btnRewards').addEventListener('click', ()=>{ location.hash='#/recompensas'; });
+
+// ---------- Reclamo sorpresa (6 sellos) ----------
+$('btnClaim').addEventListener('click', async ()=>{
+  try{
+    await addDoc(collection(db,'passportRewardClaims'), {
+      uid:uid, name:USER.name, city:USER.city||'', reward:'sorpresa', status:'pendiente', createdAt:serverTimestamp()
+    });
+  }catch(e){}
+  track('Pasaporte: reclama sorpresa');
+  const msg = 'Hola Tomas 👋 Completé mi Pasaporte de Sabores Latinos (6 de 6 sellos). Soy '+USER.name+(USER.city?' de '+USER.city:'')+' y quiero solicitar mi sorpresa especial.';
+  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg), '_blank', 'noopener');
+});
+
+// ---------- Confeti (solo 3 y 6, respeta reduced motion) ----------
+function confetti(big){
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const cv=$('confetti'); const ctx=cv.getContext('2d');
+  cv.width=innerWidth; cv.height=innerHeight; cv.style.display='block';
+  const P=[]; const colors=['#B08D4F','#7A2E3B','#1B2A4A','#D2B279','#F2ECDD'];
+  const N = big ? 130 : 55;
+  for(let i=0;i<N;i++) P.push({x:Math.random()*cv.width,y:-20-Math.random()*cv.height*0.3,r:4+Math.random()*5,c:colors[i%5],v:2+Math.random()*3,a:Math.random()*Math.PI});
+  let t=0;
+  (function anim(){
+    t++; ctx.clearRect(0,0,cv.width,cv.height);
+    P.forEach(p=>{ p.y+=p.v; p.x+=Math.sin(p.a+t/14)*1.4; ctx.fillStyle=p.c; ctx.fillRect(p.x,p.y,p.r,p.r*0.62); });
+    if(t < (big?200:130)) requestAnimationFrame(anim); else cv.style.display='none';
+  })();
+}
+
+// ---------- Registro ----------
+$('btnStart').addEventListener('click', ()=>{
+  if(USER){ location.hash='#/pasaporte'; } else { location.hash='#/registro'; }
+});
+$('btnReg').addEventListener('click', async ()=>{
+  const name=$('regName').value.trim(), city=$('regCity').value.trim();
+  const err=$('regErr');
+  if(!name){ err.textContent='Escribe tu nombre para estampar tus sellos.'; err.classList.add('show'); return; }
+  err.classList.remove('show');
+  $('btnReg').disabled=true; $('btnReg').textContent='Creando…';
+  try{
+    if(!uid) throw new Error('sin sesión');
+    USER = { name:name.slice(0,40), city:city.slice(0,40), stamps:{} };
+    await setDoc(doc(db,'passportUsers',uid), { name:USER.name, city:USER.city, stamps:{}, createdAt:serverTimestamp(), updatedAt:serverTimestamp() });
+    cacheSave();
+    track('Pasaporte: inicia viaje');
+    location.hash='#/pasaporte';
+  }catch(e){
+    err.textContent='No se pudo crear tu pasaporte. Revisa tu conexión e intenta de nuevo.'; err.classList.add('show');
+  }
+  $('btnReg').disabled=false; $('btnReg').textContent='Crear mi pasaporte';
+});
+
+// ---------- Conexión ----------
+window.addEventListener('online', ()=>{ $('netBanner').classList.remove('show'); });
+window.addEventListener('offline', ()=>{ $('netBanner').classList.add('show'); });
+
+// ---------- Tracking de enlaces con data-tr ----------
+document.addEventListener('click', e=>{
+  const t=e.target.closest('[data-tr]');
+  if(t) track(t.getAttribute('data-tr'));
+}, true);
+
+// ---------- Arranque ----------
+(async function init(){
+  $('loading').style.display='flex';
+  try{
+    const app = getApps().length ? getApps()[0] : initializeApp(CFG);
+    db = getFirestore(app);
+    auth = getAuth(app);
+    const fb = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+    _add=fb.addDoc; _col=fb.collection; _ts=fb.serverTimestamp; anaReady=true; flushAna();
+    track('Pasaporte: visita');
+    await signInAnonymously(auth);
+    await new Promise(res=>{ const off=onAuthStateChanged(auth,u=>{ if(u){ uid=u.uid; off(); res(); } }); });
+    // Recuperar pasaporte
+    try{
+      const snap = await getDoc(doc(db,'passportUsers',uid));
+      if(snap.exists()){
+        const d=snap.data();
+        USER = { name:d.name||'Viajero', city:d.city||'', stamps:d.stamps||{} };
+        cacheSave();
+        track('Pasaporte: continúa');
+      } else {
+        const c=cacheLoad();
+        if(c && c.name){
+          USER={name:c.name,city:c.city||'',stamps:c.stamps||{}};
+          await setDoc(doc(db,'passportUsers',uid), { name:USER.name, city:USER.city, stamps:USER.stamps, createdAt:serverTimestamp(), updatedAt:serverTimestamp() });
+        }
+      }
+    }catch(e){
+      const c=cacheLoad();
+      if(c && c.name) USER={name:c.name,city:c.city||'',stamps:c.stamps||{}};
+    }
+  }catch(e){
+    $('netBanner').textContent='No se pudo conectar. Puedes ver las recetas; tus sellos se guardarán al reconectar.';
+    $('netBanner').classList.add('show');
+    const c=cacheLoad();
+    if(c && c.name) USER={name:c.name,city:c.city||'',stamps:c.stamps||{}};
+  }
+  $('loading').style.display='none';
+  // Deep link de invitación: ?p=pais
+  const p=new URLSearchParams(location.search).get('p');
+  if(new URLSearchParams(location.search).get('inv')) track('Pasaporte: llega invitado');
+  if(USER){
+    if(p && VALID.includes(p)) location.hash='#/pais/'+p; else if(!location.hash) location.hash='#/pasaporte';
+  } else {
+    if(p && VALID.includes(p)) { /* mostrará portada; tras registrarse irá al pasaporte */ }
+  }
+  route();
+})();
+</script>
+</body>
+</html>
