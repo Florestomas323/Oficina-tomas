@@ -772,21 +772,21 @@
   .pp-card{
     display:block;width:min(258px,80vw);aspect-ratio:3/4.25;border-radius:18px;flex:0 0 auto;
     background:
-      radial-gradient(120% 80% at 50% -10%, rgba(228,200,120,.14), transparent 55%),
-      linear-gradient(160deg,#5a1a26 0%,#40121c 45%,#2c0c13 100%);
-    border:1px solid rgba(201,162,75,.5);
-    box-shadow:0 1px 2px rgba(17,17,16,.1), 0 22px 48px rgba(44,12,19,.34);
+      radial-gradient(120% 80% at 50% -10%, rgba(216,201,164,.16), transparent 55%),
+      linear-gradient(160deg,#22335A 0%,#1B2A4A 55%,#15213B 100%);
+    border:1px solid rgba(176,141,79,.55);
+    box-shadow:0 1px 2px rgba(17,17,16,.1), 0 22px 48px rgba(21,33,59,.34);
     position:relative;overflow:hidden;isolation:isolate;
     transition:transform .4s var(--ease), box-shadow .4s var(--ease);
   }
   .pp-card::before{content:"";position:absolute;inset:0;z-index:0;opacity:.5;pointer-events:none;
-    background-image:radial-gradient(rgba(228,200,120,.10) 1px, transparent 1.4px);background-size:7px 7px}
-  .pp-card::after{content:"";position:absolute;inset:11px;z-index:1;border:1px solid rgba(201,162,75,.42);border-radius:12px;pointer-events:none}
-  @media(hover:hover){.pp-card:hover{transform:translateY(-6px);box-shadow:0 1px 2px rgba(17,17,16,.1), 0 30px 60px rgba(44,12,19,.42)}}
+    background-image:radial-gradient(rgba(216,201,164,.12) 1px, transparent 1.4px);background-size:7px 7px}
+  .pp-card::after{content:"";position:absolute;inset:11px;z-index:1;border:1px solid rgba(176,141,79,.45);border-radius:12px;pointer-events:none}
+  @media(hover:hover){.pp-card:hover{transform:translateY(-6px);box-shadow:0 1px 2px rgba(17,17,16,.1), 0 30px 60px rgba(21,33,59,.42)}}
   .pp-card:active{transform:scale(.985)}
-  .pp-face{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:26px 22px;text-align:center;color:#F4E4C0}
-  .pp-top{font-size:9.5px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(228,200,120,.85)}
-  .pp-emblem{width:88px;height:88px;color:#E4C878;filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
+  .pp-face{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:26px 22px;text-align:center;color:#EFE7D3}
+  .pp-top{font-size:9.5px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(216,201,164,.9)}
+  .pp-emblem{width:104px;height:104px;border-radius:50%;object-fit:cover;background:#F6F0E2;padding:0;border:2px solid rgba(176,141,79,.7);box-shadow:0 4px 14px rgba(0,0,0,.3), inset 0 0 0 3px rgba(246,240,226,.9)}
   .pp-mid{display:flex;flex-direction:column;gap:6px;align-items:center}
   .pp-title{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:20px;letter-spacing:.02em;line-height:1.12;color:#F6E8C6}
   .pp-region{font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:15px;color:#E4C878}
@@ -927,21 +927,10 @@
 <!-- =============== PASAPORTE DE SABORES =============== -->
 <section class="pp-sec wrap" id="pasaporte" aria-labelledby="ppHeading">
   <div class="pp-inner">
-    <a class="pp-card rv" href="pasaporte.html" aria-label="Abrir el Pasaporte de Sabores">
+    <a class="pp-card rv" href="pasaporte.html" data-track="Pasaporte desde inicio" aria-label="Abrir el Pasaporte de Sabores">
       <div class="pp-face">
         <span class="pp-top">Edición coleccionable</span>
-        <svg class="pp-emblem" viewBox="0 0 100 100" fill="none" aria-hidden="true">
-          <circle cx="50" cy="50" r="46" stroke="currentColor" stroke-width="2"/>
-          <circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="1" opacity=".55"/>
-          <circle cx="50" cy="46" r="21" stroke="currentColor" stroke-width="2"/>
-          <ellipse cx="50" cy="46" rx="9" ry="21" stroke="currentColor" stroke-width="1.4"/>
-          <path d="M29 46h42M32 37h36M32 55h36" stroke="currentColor" stroke-width="1.4"/>
-          <path d="M30 30 C40 40 60 40 70 30" stroke="currentColor" stroke-width="1.4" opacity=".7"/>
-          <path d="M22 60c8 6 48 6 56 0" stroke="currentColor" stroke-width="1.4" opacity=".7"/>
-          <path d="M50 71v13M46 84h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <path d="M20 74c4 1 8 1 12 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          <path d="M68 74c4 1 8 1 12 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
+        <img class="pp-emblem" src="emblema-pasaporte.jpeg" alt="Emblema del Pasaporte de Sabores" loading="lazy" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='emblema-pasaporte.jpg'}else{this.style.display='none'}">
         <div class="pp-mid">
           <span class="pp-title" id="ppHeading">PASAPORTE DE SABORES</span>
           <span class="pp-region">América Latina</span>
@@ -954,7 +943,7 @@
       <span class="eyebrow rv">Nuevo · Experiencia coleccionable</span>
       <h2 class="rv">Colecciona los sabores de América Latina</h2>
       <p class="rv">Un pasaporte para acompañar tus demostraciones y recetas: descubre platillos de cada país, completa experiencias y desbloquea sorpresas a lo largo del camino.</p>
-      <a class="btn btn-solid rv" href="pasaporte.html">
+      <a class="btn btn-solid rv" href="pasaporte.html" data-track="Pasaporte CTA inicio">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         Abrir mi pasaporte
       </a>
