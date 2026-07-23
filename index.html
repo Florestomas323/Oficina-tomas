@@ -136,7 +136,7 @@
     -webkit-text-stroke:1.4px rgba(255,255,255,.85);paint-order:stroke fill;
     text-shadow:0 2px 12px rgba(255,255,255,.4), 0 1px 3px rgba(255,255,255,.55);
   }
-  .hero .sub{margin-top:16px;font-size:clamp(16.5px,4.3vw,20px);line-height:1.5;color:#8A672B;max-width:26ch;font-weight:650;text-shadow:0 1px 8px rgba(255,255,255,.8), 0 1px 2px rgba(255,255,255,.95)}
+  .hero .sub{margin-top:16px;font-size:clamp(16.5px,4.3vw,20px);line-height:1.5;color:#8A672B;max-width:26ch;font-weight:600;text-shadow:0 1px 3px rgba(255,255,255,.9)}
   .hero-cta{display:flex;flex-direction:column;align-items:stretch;gap:12px;margin-top:26px;max-width:380px}
   @media(min-width:640px){.hero-cta{flex-direction:row;flex-wrap:wrap;align-items:center;max-width:none}}
   .hero-cta .btn{width:100%}
@@ -462,21 +462,25 @@
   .fab-backdrop.show{opacity:1;pointer-events:auto}
   .fab-wrap{
     position:fixed;right:16px;bottom:calc(22px + env(safe-area-inset-bottom));
-    z-index:90;display:flex;flex-direction:column;align-items:flex-end;gap:12px;
-    transition:transform .4s var(--ease), opacity .4s var(--ease);
-    pointer-events:none; /* la caja no intercepta toques */
+    z-index:90;display:flex;flex-direction:column;align-items:flex-end;gap:10px;
+    opacity:0;transform:translateY(8px);pointer-events:none; /* oculto sobre el hero; la caja no intercepta toques */
+    transition:transform .4s var(--ease), opacity .4s var(--ease), bottom .4s var(--ease);
   }
+  /* Solo aparece cuando el hero ya no está en pantalla, elevado sobre la barra inferior */
+  body.bar-on .fab-wrap{opacity:1;transform:none;pointer-events:none;bottom:calc(92px + env(safe-area-inset-bottom))}
   .fab-wrap .fab, .fab-wrap #fabBtn{pointer-events:auto} /* solo el botón recibe toques */
+  body.bar-on .fab-wrap .fab, body.bar-on .fab-wrap #fabBtn{pointer-events:auto}
   .fab-wrap.hidden-dock{transform:translateY(140%);opacity:0;pointer-events:none}
   .fab-note{
     background:var(--card);border:1px solid var(--hairline);border-radius:14px;
-    padding:10px 14px;font-size:13px;font-weight:500;color:var(--ink);
-    box-shadow:var(--shadow-lift);max-width:230px;
+    padding:9px 13px;font-size:12.5px;font-weight:500;color:var(--ink);
+    box-shadow:var(--shadow-lift);max-width:210px;
     opacity:0;transform:translateY(8px);transition:opacity .4s var(--ease), transform .4s var(--ease);
     pointer-events:none;
   }
-  .fab-note.show{opacity:1;transform:none}
+  .fab-note.show{opacity:.95;transform:none}
   .fab-menu{
+    position:absolute;right:0;bottom:64px; /* fuera del flujo: la nota se pega al botón */
     display:flex;flex-direction:column;gap:8px;align-items:stretch;
     opacity:0;transform:translateY(12px) scale(.97);transform-origin:bottom right;
     pointer-events:none;transition:opacity .3s var(--ease), transform .3s var(--ease);
@@ -493,10 +497,10 @@
   @media(hover:hover){.fab-opt:hover{transform:translateX(-4px)}}
   .fab-opt .fo-ic{font-size:20px;line-height:1}
   .fab{
-    width:54px;height:54px;border-radius:50%;
+    width:50px;height:50px;border-radius:50%;
     background:linear-gradient(180deg,#26241f,var(--ink));color:#fff;
     display:flex;align-items:center;justify-content:center;
-    box-shadow:0 8px 22px rgba(17,17,16,.28), 0 2px 8px rgba(17,17,16,.18);
+    box-shadow:0 6px 18px rgba(17,17,16,.24), 0 2px 6px rgba(17,17,16,.16);
     transition:transform .3s var(--ease), box-shadow .3s var(--ease);
     position:relative;
   }
@@ -676,7 +680,11 @@
   .bottombar .bb-wa:active{transform:scale(.94)}
   .bottombar .bb-wa svg{width:23px;height:23px}
   @media(min-width:768px){ .bottombar{display:none} }
-  body.bar-on .fab-wrap{opacity:0;pointer-events:none;transition:opacity .25s ease}
+  /* En desktop no hay barra inferior: el FAB se mantiene visible en su sitio habitual */
+  @media(min-width:768px){
+    .fab-wrap{opacity:1;transform:none;bottom:calc(22px + env(safe-area-inset-bottom))}
+    body.bar-on .fab-wrap{bottom:calc(22px + env(safe-area-inset-bottom))}
+  }
 
   /* ---------- Filtros de galería ---------- */
   .gal-filters{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 0 18px;padding-bottom:4px}
@@ -1743,10 +1751,17 @@ try{
   var bar = document.getElementById('bottomBar');
   var hero = document.querySelector('.hero');
   if(!bar || !hero) return;
+  var noteShown = false;
   function toggle(show){
     bar.classList.toggle('show', show);
     bar.setAttribute('aria-hidden', show ? 'false' : 'true');
     document.body.classList.toggle('bar-on', show);
+    /* La nota de WhatsApp aparece en zona limpia (no sobre el hero) la primera vez que el FAB se muestra al hacer scroll */
+    if(show && !noteShown && window.matchMedia('(max-width:767px)').matches){
+      noteShown = true;
+      var note = document.getElementById('fabNote');
+      if(note){ setTimeout(function(){ note.classList.add('show'); }, 500); setTimeout(function(){ note.classList.remove('show'); }, 6500); }
+    }
   }
   if('IntersectionObserver' in window){
     new IntersectionObserver(function(en){
