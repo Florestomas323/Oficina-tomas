@@ -11,7 +11,7 @@
 <meta property="og:title" content="Pasaporte de Sabores">
 <meta property="og:description" content="Un continente. Muchas cocinas. Un viaje para compartir. Seis países, seis recetas, un pasaporte.">
 <meta property="og:url" content="https://tomasflores.com/pasaporte.html">
-<meta property="og:image" content="https://tomasflores.com/og-pasaporte.jpg">
+<meta property="og:image" content="https://tomasflores.com/og-pasaporte.jpeg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="icono-pasaporte.png">
 <link rel="apple-touch-icon" href="icono-pasaporte.png">
@@ -208,13 +208,13 @@
 <div class="wrap">
   <div class="top">
     <a class="back-link" href="index.html">&#8592; tomasflores.com</a>
-    <img class="top-logo" src="emblema-pasaporte.jpg" alt="Pasaporte de Sabores">
+    <img class="top-logo" src="emblema-pasaporte.jpeg" alt="Pasaporte de Sabores" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='emblema-pasaporte.jpg'}else{this.style.display='none'}">
   </div>
 
   <!-- ============ PORTADA ============ -->
   <section class="view" id="v-cover">
     <div class="cover">
-      <img class="cover-logo" src="logo-pasaporte.jpg" alt="Pasaporte de Sabores">
+      <img class="cover-logo" src="logo-pasaporte.jpeg" alt="Pasaporte de Sabores" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='logo-pasaporte.jpg'}else{this.style.display='none'}">
       <h1>Pasaporte de Sabores</h1>
       <p class="motto">"Un continente. Muchas cocinas.<br>Un viaje para compartir."</p>
       <span class="season">Temporada 1 &middot; Seis pa&iacute;ses</span>
@@ -273,7 +273,7 @@
           <div class="name" id="ppName">&mdash;</div>
           <div class="city" id="ppCity"></div>
         </div>
-        <img src="emblema-pasaporte.jpg" alt="">
+        <img src="emblema-pasaporte.jpeg" alt="" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='emblema-pasaporte.jpg'}else{this.style.display='none'}">
       </div>
       <div class="prog-wrap">
         <div class="prog-top"><span>Tu viaje</span><b id="ppCount">0 de 6 destinos</b></div>
@@ -300,7 +300,7 @@
   <!-- ============ CERTIFICADO Y PRUEBA ============ -->
   <section class="view" id="v-cert">
     <div class="cert">
-      <img class="lg" src="logo-pasaporte.jpg" alt="Pasaporte de Sabores">
+      <img class="lg" src="logo-pasaporte.jpeg" alt="Pasaporte de Sabores" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='logo-pasaporte.jpg'}else{this.style.display='none'}">
       <span class="lbl">Ruta completada</span>
       <h2>Embajador de Sabores</h2>
       <div class="who" id="certName">&mdash;</div>
@@ -709,7 +709,7 @@ $('btnRewards').addEventListener('click', ()=>{ location.hash='#/regalo'; });
 function renderGift(){
   const n=stampCount(), ok=n>=6, falta=6-n;
   let html='<div class="gift">'+
-    '<img src="logo-pasaporte.jpg" alt="Pasaporte de Sabores">'+
+    '<img src="logo-pasaporte.jpeg" alt="Pasaporte de Sabores" onerror="this.src=\'logo-pasaporte.jpg\'">'+
     '<h2>'+(ok?'¡Tu regalo te espera!':'Tu regalo sorpresa')+'</h2>'+
     '<p>'+(ok
       ? 'Completaste los seis destinos. Genera tu comprobante y envíamelo por WhatsApp para coordinar la entrega.'
@@ -751,7 +751,7 @@ async function buildProof(){
   x.fillStyle='#F6F0E2'; x.fillRect(0,0,W,H);
   x.strokeStyle='#B08D4F'; x.lineWidth=6; x.strokeRect(26,26,W-52,H-52);
   x.strokeStyle='#E4DCC8'; x.lineWidth=2; x.strokeRect(44,44,W-88,H-88);
-  try{ const lg=await loadImg('logo-pasaporte.jpg'); x.drawImage(lg, W/2-95, 70, 190, 190); }catch(e){}
+  try{ let lg; try{ lg=await loadImg('logo-pasaporte.jpeg'); }catch(_){ lg=await loadImg('logo-pasaporte.jpg'); } x.drawImage(lg, W/2-95, 70, 190, 190); }catch(e){}
   x.textAlign='center';
   x.fillStyle='#1B2A4A'; x.font='800 54px "Inter Tight", sans-serif';
   x.fillText('Ruta completada', W/2, 322);
