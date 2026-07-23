@@ -726,6 +726,20 @@
     .vs-cell{padding:12px 12px;font-size:13px;line-height:1.4}
     .vs-label{font-size:12.5px}
   }
+
+  /* ---- Pasaporte de Sabores (promo) ---- */
+  .pass-sec{padding:26px 0 8px}
+  .pass-card{position:relative;display:block;text-decoration:none;background:linear-gradient(150deg,#22335A 0%,#1B2A4A 60%,#15213B 100%);border-radius:26px;padding:26px 22px;color:#F2ECDD;overflow:hidden;box-shadow:0 2px 4px rgba(27,42,74,.08),0 18px 44px rgba(27,42,74,.16)}
+  .pass-card::before{content:"";position:absolute;inset:9px;border:1.5px solid rgba(176,141,79,.5);border-radius:20px;pointer-events:none}
+  .pass-in{display:flex;gap:18px;align-items:center}
+  .pass-emb{flex:0 0 92px;width:92px;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+  .pass-eyebrow{font-family:'Fraunces',serif;font-style:italic;font-size:13.5px;color:#D8C9A4}
+  .pass-h{font-family:'Inter Tight',sans-serif;font-size:clamp(20px,5.6vw,26px);letter-spacing:-.02em;line-height:1.12;margin-top:5px}
+  .pass-p{font-size:13.5px;line-height:1.55;color:#C7BFA9;margin-top:8px}
+  .pass-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+  .pass-chip{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#B8A87E;border:1px solid rgba(176,141,79,.5);border-radius:999px;padding:6px 11px}
+  .pass-cta{display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:#B08D4F;color:#fff;font-weight:700;font-size:14.5px;border-radius:14px;padding:13px 20px;min-height:44px;box-shadow:0 6px 20px rgba(176,141,79,.4)}
+  @media(max-width:520px){.pass-in{flex-direction:column;text-align:center}.pass-chips{justify-content:center}}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script>
@@ -854,6 +868,23 @@
     </div>
   </div>
 </section>
+
+<!-- =============== PASAPORTE DE SABORES =============== -->
+<section class="block wrap pass-sec" id="pasaporte">
+  <a class="pass-card rv" href="pasaporte.html" data-track="Pasaporte desde inicio" aria-label="Comenzar el Pasaporte de Sabores">
+    <div class="pass-in">
+      <img class="pass-emb" src="emblema-pasaporte.jpeg" alt="Pasaporte de Sabores" loading="lazy" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='emblema-pasaporte.jpg'}else{this.style.display='none'}">
+      <div>
+        <span class="pass-eyebrow">Nuevo &middot; Una aventura en tu cocina</span>
+        <h2 class="pass-h">&iquest;Te atreves a viajar por Latinoam&eacute;rica sin salir de tu cocina?</h2>
+        <p class="pass-p">Seis pa&iacute;ses, seis recetas, un sello por cada platillo que logres&hellip; y al completar la ruta, un <b style="color:#F2ECDD">regalo sorpresa</b> que te entrego personalmente.</p>
+        <div class="pass-chips"><span class="pass-chip">Gratis</span><span class="pass-chip">Sin compras</span><span class="pass-chip">A tu ritmo</span></div>
+        <span class="pass-cta">Comenzar mi viaje &rarr;</span>
+      </div>
+    </div>
+  </a>
+</section>
+
 
 <!-- =============== AYUDA =============== -->
 <section class="block wrap" id="ayuda">

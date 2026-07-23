@@ -183,6 +183,7 @@
     <button class="tab" data-tab="proximamente" type="button">Próximamente</button>
     <button class="tab" data-tab="textos" type="button">Textos</button>
       <button class="tab" data-tab="analitica" type="button">Analítica</button>
+      <button class="tab" data-tab="pasaporte" type="button">Pasaporte</button>
       <button class="tab" data-tab="papelera" type="button">Papelera</button>
   </nav>
   <main class="wrap">
@@ -193,6 +194,7 @@
     <div class="panel" id="p-proximamente"></div>
     <div class="panel" id="p-textos"></div>
     <div class="panel" id="p-analitica"></div>
+    <div class="panel" id="p-pasaporte"></div>
     <div class="panel" id="p-papelera"></div>
   </main>
 </div>
@@ -202,7 +204,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import { getFirestore, collection, doc, getDocs, setDoc, addDoc, updateDoc, deleteDoc, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getFirestore, collection, doc, getDoc, getDocs, setDoc, addDoc, updateDoc, deleteDoc, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",
@@ -1240,9 +1242,309 @@
     const panel = $("p-"+name);
     if(panel) panel.classList.add("on");
     if(name==="analitica") renderAnalytics();
+    if(name==="pasaporte") renderPassportAdmin();
     if(name==="papelera") renderTrash();
     window.scrollTo({top:0,behavior:"smooth"});
   };
+
+  // ==================== PASAPORTE DE SABORES ====================
+  const PP_SEED = [
+ { id:"ve", img:"foto-arepas.jpg", co:"Venezuela", mono:"VE", color:"#8A2432", dish:"Arepas rellenas", stamp:"Alma Venezolana",
+   time:"45 min", serv:"4 porciones", diff:"Media",
+   ings:[["Harina de maíz precocida","2 tazas"],["Agua tibia","2 tazas y media"],["Sal","1 cdta"],["Pechuga de pollo cocida y deshebrada","2 tazas"],["Aguacate maduro","1 pieza"],["Mayonesa","3 cdas"],["Cebolla finamente picada","2 cdas"]],
+   steps:["Mezcla la harina con el agua tibia y la sal. Amasa hasta lograr una masa suave y sin grumos; deja reposar 5 minutos.","Forma bolas y aplánalas en discos de un dedo de grosor.","Cocina las arepas en un sartén a fuego medio, unos 5 a 7 minutos por lado, hasta que suenen huecas al golpearlas suavemente.","Mezcla el pollo con el aguacate machacado, la mayonesa y la cebolla para el relleno estilo reina pepiada.","Abre cada arepa por un costado, rellena generosamente y sirve caliente."],
+   tip:"En un sartén de fondo grueso el dorado queda parejo por fuera y la masa se cuece bien por dentro sin quemarse." },
+ { id:"mx", img:"foto-pollo-mexicano.jpg", co:"México", mono:"MX", color:"#1E5B3A", dish:"Pollo en salsa mexicana", stamp:"Corazón Mexicano",
+   time:"40 min", serv:"4 porciones", diff:"Fácil",
+   ings:[["Piezas de pollo","8 piezas"],["Jitomates","5 piezas"],["Chile serrano","2 piezas"],["Cebolla","media pieza"],["Dientes de ajo","2 piezas"],["Caldo de pollo","1 taza"],["Sal y pimienta","al gusto"]],
+   steps:["Sella las piezas de pollo en una olla a fuego medio-alto hasta dorarlas; resérvalas.","Asa los jitomates, chiles, cebolla y ajo; licúalos con el caldo hasta obtener una salsa tersa.","Vierte la salsa en la olla y cocina 5 minutos para que tome cuerpo.","Regresa el pollo, sazona, tapa y cocina a fuego bajo unos 20 minutos hasta que esté suave.","Sirve con arroz o tortillas recién hechas."],
+   tip:"Con la tapa bien ajustada, el vapor circula y el pollo se cocina en su propio jugo con la salsa: queda jugoso sin vigilarlo tanto." },
+ { id:"co", img:"foto-arroz-colombiano.jpg", co:"Colombia", mono:"CO", color:"#B38414", dish:"Arroz con pollo colombiano", stamp:"Sabor Cafetero",
+   time:"50 min", serv:"6 porciones", diff:"Media",
+   ings:[["Arroz","2 tazas"],["Pechuga de pollo","2 piezas"],["Zanahoria en cubitos","1 pieza"],["Arveja (chícharo)","media taza"],["Pimentón rojo picado","1 pieza"],["Cebolla larga picada","2 tallos"],["Dientes de ajo","2 piezas"],["Color o achiote","1 cdta"],["Caldo de pollo","4 tazas"]],
+   steps:["Cocina las pechugas en el caldo hasta que estén suaves; deshébralas y reserva el caldo.","Sofríe la cebolla, el ajo y el pimentón; agrega la zanahoria y la arveja por 3 minutos.","Añade el arroz y el color; revuelve para que tome el tono dorado.","Vierte 4 tazas del caldo reservado, tapa y cocina a fuego bajo unos 20 minutos.","Integra el pollo deshebrado, mezcla con suavidad y deja reposar 5 minutos antes de servir."],
+   tip:"Un fondo que distribuye bien el calor evita que el arroz se pegue en el centro: grano suelto sin estar moviéndolo." },
+ { id:"sv", img:"foto-pupusas.jpg", co:"El Salvador", mono:"SV", color:"#25498C", dish:"Pupusas con curtido", stamp:"Orgullo Cuscatleco",
+   time:"60 min", serv:"10 pupusas", diff:"Media",
+   ings:[["Harina de maíz","3 tazas"],["Agua tibia","2 tazas y media"],["Queso que derrita, rallado","2 tazas"],["Frijoles molidos refritos","1 taza"],["Repollo rallado","2 tazas"],["Zanahoria rallada","1 pieza"],["Vinagre blanco","media taza"],["Orégano","1 cdta"],["Sal","al gusto"]],
+   steps:["Prepara el curtido: mezcla repollo, zanahoria, vinagre, orégano y sal; deja reposar mientras cocinas (mejor si es desde la víspera).","Mezcla la harina con agua y sal hasta lograr una masa manejable.","Toma una bola de masa, haz un hueco, rellena con queso y frijoles, y cierra con cuidado.","Aplana con las palmas humedecidas hasta formar una tortilla gruesa.","Cocina en sartén o comal a fuego medio, 4 a 5 minutos por lado, hasta dorar.","Sirve calientes con el curtido encima."],
+   tip:"La temperatura constante del sartén es clave: si el calor sube y baja, la pupusa se abre. Un fondo grueso mantiene el punto." },
+ { id:"hn", img:"foto-pollo-tajadas.jpg", co:"Honduras", mono:"HN", color:"#2E6FA3", dish:"Pollo con tajadas", stamp:"Sazón Catracha",
+   time:"45 min", serv:"4 porciones", diff:"Media",
+   ings:[["Piezas de pollo","8 piezas"],["Plátanos verdes","3 piezas"],["Repollo rallado","2 tazas"],["Jitomate","2 piezas"],["Limón","1 pieza"],["Ajo en polvo y comino","1 cdta de cada uno"],["Aceite para freír","el necesario"],["Sal","al gusto"]],
+   steps:["Sazona el pollo con ajo, comino y sal; cocínalo hasta dorar por fuera y quedar suave por dentro.","Corta los plátanos verdes en tajadas largas y delgadas.","Fríe las tajadas hasta que estén doradas y crujientes; escúrrelas.","Prepara la ensalada: repollo, jitomate picado, limón y sal.","Sirve las tajadas como base, el pollo encima y corona con la ensalada fresca."],
+   tip:"Escurre las tajadas sobre rejilla en lugar de papel: conservan lo crujiente por más tiempo." },
+ { id:"gt", img:"foto-pepian.jpg", co:"Guatemala", mono:"GT", color:"#3B6E8F", dish:"Pepián de pollo", stamp:"Herencia Chapina",
+   time:"70 min", serv:"6 porciones", diff:"Media",
+   ings:[["Piezas de pollo","8 piezas"],["Jitomates","4 piezas"],["Miltomate (tomatillo)","6 piezas"],["Chile guaque o guajillo","2 piezas"],["Pepitoria (semilla de calabaza)","4 cdas"],["Ajonjolí","3 cdas"],["Tortilla dorada","1 pieza"],["Cebolla","media pieza"],["Papa y ejote cocidos","2 papas y 1 taza"]],
+   steps:["Cocina el pollo en agua con sal hasta que esté suave; reserva el caldo.","Asa jitomates, miltomates, chiles, cebolla, pepitoria, ajonjolí y la tortilla hasta que tomen aroma.","Licúa todo lo asado con un poco del caldo hasta obtener una salsa espesa.","Cuela la salsa y cocínala 10 minutos a fuego medio, moviendo de vez en cuando.","Agrega el pollo, las papas y los ejotes; cocina 10 minutos más para integrar.","Sirve con arroz blanco y tortillas."],
+   tip:"Tostar bien las semillas es el secreto del pepián: en un sartén que reparte el calor no se queman en las orillas." }
+];
+  let ppRoutes=null, ppUsers=[], ppPhotos=[], ppOpenRoute='', ppEditIdx=-1;
+
+  function ppKey(r,c){ return r.id==='t1' ? c.id : r.id+'__'+c.id; }
+  function ppEsc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+  async function ppLoad(){
+    if(renderPassportAdmin._cached && ppRoutes) return;
+    try{
+      const s=await getDoc(doc(db,'settings','passport'));
+      if(s.exists() && Array.isArray(s.data().routes) && s.data().routes.length){ ppRoutes=s.data().routes; }
+    }catch(e){}
+    if(!ppRoutes) ppRoutes=[{id:'t1',name:'Temporada 1',active:true,countries:PP_SEED}];
+    try{
+      const us=await getDocs(collection(db,'passportUsers'));
+      ppUsers=us.docs.map(d=>({uid:d.id, ...d.data()}));
+      ppUsers.sort((a,b)=>((b.createdAt&&b.createdAt.seconds)||0)-((a.createdAt&&a.createdAt.seconds)||0));
+    }catch(e){ ppUsers=[]; }
+    try{
+      const fs=await getDocs(collection(db,'passportPhotos'));
+      ppPhotos=fs.docs.map(d=>({id:d.id, ...d.data()}));
+      ppPhotos.sort((a,b)=>((b.createdAt&&b.createdAt.seconds)||0)-((a.createdAt&&a.createdAt.seconds)||0));
+    }catch(e){ ppPhotos=[]; }
+  }
+
+  function ppUserProg(u){
+    const s=u.stamps||{};
+    let best=null;
+    ppRoutes.forEach(r=>{
+      const done=r.countries.filter(c=>s[ppKey(r,c)]).length;
+      if(done>0 || r===ppRoutes[0]){
+        if(!best || done/r.countries.length > best.done/best.total)
+          best={route:r.name, done:done, total:r.countries.length, full:done>=r.countries.length};
+      }
+    });
+    return best || {route:ppRoutes[0].name, done:0, total:ppRoutes[0].countries.length, full:false};
+  }
+
+  window.renderPassportAdmin = async function(){
+    const el=$("p-pasaporte");
+    el.innerHTML='<div class="empty-note">Cargando pasaporte…</div>';
+    await ppLoad();
+
+    const total=ppUsers.length;
+    const completos=ppUsers.filter(u=>ppUserProg(u).full).length;
+    const sellosTot=ppUsers.reduce((a,u)=>a+Object.keys(u.stamps||{}).length,0);
+
+    // Sellos por destino
+    const cnt={};
+    ppUsers.forEach(u=>Object.keys(u.stamps||{}).forEach(k=>{ cnt[k]=(cnt[k]||0)+1; }));
+    const rows=[];
+    ppRoutes.forEach(r=>r.countries.forEach(c=>{
+      const k=ppKey(r,c), n=cnt[k]||0;
+      rows.push({label:c.co+(ppRoutes.length>1?' · '+r.name:''), n:n});
+    }));
+    const maxN=Math.max(1,...rows.map(x=>x.n));
+
+    let html='';
+    html+='<div class="dash-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px">';
+    [['Viajeros',total],['Completaron la ruta',completos],['Sellos estampados',sellosTot],['Fotos recibidas',ppPhotos.length]].forEach(x=>{
+      html+='<div class="stat-card" style="background:#fff;border:1px solid var(--hairline,#E9E6E0);border-radius:16px;padding:16px;text-align:center"><div style="font-size:26px;font-weight:800;font-family:\'Inter Tight\',sans-serif">'+x[1]+'</div><div style="font-size:12px;color:#66625B;margin-top:4px">'+x[0]+'</div></div>';
+    });
+    html+='</div>';
+
+    html+='<div class="card-form" style="margin-top:14px"><h3 style="font-size:16px;margin-bottom:10px">Sellos por destino</h3>';
+    if(rows.every(x=>!x.n)) html+='<div class="empty-note">Aún no hay sellos estampados.</div>';
+    else rows.forEach(x=>{
+      html+='<div style="display:flex;align-items:center;gap:10px;padding:5px 0"><span style="flex:0 0 46%;font-size:13px">'+ppEsc(x.label)+'</span><div style="flex:1;height:9px;background:#F1EEE7;border-radius:99px;overflow:hidden"><div style="height:100%;width:'+Math.round(x.n/maxN*100)+'%;background:#B08D4F;border-radius:99px"></div></div><b style="font-size:13px;min-width:20px;text-align:right">'+x.n+'</b></div>';
+    });
+    html+='</div>';
+
+    // Participantes
+    html+='<div class="card-form" style="margin-top:14px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h3 style="font-size:16px">Participantes ('+total+')</h3><button class="go" id="ppCsv" type="button">Descargar CSV</button></div>';
+    if(!total) html+='<div class="empty-note">Aún no hay viajeros registrados.</div>';
+    else{
+      html+='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px"><tr style="text-align:left;color:#66625B"><th style="padding:7px 8px">Nombre</th><th style="padding:7px 8px">WhatsApp</th><th style="padding:7px 8px">Lugar</th><th style="padding:7px 8px">Progreso</th></tr>';
+      ppUsers.forEach(u=>{
+        const p=ppUserProg(u);
+        const tel=String(u.phone||'').replace(/\D/g,'');
+        const wa=tel? '<a href="https://wa.me/'+(tel.length===10?'1'+tel:tel)+'" target="_blank" rel="noopener" style="color:#1F7A33;font-weight:600;text-decoration:none">'+ppEsc(u.phone)+'</a>' : '—';
+        html+='<tr style="border-top:1px solid #F1EEE7"><td style="padding:8px">'+ppEsc(u.name||'—')+'</td><td style="padding:8px;white-space:nowrap">'+wa+'</td><td style="padding:8px">'+ppEsc([u.city,u.state].filter(Boolean).join(', '))+'</td><td style="padding:8px;white-space:nowrap">'+(p.full?'<b style="color:#1F7A33">✓ Completó</b> · ':'')+p.done+'/'+p.total+(ppRoutes.length>1?' · '+ppEsc(p.route):'')+'</td></tr>';
+      });
+      html+='</table></div>';
+    }
+    html+='</div>';
+
+    // Fotos recientes
+    html+='<div class="card-form" style="margin-top:14px"><h3 style="font-size:16px;margin-bottom:10px">Fotos recientes</h3>';
+    if(!ppPhotos.length) html+='<div class="empty-note">Cuando los viajeros suban fotos, aparecerán aquí.</div>';
+    else{
+      html+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:9px">';
+      ppPhotos.slice(0,18).forEach(f=>{
+        html+='<figure style="margin:0"><img src="'+f.photo+'" alt="" loading="lazy" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:11px;display:block"><figcaption style="font-size:11px;color:#66625B;margin-top:4px;line-height:1.3">'+ppEsc(f.name||'')+'<br>'+ppEsc(f.countryName||f.country||'')+'</figcaption></figure>';
+      });
+      html+='</div>';
+    }
+    html+='</div>';
+
+    // Rutas y destinos
+    html+='<div class="card-form" style="margin-top:14px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><h3 style="font-size:16px">Rutas y destinos</h3><button class="go" id="ppAddRoute" type="button">+ Nueva ruta</button></div>';
+    html+='<p class="hint" style="margin-bottom:10px">Los cambios se publican al tocar Guardar. Los viajeros los verán al recargar el pasaporte.</p>';
+    ppRoutes.forEach((r,ri)=>{
+      html+='<div style="border:1px solid #E9E6E0;border-radius:14px;padding:13px;margin-bottom:10px">';
+      html+='<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">';
+      html+='<input type="text" value="'+ppEsc(r.name)+'" data-rname="'+ri+'" maxlength="40" style="flex:1;min-width:150px;border:1px solid #E9E6E0;border-radius:10px;padding:9px;font-size:14px;font-family:inherit">';
+      html+='<label style="display:flex;gap:6px;align-items:center;font-size:12.5px"><input type="checkbox" data-ract="'+ri+'" '+(r.active!==false?'checked':'')+'>Activa</label>';
+      html+='<button class="go" data-rtoggle="'+ri+'" type="button">'+(ppOpenRoute===r.id?'Cerrar destinos':'Destinos ('+r.countries.length+')')+'</button>';
+      html+='</div>';
+      if(ppOpenRoute===r.id){
+        html+='<div style="margin-top:11px">';
+        r.countries.forEach((c,ci)=>{
+          html+='<div style="display:flex;gap:7px;align-items:center;padding:7px 0;border-top:1px solid #F1EEE7;font-size:13.5px">';
+          html+='<span style="width:26px;height:26px;border-radius:50%;background:'+ppEsc(c.color||'#888')+';color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800">'+ppEsc(c.mono||'')+'</span>';
+          html+='<span style="flex:1"><b>'+ppEsc(c.co)+'</b> · '+ppEsc(c.dish)+'</span>';
+          html+='<button class="icon-btn" data-cup="'+ri+':'+ci+'" title="Subir" type="button">↑</button>';
+          html+='<button class="icon-btn" data-cdown="'+ri+':'+ci+'" title="Bajar" type="button">↓</button>';
+          html+='<button class="icon-btn" data-cedit="'+ri+':'+ci+'" title="Editar" type="button">✎</button>';
+          html+='<button class="icon-btn" data-cdel="'+ri+':'+ci+'" title="Eliminar" type="button">✕</button>';
+          html+='</div>';
+        });
+        html+='<button class="go" data-cadd="'+ri+'" type="button" style="margin-top:9px">+ Agregar destino</button>';
+        html+='<div id="ppDestForm"></div>';
+        html+='</div>';
+      }
+      html+='</div>';
+    });
+    html+='<div class="form-acts" style="margin-top:6px"><button class="go" id="ppSave" type="button" style="background:#111;color:#fff;border-color:#111">Guardar y publicar cambios</button></div>';
+    html+='<p class="hint" style="margin-top:8px">Ojo: si eliminas un destino, los sellos que la gente ya ganó ahí dejan de contar para completar esa ruta.</p>';
+    html+='</div>';
+
+    el.innerHTML=html;
+    ppBind(el);
+  };
+
+  function ppDestFormHTML(ri,ci){
+    const c = ci>=0 ? ppRoutes[ri].countries[ci] : {id:'',co:'',mono:'',color:'#8A2432',dish:'',stamp:'',time:'',serv:'',diff:'Media',ings:[],steps:[],tip:''};
+    const ingsTxt=(c.ings||[]).map(x=>x[0]+' | '+x[1]).join('\n');
+    const stepsTxt=(c.steps||[]).join('\n');
+    const inp='style="width:100%;border:1px solid #E9E6E0;border-radius:10px;padding:9px;font-size:14px;font-family:inherit;margin-top:4px"';
+    return '<div style="border:1.5px solid #B08D4F;border-radius:14px;padding:13px;margin-top:11px;background:#FCFAF4">'+
+      '<h4 style="font-size:14px;margin-bottom:8px">'+(ci>=0?'Editar destino':'Nuevo destino')+'</h4>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">'+
+      '<label style="font-size:12px;font-weight:600">País<input type="text" id="pfCo" value="'+ppEsc(c.co)+'" maxlength="30" '+inp+'></label>'+
+      '<label style="font-size:12px;font-weight:600">Platillo<input type="text" id="pfDish" value="'+ppEsc(c.dish)+'" maxlength="60" '+inp+'></label>'+
+      '<label style="font-size:12px;font-weight:600">Nombre del sello<input type="text" id="pfStamp" value="'+ppEsc(c.stamp)+'" maxlength="30" '+inp+'></label>'+
+      '<label style="font-size:12px;font-weight:600">Iniciales (2-3)<input type="text" id="pfMono" value="'+ppEsc(c.mono)+'" maxlength="3" '+inp+'></label>'+
+      '<label style="font-size:12px;font-weight:600">Color<input type="color" id="pfColor" value="'+ppEsc(c.color||'#8A2432')+'" style="width:100%;height:40px;border:1px solid #E9E6E0;border-radius:10px;margin-top:4px"></label>'+
+      '<label style="font-size:12px;font-weight:600">Tiempo<input type="text" id="pfTime" value="'+ppEsc(c.time)+'" maxlength="20" placeholder="45 min" '+inp+'></label>'+
+      '<label style="font-size:12px;font-weight:600">Porciones<input type="text" id="pfServ" value="'+ppEsc(c.serv)+'" maxlength="20" placeholder="4 porciones" '+inp+'></label>'+
+      '<label style="font-size:12px;font-weight:600">Dificultad<input type="text" id="pfDiff" value="'+ppEsc(c.diff)+'" maxlength="15" placeholder="Fácil / Media" '+inp+'></label>'+
+      '</div>'+
+      '<label style="font-size:12px;font-weight:600;display:block;margin-top:9px">Ingredientes (uno por línea: ingrediente | cantidad)<textarea id="pfIngs" rows="5" '+inp+'>'+ppEsc(ingsTxt)+'</textarea></label>'+
+      '<label style="font-size:12px;font-weight:600;display:block;margin-top:9px">Pasos (uno por línea)<textarea id="pfSteps" rows="5" '+inp+'>'+ppEsc(stepsTxt)+'</textarea></label>'+
+      '<label style="font-size:12px;font-weight:600;display:block;margin-top:9px">El toque de Tomas<textarea id="pfTip" rows="2" '+inp+'>'+ppEsc(c.tip)+'</textarea></label>'+
+      '<div style="display:flex;gap:8px;margin-top:10px"><button class="go" id="pfOk" type="button" style="background:#111;color:#fff;border-color:#111">Guardar destino</button><button class="go" id="pfCancel" type="button">Cancelar</button></div>'+
+    '</div>';
+  }
+
+  function ppSlug(s){
+    return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'').slice(0,8) || ('d'+Date.now().toString(36).slice(-4));
+  }
+
+  function ppBind(el){
+    el.addEventListener('click', async (e)=>{
+      const t=e.target;
+      if(t.id==='ppCsv'){
+        let csv='Nombre,WhatsApp,Ciudad,Estado,Progreso,Ruta,Completo,Registro\n';
+        ppUsers.forEach(u=>{
+          const p=ppUserProg(u);
+          const f=u.createdAt&&u.createdAt.seconds? new Date(u.createdAt.seconds*1000).toLocaleDateString('es-MX'):'';
+          csv+='"'+String(u.name||'').replace(/"/g,'""')+'","'+String(u.phone||'')+'","'+String(u.city||'').replace(/"/g,'""')+'","'+String(u.state||'')+'","'+p.done+'/'+p.total+'","'+String(p.route).replace(/"/g,'""')+'","'+(p.full?'SI':'NO')+'","'+f+'"\n';
+        });
+        const a=document.createElement('a');
+        a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+        a.download='pasaporte-participantes.csv'; document.body.appendChild(a); a.click(); a.remove();
+        return;
+      }
+      if(t.id==='ppAddRoute'){
+        const name=prompt('Nombre de la nueva ruta (ej. Temporada 2 · Sudamérica):');
+        if(!name) return;
+        ppRoutes.push({id:'r'+Date.now().toString(36), name:name.slice(0,40), active:false, countries:[]});
+        renderPassportAdmin.rerender();
+        return;
+      }
+      if(t.dataset.rtoggle!==undefined){
+        const r=ppRoutes[+t.dataset.rtoggle];
+        ppOpenRoute = ppOpenRoute===r.id ? '' : r.id;
+        ppEditIdx=-1; renderPassportAdmin.rerender(); return;
+      }
+      if(t.dataset.cadd!==undefined){
+        ppEditIdx=-1;
+        $("ppDestForm").innerHTML=ppDestFormHTML(+t.dataset.cadd,-1);
+        $("ppDestForm").dataset.ri=t.dataset.cadd; $("ppDestForm").dataset.ci=-1;
+        return;
+      }
+      if(t.dataset.cedit!==undefined){
+        const [ri,ci]=t.dataset.cedit.split(':').map(Number);
+        $("ppDestForm").innerHTML=ppDestFormHTML(ri,ci);
+        $("ppDestForm").dataset.ri=ri; $("ppDestForm").dataset.ci=ci;
+        return;
+      }
+      if(t.dataset.cdel!==undefined){
+        const [ri,ci]=t.dataset.cdel.split(':').map(Number);
+        if(confirm('¿Eliminar '+ppRoutes[ri].countries[ci].co+' de esta ruta?')){
+          ppRoutes[ri].countries.splice(ci,1); renderPassportAdmin.rerender();
+        }
+        return;
+      }
+      if(t.dataset.cup!==undefined || t.dataset.cdown!==undefined){
+        const up=t.dataset.cup!==undefined;
+        const [ri,ci]=(up?t.dataset.cup:t.dataset.cdown).split(':').map(Number);
+        const arr=ppRoutes[ri].countries, j=up?ci-1:ci+1;
+        if(j<0||j>=arr.length) return;
+        [arr[ci],arr[j]]=[arr[j],arr[ci]];
+        renderPassportAdmin.rerender(); return;
+      }
+      if(t.id==='pfCancel'){ $("ppDestForm").innerHTML=''; return; }
+      if(t.id==='pfOk'){
+        const box=$("ppDestForm"), ri=+box.dataset.ri, ci=+box.dataset.ci;
+        const co=$("pfCo").value.trim(), dish=$("pfDish").value.trim();
+        if(!co||!dish){ alert('País y platillo son obligatorios.'); return; }
+        const ings=$("pfIngs").value.split('\n').map(l=>l.split('|')).filter(a=>a[0]&&a[0].trim()).map(a=>[a[0].trim(),(a[1]||'').trim()||'al gusto']);
+        const steps=$("pfSteps").value.split('\n').map(s=>s.trim()).filter(Boolean);
+        if(ings.length<2||steps.length<2){ alert('Agrega al menos 2 ingredientes y 2 pasos.'); return; }
+        const dest={
+          id: ci>=0 ? ppRoutes[ri].countries[ci].id : ppSlug(co),
+          co:co.slice(0,30), dish:dish.slice(0,60),
+          stamp:($("pfStamp").value.trim()||('Sello de '+co)).slice(0,30),
+          mono:($("pfMono").value.trim().toUpperCase()||co.slice(0,2).toUpperCase()).slice(0,3),
+          color:$("pfColor").value||'#8A2432',
+          time:$("pfTime").value.trim().slice(0,20)||'45 min',
+          serv:$("pfServ").value.trim().slice(0,20)||'4 porciones',
+          diff:$("pfDiff").value.trim().slice(0,15)||'Media',
+          ings:ings, steps:steps, tip:$("pfTip").value.trim().slice(0,300)
+        };
+        if(ci>=0) ppRoutes[ri].countries[ci]=dest; else {
+          if(ppRoutes[ri].countries.some(c=>c.id===dest.id)) dest.id=dest.id+Date.now().toString(36).slice(-3);
+          ppRoutes[ri].countries.push(dest);
+        }
+        renderPassportAdmin.rerender(); return;
+      }
+      if(t.id==='ppSave'){
+        document.querySelectorAll('[data-rname]').forEach(i=>{ ppRoutes[+i.dataset.rname].name=i.value.trim().slice(0,40)||'Ruta'; });
+        document.querySelectorAll('[data-ract]').forEach(i=>{ ppRoutes[+i.dataset.ract].active=i.checked; });
+        if(!ppRoutes.some(r=>r.active!==false && r.countries.length)){ alert('Debe quedar al menos una ruta activa con destinos.'); return; }
+        t.disabled=true; t.textContent='Publicando…';
+        try{
+          await setDoc(doc(db,'settings','passport'), { routes: ppRoutes, updatedAt: serverTimestamp() });
+          t.textContent='✓ Publicado';
+          setTimeout(()=>{ t.disabled=false; t.textContent='Guardar y publicar cambios'; }, 1800);
+        }catch(err){
+          alert('No se pudo guardar: '+(err&&err.message||''));
+          t.disabled=false; t.textContent='Guardar y publicar cambios';
+        }
+        return;
+      }
+    });
+  }
+  renderPassportAdmin.rerender = async function(){
+    const y=window.scrollY;
+    renderPassportAdmin._cached=true;
+    await renderPassportAdmin();
+    renderPassportAdmin._cached=false;
+    window.scrollTo({top:y});
+  };
+
   $("tabs").addEventListener("click",(e)=>{
     const b=e.target.closest(".tab"); if(!b) return;
     window.goTab(b.dataset.tab);

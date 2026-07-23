@@ -104,6 +104,10 @@
   .myph{position:relative;width:100%;aspect-ratio:1/1;border-radius:13px;overflow:hidden;margin-bottom:9px;background:#EFE8D6}
   .myph img{width:100%;height:100%;object-fit:cover;display:block}
   .myph .badge{position:absolute;right:5px;bottom:5px;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Inter Tight',sans-serif;font-weight:800;font-size:11px;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+  .route-pick{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .route-pick:empty{display:none}
+  .rchip{border:1.5px solid var(--hairline);background:var(--card);color:var(--ink);border-radius:999px;padding:9px 15px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;min-height:40px}
+  .rchip.on{border-color:var(--gold);background:#F3EBD9;color:var(--gold-text)}
   .stamp-mini{display:inline-block;transform:rotate(-8deg);border:2px solid var(--ok);color:var(--ok);border-radius:8px;padding:2px 7px;font-size:10.5px;font-weight:800;letter-spacing:.05em}
 
   /* ---------- Receta ---------- */
@@ -217,18 +221,18 @@
       <img class="cover-logo" src="logo-pasaporte.jpeg" alt="Pasaporte de Sabores" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='logo-pasaporte.jpg'}else{this.style.display='none'}">
       <h1>Pasaporte de Sabores</h1>
       <p class="motto">"Un continente. Muchas cocinas.<br>Un viaje para compartir."</p>
-      <span class="season">Temporada 1 &middot; Seis pa&iacute;ses</span>
-      <p class="cover-note">Prepara seis recetas, toma la foto de tu platillo y gana tus sellos. Al completar la ruta, Tomas te entrega un regalo sorpresa.</p>
+      <span class="season" id="seasonChip">Temporada 1 &middot; Seis pa&iacute;ses</span>
+      <p class="cover-note">Prepara cada receta, toma la foto de tu platillo y gana tus sellos. Al completar la ruta, Tomas te entrega un regalo sorpresa.</p>
       <button class="btn btn-gold" id="btnStart" type="button">Comenzar mi viaje</button>
     </div>
     <div class="how">
       <h2>C&oacute;mo funciona</h2>
       <ol>
-        <li><span class="n">1</span>Empiezas en Venezuela y avanzas pa&iacute;s por pa&iacute;s.</li>
+        <li><span class="n">1</span>Empiezas en el primer destino y avanzas pa&iacute;s por pa&iacute;s.</li>
         <li><span class="n">2</span>Preparas la receta en tu cocina, a tu ritmo.</li>
         <li><span class="n">3</span>Tomas la foto de tu platillo y se estampa tu sello.</li>
         <li><span class="n">4</span>Cada sello desbloquea el siguiente destino.</li>
-        <li><span class="n">5</span>Con los seis, env&iacute;as tu prueba y recibes tu regalo sorpresa.</li>
+        <li><span class="n">5</span>Al completar la ruta, env&iacute;as tu prueba y recibes tu regalo sorpresa.</li>
       </ol>
     </div>
     <p class="legal-foot">Participar es gratis y no requiere ninguna compra. Ver <a href="#/reglas">reglas y privacidad</a>.</p>
@@ -280,6 +284,7 @@
         <div class="prog"><div class="prog-fill" id="ppFill" style="width:0%"></div></div>
       </div>
     </div>
+    <div id="routePick" class="route-pick"></div>
     <div class="grid" id="ppGrid"></div>
     <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
       <button class="btn btn-line" id="btnRewards" type="button">Ver mi regalo</button>
@@ -304,7 +309,7 @@
       <span class="lbl">Ruta completada</span>
       <h2>Embajador de Sabores</h2>
       <div class="who" id="certName">&mdash;</div>
-      <p class="d">complet&oacute; los seis destinos del<br><b>Pasaporte de Sabores &middot; Temporada 1</b><br><span id="certDate"></span></p>
+      <p class="d">complet&oacute; los <span id="certN">6</span> destinos del<br><b>Pasaporte de Sabores &middot; <span id="certRoute">Temporada 1</span></b><br><span id="certDate"></span></p>
       <div class="mini-grid" id="certMinis"></div>
     </div>
     <div class="card">
@@ -419,6 +424,22 @@ const COUNTRIES = [
    tip:"Tostar bien las semillas es el secreto del pepián: en un sartén que reparte el calor no se queman en las orillas." }
 ];
 
+let ROUTES=[{id:'t1',name:'Temporada 1',active:true,countries:COUNTRIES}];
+let ROUTE=ROUTES[0], CTS=COUNTRIES, TOTAL=COUNTRIES.length;
+function sk(c){ return ROUTE.id==='t1' ? c.id : ROUTE.id+'__'+c.id; }
+function setRoute(r){ ROUTE=r; CTS=r.countries; TOTAL=CTS.length; try{localStorage.setItem('_pproute',r.id)}catch(e){} }
+function routeCount(){ const s=(USER&&USER.stamps)||{}; return CTS.filter(c=>s[sk(c)]).length; }
+async function loadRoutesCfg(){
+  try{
+    const s=await getDoc(doc(db,'settings','passport'));
+    if(s.exists() && Array.isArray(s.data().routes)){
+      const act=s.data().routes.filter(r=>r && r.active!==false && Array.isArray(r.countries) && r.countries.length);
+      if(act.length) ROUTES=act;
+    }
+  }catch(e){}
+  let saved=''; try{ saved=localStorage.getItem('_pproute')||''; }catch(e){}
+  setRoute(ROUTES.find(r=>r.id===saved) || ROUTES[0]);
+}
 let db=null, auth=null, uid=null, USER=null, PHOTOS={}, pendingCountry=null, pendingPhoto=null;
 const $ = id => document.getElementById(id);
 
@@ -496,21 +517,21 @@ function show(id){
 }
 function nextIndex(){
   const s=(USER&&USER.stamps)||{};
-  for(let i=0;i<COUNTRIES.length;i++){ if(!s[COUNTRIES[i].id]) return i; }
+  for(let i=0;i<CTS.length;i++){ if(!s[sk(CTS[i])]) return i; }
   return -1;
 }
 function estadoPais(i){
-  const c=COUNTRIES[i], s=(USER&&USER.stamps)||{};
-  if(s[c.id]) return 'done';
+  const c=CTS[i], s=(USER&&USER.stamps)||{};
+  if(s[sk(c)]) return 'done';
   return i===nextIndex() ? 'open' : 'locked';
 }
 function route(){
   const h=location.hash||'';
   if(h.startsWith('#/pais/')){
-    const idx=COUNTRIES.findIndex(x=>x.id===h.split('/')[2]);
+    const idx=CTS.findIndex(x=>x.id===h.split('/')[2]);
     if(idx>=0 && USER){
       if(estadoPais(idx)==='locked'){ location.hash='#/pasaporte'; toast('Ese destino aún está bloqueado'); return; }
-      renderCountry(COUNTRIES[idx]); show('v-country'); track('Pasaporte: abre '+COUNTRIES[idx].co); return;
+      renderCountry(CTS[idx]); show('v-country'); track('Pasaporte: abre '+CTS[idx].co); return;
     }
     location.hash = USER ? '#/pasaporte' : '';
     return;
@@ -518,7 +539,7 @@ function route(){
   if(h==='#/regalo') renderGift();
   if(h==='#/pasaporte') renderPassport();
   if(h==='#/certificado'){
-    if(stampCount()<6){ location.hash='#/regalo'; return; }
+    if(routeCount()<TOTAL){ location.hash='#/regalo'; return; }
     renderCert();
   }
   const target = VIEWS[h] || 'v-cover';
@@ -536,14 +557,17 @@ function renderPassport(){
   if(!USER) return;
   $('ppName').textContent = USER.name;
   $('ppCity').textContent = lugar();
-  const n = stampCount();
-  $('ppCount').textContent = n + ' de 6 destinos';
-  $('ppFill').style.width = Math.round(n/6*100)+'%';
-  $('ppGrid').innerHTML = COUNTRIES.map((c,i)=>{
+  const n = routeCount();
+  $('ppCount').textContent = n + ' de ' + TOTAL + ' destinos';
+  $('ppFill').style.width = Math.round(n/TOTAL*100)+'%';
+  $('routePick').innerHTML = ROUTES.length>1
+    ? ROUTES.map(r=>'<button class="rchip'+(r.id===ROUTE.id?' on':'')+'" data-route="'+esc(r.id)+'" type="button">'+esc(r.name)+'</button>').join('')
+    : '';
+  $('ppGrid').innerHTML = CTS.map((c,i)=>{
     const st = estadoPais(i);
     let visual;
     if(st==='done'){
-      const ph = PHOTOS[c.id] || photoCacheGet(c.id);
+      const ph = PHOTOS[sk(c)] || photoCacheGet(sk(c));
       visual = ph
         ? '<div class="myph"><img src="'+ph+'" alt="Tu '+esc(c.dish)+'"><span class="badge" style="background:'+c.color+'">'+c.mono+'</span></div>'
         : '<div class="mono" style="background:'+c.color+'">'+c.mono+'</div>';
@@ -560,13 +584,15 @@ function renderPassport(){
   }).join('');
 }
 document.addEventListener('click', e=>{
+  const rc=e.target.closest('[data-route]');
+  if(rc){ const r=ROUTES.find(x=>x.id===rc.getAttribute('data-route')); if(r){ setRoute(r); renderPassport(); } return; }
   const el=e.target.closest('[data-country]');
   if(!el) return;
   const id=el.getAttribute('data-country');
-  const i=COUNTRIES.findIndex(x=>x.id===id);
+  const i=CTS.findIndex(x=>x.id===id);
   if(estadoPais(i)==='locked'){
     const sig=nextIndex();
-    toast('Primero completa '+(sig>=0?COUNTRIES[sig].co:'el destino anterior'));
+    toast('Primero completa '+(sig>=0?CTS[sig].co:'el destino anterior'));
     return;
   }
   location.hash='#/pais/'+id;
@@ -574,8 +600,8 @@ document.addEventListener('click', e=>{
 
 // ---------- Detalle país ----------
 function renderCountry(c){
-  const done = USER && (USER.stamps||{})[c.id];
-  const mine = PHOTOS[c.id] || photoCacheGet(c.id);
+  const done = USER && (USER.stamps||{})[sk(c)];
+  const mine = PHOTOS[sk(c)] || photoCacheGet(sk(c));
   $('v-country').innerHTML =
     '<div class="rec-head" style="background:linear-gradient(150deg,'+c.color+'E6,'+c.color+')">'+
       '<span class="co">'+esc(c.co)+' &middot; Sello: '+esc(c.stamp)+'</span>'+
@@ -627,21 +653,22 @@ $('cmYes').addEventListener('click', async ()=>{
   const c=pendingCountry, ph=pendingPhoto;
   if(!c || !ph || !USER) return;
   const btn=$('cmYes');
-  if((USER.stamps||{})[c.id]){ toast('Este sello ya estaba estampado'); $('confirmModal').classList.remove('open'); return; }
+  if((USER.stamps||{})[sk(c)]){ toast('Este sello ya estaba estampado'); $('confirmModal').classList.remove('open'); return; }
   btn.disabled=true; btn.textContent='Guardando…';
 
+  const K=sk(c);
   USER.stamps = USER.stamps || {};
-  USER.stamps[c.id] = Date.now();
-  PHOTOS[c.id] = ph;
-  cacheSave(); photoCache(c.id, ph);
+  USER.stamps[K] = Date.now();
+  PHOTOS[K] = ph;
+  cacheSave(); photoCache(K, ph);
 
   try{
-    await setDoc(doc(db,'passportPhotos', uid+'__'+c.id), {
-      uid:uid, country:c.id, countryName:c.co, dish:c.dish, photo:ph,
+    await setDoc(doc(db,'passportPhotos', uid+'__'+K), {
+      uid:uid, country:K, countryName:c.co, dish:c.dish, routeName:ROUTE.name, photo:ph,
       name:USER.name, phone:USER.phone||'', city:USER.city||'', state:USER.state||'',
       createdAt:serverTimestamp()
     });
-    const upd={}; upd['stamps.'+c.id]=USER.stamps[c.id]; upd.updatedAt=serverTimestamp();
+    const upd={}; upd['stamps.'+K]=USER.stamps[K]; upd.updatedAt=serverTimestamp();
     await updateDoc(doc(db,'passportUsers',uid), upd);
   }catch(e){
     toast('Guardado en tu dispositivo; se sincronizará al reconectar');
@@ -649,8 +676,8 @@ $('cmYes').addEventListener('click', async ()=>{
   btn.disabled=false; btn.textContent='Estampar mi sello';
   $('confirmModal').classList.remove('open');
   track('Pasaporte: sello '+c.co);
-  const n=stampCount();
-  if(n===6) track('Pasaporte: viaje completado');
+  const n=routeCount();
+  if(n>=TOTAL) track('Pasaporte: viaje completado');
   showStamp(c, n, ph);
   pendingPhoto=null;
 });
@@ -663,16 +690,16 @@ function showStamp(c, n, ph){
     '<text x="100" y="92" text-anchor="middle" font-family="Inter Tight,sans-serif" font-weight="800" font-size="30" fill="'+c.color+'">'+c.mono+'</text>'+
     '<text x="100" y="122" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="12" letter-spacing="1.2" fill="'+c.color+'">'+esc(c.stamp).toUpperCase()+'</text>';
   const sig=nextIndex();
-  $('stampTitle').textContent = n>=6 ? '¡Viaje completado!' : '¡Sello estampado!';
-  $('stampSub').textContent = n>=6
-    ? c.stamp+' · '+c.co+'  —  ¡Completaste los seis destinos!'
-    : c.stamp+' · '+c.co+'  —  '+n+' de 6  ·  Desbloqueaste '+(sig>=0?COUNTRIES[sig].co:'');
+  $('stampTitle').textContent = n>=TOTAL ? '¡Ruta completada!' : '¡Sello estampado!';
+  $('stampSub').textContent = n>=TOTAL
+    ? c.stamp+' · '+c.co+'  —  ¡Completaste todos los destinos!'
+    : c.stamp+' · '+c.co+'  —  '+n+' de '+TOTAL+'  ·  Desbloqueaste '+(sig>=0?CTS[sig].co:'');
   $('stampOv').classList.add('open');
-  confetti(n>=6);
+  confetti(n>=TOTAL);
 }
 $('stampOk').addEventListener('click', ()=>{
   $('stampOv').classList.remove('open');
-  if(stampCount()>=6){ location.hash='#/regalo'; } else { location.hash='#/pasaporte'; renderPassport(); }
+  if(routeCount()>=TOTAL){ location.hash='#/regalo'; } else { location.hash='#/pasaporte'; renderPassport(); }
 });
 $('stampShare').addEventListener('click', ()=>{
   const c=pendingCountry;
@@ -707,15 +734,15 @@ $('btnRewards').addEventListener('click', ()=>{ location.hash='#/regalo'; });
 
 // ---------- Regalo ----------
 function renderGift(){
-  const n=stampCount(), ok=n>=6, falta=6-n;
+  const n=routeCount(), ok=n>=TOTAL, falta=TOTAL-n;
   let html='<div class="gift">'+
     '<img src="logo-pasaporte.jpeg" alt="Pasaporte de Sabores" onerror="this.src=\'logo-pasaporte.jpg\'">'+
     '<h2>'+(ok?'¡Tu regalo te espera!':'Tu regalo sorpresa')+'</h2>'+
     '<p>'+(ok
-      ? 'Completaste los seis destinos. Genera tu comprobante y envíamelo por WhatsApp para coordinar la entrega.'
-      : 'Al completar los seis destinos, Tomas te entrega un regalo sorpresa. Envías tu comprobante por WhatsApp y él coordina contigo.')+'</p>'+
-    '<div class="prog"><div class="prog-fill" style="width:'+Math.round(n/6*100)+'%"></div></div>'+
-    '<div class="cnt">'+n+' de 6 sellos'+(ok?'':'  ·  te '+(falta===1?'falta 1 destino':'faltan '+falta+' destinos'))+'</div>'+
+      ? 'Completaste todos los destinos de '+esc(ROUTE.name)+'. Genera tu comprobante y envíamelo por WhatsApp para coordinar la entrega.'
+      : 'Al completar los '+TOTAL+' destinos, Tomas te entrega un regalo sorpresa. Envías tu comprobante por WhatsApp y él coordina contigo.')+'</p>'+
+    '<div class="prog"><div class="prog-fill" style="width:'+Math.round(n/TOTAL*100)+'%"></div></div>'+
+    '<div class="cnt">'+n+' de '+TOTAL+' sellos'+(ok?'':'  ·  te '+(falta===1?'falta 1 destino':'faltan '+falta+' destinos'))+'</div>'+
     '</div>';
   html+='<div class="rw'+(ok?'':' locked')+'">'+
     '<div class="ic '+(ok?'ok':'lock')+'">'+
@@ -733,8 +760,10 @@ function renderGift(){
 function renderCert(){
   $('certName').textContent = USER.name + (lugar() ? ' · ' + lugar() : '');
   $('certDate').textContent = new Date().toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
-  $('certMinis').innerHTML = COUNTRIES.map(c=>{
-    const ph=PHOTOS[c.id]||photoCacheGet(c.id);
+  $('certRoute').textContent = ROUTE.name;
+  $('certN').textContent = TOTAL;
+  $('certMinis').innerHTML = CTS.map(c=>{
+    const ph=PHOTOS[sk(c)]||photoCacheGet(sk(c));
     return ph ? '<img src="'+ph+'" alt="'+esc(c.dish)+'">'
               : '<div style="aspect-ratio:1/1;border-radius:10px;background:'+c.color+';color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px">'+c.mono+'</div>';
   }).join('');
@@ -745,7 +774,10 @@ function loadImg(src){
   return new Promise((res,rej)=>{ const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=src; });
 }
 async function buildProof(){
-  const W=1080, H=1500;
+  const W=1080, pad=54, gap=18, cols=3;
+  const cw=Math.floor((W-pad*2-gap*(cols-1))/cols);
+  const rows=Math.ceil(CTS.length/cols);
+  const H=510+rows*(cw+64)+130;
   const cv=document.createElement('canvas'); cv.width=W; cv.height=H;
   const x=cv.getContext('2d');
   x.fillStyle='#F6F0E2'; x.fillRect(0,0,W,H);
@@ -756,18 +788,16 @@ async function buildProof(){
   x.fillStyle='#1B2A4A'; x.font='800 54px "Inter Tight", sans-serif';
   x.fillText('Ruta completada', W/2, 322);
   x.fillStyle='#5E6478'; x.font='500 30px Inter, sans-serif';
-  x.fillText('Pasaporte de Sabores · Temporada 1', W/2, 366);
+  x.fillText('Pasaporte de Sabores · '+ROUTE.name, W/2, 366);
   x.fillStyle='#1B2A4A'; x.font='800 44px "Inter Tight", sans-serif';
   x.fillText(USER.name, W/2, 428);
   if(lugar()){ x.fillStyle='#5E6478'; x.font='500 28px Inter, sans-serif'; x.fillText(lugar(), W/2, 466); }
 
-  const pad=54, gap=18, cols=3;
-  const cw=Math.floor((W-pad*2-gap*(cols-1))/cols);
-  for(let i=0;i<COUNTRIES.length;i++){
-    const c=COUNTRIES[i];
+  for(let i=0;i<CTS.length;i++){
+    const c=CTS[i];
     const col=i%cols, row=Math.floor(i/cols);
     const px=pad+col*(cw+gap), py=510+row*(cw+64);
-    const ph=PHOTOS[c.id]||photoCacheGet(c.id);
+    const ph=PHOTOS[sk(c)]||photoCacheGet(sk(c));
     x.fillStyle=c.color; x.fillRect(px,py,cw,cw);
     if(ph){ try{ const im=await loadImg(ph); x.drawImage(im,px,py,cw,cw); }catch(e){} }
     x.strokeStyle='#1B2A4A'; x.lineWidth=3; x.strokeRect(px,py,cw,cw);
@@ -777,7 +807,7 @@ async function buildProof(){
     x.fillStyle='#8A672B'; x.font='600 19px Inter, sans-serif';
     x.fillText(c.stamp, px+cw/2, py+cw+56);
   }
-  const base=510+2*(cw+64)+40;
+  const base=510+rows*(cw+64)+40;
   x.fillStyle='#5E6478'; x.font='500 26px Inter, sans-serif';
   x.fillText(new Date().toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}), W/2, base+30);
   x.fillStyle='#8A672B'; x.font='700 26px Inter, sans-serif';
@@ -790,7 +820,7 @@ $('btnProof').addEventListener('click', async ()=>{
     const img=await buildProof();
     $('proofImg').src=img; $('proofImg').style.display='block';
     track('Pasaporte: envía prueba');
-    const msg='Hola Tomas 👋 Completé mi Pasaporte de Sabores (6 de 6 sellos). Soy '+USER.name+(lugar()?' de '+lugar():'')+'. Aquí está mi comprobante para coordinar mi regalo sorpresa.';
+    const msg='Hola Tomas 👋 Completé la ruta '+ROUTE.name+' del Pasaporte de Sabores ('+TOTAL+' de '+TOTAL+' sellos). Soy '+USER.name+(lugar()?' de '+lugar():'')+'. Aquí está mi comprobante para coordinar mi regalo sorpresa.';
     const ok=await shareImage(img, 'pasaporte-completado.jpg', msg);
     if(!ok) toast('Guarda la imagen y adjúntala en WhatsApp');
   }catch(e){ toast('No se pudo generar el comprobante. Intenta de nuevo.'); }
@@ -870,6 +900,8 @@ document.addEventListener('click', e=>{
     const fb=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
     _add=fb.addDoc; _col=fb.collection; _ts=fb.serverTimestamp; anaReady=true; flushAna();
     track('Pasaporte: visita');
+    await loadRoutesCfg();
+    try{ $('seasonChip').textContent = ROUTE.name + ' · ' + TOTAL + (TOTAL===1?' país':' países'); }catch(e){}
     await signInAnonymously(auth);
     await new Promise(res=>{ const off=onAuthStateChanged(auth,u=>{ if(u){ uid=u.uid; off(); res(); } }); });
     try{
