@@ -118,18 +118,19 @@
   }
   .hero-content{
     position:relative;z-index:2;width:100%;
-    padding:0 26px calc(60px + env(safe-area-inset-bottom));
+    padding:0 26px calc(34px + env(safe-area-inset-bottom));
     max-width:1120px;margin:0 auto;
   }
   .hero .eyebrow{display:block;margin-bottom:14px;color:var(--gold-text);letter-spacing:.015em}
   .hero h1{
-    font-family:'Inter Tight',sans-serif;font-weight:700;
-    font-size:clamp(48px,13vw,92px);letter-spacing:-.04em;line-height:.96;
-    -webkit-text-stroke:5px #fff;paint-order:stroke fill;
-    text-shadow:0 0 1px #fff, 1.5px 1.5px 0 rgba(255,255,255,.55), -1.5px -1.5px 0 rgba(255,255,255,.55), 0 3px 14px rgba(255,255,255,.35);
+    font-family:'Inter Tight',sans-serif;font-weight:700;color:var(--ink);
+    font-size:clamp(41px,11vw,75px);letter-spacing:-.042em;line-height:.97;margin-top:2px;
+    -webkit-text-stroke:1.6px rgba(255,255,255,.92);paint-order:stroke fill;
+    text-shadow:0 2px 14px rgba(255,255,255,.55), 0 1px 3px rgba(255,255,255,.7);
   }
-  .hero .sub{margin-top:16px;font-size:clamp(16px,4.2vw,19px);line-height:1.5;color:#B8860B;max-width:32ch;font-weight:600;-webkit-text-stroke:2.5px #000;paint-order:stroke fill;text-shadow:0 1px 3px rgba(0,0,0,.35)}
-  .hero-cta{display:flex;gap:11px;margin-top:24px;flex-wrap:wrap}
+  .hero .sub{margin-top:14px;font-size:clamp(15px,4vw,18px);line-height:1.45;color:#8A672B;max-width:17ch;font-weight:600;text-shadow:0 1px 4px rgba(255,255,255,.95)}
+  @media(min-width:640px){.hero .sub{max-width:24ch}}
+  .hero-cta{display:flex;gap:11px;margin-top:20px;flex-wrap:wrap}
   .btn{
     display:inline-flex;align-items:center;justify-content:center;gap:9px;
     border-radius:999px;padding:16px 26px;font-size:15.5px;font-weight:600;
@@ -441,13 +442,20 @@
   }
   .fab-backdrop.show{opacity:1;pointer-events:auto}
   .fab-wrap{
-    position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));
-    z-index:90;display:flex;flex-direction:column;align-items:flex-end;gap:12px;
-    transition:transform .4s var(--ease), opacity .4s var(--ease);
-    pointer-events:none; /* la caja no intercepta toques */
+    position:fixed;right:14px;bottom:calc(18px + env(safe-area-inset-bottom));
+    z-index:90;display:flex;flex-direction:column;align-items:flex-end;gap:10px;
+    opacity:0;transform:translateY(8px);pointer-events:none; /* oculto sobre el hero */
+    transition:transform .4s var(--ease), opacity .4s var(--ease), bottom .4s var(--ease);
   }
+  /* Aparece solo cuando el hero deja de estar en pantalla, elevado sobre la barra inferior */
+  body.bar-on .fab-wrap{opacity:1;transform:none;bottom:calc(90px + env(safe-area-inset-bottom))}
   .fab-wrap .fab, .fab-wrap #fabBtn{pointer-events:auto} /* solo el botón recibe toques */
+  body.bar-on .fab-wrap .fab, body.bar-on .fab-wrap #fabBtn{pointer-events:auto}
   .fab-wrap.hidden-dock{transform:translateY(140%);opacity:0;pointer-events:none}
+  @media(min-width:768px){
+    .fab-wrap{opacity:1;transform:none;bottom:calc(18px + env(safe-area-inset-bottom))}
+    body.bar-on .fab-wrap{bottom:calc(18px + env(safe-area-inset-bottom))}
+  }
   .fab-note{
     background:var(--card);border:1px solid var(--hairline);border-radius:14px;
     padding:10px 14px;font-size:13px;font-weight:500;color:var(--ink);
@@ -473,13 +481,14 @@
   @media(hover:hover){.fab-opt:hover{transform:translateX(-4px)}}
   .fab-opt .fo-ic{font-size:20px;line-height:1}
   .fab{
-    width:58px;height:58px;border-radius:50%;
+    width:50px;height:50px;border-radius:50%;
     background:var(--ink);color:#fff;
     display:flex;align-items:center;justify-content:center;
     box-shadow:0 8px 24px rgba(17,17,16,.3), 0 2px 8px rgba(17,17,16,.2);
     transition:transform .3s var(--ease), box-shadow .3s var(--ease);
     position:relative;
   }
+  .fab .ic{width:21px;height:21px}
   .fab:active{transform:scale(.92)}
   @media(hover:hover){.fab:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(17,17,16,.36)}}
   .fab .ic{position:absolute;transition:opacity .25s var(--ease), transform .35s var(--ease)}
@@ -653,7 +662,7 @@
   .bottombar .bb-wa{display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:14px;background:#fff;border:1px solid var(--hairline);color:var(--ink)}
   .bottombar .bb-wa svg{width:22px;height:22px}
   @media(min-width:768px){ .bottombar{display:none} }
-  body.bar-on .fab-wrap{opacity:0;pointer-events:none;transition:opacity .25s ease}
+  /* (El FAB ahora aparece junto con la barra, elevado sobre ella; ver regla body.bar-on .fab-wrap arriba) */
 
   /* ---------- Filtros de galería ---------- */
   .gal-filters{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 0 18px;padding-bottom:4px}
@@ -663,8 +672,24 @@
 
   /* ---------- Jerarquía CTA hero ---------- */
   .btn-hero{font-size:17px;padding:18px 26px;box-shadow:0 6px 22px rgba(17,17,16,.22)}
-  .hero .btn-save{background:transparent;border:0;color:var(--stone);font-size:14.5px;padding:10px 6px;text-decoration:underline;text-underline-offset:3px;box-shadow:none}
-  .hero .btn-save svg{width:15px;height:15px;opacity:.75}
+  /* Los dos primeros CTA mantienen presencia; el tercero es acción terciaria compacta */
+  .hero-cta .btn-solid, .hero-cta .btn-ghost{flex:1 1 auto;min-width:0}
+  /* "Guardar mi contacto": pildora terciaria, mas pequena, centrada en fila propia */
+  .hero .btn-save{
+    flex:0 1 auto;align-self:center;width:auto;max-width:100%;margin:4px auto 0;
+    background:rgba(255,255,255,.7);color:var(--gold-text);
+    border:1.5px solid rgba(176,141,79,.55);border-radius:999px;
+    font-size:13px;font-weight:600;padding:9px 18px;min-height:44px;
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    box-shadow:0 3px 12px rgba(176,141,79,.14);text-decoration:none;
+  }
+  /* separador de fila: fuerza el boton guardar a una linea propia y centrada */
+  .hero-cta::before{content:"";flex:1 0 100%;order:0}
+  .hero-cta .btn-solid{order:-2}
+  .hero-cta .btn-ghost{order:-1}
+  .hero .btn-save{order:1}
+  .hero .btn-save svg{width:15px;height:15px;opacity:.9}
+  @media(hover:hover){.hero .btn-save:hover{transform:translateY(-1px);background:#fff;box-shadow:0 6px 18px rgba(176,141,79,.2)}}
 
   /* ---------- Modal de confianza (pre-Calendly) ---------- */
   .cal-pre{padding:22px 22px calc(22px + env(safe-area-inset-bottom))}
@@ -689,6 +714,14 @@
   .how-n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;font-family:'Inter Tight',sans-serif}
   .how-list b{font-size:15.5px;display:block;margin-bottom:2px}
   .how-list p{font-size:14px;color:var(--stone);line-height:1.5}
+  /* Pasos 4 y 5 colapsables tras "Ver más" */
+  .how-list li.how-extra{overflow:hidden;padding:0;border-bottom:0;max-height:0;opacity:0;transition:max-height .4s var(--ease),opacity .3s var(--ease),padding .4s var(--ease)}
+  .how-list.show-all li.how-extra{max-height:120px;opacity:1;padding:15px 0;border-bottom:1px solid var(--hairline)}
+  .how-list.show-all li.how-extra:last-child{border-bottom:0}
+  .how-more{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:11px 20px;min-height:44px;border-radius:999px;background:#fff;color:var(--ink);border:1.5px solid var(--gold);font-weight:600;font-size:14.5px;box-shadow:0 3px 12px rgba(176,141,79,.14);transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
+  .how-more svg{transition:transform .3s var(--ease)}
+  .how-more[aria-expanded="true"] svg{transform:rotate(180deg)}
+  @media(hover:hover){.how-more:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(176,141,79,.2)}}
   .cities{margin-top:22px;font-size:14px;color:var(--stone);line-height:1.6;max-width:56ch;background:var(--card);border:1px solid var(--hairline);border-radius:14px;padding:14px 16px}
   .cities b{color:var(--ink);font-weight:600}
 
@@ -732,7 +765,7 @@
   .pass-card{position:relative;display:block;text-decoration:none;background:linear-gradient(150deg,#22335A 0%,#1B2A4A 60%,#15213B 100%);border-radius:26px;padding:26px 22px;color:#F2ECDD;overflow:hidden;box-shadow:0 2px 4px rgba(27,42,74,.08),0 18px 44px rgba(27,42,74,.16)}
   .pass-card::before{content:"";position:absolute;inset:9px;border:1.5px solid rgba(176,141,79,.5);border-radius:20px;pointer-events:none}
   .pass-in{display:flex;gap:18px;align-items:center}
-  .pass-emb{flex:0 0 92px;width:92px;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+  .pass-emb{flex:0 0 96px;width:96px;height:96px;aspect-ratio:1/1;border-radius:50%;object-fit:cover;background:#F6F0E2;border:2.5px solid rgba(176,141,79,.7);box-shadow:0 8px 24px rgba(0,0,0,.3),inset 0 0 0 4px #FFFDF7}
   .pass-eyebrow{font-family:'Fraunces',serif;font-style:italic;font-size:13.5px;color:#D8C9A4}
   .pass-h{font-family:'Inter Tight',sans-serif;font-size:clamp(20px,5.6vw,26px);letter-spacing:-.02em;line-height:1.12;margin-top:5px}
   .pass-p{font-size:13.5px;line-height:1.55;color:#C7BFA9;margin-top:8px}
@@ -1014,9 +1047,13 @@
     <li><span class="how-n">1</span><div><b>Eliges una fecha</b><p>En el calendario, la que mejor te acomode.</p></div></li>
     <li><span class="how-n">2</span><div><b>Confirmamos por WhatsApp</b><p>Te escribo personalmente para afinar dirección, personas y menú.</p></div></li>
     <li><span class="how-n">3</span><div><b>Preparo el menú en tu hogar</b><p>Llevo los utensilios y coordinamos previamente todo lo necesario.</p></div></li>
-    <li><span class="how-n">4</span><div><b>Conoces los productos y pruebas los resultados</b><p>Comes rico mientras ves cómo funcionan.</p></div></li>
-    <li><span class="how-n">5</span><div><b>Tú decides sin compromiso</b><p>Sin presión. Mi trabajo es servirte, no venderte.</p></div></li>
+    <li class="how-extra"><span class="how-n">4</span><div><b>Conoces los productos y pruebas los resultados</b><p>Comes rico mientras ves cómo funcionan.</p></div></li>
+    <li class="how-extra"><span class="how-n">5</span><div><b>Tú decides sin compromiso</b><p>Sin presión. Mi trabajo es servirte, no venderte.</p></div></li>
   </ol>
+  <button class="how-more rv" id="howMoreBtn" type="button" aria-expanded="false">
+    <span>Ver los siguientes pasos</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+  </button>
   <div class="zona rv" id="zona-servicio">
     <h3 class="zona-h">Demostraciones en Dallas–Fort Worth</h3>
     <p class="zona-p">Atiendo familias en <b>Dallas, Irving, Arlington, Grand Prairie, Farmers Branch, Addison, Plano, Fort Worth</b> y otras ciudades del área DFW.</p>
@@ -1524,13 +1561,20 @@ fabMenu.querySelectorAll('.fab-opt').forEach(function(o){
   o.addEventListener('click', function(){ setTimeout(closeFab, 150); });
 });
 
-/* Nota "respondo en 10 min": aparece a los 2.5s, se oculta a los 9s o al abrir */
-var noteTimer1 = setTimeout(function(){ fabNote.classList.add('show'); }, 2500);
-var noteTimer2 = setTimeout(hideNote, 11000);
+/* Nota "respondo en 10 min": aparece en zona limpia (tras salir del hero), no sobre la portada */
+var noteShownOnce = false;
+var noteTimer2;
+function maybeShowNote(){
+  if(noteShownOnce) return;
+  if(window.pageYOffset < window.innerHeight * 0.6) return; /* aún en el hero: no mostrar */
+  noteShownOnce = true;
+  fabNote.classList.add('show');
+  noteTimer2 = setTimeout(hideNote, 8000);
+}
 function hideNote(){
   fabNote.classList.remove('show');
-  document.getElementById('fabDot').style.display = 'none';
-  clearTimeout(noteTimer1); clearTimeout(noteTimer2);
+  var dot = document.getElementById('fabDot'); if(dot) dot.style.display = 'none';
+  clearTimeout(noteTimer2);
 }
 
 /* Ocultar al hacer scroll, reaparecer al detenerse */
@@ -1539,12 +1583,25 @@ var scrollStop;
 window.addEventListener('scroll', function(){
   if(fabOpen) return;
   var y = window.pageYOffset;
+  maybeShowNote();
   if(y > lastY + 6 && y > 300){ fabWrap.classList.add('hidden-dock'); fabNote.classList.remove('show'); }
   else if(y < lastY - 6){ fabWrap.classList.remove('hidden-dock'); }
   lastY = y;
   clearTimeout(scrollStop);
   scrollStop = setTimeout(function(){ fabWrap.classList.remove('hidden-dock'); }, 320);
 },{passive:true});
+
+/* "Cómo funciona": mostrar 3 pasos y desplegar 4 y 5 con "Ver más" */
+(function(){
+  var btn = document.getElementById('howMoreBtn');
+  var list = document.querySelector('.how-list');
+  if(!btn || !list) return;
+  btn.addEventListener('click', function(){
+    var open = list.classList.toggle('show-all');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.querySelector('span').textContent = open ? 'Ver menos' : 'Ver los siguientes pasos';
+  });
+})();
 </script>
 
 <script type="module">
