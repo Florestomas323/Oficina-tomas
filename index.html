@@ -70,8 +70,8 @@
     --gold:#B08D4F;
     --gold-text:#8A672B;
     --royal:#6B4E9B;
-    --shadow-soft:0 1px 2px rgba(17,17,16,.04), 0 8px 24px rgba(17,17,16,.06);
-    --shadow-lift:0 2px 4px rgba(17,17,16,.05), 0 18px 44px rgba(17,17,16,.12);
+    --shadow-soft:0 1px 2px rgba(17,17,16,.03), 0 6px 20px rgba(17,17,16,.05);
+    --shadow-lift:0 2px 6px rgba(17,17,16,.05), 0 16px 40px rgba(17,17,16,.10);
     --radius:22px;
     --ease:cubic-bezier(.22,.8,.24,1);
   }
@@ -80,7 +80,8 @@
   body{
     background:var(--paper);color:var(--ink);
     font-family:'Inter',system-ui,-apple-system,sans-serif;
-    font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+    font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+    text-rendering:optimizeLegibility;font-feature-settings:"kern" 1,"liga" 1;letter-spacing:-.006em;
   }
   body.lock{overflow:hidden}
   img{display:block;max-width:100%}
@@ -105,7 +106,8 @@
   }
   .sec-h{
     font-family:'Inter Tight',sans-serif;font-weight:700;
-    font-size:clamp(30px,6.5vw,46px);letter-spacing:-.028em;line-height:1.08;
+    font-size:clamp(30px,6.5vw,46px);letter-spacing:-.03em;line-height:1.06;
+    text-wrap:balance;
   }
 
   /* ---------- HERO ---------- */
@@ -128,11 +130,11 @@
     -webkit-text-stroke:5px #fff;paint-order:stroke fill;
     text-shadow:0 0 1px #fff, 1.5px 1.5px 0 rgba(255,255,255,.55), -1.5px -1.5px 0 rgba(255,255,255,.55), 0 3px 14px rgba(255,255,255,.35);
   }
-  .hero .sub{margin-top:16px;font-size:clamp(16px,4.2vw,19px);line-height:1.5;color:#B8860B;max-width:32ch;font-weight:600;-webkit-text-stroke:2.5px #000;paint-order:stroke fill;text-shadow:0 1px 3px rgba(0,0,0,.35)}
+  .hero .sub{margin-top:16px;font-size:clamp(16px,4.2vw,19px);line-height:1.55;color:#8A672B;max-width:32ch;font-weight:600;-webkit-text-stroke:1.4px #fff;paint-order:stroke fill;text-shadow:0 1px 2px rgba(255,255,255,.6)}
   .hero-cta{display:flex;gap:11px;margin-top:24px;flex-wrap:wrap}
   .btn{
     display:inline-flex;align-items:center;justify-content:center;gap:9px;
-    border-radius:999px;padding:16px 26px;font-size:15.5px;font-weight:600;
+    border-radius:999px;padding:16px 26px;min-height:52px;font-size:15.5px;font-weight:600;
     letter-spacing:-.01em;transition:transform .3s var(--ease), box-shadow .3s var(--ease);
   }
   .btn:active{transform:scale(.97)}
@@ -158,9 +160,9 @@
   /* ---------- Secciones ---------- */
   section.block{padding:76px 0 8px}
   @media(min-width:768px){section.block{padding:104px 0 12px}}
-  .block-head{margin-bottom:30px}
+  .block-head{margin-bottom:34px}
   .block-head .eyebrow{display:block;margin-bottom:10px}
-  .block-head .lede{margin-top:12px;color:var(--stone);font-size:16px;max-width:52ch}
+  .block-head .lede{margin-top:14px;color:var(--stone);font-size:16.5px;line-height:1.6;max-width:52ch;text-wrap:pretty}
 
   /* ---------- Ayuda ---------- */
   .help-grid{display:grid;gap:14px;grid-template-columns:1fr}
@@ -181,7 +183,7 @@
   .h-icon{font-size:34px;flex:0 0 auto;line-height:1}
   .h-txt{flex:1}
   .h-txt h3{font-family:'Inter Tight',sans-serif;font-weight:600;font-size:19px;letter-spacing:-.015em}
-  .h-txt p{color:var(--stone);font-size:14px;margin-top:3px}
+  .h-txt p{color:var(--stone);font-size:14px;line-height:1.5;margin-top:4px}
   .h-arrow{color:#C9C5BD;transition:transform .3s var(--ease), color .3s;flex:0 0 auto}
 
   /* ---------- Recetas ---------- */
@@ -200,9 +202,9 @@
   .rec-img{aspect-ratio:4/3;overflow:hidden;background:#EDEAE4;position:relative}
   .rec-img img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
   .rec-img .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:52px}
-  .rec-body{padding:16px 18px 18px}
+  .rec-body{padding:18px 20px 20px}
   .rec-body h3{font-family:'Inter Tight',sans-serif;font-weight:600;font-size:18px;letter-spacing:-.015em;line-height:1.25}
-  .rec-body p{color:var(--stone);font-size:13.5px;font-weight:500;margin-top:6px}
+  .rec-body p{color:var(--stone);font-size:13.5px;font-weight:500;line-height:1.5;margin-top:6px}
   .see-all{
     display:inline-flex;align-items:center;gap:8px;margin-top:26px;
     font-weight:600;font-size:15.5px;border-bottom:1px solid var(--gold);padding-bottom:3px;
