@@ -714,6 +714,14 @@
   .how-n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;font-family:'Inter Tight',sans-serif}
   .how-list b{font-size:15.5px;display:block;margin-bottom:2px}
   .how-list p{font-size:14px;color:var(--stone);line-height:1.5}
+  /* Pasos 4 y 5 colapsables tras "Ver más" */
+  .how-list li.how-extra{overflow:hidden;padding:0;border-bottom:0;max-height:0;opacity:0;transition:max-height .4s var(--ease),opacity .3s var(--ease),padding .4s var(--ease)}
+  .how-list.show-all li.how-extra{max-height:120px;opacity:1;padding:15px 0;border-bottom:1px solid var(--hairline)}
+  .how-list.show-all li.how-extra:last-child{border-bottom:0}
+  .how-more{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:11px 20px;min-height:44px;border-radius:999px;background:#fff;color:var(--ink);border:1.5px solid var(--gold);font-weight:600;font-size:14.5px;box-shadow:0 3px 12px rgba(176,141,79,.14);transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
+  .how-more svg{transition:transform .3s var(--ease)}
+  .how-more[aria-expanded="true"] svg{transform:rotate(180deg)}
+  @media(hover:hover){.how-more:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(176,141,79,.2)}}
   .cities{margin-top:22px;font-size:14px;color:var(--stone);line-height:1.6;max-width:56ch;background:var(--card);border:1px solid var(--hairline);border-radius:14px;padding:14px 16px}
   .cities b{color:var(--ink);font-weight:600}
 
@@ -757,7 +765,7 @@
   .pass-card{position:relative;display:block;text-decoration:none;background:linear-gradient(150deg,#22335A 0%,#1B2A4A 60%,#15213B 100%);border-radius:26px;padding:26px 22px;color:#F2ECDD;overflow:hidden;box-shadow:0 2px 4px rgba(27,42,74,.08),0 18px 44px rgba(27,42,74,.16)}
   .pass-card::before{content:"";position:absolute;inset:9px;border:1.5px solid rgba(176,141,79,.5);border-radius:20px;pointer-events:none}
   .pass-in{display:flex;gap:18px;align-items:center}
-  .pass-emb{flex:0 0 92px;width:92px;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+  .pass-emb{flex:0 0 96px;width:96px;height:96px;aspect-ratio:1/1;border-radius:50%;object-fit:cover;background:#F6F0E2;border:2.5px solid rgba(176,141,79,.7);box-shadow:0 8px 24px rgba(0,0,0,.3),inset 0 0 0 4px #FFFDF7}
   .pass-eyebrow{font-family:'Fraunces',serif;font-style:italic;font-size:13.5px;color:#D8C9A4}
   .pass-h{font-family:'Inter Tight',sans-serif;font-size:clamp(20px,5.6vw,26px);letter-spacing:-.02em;line-height:1.12;margin-top:5px}
   .pass-p{font-size:13.5px;line-height:1.55;color:#C7BFA9;margin-top:8px}
@@ -1039,9 +1047,13 @@
     <li><span class="how-n">1</span><div><b>Eliges una fecha</b><p>En el calendario, la que mejor te acomode.</p></div></li>
     <li><span class="how-n">2</span><div><b>Confirmamos por WhatsApp</b><p>Te escribo personalmente para afinar dirección, personas y menú.</p></div></li>
     <li><span class="how-n">3</span><div><b>Preparo el menú en tu hogar</b><p>Llevo los utensilios y coordinamos previamente todo lo necesario.</p></div></li>
-    <li><span class="how-n">4</span><div><b>Conoces los productos y pruebas los resultados</b><p>Comes rico mientras ves cómo funcionan.</p></div></li>
-    <li><span class="how-n">5</span><div><b>Tú decides sin compromiso</b><p>Sin presión. Mi trabajo es servirte, no venderte.</p></div></li>
+    <li class="how-extra"><span class="how-n">4</span><div><b>Conoces los productos y pruebas los resultados</b><p>Comes rico mientras ves cómo funcionan.</p></div></li>
+    <li class="how-extra"><span class="how-n">5</span><div><b>Tú decides sin compromiso</b><p>Sin presión. Mi trabajo es servirte, no venderte.</p></div></li>
   </ol>
+  <button class="how-more rv" id="howMoreBtn" type="button" aria-expanded="false">
+    <span>Ver los siguientes pasos</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+  </button>
   <div class="zona rv" id="zona-servicio">
     <h3 class="zona-h">Demostraciones en Dallas–Fort Worth</h3>
     <p class="zona-p">Atiendo familias en <b>Dallas, Irving, Arlington, Grand Prairie, Farmers Branch, Addison, Plano, Fort Worth</b> y otras ciudades del área DFW.</p>
@@ -1578,6 +1590,18 @@ window.addEventListener('scroll', function(){
   clearTimeout(scrollStop);
   scrollStop = setTimeout(function(){ fabWrap.classList.remove('hidden-dock'); }, 320);
 },{passive:true});
+
+/* "Cómo funciona": mostrar 3 pasos y desplegar 4 y 5 con "Ver más" */
+(function(){
+  var btn = document.getElementById('howMoreBtn');
+  var list = document.querySelector('.how-list');
+  if(!btn || !list) return;
+  btn.addEventListener('click', function(){
+    var open = list.classList.toggle('show-all');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.querySelector('span').textContent = open ? 'Ver menos' : 'Ver los siguientes pasos';
+  });
+})();
 </script>
 
 <script type="module">
