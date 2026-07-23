@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FAFAF8">
+<title>Pasaporte de Sabores — América Latina | Tomas Flores Royal Prestige</title>
+<meta name="description" content="El Pasaporte de Sabores de América Latina: descubre platillos de cada país, completa experiencias y desbloquea sorpresas junto a Tomas Flores, distribuidor Royal Prestige.">
+<meta name="robots" content="index,follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Pasaporte de Sabores — América Latina">
+<meta property="og:description" content="Descubre sabores, completa experiencias y desbloquea sorpresas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --paper:#FAFAF8;
+    --ink:#111110;
+    --stone:#6B6862;
+    --card:#FFFFFF;
+    --hairline:rgba(17,17,16,.08);
+    --gold:#B08D4F;
+    --gold-text:#8A672B;
+    --wine-1:#5a1a26;
+    --wine-2:#40121c;
+    --wine-3:#2c0c13;
+    --gold-foil:#E4C878;
+    --gold-foil-2:#C9A24B;
+    --radius:22px;
+    --ease:cubic-bezier(.22,.8,.24,1);
+  }
+  html{scroll-behavior:smooth}
+  html,body{overflow-x:hidden}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+    text-rendering:optimizeLegibility;letter-spacing:-.006em;
+    min-height:100vh;
+  }
+  .wrap{width:100%;max-width:1000px;margin:0 auto;padding:0 22px}
+  a{color:inherit;text-decoration:none}
+
+  /* Header */
+  .pg-head{
+    position:sticky;top:0;z-index:20;
+    display:flex;align-items:center;gap:12px;
+    padding:calc(env(safe-area-inset-top) + 12px) 22px 12px;
+    background:rgba(250,250,248,.86);
+    -webkit-backdrop-filter:saturate(1.3) blur(14px);backdrop-filter:saturate(1.3) blur(14px);
+    border-bottom:1px solid var(--hairline);
+  }
+  .back-btn{
+    display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:9px 16px;
+    border-radius:999px;background:#fff;border:1px solid var(--hairline);
+    font-size:14.5px;font-weight:600;color:var(--ink);box-shadow:0 2px 8px rgba(17,17,16,.05);
+    transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+  }
+  .back-btn:active{transform:scale(.96)}
+  @media(hover:hover){.back-btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(17,17,16,.1)}}
+  .pg-head .brand{font-family:'Inter Tight',sans-serif;font-weight:600;font-size:14px;letter-spacing:-.01em;color:var(--stone);margin-left:auto}
+
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-text)}
+
+  /* Hero de la página */
+  .pp-hero{padding:34px 0 8px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:20px}
+  @media(min-width:768px){.pp-hero{padding:52px 0 12px}}
+  .pp-hero h1{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:clamp(28px,7vw,44px);letter-spacing:-.03em;line-height:1.06;text-wrap:balance;margin-top:6px}
+  .pp-hero .lede{color:var(--stone);font-size:16px;line-height:1.6;max-width:52ch;margin:0 auto;text-wrap:pretty}
+
+  /* Tarjeta portada del pasaporte */
+  .pp-card{
+    width:min(272px,78vw);aspect-ratio:3/4.25;border-radius:18px;
+    background:
+      radial-gradient(120% 80% at 50% -10%, rgba(228,200,120,.14), transparent 55%),
+      linear-gradient(160deg,var(--wine-1) 0%,var(--wine-2) 45%,var(--wine-3) 100%);
+    border:1px solid rgba(201,162,75,.5);
+    box-shadow:0 1px 2px rgba(17,17,16,.1), 0 22px 48px rgba(44,12,19,.34);
+    position:relative;overflow:hidden;isolation:isolate;
+  }
+  .pp-card::before{content:"";position:absolute;inset:0;z-index:0;opacity:.5;pointer-events:none;
+    background-image:radial-gradient(rgba(228,200,120,.10) 1px, transparent 1.4px);background-size:7px 7px}
+  .pp-card::after{content:"";position:absolute;inset:11px;z-index:1;border:1px solid rgba(201,162,75,.42);border-radius:12px;pointer-events:none}
+  .pp-face{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:28px 22px;text-align:center;color:#F4E4C0}
+  .pp-top{font-size:9.5px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(228,200,120,.85)}
+  .pp-emblem{width:94px;height:94px;color:var(--gold-foil);filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
+  .pp-mid{display:flex;flex-direction:column;gap:6px;align-items:center}
+  .pp-title{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:21px;letter-spacing:.02em;line-height:1.12;color:#F6E8C6}
+  .pp-region{font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:15px;color:var(--gold-foil)}
+  .pp-quote{font-size:11px;line-height:1.5;color:rgba(244,228,192,.82);max-width:24ch;margin-top:2px}
+  .pp-stamp{display:inline-flex;align-items:center;gap:6px;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--wine-3);background:linear-gradient(180deg,var(--gold-foil),var(--gold-foil-2));padding:6px 13px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.28)}
+
+  /* Secciones */
+  section.block{padding:40px 0 8px}
+  @media(min-width:768px){section.block{padding:56px 0 12px}}
+  .sec-head{margin-bottom:22px;text-align:center}
+  .sec-head h2{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:clamp(22px,5vw,30px);letter-spacing:-.02em;line-height:1.1;margin-top:6px;text-wrap:balance}
+  .sec-head p{color:var(--stone);font-size:15px;line-height:1.6;max-width:48ch;margin:10px auto 0;text-wrap:pretty}
+
+  /* Cómo funciona */
+  .steps{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:640px){.steps{grid-template-columns:repeat(3,1fr)}}
+  .step{background:var(--card);border:1px solid var(--hairline);border-radius:18px;padding:22px 20px;box-shadow:0 1px 2px rgba(17,17,16,.04), 0 10px 30px rgba(17,17,16,.06)}
+  .step .n{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#F5F1E8;color:var(--gold-text);font-family:'Inter Tight',sans-serif;font-weight:700;font-size:15px;margin-bottom:12px}
+  .step h3{font-family:'Inter Tight',sans-serif;font-weight:600;font-size:17px;letter-spacing:-.01em;line-height:1.25}
+  .step p{color:var(--stone);font-size:14px;line-height:1.55;margin-top:6px}
+
+  /* Países */
+  .country-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  @media(min-width:640px){.country-grid{grid-template-columns:repeat(3,1fr)}}
+  .country{
+    display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;
+    background:var(--card);border:1px solid var(--hairline);border-radius:18px;padding:22px 14px;
+    box-shadow:0 1px 2px rgba(17,17,16,.04), 0 10px 26px rgba(17,17,16,.06);
+    position:relative;
+  }
+  .country .flag{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#F7F4EE,#EFE9DC);border:1px solid rgba(201,162,75,.35)}
+  .country .flag svg{width:26px;height:26px;color:var(--gold-text)}
+  .country h3{font-family:'Inter Tight',sans-serif;font-weight:600;font-size:15.5px;letter-spacing:-.01em}
+  .country .state{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);background:#F4F1EA;border:1px solid var(--hairline);padding:5px 11px;border-radius:999px}
+  .country .state .dot{width:6px;height:6px;border-radius:50%;background:#C9C5BD}
+
+  /* Recompensas próximamente */
+  .soon-card{
+    text-align:center;background:linear-gradient(160deg,#fff,#FCFBF8);
+    border:1px dashed rgba(176,141,79,.5);border-radius:22px;padding:34px 24px;
+    display:flex;flex-direction:column;align-items:center;gap:12px;
+  }
+  .soon-badge{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-text);background:#F5F1E8;padding:7px 15px;border-radius:999px}
+  .soon-card h2{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:clamp(20px,5vw,27px);letter-spacing:-.02em;line-height:1.12;text-wrap:balance}
+  .soon-card p{color:var(--stone);font-size:15px;line-height:1.6;max-width:44ch;text-wrap:pretty}
+  .soon-icon{width:48px;height:48px;color:var(--gold);opacity:.85}
+
+  footer{padding:40px 22px calc(40px + env(safe-area-inset-bottom));text-align:center;color:var(--stone);font-size:13px}
+  footer a{color:var(--gold-text);font-weight:600}
+
+  @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="pg-head">
+  <a class="back-btn" href="index.html" aria-label="Volver a la página principal">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+    Volver al inicio
+  </a>
+  <span class="brand">Tomas Flores · Royal Prestige</span>
+</header>
+
+<main>
+  <!-- Hero + portada -->
+  <section class="pp-hero wrap">
+    <div class="pp-card">
+      <div class="pp-face">
+        <span class="pp-top">Edición coleccionable</span>
+        <svg class="pp-emblem" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+          <circle cx="50" cy="50" r="46" stroke="currentColor" stroke-width="2"/>
+          <circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="1" opacity=".55"/>
+          <circle cx="50" cy="46" r="21" stroke="currentColor" stroke-width="2"/>
+          <ellipse cx="50" cy="46" rx="9" ry="21" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M29 46h42M32 37h36M32 55h36" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M30 30 C40 40 60 40 70 30" stroke="currentColor" stroke-width="1.4" opacity=".7"/>
+          <path d="M22 60c8 6 48 6 56 0" stroke="currentColor" stroke-width="1.4" opacity=".7"/>
+          <path d="M50 71v13M46 84h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M20 74c4 1 8 1 12 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M68 74c4 1 8 1 12 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <div class="pp-mid">
+          <span class="pp-title">PASAPORTE DE SABORES</span>
+          <span class="pp-region">América Latina</span>
+          <span class="pp-quote">"Descubre sabores, completa experiencias y desbloquea sorpresas."</span>
+        </div>
+        <span class="pp-stamp">Tu aventura comienza aquí</span>
+      </div>
+    </div>
+    <div>
+      <span class="eyebrow">Bienvenido a tu aventura</span>
+      <h1>Un viaje por los sabores de América Latina</h1>
+      <p class="lede">Este pasaporte te acompaña en cada demostración y receta. Cada país guarda platillos por descubrir; a medida que vives nuevas experiencias, tu pasaporte se llena de sellos y sorpresas.</p>
+    </div>
+  </section>
+
+  <!-- Cómo funciona -->
+  <section class="block wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Cómo funciona</span>
+      <h2>Tres pasos para llenar tu pasaporte</h2>
+      <p>Sencillo, a tu ritmo y siempre acompañado.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="n">1</span>
+        <h3>Elige un país</h3>
+        <p>Explora la cocina de cada país de América Latina y descubre sus platillos más queridos.</p>
+      </div>
+      <div class="step">
+        <span class="n">2</span>
+        <h3>Vive la experiencia</h3>
+        <p>Cocina la receta en una demostración o en casa con tu equipo Royal Prestige.</p>
+      </div>
+      <div class="step">
+        <span class="n">3</span>
+        <h3>Gana tu sello</h3>
+        <p>Completa la experiencia para sellar ese país en tu pasaporte y avanzar en el viaje.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Países -->
+  <section class="block wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Destinos</span>
+      <h2>Países por descubrir</h2>
+      <p>Estos son los primeros destinos de tu pasaporte. Muy pronto se sumarán más.</p>
+    </div>
+    <div class="country-grid">
+      <div class="country">
+        <span class="flag" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg></span>
+        <h3>Venezuela</h3>
+        <span class="state"><span class="dot"></span>Por descubrir</span>
+      </div>
+      <div class="country">
+        <span class="flag" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg></span>
+        <h3>México</h3>
+        <span class="state"><span class="dot"></span>Por descubrir</span>
+      </div>
+      <div class="country">
+        <span class="flag" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg></span>
+        <h3>Colombia</h3>
+        <span class="state"><span class="dot"></span>Por descubrir</span>
+      </div>
+      <div class="country">
+        <span class="flag" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg></span>
+        <h3>Guatemala</h3>
+        <span class="state"><span class="dot"></span>Por descubrir</span>
+      </div>
+      <div class="country">
+        <span class="flag" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg></span>
+        <h3>El Salvador</h3>
+        <span class="state"><span class="dot"></span>Por descubrir</span>
+      </div>
+      <div class="country">
+        <span class="flag" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg></span>
+        <h3>Honduras</h3>
+        <span class="state"><span class="dot"></span>Por descubrir</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recompensas próximamente -->
+  <section class="block wrap">
+    <div class="soon-card">
+      <svg class="soon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9a6 6 0 0 0 12 0"/><path d="M8 3h8v4a4 4 0 0 1-8 0z"/><path d="M12 15v3M9 21h6M18 5h2a2 2 0 0 1-2 2M6 5H4a2 2 0 0 0 2 2"/></svg>
+      <span class="soon-badge">Próximamente</span>
+      <h2>Recompensas y sorpresas</h2>
+      <p>Al completar países y experiencias podrás desbloquear recompensas especiales. Estamos preparando esta sección: muy pronto tendrás novedades.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Pasaporte de Sabores · Una experiencia de <a href="index.html">Tomas Flores</a>, distribuidor Royal Prestige.</p>
+</footer>
+
+</body>
+</html>
