@@ -126,7 +126,7 @@
   }
   .hero-content{
     position:relative;z-index:2;width:100%;
-    padding:0 26px calc(44px + env(safe-area-inset-bottom));
+    padding:0 26px calc(34px + env(safe-area-inset-bottom));
     max-width:1120px;margin:0 auto;
   }
   .hero .eyebrow{display:block;margin-bottom:14px;color:var(--gold-text);letter-spacing:.015em}
@@ -136,7 +136,8 @@
     -webkit-text-stroke:1.4px rgba(255,255,255,.85);paint-order:stroke fill;
     text-shadow:0 2px 12px rgba(255,255,255,.4), 0 1px 3px rgba(255,255,255,.55);
   }
-  .hero .sub{margin-top:18px;font-size:clamp(16.5px,4.3vw,20px);line-height:1.5;color:#8A672B;max-width:26ch;font-weight:600;text-shadow:0 1px 3px rgba(255,255,255,.9)}
+  .hero .sub{margin-top:12px;font-size:clamp(15px,4vw,18px);line-height:1.45;color:#8A672B;max-width:17ch;font-weight:600;text-shadow:0 1px 4px rgba(255,255,255,.95)}
+  @media(min-width:640px){.hero .sub{max-width:24ch}}
   .hero-cta{display:flex;flex-direction:column;align-items:stretch;gap:10px;margin-top:18px;max-width:380px}
   @media(min-width:640px){.hero-cta{flex-direction:row;flex-wrap:wrap;align-items:center;max-width:none}}
   .hero-cta .btn{width:100%}
@@ -497,7 +498,7 @@
   @media(hover:hover){.fab-opt:hover{transform:translateX(-4px)}}
   .fab-opt .fo-ic{font-size:20px;line-height:1}
   .fab{
-    width:46px;height:46px;border-radius:50%;
+    width:41px;height:41px;border-radius:50%;
     background:linear-gradient(180deg,#26241f,var(--ink));color:#fff;
     display:flex;align-items:center;justify-content:center;
     box-shadow:0 6px 18px rgba(17,17,16,.24), 0 2px 6px rgba(17,17,16,.16);
