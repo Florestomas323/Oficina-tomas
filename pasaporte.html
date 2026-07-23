@@ -3,16 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Pasaporte de Sabores Latinos — Tomas Flores</title>
-<meta name="description" content="Un continente. Muchas cocinas. Un viaje para compartir. Prepara 6 recetas latinoamericanas, colecciona sellos digitales y desbloquea recompensas.">
+<title>Pasaporte de Sabores — Tomas Flores</title>
+<meta name="description" content="Un continente. Muchas cocinas. Un viaje para compartir. Prepara seis recetas, toma tu foto, gana tus sellos y completa la ruta.">
 <link rel="canonical" href="https://tomasflores.com/pasaporte.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Tomas Flores — Royal Prestige">
-<meta property="og:title" content="Pasaporte de Sabores Latinos">
+<meta property="og:title" content="Pasaporte de Sabores">
 <meta property="og:description" content="Un continente. Muchas cocinas. Un viaje para compartir. Seis países, seis recetas, un pasaporte.">
 <meta property="og:url" content="https://tomasflores.com/pasaporte.html">
-<meta property="og:image" content="https://tomasflores.com/og-image.jpeg">
+<meta property="og:image" content="https://tomasflores.com/og-pasaporte.jpg">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="icono-pasaporte.png">
+<link rel="apple-touch-icon" href="icono-pasaporte.png">
+<meta name="apple-mobile-web-app-title" content="Pasaporte">
+<meta name="theme-color" content="#1B2A4A">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@700;800&family=Fraunces:ital,wght@0,500;1,400;1,500&display=swap" rel="stylesheet">
@@ -32,21 +36,21 @@
   @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-  /* ---------- Barra superior ---------- */
   .top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 0}
   .back-link{display:inline-flex;align-items:center;gap:7px;color:var(--ink);text-decoration:none;font-weight:600;font-size:13.5px;padding:9px 14px;border:1px solid var(--hairline);border-radius:999px;background:var(--card)}
-  .top-title{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:var(--gold-text)}
+  .top-logo{height:34px;width:auto;border-radius:8px;display:block}
 
   /* ---------- Portada ---------- */
-  .cover{background:linear-gradient(160deg,#22335A 0%,#1B2A4A 55%,#15213B 100%);border-radius:26px;padding:38px 26px 34px;color:#F2ECDD;text-align:center;box-shadow:var(--shadow);position:relative;overflow:hidden;margin-top:6px}
-  .cover::before{content:"";position:absolute;inset:10px;border:1.5px solid rgba(176,141,79,.55);border-radius:20px;pointer-events:none}
-  .cover-crest{width:74px;height:74px;margin:0 auto 16px;display:block}
-  .cover h1{font-family:'Inter Tight',sans-serif;font-size:clamp(27px,7.4vw,36px);letter-spacing:-.02em;line-height:1.06}
+  .cover{background:linear-gradient(160deg,#22335A 0%,#1B2A4A 55%,#15213B 100%);border-radius:26px;padding:30px 24px 32px;color:#F2ECDD;text-align:center;box-shadow:var(--shadow);position:relative;overflow:hidden;margin-top:6px}
+  .cover::before{content:"";position:absolute;inset:10px;border:1.5px solid rgba(176,141,79,.5);border-radius:20px;pointer-events:none}
+  .cover-logo{width:186px;max-width:62%;border-radius:18px;display:block;margin:0 auto 18px;box-shadow:0 10px 30px rgba(0,0,0,.28)}
+  .cover h1{font-family:'Inter Tight',sans-serif;font-size:clamp(26px,7vw,34px);letter-spacing:-.02em;line-height:1.06}
   .cover .motto{font-family:'Fraunces',serif;font-style:italic;font-size:15.5px;color:#D8C9A4;margin-top:12px;line-height:1.5}
   .cover .season{display:inline-block;margin-top:16px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:#B8A87E;border:1px solid rgba(176,141,79,.5);border-radius:999px;padding:7px 14px}
   .cover-note{margin-top:18px;font-size:13px;color:#C7BFA9;line-height:1.55}
   .btn{display:flex;align-items:center;justify-content:center;gap:9px;border-radius:16px;padding:16px 20px;font-size:15.5px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font-family:inherit;min-height:44px;width:100%;transition:transform .15s var(--ease)}
   .btn:active{transform:scale(.98)}
+  .btn:disabled{opacity:.6}
   .btn-gold{background:var(--gold);color:#fff;box-shadow:0 6px 20px rgba(176,141,79,.35)}
   .btn-line{background:var(--card);color:var(--ink);border:1.5px solid var(--hairline)}
   .btn-navy{background:var(--navy);color:#fff}
@@ -58,28 +62,32 @@
   .how li{display:flex;gap:12px;padding:9px 0;font-size:14px;line-height:1.5;color:#3A4258}
   .how .n{flex:0 0 26px;height:26px;border-radius:50%;background:var(--navy);color:#F2ECDD;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:12.5px}
 
-  /* ---------- Registro ---------- */
+  /* ---------- Formularios ---------- */
   .form-card{background:var(--card);border:1px solid var(--hairline);border-radius:22px;padding:24px;box-shadow:var(--shadow);margin-top:10px}
   .form-card h2{font-family:'Inter Tight',sans-serif;font-size:22px;letter-spacing:-.02em;margin-bottom:6px}
-  .form-card .sub{font-size:14px;color:var(--stone);margin-bottom:16px;line-height:1.5}
+  .form-card .sub{font-size:14px;color:var(--stone);margin-bottom:6px;line-height:1.5}
   label{display:block;font-size:13px;font-weight:600;margin:14px 0 6px}
-  input[type=text]{width:100%;border:1.5px solid var(--hairline);border-radius:13px;padding:14px;font-size:16px;font-family:inherit;background:#FFFEFB;color:var(--ink)}
-  input[type=text]:focus{outline:none;border-color:var(--gold)}
-  .hint{font-size:12px;color:#8B8672;margin-top:8px;line-height:1.5}
+  input[type=text],input[type=tel]{width:100%;border:1.5px solid var(--hairline);border-radius:13px;padding:14px;font-size:16px;font-family:inherit;background:#FFFEFB;color:var(--ink)}
+  input:focus{outline:none;border-color:var(--gold)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .consent{display:flex;gap:10px;align-items:flex-start;margin-top:16px;cursor:pointer;font-size:13px;line-height:1.5}
+  .consent input{margin-top:3px;width:18px;height:18px;flex:0 0 18px;accent-color:var(--gold-text)}
+  .hint{font-size:12px;color:#8B8672;margin-top:10px;line-height:1.5}
   .err{display:none;background:#FBEBE9;color:#8E2F26;border-radius:12px;padding:11px 14px;font-size:13.5px;margin-top:12px;line-height:1.5}
   .err.show{display:block}
 
   /* ---------- Pasaporte ---------- */
-  .pass-head{background:linear-gradient(160deg,#22335A,#1B2A4A);border-radius:22px;padding:22px;color:#F2ECDD;box-shadow:var(--shadow);margin-top:6px}
+  .pass-head{background:linear-gradient(160deg,#22335A,#1B2A4A);border-radius:22px;padding:20px;color:#F2ECDD;box-shadow:var(--shadow);margin-top:6px}
   .pass-head .who{display:flex;justify-content:space-between;align-items:center;gap:10px}
   .pass-head .name{font-family:'Inter Tight',sans-serif;font-size:19px;letter-spacing:-.01em}
-  .pass-head .city{font-size:12.5px;color:#C7BFA9}
+  .pass-head .city{font-size:12.5px;color:#C7BFA9;margin-top:2px}
+  .pass-head img{height:44px;border-radius:9px}
   .prog-wrap{margin-top:16px}
   .prog-top{display:flex;justify-content:space-between;font-size:12.5px;color:#D8C9A4;margin-bottom:7px}
   .prog{height:10px;background:rgba(242,236,221,.18);border-radius:999px;overflow:hidden}
   .prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),#D2B279);border-radius:999px;transition:width .6s var(--ease)}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
-  .country{background:var(--card);border:1px solid var(--hairline);border-radius:18px;padding:16px 14px;text-align:center;cursor:pointer;box-shadow:var(--shadow);border-bottom:3px solid var(--hairline);transition:transform .15s var(--ease)}
+  .country{background:var(--card);border:1px solid var(--hairline);border-radius:18px;padding:14px 12px;text-align:center;cursor:pointer;box-shadow:var(--shadow);border-bottom:3px solid var(--hairline);transition:transform .15s var(--ease)}
   .country:active{transform:scale(.97)}
   .country .mono{width:52px;height:52px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-family:'Inter Tight',sans-serif;font-weight:800;font-size:16px;letter-spacing:.04em;color:#fff}
   .country h3{font-size:14.5px;letter-spacing:-.01em}
@@ -87,11 +95,21 @@
   .country .st{margin-top:9px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
   .country.done{border-bottom-color:var(--ok)}
   .country.done .st{color:var(--ok)}
-  .country:not(.done) .st{color:var(--gold-text)}
+  .country.open{border-bottom-color:var(--gold)}
+  .country.open .st{color:var(--gold-text)}
+  .country.locked{opacity:.55;cursor:default}
+  .country.locked:active{transform:none}
+  .lockmono{background:#E7E0CE!important;color:#A79E85}
+  .lockst{color:#A79E85!important}
+  .myph{position:relative;width:100%;aspect-ratio:1/1;border-radius:13px;overflow:hidden;margin-bottom:9px;background:#EFE8D6}
+  .myph img{width:100%;height:100%;object-fit:cover;display:block}
+  .myph .badge{position:absolute;right:5px;bottom:5px;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Inter Tight',sans-serif;font-weight:800;font-size:11px;box-shadow:0 2px 8px rgba(0,0,0,.35)}
   .stamp-mini{display:inline-block;transform:rotate(-8deg);border:2px solid var(--ok);color:var(--ok);border-radius:8px;padding:2px 7px;font-size:10.5px;font-weight:800;letter-spacing:.05em}
 
-  /* ---------- Detalle país / receta ---------- */
-  .rec-head{border-radius:22px;padding:24px 20px;color:#fff;box-shadow:var(--shadow);margin-top:6px}
+  /* ---------- Receta ---------- */
+  .rec-photo{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:20px;display:block;margin-top:6px;box-shadow:var(--shadow)}
+  .rec-head{border-radius:22px;padding:22px 20px;color:#fff;box-shadow:var(--shadow);margin-top:6px}
+  .rec-photo + .rec-head{margin-top:-18px;position:relative}
   .rec-head .co{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
   .rec-head h2{font-family:'Inter Tight',sans-serif;font-size:clamp(23px,6.4vw,30px);letter-spacing:-.02em;margin-top:5px;line-height:1.1}
   .rec-head .meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
@@ -110,50 +128,63 @@
   .tipbox{background:#F3EBD9;border:1px solid #E2D5B4;border-radius:15px;padding:14px 16px;margin-top:13px}
   .tipbox .t{font-weight:700;font-size:13px;color:var(--gold-text);margin-bottom:4px}
   .tipbox p{font-size:13.5px;line-height:1.55}
-  .done-note{display:none;background:#EAF6EC;color:#1F7A33;border-radius:14px;padding:13px 15px;font-size:14px;font-weight:600;margin-top:14px;text-align:center}
+  .done-note{background:#EAF6EC;color:#1F7A33;border-radius:14px;padding:13px 15px;font-size:14px;font-weight:600;margin-top:14px;text-align:center}
   .rec-acts{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+  .myshot{width:100%;border-radius:18px;display:block;margin-top:14px;box-shadow:var(--shadow)}
 
-  /* ---------- Modal confirmación ---------- */
-  .modal{position:fixed;inset:0;background:rgba(21,29,49,.55);display:none;align-items:flex-end;justify-content:center;z-index:60;padding:14px}
+  /* ---------- Modal ---------- */
+  .modal{position:fixed;inset:0;background:rgba(21,29,49,.6);display:none;align-items:flex-end;justify-content:center;z-index:60;padding:14px}
   .modal.open{display:flex}
-  .modal-card{background:var(--card);border-radius:22px;padding:24px 20px calc(22px + env(safe-area-inset-bottom));max-width:520px;width:100%;box-shadow:var(--shadow);animation:up .3s var(--ease)}
+  .modal-card{background:var(--card);border-radius:22px;padding:22px 20px calc(20px + env(safe-area-inset-bottom));max-width:520px;width:100%;box-shadow:var(--shadow);animation:up .3s var(--ease);max-height:92vh;overflow:auto}
   @keyframes up{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
   .modal-card h3{font-family:'Inter Tight',sans-serif;font-size:19px;margin-bottom:8px}
-  .modal-card p{font-size:14px;color:var(--stone);line-height:1.55;margin-bottom:16px}
+  .modal-card p{font-size:14px;color:var(--stone);line-height:1.55;margin-bottom:14px}
   .modal-card .btn + .btn{margin-top:9px}
+  .preview{width:100%;border-radius:16px;display:block;margin-bottom:14px;box-shadow:var(--shadow)}
 
   /* ---------- Overlay sello ---------- */
-  .stamp-ov{position:fixed;inset:0;background:rgba(21,29,49,.78);display:none;align-items:center;justify-content:center;z-index:70;padding:22px}
+  .stamp-ov{position:fixed;inset:0;background:rgba(21,29,49,.82);display:none;align-items:center;justify-content:center;z-index:70;padding:20px;overflow:auto}
   .stamp-ov.open{display:flex}
   .stamp-box{text-align:center;color:#F2ECDD;max-width:400px;width:100%}
-  .stamp-svg{width:200px;height:200px;margin:0 auto 6px;display:block;animation:stampIn .55s var(--ease)}
-  @keyframes stampIn{0%{transform:scale(2.2) rotate(-18deg);opacity:0}60%{transform:scale(.94) rotate(-8deg);opacity:1}100%{transform:scale(1) rotate(-8deg)}}
-  .stamp-box h3{font-family:'Inter Tight',sans-serif;font-size:23px;margin-top:8px}
+  .shot-wrap{position:relative;width:230px;margin:0 auto;animation:stampIn .55s var(--ease)}
+  .shot-wrap img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:20px;display:block;box-shadow:0 12px 34px rgba(0,0,0,.4)}
+  .shot-wrap svg{position:absolute;right:-16px;bottom:-16px;width:104px;height:104px}
+  @keyframes stampIn{0%{transform:scale(1.9) rotate(-16deg);opacity:0}60%{transform:scale(.96);opacity:1}100%{transform:scale(1)}}
+  .stamp-box h3{font-family:'Inter Tight',sans-serif;font-size:23px;margin-top:26px}
   .stamp-box p{font-size:14px;color:#C7BFA9;margin-top:6px;line-height:1.5}
-  .stamp-box .btn{margin-top:20px}
+  .stamp-box .btn{margin-top:18px}
 
-  /* ---------- Recompensas ---------- */
-  .rw{display:flex;gap:14px;background:var(--card);border:1px solid var(--hairline);border-radius:18px;padding:17px;margin-top:12px;box-shadow:var(--shadow);align-items:center}
-  .rw .ic{flex:0 0 46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center}
+  /* ---------- Regalo ---------- */
+  .rw{display:flex;gap:14px;background:var(--card);border:1px solid var(--hairline);border-radius:18px;padding:16px;margin-top:11px;box-shadow:var(--shadow);align-items:center}
+  .rw .ic{flex:0 0 44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center}
   .rw .ic.lock{background:#EEE8D6;color:#A79E85}
   .rw .ic.ok{background:#EAF6EC;color:var(--ok)}
   .rw h3{font-size:15px}
   .rw p{font-size:12.5px;color:var(--stone);margin-top:3px;line-height:1.45}
-  .rw .go{margin-left:auto;flex:0 0 auto;font-size:13px;font-weight:700;color:var(--gold-text);text-decoration:none;border:1.5px solid var(--gold);border-radius:999px;padding:8px 14px;background:transparent;cursor:pointer;font-family:inherit}
   .rw.locked{opacity:.62}
+  .gift{background:linear-gradient(160deg,#22335A,#15213B);border-radius:22px;padding:26px 22px;color:#F2ECDD;text-align:center;box-shadow:var(--shadow);margin-top:10px;position:relative;overflow:hidden}
+  .gift::before{content:"";position:absolute;inset:9px;border:1.5px solid rgba(176,141,79,.45);border-radius:16px;pointer-events:none}
+  .gift img{width:110px;border-radius:14px;margin:0 auto 14px;display:block}
+  .gift h2{font-family:'Inter Tight',sans-serif;font-size:22px;letter-spacing:-.02em}
+  .gift p{font-size:14px;color:#C7BFA9;margin-top:10px;line-height:1.6}
+  .gift .prog{margin-top:16px;background:rgba(242,236,221,.18)}
+  .gift .cnt{font-size:12.5px;color:#D8C9A4;margin-top:8px;font-weight:600}
 
-  /* ---------- Certificado / recetario ---------- */
-  .cert{background:var(--card);border:2px solid var(--gold);border-radius:22px;padding:30px 24px;text-align:center;box-shadow:var(--shadow);margin-top:10px;position:relative}
+  /* ---------- Certificado ---------- */
+  .cert{background:var(--card);border:2px solid var(--gold);border-radius:22px;padding:28px 22px;text-align:center;box-shadow:var(--shadow);margin-top:10px;position:relative}
   .cert::before{content:"";position:absolute;inset:8px;border:1px solid var(--hairline);border-radius:16px;pointer-events:none}
+  .cert img.lg{width:120px;border-radius:14px;margin:0 auto 12px;display:block}
   .cert .lbl{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-text)}
-  .cert h2{font-family:'Fraunces',serif;font-size:clamp(24px,6.6vw,32px);margin:12px 0 4px;font-weight:500}
-  .cert .who{font-family:'Inter Tight',sans-serif;font-size:clamp(21px,6vw,27px);letter-spacing:-.01em;margin:14px 0 4px}
+  .cert h2{font-family:'Fraunces',serif;font-size:clamp(23px,6.4vw,31px);margin:10px 0 4px;font-weight:500}
+  .cert .who{font-family:'Inter Tight',sans-serif;font-size:clamp(20px,5.6vw,26px);letter-spacing:-.01em;margin:14px 0 4px}
   .cert .d{font-size:13px;color:var(--stone);line-height:1.6}
-  .cert .seal{width:90px;height:90px;margin:16px auto 4px;display:block}
+  .mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:16px}
+  .mini-grid img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block}
   .toolbar{display:flex;gap:10px;margin-top:16px}
   .toolbar .btn{flex:1}
+  .proof-img{width:100%;border-radius:18px;display:block;margin-top:14px;box-shadow:var(--shadow)}
+  .go{margin-left:auto;font-size:13px;font-weight:700;color:var(--gold-text);border:1.5px solid var(--gold);border-radius:999px;padding:8px 14px;background:transparent;cursor:pointer;font-family:inherit}
 
-  /* ---------- Banner estado ---------- */
   .net{position:fixed;top:0;left:0;right:0;background:var(--wine);color:#fff;font-size:13px;text-align:center;padding:9px;z-index:80;display:none}
   .net.show{display:block}
   .loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:60px 0;color:var(--stone);font-size:14px}
@@ -161,7 +192,7 @@
   @keyframes sp{to{transform:rotate(360deg)}}
   .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--navy);color:#F2ECDD;border-radius:999px;padding:12px 22px;font-size:13.5px;font-weight:600;z-index:90;display:none;max-width:88%;text-align:center}
   .toast.show{display:block}
-  .legal-foot{margin-top:26px;text-align:center;font-size:12px;color:#8B8672;line-height:1.6}
+  .legal-foot{margin-top:24px;text-align:center;font-size:12px;color:#8B8672;line-height:1.6}
   .legal-foot a{color:var(--gold-text)}
   @media print{
     body{background:#fff}
@@ -170,71 +201,67 @@
     .view{display:none}
     .view.active{display:block}
   }
-
-  .country.locked{opacity:.55;cursor:default}
-  .country.locked:active{transform:none}
-  .lockmono{background:#E7E0CE!important;color:#A79E85}
-  .lockst{color:#A79E85!important}
-  .country.open{border-bottom-color:var(--gold)}
-  .country .ph{position:relative;width:100%;aspect-ratio:16/11;border-radius:12px;overflow:hidden;margin-bottom:9px;background:#EFE8D6}
-  .country .ph img{width:100%;height:100%;object-fit:cover;display:block}
-  .country .ph .ph-mono{position:absolute;right:6px;bottom:6px;width:30px;height:30px;border-radius:50%;display:none;align-items:center;justify-content:center;color:#fff;font-family:'Inter Tight',sans-serif;font-weight:800;font-size:11.5px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-  .country .ph img[src]:not([style*="none"]) + .ph-mono{display:flex}
-  .country .ph.noimg{aspect-ratio:auto;background:transparent;margin-bottom:0}
-  .country .ph.noimg .ph-mono{position:static;display:flex;width:52px;height:52px;font-size:16px;margin:0 auto 10px;box-shadow:none}
-  .rec-photo{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:20px;display:block;margin-top:6px;box-shadow:var(--shadow)}
-  .rec-photo + .rec-head{margin-top:-18px;position:relative;border-top-left-radius:20px;border-top-right-radius:20px}
 </style>
 </head>
 <body>
-<div class="net" id="netBanner">Sin conexión — tus sellos se guardarán al reconectar</div>
+<div class="net" id="netBanner">Sin conexión — tu progreso se guardará al reconectar</div>
 <div class="wrap">
   <div class="top">
-    <a class="back-link" href="index.html" id="backHome">&#8592; tomasflores.com</a>
-    <span class="top-title" id="topTitle">Pasaporte de Sabores</span>
+    <a class="back-link" href="index.html">&#8592; tomasflores.com</a>
+    <img class="top-logo" src="emblema-pasaporte.jpg" alt="Pasaporte de Sabores">
   </div>
 
   <!-- ============ PORTADA ============ -->
   <section class="view" id="v-cover">
     <div class="cover">
-      <svg class="cover-crest" viewBox="0 0 80 80" fill="none" aria-hidden="true">
-        <circle cx="40" cy="40" r="37" stroke="#B08D4F" stroke-width="2.5"/>
-        <circle cx="40" cy="40" r="30" stroke="#B08D4F" stroke-width="1" opacity=".5"/>
-        <path d="M40 16c-9 7-14 14-14 23 0 9 6 17 14 25 8-8 14-16 14-25 0-9-5-16-14-23z" stroke="#D8C9A4" stroke-width="2" fill="none"/>
-        <circle cx="40" cy="39" r="5.5" fill="#B08D4F"/>
-      </svg>
-      <h1>Pasaporte de<br>Sabores Latinos</h1>
+      <img class="cover-logo" src="logo-pasaporte.jpg" alt="Pasaporte de Sabores">
+      <h1>Pasaporte de Sabores</h1>
       <p class="motto">"Un continente. Muchas cocinas.<br>Un viaje para compartir."</p>
       <span class="season">Temporada 1 &middot; Seis pa&iacute;ses</span>
-      <p class="cover-note">Prepara seis recetas latinoamericanas en tu cocina, colecciona los seis sellos y conviértete en Embajador de Sabores.</p>
+      <p class="cover-note">Prepara seis recetas, toma la foto de tu platillo y gana tus sellos. Al completar la ruta, Tomas te entrega un regalo sorpresa.</p>
       <button class="btn btn-gold" id="btnStart" type="button">Comenzar mi viaje</button>
     </div>
     <div class="how">
       <h2>C&oacute;mo funciona</h2>
       <ol>
         <li><span class="n">1</span>Empiezas en Venezuela y avanzas pa&iacute;s por pa&iacute;s.</li>
-        <li><span class="n">2</span>Prep&aacute;rala en tu cocina, a tu ritmo.</li>
-        <li><span class="n">3</span>Marca &quot;Ya la prepar&eacute;&quot; y estampa tu sello.</li>
-        <li><span class="n">4</span>Cada sello desbloquea el siguiente destino. Al llegar a seis, tu recompensa.</li>
+        <li><span class="n">2</span>Preparas la receta en tu cocina, a tu ritmo.</li>
+        <li><span class="n">3</span>Tomas la foto de tu platillo y se estampa tu sello.</li>
+        <li><span class="n">4</span>Cada sello desbloquea el siguiente destino.</li>
+        <li><span class="n">5</span>Con los seis, env&iacute;as tu prueba y recibes tu regalo sorpresa.</li>
       </ol>
     </div>
-    <p class="legal-foot">Participar es gratis y no requiere ninguna compra. Las recompensas est&aacute;n sujetas a las <a href="#/reglas">reglas del pasaporte</a>.</p>
+    <p class="legal-foot">Participar es gratis y no requiere ninguna compra. Ver <a href="#/reglas">reglas y privacidad</a>.</p>
   </section>
 
   <!-- ============ REGISTRO ============ -->
   <section class="view" id="v-reg">
     <div class="form-card">
       <h2>Tu pasaporte, tu nombre</h2>
-      <p class="sub">Solo necesito dos datos para estampar tus sellos. Nada m&aacute;s.</p>
+      <p class="sub">Necesito estos datos para estampar tus sellos y coordinar tu regalo al completar la ruta.</p>
       <label for="regName">Tu nombre</label>
-      <input type="text" id="regName" maxlength="40" placeholder="Ej. Mar&iacute;a" autocomplete="given-name">
-      <label for="regCity">Tu ciudad</label>
-      <input type="text" id="regCity" maxlength="40" placeholder="Ej. Irving, TX" autocomplete="address-level2">
+      <input type="text" id="regName" maxlength="40" placeholder="Ej. Mar&iacute;a G." autocomplete="name">
+      <label for="regPhone">Tu WhatsApp</label>
+      <input type="tel" id="regPhone" maxlength="20" placeholder="Ej. 682 381 1576" autocomplete="tel" inputmode="tel">
+      <div class="row2">
+        <div>
+          <label for="regCity">Ciudad</label>
+          <input type="text" id="regCity" maxlength="40" placeholder="Irving" autocomplete="address-level2">
+        </div>
+        <div>
+          <label for="regState">Estado</label>
+          <input type="text" id="regState" maxlength="30" placeholder="TX" autocomplete="address-level1">
+        </div>
+      </div>
+      <label class="consent" for="regOk">
+        <input type="checkbox" id="regOk">
+        <span>Autorizo a Tomas Flores a contactarme por WhatsApp sobre el Pasaporte de Sabores y mi regalo. Mi n&uacute;mero no se publica en el sitio ni se comparte con nadie.</span>
+      </label>
       <div class="err" id="regErr"></div>
       <div style="margin-top:18px">
         <button class="btn btn-navy" id="btnReg" type="button">Crear mi pasaporte</button>
       </div>
-      <p class="hint">Tu progreso se guarda en este dispositivo de forma an&oacute;nima. No pedimos tel&eacute;fono ni correo para participar.</p>
+      <p class="hint">Puedes pedir que borre tus datos cuando quieras, escribi&eacute;ndome por WhatsApp.</p>
     </div>
   </section>
 
@@ -243,13 +270,10 @@
     <div class="pass-head">
       <div class="who">
         <div>
-          <div class="name" id="ppName">—</div>
+          <div class="name" id="ppName">&mdash;</div>
           <div class="city" id="ppCity"></div>
         </div>
-        <svg width="46" height="46" viewBox="0 0 80 80" fill="none" aria-hidden="true">
-          <circle cx="40" cy="40" r="36" stroke="#B08D4F" stroke-width="2.5"/>
-          <path d="M40 20c-7 5.5-11 11-11 18s4.7 13.3 11 19.5C46.3 51.3 51 45 51 38s-4-12.5-11-18z" stroke="#D8C9A4" stroke-width="2"/>
-        </svg>
+        <img src="emblema-pasaporte.jpg" alt="">
       </div>
       <div class="prog-wrap">
         <div class="prog-top"><span>Tu viaje</span><b id="ppCount">0 de 6 destinos</b></div>
@@ -258,7 +282,7 @@
     </div>
     <div class="grid" id="ppGrid"></div>
     <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
-      <button class="btn btn-line" id="btnRewards" type="button">Ver mi recompensa</button>
+      <button class="btn btn-line" id="btnRewards" type="button">Ver mi regalo</button>
       <button class="btn btn-line" id="btnShare" type="button">Invitar a un amigo</button>
     </div>
     <p class="legal-foot"><a href="#/reglas">Reglas y privacidad del pasaporte</a></p>
@@ -267,83 +291,32 @@
   <!-- ============ DETALLE PAÍS ============ -->
   <section class="view" id="v-country"></section>
 
-  <!-- ============ RECOMPENSAS ============ -->
+  <!-- ============ REGALO ============ -->
   <section class="view" id="v-rewards">
-    <div class="form-card">
-      <h2>Tu recompensa</h2>
-      <p class="sub" id="rwSub">Cada sello te acerca a algo especial.</p>
-      <div id="rwList"></div>
-    </div>
-    <p class="legal-foot">La recompensa se desbloquea con los seis sellos. La sorpresa especial est&aacute; sujeta a disponibilidad y ubicaci&oacute;n &mdash; ver <a href="#/reglas">reglas</a>.</p>
+    <div id="giftBox"></div>
+    <p class="legal-foot">El regalo sorpresa lo entrega Tomas personalmente. Est&aacute; sujeto a disponibilidad y ubicaci&oacute;n dentro del &aacute;rea DFW &mdash; ver <a href="#/reglas">reglas</a>.</p>
   </section>
 
-  <!-- ============ RECETA SECRETA (1 sello) ============ -->
-  <section class="view" id="v-secret">
-    <div class="rec-head" style="background:linear-gradient(150deg,#7A2E3B,#5C1F2A)">
-      <span class="co">Recompensa &middot; Receta secreta</span>
-      <h2>Salsa Taquera de la Casa</h2>
-      <div class="meta"><span class="chip">10 min</span><span class="chip">F&aacute;cil</span><span class="chip">Rinde 1 taza</span></div>
-    </div>
-    <div class="card">
-      <h3>Ingredientes</h3>
-      <ul class="ing">
-        <li><span>Tomates verdes (tomatillos)</span><b>5 piezas</b></li>
-        <li><span>Chile serrano</span><b>2 piezas</b></li>
-        <li><span>Diente de ajo</span><b>1 pieza</b></li>
-        <li><span>Cebolla blanca</span><b>un cuarto</b></li>
-        <li><span>Cilantro fresco</span><b>un manojo chico</b></li>
-        <li><span>Sal</span><b>al gusto</b></li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Preparaci&oacute;n</h3>
-      <ol class="steps">
-        <li><span class="stp">1</span><p>Asa los tomates verdes, los chiles y el ajo en un sart&eacute;n seco a fuego medio hasta que tomen color.</p></li>
-        <li><span class="stp">2</span><p>Lic&uacute;a todo con la cebolla, el cilantro y una pizca de sal. Usa poca agua: la textura debe quedar espesa.</p></li>
-        <li><span class="stp">3</span><p>Prueba y ajusta la sal. Deja reposar 10 minutos antes de servir para que los sabores se integren.</p></li>
-      </ol>
-    </div>
-    <div class="tipbox"><div class="t">El toque de Tomas</div><p>En un sart&eacute;n de acero inoxidable el asado queda parejo y sin humo excesivo. Esta salsa acompa&ntilde;a cualquier receta de tu pasaporte.</p></div>
-    <div class="rec-acts"><button class="btn btn-line" data-nav="#/recompensas" type="button">Volver a recompensas</button></div>
-  </section>
-
-  <!-- ============ RECETARIO (3 sellos) ============ -->
-  <section class="view" id="v-book">
-    <div class="cert">
-      <span class="lbl">Mini recetario latino</span>
-      <h2>Mis Sabores del Viaje</h2>
-      <p class="d">Las recetas que has conquistado, listas para guardar o imprimir.</p>
-    </div>
-    <div id="bookList"></div>
-    <div class="toolbar">
-      <button class="btn btn-navy" onclick="window.print()" type="button">Guardar en PDF</button>
-      <button class="btn btn-line" data-nav="#/recompensas" type="button">Volver</button>
-    </div>
-  </section>
-
-  <!-- ============ CERTIFICADO (6 sellos) ============ -->
+  <!-- ============ CERTIFICADO Y PRUEBA ============ -->
   <section class="view" id="v-cert">
     <div class="cert">
-      <span class="lbl">Certificado digital</span>
+      <img class="lg" src="logo-pasaporte.jpg" alt="Pasaporte de Sabores">
+      <span class="lbl">Ruta completada</span>
       <h2>Embajador de Sabores</h2>
-      <svg class="seal" viewBox="0 0 100 100" fill="none" aria-hidden="true">
-        <circle cx="50" cy="50" r="46" stroke="#B08D4F" stroke-width="3"/>
-        <circle cx="50" cy="50" r="38" stroke="#B08D4F" stroke-width="1.2" opacity=".55"/>
-        <path d="M50 24c-9 7-14 14-14 22.5C36 56 42 64 50 72c8-8 14-15.5 14-25.5C64 38 59 31 50 24z" stroke="#7A2E3B" stroke-width="2.4"/>
-        <circle cx="50" cy="47" r="5" fill="#B08D4F"/>
-      </svg>
-      <div class="who" id="certName">—</div>
-      <p class="d">complet&oacute; los seis destinos del<br><b>Pasaporte de Sabores Latinos &middot; Temporada 1</b><br><span id="certDate"></span></p>
+      <div class="who" id="certName">&mdash;</div>
+      <p class="d">complet&oacute; los seis destinos del<br><b>Pasaporte de Sabores &middot; Temporada 1</b><br><span id="certDate"></span></p>
+      <div class="mini-grid" id="certMinis"></div>
     </div>
     <div class="card">
-      <h3>Tu sorpresa especial</h3>
-      <p style="font-size:14px;color:var(--stone);line-height:1.6">Como Embajador de Sabores puedes solicitar una sorpresa especial. Est&aacute; sujeta a disponibilidad y ubicaci&oacute;n dentro del &aacute;rea DFW, y no requiere ninguna compra.</p>
-      <div style="margin-top:14px">
-        <button class="btn btn-wa" id="btnClaim" type="button">Solicitar por WhatsApp</button>
+      <h3>Env&iacute;a tu prueba y recibe tu regalo</h3>
+      <p style="font-size:14px;color:var(--stone);line-height:1.6">Genera tu comprobante con las seis fotos y env&iacute;amelo por WhatsApp. Al recibirlo coordino contigo la entrega de tu regalo sorpresa.</p>
+      <div style="margin-top:14px;display:flex;flex-direction:column;gap:10px">
+        <button class="btn btn-wa" id="btnProof" type="button">Generar y enviar mi prueba</button>
+        <button class="btn btn-line" id="btnProofSave" type="button">Solo guardar mi comprobante</button>
       </div>
+      <img class="proof-img" id="proofImg" style="display:none" alt="Comprobante de ruta completada">
     </div>
     <div class="toolbar">
-      <button class="btn btn-navy" onclick="window.print()" type="button">Guardar certificado</button>
       <button class="btn btn-line" data-nav="#/pasaporte" type="button">Mi pasaporte</button>
     </div>
   </section>
@@ -354,11 +327,12 @@
       <h2>Reglas y privacidad</h2>
       <p class="sub">Claridad ante todo.</p>
       <div style="font-size:14px;line-height:1.65;color:#3A4258">
-        <p><b>Participaci&oacute;n.</b> El Pasaporte de Sabores Latinos es gratuito y no requiere ninguna compra. Es una experiencia del sitio personal de Tomas Flores, Distribuidor Autorizado Independiente de Royal Prestige&reg;.</p>
-        <p style="margin-top:10px"><b>Sellos.</b> Los sellos se obtienen al marcar una receta como preparada. Funcionan con base en la confianza: el viaje es tuyo.</p>
-        <p style="margin-top:10px"><b>La recompensa se desbloquea al completar los seis destinos.</b> Incluye el certificado digital, el recetario completo y una receta secreta, disponibles de inmediato. <b>La sorpresa especial</b> se coordina por WhatsApp, est&aacute; sujeta a disponibilidad y ubicaci&oacute;n, y no est&aacute; garantizada como premio f&iacute;sico espec&iacute;fico.</p>
-        <p style="margin-top:10px"><b>Tus datos.</b> Solo guardamos el nombre y la ciudad que escribas, junto con tu progreso, con un identificador an&oacute;nimo. No pedimos tel&eacute;fono ni correo para participar. Si solicitas la sorpresa, la conversaci&oacute;n ocurre en WhatsApp y tu n&uacute;mero no se publica en el sitio.</p>
-        <p style="margin-top:10px"><b>Eliminaci&oacute;n.</b> Puedes pedir que borre tu pasaporte y tus datos escribi&eacute;ndome por WhatsApp. M&aacute;s detalles en la <a href="privacidad.html" style="color:var(--gold-text)">pol&iacute;tica de privacidad</a>.</p>
+        <p><b>Participaci&oacute;n.</b> El Pasaporte de Sabores es gratuito y <b>no requiere ninguna compra</b>. Es una experiencia del sitio personal de Tomas Flores, Distribuidor Autorizado Independiente de Royal Prestige&reg;.</p>
+        <p style="margin-top:10px"><b>Sellos.</b> Cada sello se obtiene subiendo la foto del platillo que preparaste. Los destinos se desbloquean en orden.</p>
+        <p style="margin-top:10px"><b>El regalo.</b> Se entrega &uacute;nicamente al completar los seis destinos y enviar el comprobante por WhatsApp. Es una <b>sorpresa que Tomas entrega personalmente</b>, sujeta a disponibilidad y a que te encuentres en el &aacute;rea de Dallas&ndash;Fort Worth. No es un premio f&iacute;sico espec&iacute;fico garantizado ni tiene valor en efectivo.</p>
+        <p style="margin-top:10px"><b>Tus datos.</b> Guardo tu nombre, WhatsApp, ciudad, estado, tu progreso y las fotos que subes. Los uso solo para acompa&ntilde;arte en el viaje y coordinar tu regalo. <b>No vendo ni comparto tu informaci&oacute;n</b> y tu n&uacute;mero nunca se publica en el sitio.</p>
+        <p style="margin-top:10px"><b>Tus fotos.</b> Son tuyas. Las guardo como comprobante de tu ruta y no las publico sin pedirte permiso antes.</p>
+        <p style="margin-top:10px"><b>Eliminaci&oacute;n.</b> Puedes pedir que borre tu pasaporte, tus datos y tus fotos escribi&eacute;ndome por WhatsApp. M&aacute;s detalles en la <a href="privacidad.html" style="color:var(--gold-text)">pol&iacute;tica de privacidad</a>.</p>
       </div>
       <div style="margin-top:18px"><button class="btn btn-line" data-nav="#/pasaporte" type="button">Volver</button></div>
     </div>
@@ -367,34 +341,40 @@
   <div class="loading" id="loading" style="display:none"><span class="spin"></span>Cargando tu pasaporte…</div>
 </div>
 
-<!-- Modal confirmación -->
+<!-- Modal: confirmar con foto -->
 <div class="modal" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
   <div class="modal-card">
-    <h3 id="cmTitle">&iquest;Ya preparaste esta receta?</h3>
-    <p id="cmText">Confirma para estampar tu sello. El viaje funciona con base en la confianza.</p>
-    <button class="btn btn-gold" id="cmYes" type="button">S&iacute;, estampar mi sello</button>
-    <button class="btn btn-line" id="cmNo" type="button">Todav&iacute;a no</button>
+    <h3 id="cmTitle">Tu foto del platillo</h3>
+    <p id="cmText">Esta foto queda en tu pasaporte y es tu comprobante de la ruta.</p>
+    <img class="preview" id="cmPreview" alt="Vista previa de tu platillo">
+    <button class="btn btn-gold" id="cmYes" type="button">Estampar mi sello</button>
+    <button class="btn btn-line" id="cmRetry" type="button">Cambiar la foto</button>
+    <button class="btn btn-line" id="cmNo" type="button">Cancelar</button>
   </div>
 </div>
 
 <!-- Overlay sello -->
 <div class="stamp-ov" id="stampOv" role="dialog" aria-modal="true">
   <div class="stamp-box">
-    <svg class="stamp-svg" viewBox="0 0 200 200" fill="none" id="stampSvg"></svg>
-    <h3 id="stampTitle">&iexcl;Sello desbloqueado!</h3>
+    <div class="shot-wrap">
+      <img id="stampShot" alt="Tu platillo">
+      <svg viewBox="0 0 200 200" fill="none" id="stampSvg"></svg>
+    </div>
+    <h3 id="stampTitle">&iexcl;Sello estampado!</h3>
     <p id="stampSub"></p>
     <button class="btn btn-gold" id="stampOk" type="button">Continuar mi viaje</button>
-    <button class="btn btn-line" id="stampShare" type="button" style="margin-top:9px;background:transparent;color:#F2ECDD;border-color:rgba(242,236,221,.4)">Compartir este sello</button>
+    <button class="btn btn-line" id="stampShare" type="button" style="margin-top:9px;background:transparent;color:#F2ECDD;border-color:rgba(242,236,221,.4)">Compartir mi foto</button>
   </div>
 </div>
 
+<input type="file" id="photoInput" accept="image/*" capture="environment" style="position:absolute;left:-9999px">
 <canvas id="confetti" style="position:fixed;inset:0;pointer-events:none;z-index:100;display:none"></canvas>
 <div class="toast" id="toast"></div>
 
 <script type="module">
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const CFG = {
   apiKey:"AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",
@@ -406,7 +386,6 @@ const CFG = {
 };
 const WA = "16823811576";
 
-// ---------- Países y recetas (Temporada 1) ----------
 const COUNTRIES = [
  { id:"ve", img:"foto-arepas.jpg", co:"Venezuela", mono:"VE", color:"#8A2432", dish:"Arepas rellenas", stamp:"Alma Venezolana",
    time:"45 min", serv:"4 porciones", diff:"Media",
@@ -440,13 +419,11 @@ const COUNTRIES = [
    tip:"Tostar bien las semillas es el secreto del pepián: en un sartén que reparte el calor no se queman en las orillas." }
 ];
 
-// ---------- Estado ----------
-let db=null, auth=null, uid=null, USER=null, pendingCountry=null, online=true;
+let db=null, auth=null, uid=null, USER=null, PHOTOS={}, pendingCountry=null, pendingPhoto=null;
 const $ = id => document.getElementById(id);
-const VALID = COUNTRIES.map(c=>c.id);
 
-// ---------- Analítica (reutiliza analytics_clicks) ----------
-let anaQ=[]; let anaReady=false; let _add=null,_col=null,_ts=null;
+// ---------- Analítica ----------
+let anaQ=[], anaReady=false, _add=null,_col=null,_ts=null;
 function vidGet(){ try{ let v=localStorage.getItem('_vid'); if(!v){ v=Date.now().toString(36)+Math.random().toString(36).slice(2,9); localStorage.setItem('_vid',v);} return v; }catch(e){ return 'x'; } }
 function srcGet(){
   try{
@@ -463,11 +440,7 @@ function srcGet(){
 }
 function devGet(){ const u=navigator.userAgent; if(/iPad/i.test(u))return'iPad'; if(/iPhone|iPod/i.test(u))return'iPhone'; if(/Android/i.test(u))return/Mobile/i.test(u)?'Android':'Tablet Android'; return'Computadora'; }
 const VID=vidGet(), SRC=srcGet(), DEV=devGet();
-function track(label){
-  if(!label) return;
-  anaQ.push(String(label).slice(0,90));
-  flushAna();
-}
+function track(label){ if(!label) return; anaQ.push(String(label).slice(0,90)); flushAna(); }
 function flushAna(){
   if(!anaReady) return;
   while(anaQ.length){
@@ -478,80 +451,112 @@ function flushAna(){
 
 // ---------- Utilidades ----------
 function esc(s){ return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),3200); }
-function cacheSave(){ try{ localStorage.setItem('_pp', JSON.stringify({name:USER.name,city:USER.city,stamps:USER.stamps})); }catch(e){} }
-function cacheLoad(){ try{ return JSON.parse(localStorage.getItem('_pp')||'null'); }catch(e){ return null; } }
+function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),3400); }
 function stampCount(){ return USER ? Object.keys(USER.stamps||{}).length : 0; }
+function lugar(){ if(!USER) return ''; return [USER.city, USER.state].filter(Boolean).join(', '); }
+function cacheSave(){ try{ localStorage.setItem('_pp', JSON.stringify({name:USER.name,phone:USER.phone,city:USER.city,state:USER.state,stamps:USER.stamps})); }catch(e){} }
+function cacheLoad(){ try{ return JSON.parse(localStorage.getItem('_pp')||'null'); }catch(e){ return null; } }
+function photoCache(cid, data){ try{ if(data) localStorage.setItem('_ppf_'+cid, data); }catch(e){} }
+function photoCacheGet(cid){ try{ return localStorage.getItem('_ppf_'+cid)||''; }catch(e){ return ''; } }
+function restoreLocal(){
+  const c=cacheLoad();
+  if(c && c.name){
+    USER={name:c.name,phone:c.phone||'',city:c.city||'',state:c.state||'',stamps:c.stamps||{}};
+    Object.keys(USER.stamps).forEach(cid=>{ const p=photoCacheGet(cid); if(p) PHOTOS[cid]=p; });
+    return true;
+  }
+  return false;
+}
 
-// ---------- Navegación (hash router) ----------
-const VIEWS = { '':'v-cover','#/':'v-cover','#/registro':'v-reg','#/pasaporte':'v-pass','#/recompensas':'v-rewards','#/secreta':'v-secret','#/recetario':'v-book','#/certificado':'v-cert','#/reglas':'v-rules' };
+// ---------- Comprimir foto ----------
+function compressImage(file, side, quality){
+  return new Promise((resolve,reject)=>{
+    const url=URL.createObjectURL(file);
+    const img=new Image();
+    img.onload=()=>{
+      const w=img.naturalWidth, h=img.naturalHeight;
+      const s=Math.min(w,h), sx=(w-s)/2, sy=(h-s)/2;
+      const cv=document.createElement('canvas');
+      cv.width=side; cv.height=side;
+      cv.getContext('2d').drawImage(img, sx, sy, s, s, 0, 0, side, side);
+      URL.revokeObjectURL(url);
+      resolve(cv.toDataURL('image/jpeg', quality));
+    };
+    img.onerror=()=>{ URL.revokeObjectURL(url); reject(new Error('imagen')); };
+    img.src=url;
+  });
+}
+
+// ---------- Navegación ----------
+const VIEWS = { '':'v-cover','#/':'v-cover','#/registro':'v-reg','#/pasaporte':'v-pass','#/regalo':'v-rewards','#/certificado':'v-cert','#/reglas':'v-rules' };
 function show(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   const el=$(id); if(el) el.classList.add('active');
   window.scrollTo({top:0,behavior:'auto'});
 }
+function nextIndex(){
+  const s=(USER&&USER.stamps)||{};
+  for(let i=0;i<COUNTRIES.length;i++){ if(!s[COUNTRIES[i].id]) return i; }
+  return -1;
+}
+function estadoPais(i){
+  const c=COUNTRIES[i], s=(USER&&USER.stamps)||{};
+  if(s[c.id]) return 'done';
+  return i===nextIndex() ? 'open' : 'locked';
+}
 function route(){
   const h=location.hash||'';
   if(h.startsWith('#/pais/')){
-    const cid=h.split('/')[2];
-    const idx=COUNTRIES.findIndex(x=>x.id===cid);
+    const idx=COUNTRIES.findIndex(x=>x.id===h.split('/')[2]);
     if(idx>=0 && USER){
       if(estadoPais(idx)==='locked'){ location.hash='#/pasaporte'; toast('Ese destino aún está bloqueado'); return; }
       renderCountry(COUNTRIES[idx]); show('v-country'); track('Pasaporte: abre '+COUNTRIES[idx].co); return;
     }
+    location.hash = USER ? '#/pasaporte' : '';
+    return;
   }
-  if(h==='#/recompensas'){ renderRewards(); }
-  if(h==='#/pasaporte'){ renderPassport(); }
-  if(h==='#/recetario'){ if(stampCount()<6){ location.hash='#/recompensas'; return; } renderBook(); }
-  if(h==='#/secreta'){ if(stampCount()<6){ location.hash='#/recompensas'; return; } }
-  if(h==='#/certificado'){ if(stampCount()<6){ location.hash='#/recompensas'; return; } renderCert(); }
-  if((h==='#/pasaporte'||h==='') && !USER && !$('loading').style.display.includes('flex')){ /* portada si no hay usuario */ }
+  if(h==='#/regalo') renderGift();
+  if(h==='#/pasaporte') renderPassport();
+  if(h==='#/certificado'){
+    if(stampCount()<6){ location.hash='#/regalo'; return; }
+    renderCert();
+  }
   const target = VIEWS[h] || 'v-cover';
-  if((target==='v-pass'||h==='#/recompensas') && !USER){ show('v-cover'); return; }
+  if((target==='v-pass'||target==='v-rewards'||target==='v-cert') && !USER){ show('v-cover'); return; }
   show(target);
 }
 window.addEventListener('hashchange', route);
 document.addEventListener('click', e=>{
   const n=e.target.closest('[data-nav]');
-  if(n){ location.hash=n.getAttribute('data-nav'); }
+  if(n) location.hash=n.getAttribute('data-nav');
 });
 
-// ---------- Renders ----------
-function nextIndex(){
-  const s = (USER && USER.stamps) || {};
-  for(let i=0;i<COUNTRIES.length;i++){ if(!s[COUNTRIES[i].id]) return i; }
-  return -1;
-}
-function estadoPais(i){
-  const c = COUNTRIES[i];
-  const s = (USER && USER.stamps) || {};
-  if(s[c.id]) return 'done';
-  return i === nextIndex() ? 'open' : 'locked';
-}
+// ---------- Pasaporte ----------
 function renderPassport(){
   if(!USER) return;
   $('ppName').textContent = USER.name;
-  $('ppCity').textContent = USER.city || '';
+  $('ppCity').textContent = lugar();
   const n = stampCount();
   $('ppCount').textContent = n + ' de 6 destinos';
   $('ppFill').style.width = Math.round(n/6*100)+'%';
-  $('ppGrid').innerHTML = COUNTRIES.map(function(c,i){
+  $('ppGrid').innerHTML = COUNTRIES.map((c,i)=>{
     const st = estadoPais(i);
     let visual;
-    if(st === 'done'){
-      visual = '<div class="ph"><img src="' + esc(c.img) + '" alt="' + esc(c.dish) + '" loading="lazy" onerror="this.style.display=\'none\';this.parentNode.classList.add(\'noimg\')">' +
-               '<span class="ph-mono" style="background:' + c.color + '">' + c.mono + '</span></div>';
-    } else if(st === 'open'){
-      visual = '<div class="mono" style="background:' + c.color + '">' + c.mono + '</div>';
+    if(st==='done'){
+      const ph = PHOTOS[c.id] || photoCacheGet(c.id);
+      visual = ph
+        ? '<div class="myph"><img src="'+ph+'" alt="Tu '+esc(c.dish)+'"><span class="badge" style="background:'+c.color+'">'+c.mono+'</span></div>'
+        : '<div class="mono" style="background:'+c.color+'">'+c.mono+'</div>';
+    } else if(st==='open'){
+      visual = '<div class="mono" style="background:'+c.color+'">'+c.mono+'</div>';
     } else {
-      visual = '<div class="mono lockmono">' +
-        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>';
+      visual = '<div class="mono lockmono"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>';
     }
-    const pie = st === 'done'
-      ? '<div class="st"><span class="stamp-mini">' + esc(c.stamp) + '</span></div>'
-      : (st === 'open' ? '<div class="st">Tu siguiente destino</div>' : '<div class="st lockst">Bloqueado</div>');
-    return '<div class="country ' + st + '" role="button" tabindex="0" data-country="' + c.id + '">' +
-      visual + '<h3>' + esc(c.co) + '</h3><div class="dish">' + esc(c.dish) + '</div>' + pie + '</div>';
+    const pie = st==='done'
+      ? '<div class="st"><span class="stamp-mini">'+esc(c.stamp)+'</span></div>'
+      : (st==='open' ? '<div class="st">Tu siguiente destino</div>' : '<div class="st lockst">Bloqueado</div>');
+    return '<div class="country '+st+'" role="button" tabindex="0" data-country="'+c.id+'">'+
+      visual+'<h3>'+esc(c.co)+'</h3><div class="dish">'+esc(c.dish)+'</div>'+pie+'</div>';
   }).join('');
 }
 document.addEventListener('click', e=>{
@@ -560,17 +565,18 @@ document.addEventListener('click', e=>{
   const id=el.getAttribute('data-country');
   const i=COUNTRIES.findIndex(x=>x.id===id);
   if(estadoPais(i)==='locked'){
-    const prev=COUNTRIES[nextIndex()];
-    toast('Primero completa ' + (prev ? prev.co : 'el destino anterior'));
+    const sig=nextIndex();
+    toast('Primero completa '+(sig>=0?COUNTRIES[sig].co:'el destino anterior'));
     return;
   }
-  location.hash = '#/pais/'+id;
+  location.hash='#/pais/'+id;
 });
 
+// ---------- Detalle país ----------
 function renderCountry(c){
   const done = USER && (USER.stamps||{})[c.id];
+  const mine = PHOTOS[c.id] || photoCacheGet(c.id);
   $('v-country').innerHTML =
-    (c.img ? '<img class="rec-photo" src="'+esc(c.img)+'" alt="'+esc(c.dish)+'" onerror="this.style.display=\'none\'">' : '')+
     '<div class="rec-head" style="background:linear-gradient(150deg,'+c.color+'E6,'+c.color+')">'+
       '<span class="co">'+esc(c.co)+' &middot; Sello: '+esc(c.stamp)+'</span>'+
       '<h2>'+esc(c.dish)+'</h2>'+
@@ -584,148 +590,225 @@ function renderCountry(c){
     '</ol></div>'+
     '<div class="tipbox"><div class="t">El toque de Tomas</div><p>'+esc(c.tip)+'</p></div>'+
     (done
-      ? '<div class="done-note" style="display:block">Sello estampado: '+esc(c.stamp)+' &#10003;</div>'+
+      ? '<div class="done-note">Sello estampado: '+esc(c.stamp)+' &#10003;</div>'+
+        (mine?'<img class="myshot" src="'+mine+'" alt="Tu platillo">':'')+
         '<div class="rec-acts"><button class="btn btn-line" data-nav="#/pasaporte" type="button">Volver a mi pasaporte</button></div>'
       : '<div class="rec-acts">'+
-          '<button class="btn btn-gold" id="btnDone" type="button">Ya prepar&eacute; esta receta</button>'+
+          '<button class="btn btn-gold" id="btnDone" type="button">Tomar foto y estampar mi sello</button>'+
           '<button class="btn btn-line" data-nav="#/pasaporte" type="button">Volver a mi pasaporte</button>'+
         '</div>')+
     '<div class="rec-acts" style="margin-top:10px">'+
       '<a class="btn btn-wa" href="https://wa.me/'+WA+'?text='+encodeURIComponent('Hola Tomas, tengo una duda con la receta de '+c.dish+' del Pasaporte de Sabores')+'" target="_blank" rel="noopener" data-tr="WhatsApp desde pasaporte">Preguntarle a Tomas</a>'+
     '</div>';
   const b=$('btnDone');
-  if(b) b.addEventListener('click', ()=>{ pendingCountry=c; $('confirmModal').classList.add('open'); });
+  if(b) b.addEventListener('click', ()=>{ pendingCountry=c; $('photoInput').click(); });
 }
 
-function renderRewards(){
-  const n = stampCount();
-  const falta = 6 - n;
-  const ok = n >= 6;
-  $('rwSub').textContent = ok
-    ? '¡Completaste el viaje! Tu recompensa está lista.'
-    : (falta === 1 ? 'Te falta 1 destino para desbloquear tu recompensa.' : 'Te faltan ' + falta + ' destinos para desbloquear tu recompensa.');
+// ---------- Captura de foto ----------
+$('photoInput').addEventListener('change', async function(){
+  const f=this.files && this.files[0];
+  this.value='';
+  if(!f || !pendingCountry) return;
+  if(!/^image\//.test(f.type)){ toast('Elige una imagen de tu platillo'); return; }
+  toast('Preparando tu foto…');
+  try{
+    pendingPhoto = await compressImage(f, 900, 0.62);
+    $('cmPreview').src = pendingPhoto;
+    $('cmText').textContent = 'Foto de tu ' + pendingCountry.dish + '. Queda en tu pasaporte y es tu comprobante de la ruta.';
+    $('confirmModal').classList.add('open');
+    track('Pasaporte: foto tomada');
+  }catch(e){ toast('No se pudo leer la foto. Intenta con otra.'); }
+});
+$('cmRetry').addEventListener('click', ()=>{ $('confirmModal').classList.remove('open'); $('photoInput').click(); });
+$('cmNo').addEventListener('click', ()=>{ $('confirmModal').classList.remove('open'); pendingPhoto=null; pendingCountry=null; });
 
-  const piezas = [
-    { t:'Certificado Embajador de Sabores', d:'Tu certificado digital con tu nombre, listo para guardar o compartir.', nav:'#/certificado' },
-    { t:'Recetario completo del viaje', d:'Las seis recetas de tu pasaporte en un solo documento.', nav:'#/recetario' },
-    { t:'Receta secreta de la casa', d:'La salsa taquera que acompaña cualquier receta del viaje.', nav:'#/secreta' },
-    { t:'Sorpresa especial', d:'Puedes solicitarla por WhatsApp. Sujeta a disponibilidad y ubicación.', nav:'#/certificado' }
-  ];
-
-  let html = '<div class="rw' + (ok ? '' : ' locked') + '" style="flex-direction:column;align-items:stretch;text-align:center;padding:22px">' +
-    '<div class="ic ' + (ok ? 'ok' : 'lock') + '" style="margin:0 auto 12px">' +
-      (ok
-       ? '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'
-       : '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>') +
-    '</div>' +
-    '<h3 style="font-family:\'Inter Tight\',sans-serif;font-size:19px">Embajador de Sabores</h3>' +
-    '<p style="margin-top:6px">Se desbloquea al completar los seis destinos.</p>' +
-    '<div class="prog" style="margin-top:14px;background:var(--hairline)"><div class="prog-fill" style="width:' + Math.round(n/6*100) + '%"></div></div>' +
-    '<div style="font-size:12.5px;color:var(--stone);margin-top:8px;font-weight:600">' + n + ' de 6 sellos</div>' +
-  '</div>';
-
-  html += '<h3 style="font-family:\'Inter Tight\',sans-serif;font-size:15px;margin:20px 0 4px;color:' + (ok ? 'var(--ink)' : '#A79E85') + '">Tu recompensa incluye</h3>';
-  html += piezas.map(function(r){
-    return '<div class="rw' + (ok ? '' : ' locked') + '">' +
-      '<div class="ic ' + (ok ? 'ok' : 'lock') + '">' +
-        (ok
-         ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'
-         : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>') +
-      '</div>' +
-      '<div><h3>' + esc(r.t) + '</h3><p>' + esc(r.d) + '</p></div>' +
-      (ok ? '<button class="go" data-nav="' + r.nav + '" type="button">Abrir</button>' : '') +
-    '</div>';
-  }).join('');
-
-  if(!ok){
-    html += '<div style="margin-top:16px"><button class="btn btn-navy" data-nav="#/pasaporte" type="button">Seguir mi viaje</button></div>';
-  }
-  $('rwList').innerHTML = html;
-}
-
-function renderBook(){
-  const got = COUNTRIES.filter(c=>(USER.stamps||{})[c.id]);
-  $('bookList').innerHTML = got.map(c=>
-    '<div class="card"><h3>'+esc(c.dish)+' <span style="font-weight:500;color:var(--stone);font-size:13px">&middot; '+esc(c.co)+'</span></h3>'+
-    '<ul class="ing">'+c.ings.map(x=>'<li><span>'+esc(x[0])+'</span><b>'+esc(x[1])+'</b></li>').join('')+'</ul>'+
-    '<ol class="steps" style="margin-top:10px">'+c.steps.map((s,i)=>'<li><span class="stp">'+(i+1)+'</span><p>'+esc(s)+'</p></li>').join('')+'</ol></div>'
-  ).join('');
-}
-
-function renderCert(){
-  $('certName').textContent = USER.name + (USER.city ? ' · ' + USER.city : '');
-  const d = new Date();
-  $('certDate').textContent = d.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
-}
-
-// ---------- Sello: confirmación y guardado ----------
-$('cmNo').addEventListener('click', ()=>{ $('confirmModal').classList.remove('open'); pendingCountry=null; });
+// ---------- Estampar ----------
 $('cmYes').addEventListener('click', async ()=>{
-  const c = pendingCountry; if(!c || !USER) return;
-  $('confirmModal').classList.remove('open');
-  if((USER.stamps||{})[c.id]){ toast('Este sello ya estaba estampado'); return; }
+  const c=pendingCountry, ph=pendingPhoto;
+  if(!c || !ph || !USER) return;
+  const btn=$('cmYes');
+  if((USER.stamps||{})[c.id]){ toast('Este sello ya estaba estampado'); $('confirmModal').classList.remove('open'); return; }
+  btn.disabled=true; btn.textContent='Guardando…';
+
   USER.stamps = USER.stamps || {};
   USER.stamps[c.id] = Date.now();
-  cacheSave();
+  PHOTOS[c.id] = ph;
+  cacheSave(); photoCache(c.id, ph);
+
   try{
-    const upd = {}; upd['stamps.'+c.id] = USER.stamps[c.id]; upd.updatedAt = serverTimestamp();
+    await setDoc(doc(db,'passportPhotos', uid+'__'+c.id), {
+      uid:uid, country:c.id, countryName:c.co, dish:c.dish, photo:ph,
+      name:USER.name, phone:USER.phone||'', city:USER.city||'', state:USER.state||'',
+      createdAt:serverTimestamp()
+    });
+    const upd={}; upd['stamps.'+c.id]=USER.stamps[c.id]; upd.updatedAt=serverTimestamp();
     await updateDoc(doc(db,'passportUsers',uid), upd);
-  }catch(e){ toast('Se guardó en tu dispositivo; se sincronizará al reconectar'); }
+  }catch(e){
+    toast('Guardado en tu dispositivo; se sincronizará al reconectar');
+  }
+  btn.disabled=false; btn.textContent='Estampar mi sello';
+  $('confirmModal').classList.remove('open');
   track('Pasaporte: sello '+c.co);
-  const n = stampCount();
+  const n=stampCount();
   if(n===6) track('Pasaporte: viaje completado');
-  showStamp(c, n);
+  showStamp(c, n, ph);
+  pendingPhoto=null;
 });
 
-function showStamp(c, n){
+function showStamp(c, n, ph){
+  $('stampShot').src = ph;
   $('stampSvg').innerHTML =
-    '<circle cx="100" cy="100" r="88" stroke="'+c.color+'" stroke-width="5" fill="none" opacity=".92"/>'+
-    '<circle cx="100" cy="100" r="72" stroke="'+c.color+'" stroke-width="1.6" fill="none" opacity=".55"/>'+
-    '<text x="100" y="88" text-anchor="middle" font-family="Inter Tight,sans-serif" font-weight="800" font-size="30" fill="'+c.color+'">'+c.mono+'</text>'+
-    '<text x="100" y="116" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="12.5" letter-spacing="1.5" fill="'+c.color+'">'+esc(c.stamp).toUpperCase()+'</text>'+
-    '<text x="100" y="140" text-anchor="middle" font-family="Fraunces,serif" font-style="italic" font-size="11" fill="'+c.color+'" opacity=".8">Pasaporte de Sabores</text>';
-  $('stampTitle').textContent = n>=6 ? '¡Viaje completado!' : '¡Sello desbloqueado!';
-  const sig = nextIndex();
+    '<circle cx="100" cy="100" r="88" stroke="'+c.color+'" stroke-width="6" fill="#FFFDF7" fill-opacity=".93"/>'+
+    '<circle cx="100" cy="100" r="73" stroke="'+c.color+'" stroke-width="2" fill="none" opacity=".55"/>'+
+    '<text x="100" y="92" text-anchor="middle" font-family="Inter Tight,sans-serif" font-weight="800" font-size="30" fill="'+c.color+'">'+c.mono+'</text>'+
+    '<text x="100" y="122" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="12" letter-spacing="1.2" fill="'+c.color+'">'+esc(c.stamp).toUpperCase()+'</text>';
+  const sig=nextIndex();
+  $('stampTitle').textContent = n>=6 ? '¡Viaje completado!' : '¡Sello estampado!';
   $('stampSub').textContent = n>=6
-    ? c.stamp + ' · ' + c.co + '  —  ¡Completaste los seis destinos!'
-    : c.stamp + ' · ' + c.co + '  —  ' + n + ' de 6  ·  Desbloqueaste ' + (sig>=0 ? COUNTRIES[sig].co : '');
+    ? c.stamp+' · '+c.co+'  —  ¡Completaste los seis destinos!'
+    : c.stamp+' · '+c.co+'  —  '+n+' de 6  ·  Desbloqueaste '+(sig>=0?COUNTRIES[sig].co:'');
   $('stampOv').classList.add('open');
-  confetti(n===6);
+  confetti(n>=6);
 }
 $('stampOk').addEventListener('click', ()=>{
   $('stampOv').classList.remove('open');
-  const n = stampCount();
-  if(n===6){ location.hash='#/recompensas'; } else { location.hash='#/pasaporte'; renderPassport(); }
+  if(stampCount()>=6){ location.hash='#/regalo'; } else { location.hash='#/pasaporte'; renderPassport(); }
 });
-$('stampShare').addEventListener('click', ()=>{ shareInvite(pendingCountry); });
+$('stampShare').addEventListener('click', ()=>{
+  const c=pendingCountry;
+  const txt=(USER?USER.name:'Alguien')+' acaba de ganar el sello '+(c?c.stamp:'')+' del Pasaporte de Sabores de Tomas Flores. Prepara la receta, gana tu sello y completa la ruta: https://tomasflores.com/pasaporte.html';
+  shareImage($('stampShot').src, 'mi-sello.jpg', txt);
+});
 
-// ---------- Compartir / invitar ----------
-function shareInvite(c){
-  const inv = (uid||'').slice(0,8);
-  const url = 'https://tomasflores.com/pasaporte.html' + (c ? '?p='+c.id+'&inv='+inv : '?inv='+inv);
-  const text = (USER?USER.name:'Alguien') + ' te invita a viajar por ' + (c?c.co:'Latinoamérica') + ' desde tu cocina. Prepara la receta, gana tu sello y comienza tu Pasaporte de Sabores Latinos.';
+// ---------- Compartir con imagen ----------
+async function shareImage(dataUrl, filename, text){
   track('Pasaporte: comparte');
-  if(navigator.share){ navigator.share({title:'Pasaporte de Sabores Latinos', text:text, url:url}).catch(()=>{}); }
-  else {
-    window.open('https://wa.me/?text='+encodeURIComponent(text+' '+url), '_blank', 'noopener');
-  }
-}
-$('btnShare').addEventListener('click', ()=>shareInvite(null));
-$('btnRewards').addEventListener('click', ()=>{ location.hash='#/recompensas'; });
-
-// ---------- Reclamo sorpresa (6 sellos) ----------
-$('btnClaim').addEventListener('click', async ()=>{
   try{
-    await addDoc(collection(db,'passportRewardClaims'), {
-      uid:uid, name:USER.name, city:USER.city||'', reward:'sorpresa', status:'pendiente', createdAt:serverTimestamp()
-    });
+    if(dataUrl && navigator.canShare){
+      const blob = await (await fetch(dataUrl)).blob();
+      const file = new File([blob], filename||'foto.jpg', {type:'image/jpeg'});
+      if(navigator.canShare({files:[file]})){
+        await navigator.share({ files:[file], text:text });
+        return true;
+      }
+    }
   }catch(e){}
-  track('Pasaporte: reclama sorpresa');
-  const msg = 'Hola Tomas 👋 Completé mi Pasaporte de Sabores Latinos (6 de 6 sellos). Soy '+USER.name+(USER.city?' de '+USER.city:'')+' y quiero solicitar mi sorpresa especial.';
-  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg), '_blank', 'noopener');
+  try{
+    if(navigator.share){ await navigator.share({ text:text, url:'https://tomasflores.com/pasaporte.html' }); return true; }
+  }catch(e){}
+  window.open('https://wa.me/?text='+encodeURIComponent(text), '_blank', 'noopener');
+  return false;
+}
+$('btnShare').addEventListener('click', ()=>{
+  const txt=(USER?USER.name:'Alguien')+' te invita a viajar por Latinoamérica desde tu cocina. Prepara la receta, gana tu sello y comienza tu Pasaporte de Sabores: https://tomasflores.com/pasaporte.html';
+  shareImage(null, null, txt);
+});
+$('btnRewards').addEventListener('click', ()=>{ location.hash='#/regalo'; });
+
+// ---------- Regalo ----------
+function renderGift(){
+  const n=stampCount(), ok=n>=6, falta=6-n;
+  let html='<div class="gift">'+
+    '<img src="logo-pasaporte.jpg" alt="Pasaporte de Sabores">'+
+    '<h2>'+(ok?'¡Tu regalo te espera!':'Tu regalo sorpresa')+'</h2>'+
+    '<p>'+(ok
+      ? 'Completaste los seis destinos. Genera tu comprobante y envíamelo por WhatsApp para coordinar la entrega.'
+      : 'Al completar los seis destinos, Tomas te entrega un regalo sorpresa. Envías tu comprobante por WhatsApp y él coordina contigo.')+'</p>'+
+    '<div class="prog"><div class="prog-fill" style="width:'+Math.round(n/6*100)+'%"></div></div>'+
+    '<div class="cnt">'+n+' de 6 sellos'+(ok?'':'  ·  te '+(falta===1?'falta 1 destino':'faltan '+falta+' destinos'))+'</div>'+
+    '</div>';
+  html+='<div class="rw'+(ok?'':' locked')+'">'+
+    '<div class="ic '+(ok?'ok':'lock')+'">'+
+      (ok?'<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'
+        :'<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>')+
+    '</div>'+
+    '<div><h3>Certificado y comprobante</h3><p>Tu certificado de Embajador de Sabores con las seis fotos de tu ruta.</p></div>'+
+    (ok?'<button class="go" data-nav="#/certificado" type="button">Abrir</button>':'')+
+  '</div>';
+  if(!ok) html+='<div style="margin-top:14px"><button class="btn btn-navy" data-nav="#/pasaporte" type="button">Seguir mi viaje</button></div>';
+  $('giftBox').innerHTML=html;
+}
+
+// ---------- Certificado ----------
+function renderCert(){
+  $('certName').textContent = USER.name + (lugar() ? ' · ' + lugar() : '');
+  $('certDate').textContent = new Date().toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
+  $('certMinis').innerHTML = COUNTRIES.map(c=>{
+    const ph=PHOTOS[c.id]||photoCacheGet(c.id);
+    return ph ? '<img src="'+ph+'" alt="'+esc(c.dish)+'">'
+              : '<div style="aspect-ratio:1/1;border-radius:10px;background:'+c.color+';color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px">'+c.mono+'</div>';
+  }).join('');
+}
+
+// ---------- Comprobante ----------
+function loadImg(src){
+  return new Promise((res,rej)=>{ const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=src; });
+}
+async function buildProof(){
+  const W=1080, H=1500;
+  const cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  const x=cv.getContext('2d');
+  x.fillStyle='#F6F0E2'; x.fillRect(0,0,W,H);
+  x.strokeStyle='#B08D4F'; x.lineWidth=6; x.strokeRect(26,26,W-52,H-52);
+  x.strokeStyle='#E4DCC8'; x.lineWidth=2; x.strokeRect(44,44,W-88,H-88);
+  try{ const lg=await loadImg('logo-pasaporte.jpg'); x.drawImage(lg, W/2-95, 70, 190, 190); }catch(e){}
+  x.textAlign='center';
+  x.fillStyle='#1B2A4A'; x.font='800 54px "Inter Tight", sans-serif';
+  x.fillText('Ruta completada', W/2, 322);
+  x.fillStyle='#5E6478'; x.font='500 30px Inter, sans-serif';
+  x.fillText('Pasaporte de Sabores · Temporada 1', W/2, 366);
+  x.fillStyle='#1B2A4A'; x.font='800 44px "Inter Tight", sans-serif';
+  x.fillText(USER.name, W/2, 428);
+  if(lugar()){ x.fillStyle='#5E6478'; x.font='500 28px Inter, sans-serif'; x.fillText(lugar(), W/2, 466); }
+
+  const pad=54, gap=18, cols=3;
+  const cw=Math.floor((W-pad*2-gap*(cols-1))/cols);
+  for(let i=0;i<COUNTRIES.length;i++){
+    const c=COUNTRIES[i];
+    const col=i%cols, row=Math.floor(i/cols);
+    const px=pad+col*(cw+gap), py=510+row*(cw+64);
+    const ph=PHOTOS[c.id]||photoCacheGet(c.id);
+    x.fillStyle=c.color; x.fillRect(px,py,cw,cw);
+    if(ph){ try{ const im=await loadImg(ph); x.drawImage(im,px,py,cw,cw); }catch(e){} }
+    x.strokeStyle='#1B2A4A'; x.lineWidth=3; x.strokeRect(px,py,cw,cw);
+    x.textAlign='center';
+    x.fillStyle='#1B2A4A'; x.font='700 24px Inter, sans-serif';
+    x.fillText(c.co, px+cw/2, py+cw+32);
+    x.fillStyle='#8A672B'; x.font='600 19px Inter, sans-serif';
+    x.fillText(c.stamp, px+cw/2, py+cw+56);
+  }
+  const base=510+2*(cw+64)+40;
+  x.fillStyle='#5E6478'; x.font='500 26px Inter, sans-serif';
+  x.fillText(new Date().toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}), W/2, base+30);
+  x.fillStyle='#8A672B'; x.font='700 26px Inter, sans-serif';
+  x.fillText('tomasflores.com/pasaporte', W/2, base+72);
+  return cv.toDataURL('image/jpeg', 0.86);
+}
+$('btnProof').addEventListener('click', async ()=>{
+  const b=$('btnProof'); b.disabled=true; b.textContent='Generando…';
+  try{
+    const img=await buildProof();
+    $('proofImg').src=img; $('proofImg').style.display='block';
+    track('Pasaporte: envía prueba');
+    const msg='Hola Tomas 👋 Completé mi Pasaporte de Sabores (6 de 6 sellos). Soy '+USER.name+(lugar()?' de '+lugar():'')+'. Aquí está mi comprobante para coordinar mi regalo sorpresa.';
+    const ok=await shareImage(img, 'pasaporte-completado.jpg', msg);
+    if(!ok) toast('Guarda la imagen y adjúntala en WhatsApp');
+  }catch(e){ toast('No se pudo generar el comprobante. Intenta de nuevo.'); }
+  b.disabled=false; b.textContent='Generar y enviar mi prueba';
+});
+$('btnProofSave').addEventListener('click', async ()=>{
+  const b=$('btnProofSave'); b.disabled=true; b.textContent='Generando…';
+  try{
+    const img=await buildProof();
+    $('proofImg').src=img; $('proofImg').style.display='block';
+    const a=document.createElement('a'); a.href=img; a.download='pasaporte-completado.jpg';
+    document.body.appendChild(a); a.click(); a.remove();
+    toast('Mantén presionada la imagen para guardarla');
+  }catch(e){ toast('No se pudo generar el comprobante'); }
+  b.disabled=false; b.textContent='Solo guardar mi comprobante';
 });
 
-// ---------- Confeti (solo 3 y 6, respeta reduced motion) ----------
+// ---------- Confeti ----------
 function confetti(big){
   if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const cv=$('confetti'); const ctx=cv.getContext('2d');
@@ -742,33 +825,37 @@ function confetti(big){
 }
 
 // ---------- Registro ----------
-$('btnStart').addEventListener('click', ()=>{
-  if(USER){ location.hash='#/pasaporte'; } else { location.hash='#/registro'; }
-});
+$('btnStart').addEventListener('click', ()=>{ location.hash = USER ? '#/pasaporte' : '#/registro'; });
 $('btnReg').addEventListener('click', async ()=>{
-  const name=$('regName').value.trim(), city=$('regCity').value.trim();
+  const name=$('regName').value.trim(), phone=$('regPhone').value.trim();
+  const city=$('regCity').value.trim(), state=$('regState').value.trim();
   const err=$('regErr');
-  if(!name){ err.textContent='Escribe tu nombre para estampar tus sellos.'; err.classList.add('show'); return; }
+  const digits=phone.replace(/\D/g,'');
+  if(!name){ err.textContent='Escribe tu nombre.'; err.classList.add('show'); return; }
+  if(digits.length<10){ err.textContent='Escribe tu WhatsApp con 10 dígitos.'; err.classList.add('show'); return; }
+  if(!city){ err.textContent='Escribe tu ciudad.'; err.classList.add('show'); return; }
+  if(!state){ err.textContent='Escribe tu estado.'; err.classList.add('show'); return; }
+  if(!$('regOk').checked){ err.textContent='Marca la casilla de autorización para continuar.'; err.classList.add('show'); return; }
   err.classList.remove('show');
-  $('btnReg').disabled=true; $('btnReg').textContent='Creando…';
+  const b=$('btnReg'); b.disabled=true; b.textContent='Creando…';
   try{
     if(!uid) throw new Error('sin sesión');
-    USER = { name:name.slice(0,40), city:city.slice(0,40), stamps:{} };
-    await setDoc(doc(db,'passportUsers',uid), { name:USER.name, city:USER.city, stamps:{}, createdAt:serverTimestamp(), updatedAt:serverTimestamp() });
+    USER={ name:name.slice(0,40), phone:phone.slice(0,20), city:city.slice(0,40), state:state.slice(0,30), stamps:{} };
+    await setDoc(doc(db,'passportUsers',uid), {
+      name:USER.name, phone:USER.phone, city:USER.city, state:USER.state, stamps:{},
+      consent:true, consentAt:serverTimestamp(), createdAt:serverTimestamp(), updatedAt:serverTimestamp()
+    });
     cacheSave();
     track('Pasaporte: inicia viaje');
     location.hash='#/pasaporte';
   }catch(e){
     err.textContent='No se pudo crear tu pasaporte. Revisa tu conexión e intenta de nuevo.'; err.classList.add('show');
   }
-  $('btnReg').disabled=false; $('btnReg').textContent='Crear mi pasaporte';
+  b.disabled=false; b.textContent='Crear mi pasaporte';
 });
 
-// ---------- Conexión ----------
-window.addEventListener('online', ()=>{ $('netBanner').classList.remove('show'); });
-window.addEventListener('offline', ()=>{ $('netBanner').classList.add('show'); });
-
-// ---------- Tracking de enlaces con data-tr ----------
+window.addEventListener('online', ()=>$('netBanner').classList.remove('show'));
+window.addEventListener('offline', ()=>$('netBanner').classList.add('show'));
 document.addEventListener('click', e=>{
   const t=e.target.closest('[data-tr]');
   if(t) track(t.getAttribute('data-tr'));
@@ -779,47 +866,42 @@ document.addEventListener('click', e=>{
   $('loading').style.display='flex';
   try{
     const app = getApps().length ? getApps()[0] : initializeApp(CFG);
-    db = getFirestore(app);
-    auth = getAuth(app);
-    const fb = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+    db=getFirestore(app); auth=getAuth(app);
+    const fb=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
     _add=fb.addDoc; _col=fb.collection; _ts=fb.serverTimestamp; anaReady=true; flushAna();
     track('Pasaporte: visita');
     await signInAnonymously(auth);
     await new Promise(res=>{ const off=onAuthStateChanged(auth,u=>{ if(u){ uid=u.uid; off(); res(); } }); });
-    // Recuperar pasaporte
     try{
-      const snap = await getDoc(doc(db,'passportUsers',uid));
+      const snap=await getDoc(doc(db,'passportUsers',uid));
       if(snap.exists()){
         const d=snap.data();
-        USER = { name:d.name||'Viajero', city:d.city||'', stamps:d.stamps||{} };
+        USER={ name:d.name||'Viajero', phone:d.phone||'', city:d.city||'', state:d.state||'', stamps:d.stamps||{} };
         cacheSave();
         track('Pasaporte: continúa');
-      } else {
-        const c=cacheLoad();
-        if(c && c.name){
-          USER={name:c.name,city:c.city||'',stamps:c.stamps||{}};
-          await setDoc(doc(db,'passportUsers',uid), { name:USER.name, city:USER.city, stamps:USER.stamps, createdAt:serverTimestamp(), updatedAt:serverTimestamp() });
-        }
+        await Promise.all(Object.keys(USER.stamps||{}).map(async cid=>{
+          const cached=photoCacheGet(cid);
+          if(cached){ PHOTOS[cid]=cached; return; }
+          try{
+            const p=await getDoc(doc(db,'passportPhotos', uid+'__'+cid));
+            if(p.exists() && p.data().photo){ PHOTOS[cid]=p.data().photo; photoCache(cid,PHOTOS[cid]); }
+          }catch(e){}
+        }));
+      } else if(restoreLocal()){
+        await setDoc(doc(db,'passportUsers',uid), {
+          name:USER.name, phone:USER.phone, city:USER.city, state:USER.state, stamps:USER.stamps,
+          consent:true, consentAt:serverTimestamp(), createdAt:serverTimestamp(), updatedAt:serverTimestamp()
+        });
       }
-    }catch(e){
-      const c=cacheLoad();
-      if(c && c.name) USER={name:c.name,city:c.city||'',stamps:c.stamps||{}};
-    }
+    }catch(e){ restoreLocal(); }
   }catch(e){
-    $('netBanner').textContent='No se pudo conectar. Puedes ver las recetas; tus sellos se guardarán al reconectar.';
+    $('netBanner').textContent='No se pudo conectar. Puedes ver las recetas; tu progreso se guardará al reconectar.';
     $('netBanner').classList.add('show');
-    const c=cacheLoad();
-    if(c && c.name) USER={name:c.name,city:c.city||'',stamps:c.stamps||{}};
+    restoreLocal();
   }
   $('loading').style.display='none';
-  // Deep link de invitación: ?p=pais
-  const p=new URLSearchParams(location.search).get('p');
   if(new URLSearchParams(location.search).get('inv')) track('Pasaporte: llega invitado');
-  if(USER){
-    if(p && VALID.includes(p)) location.hash='#/pais/'+p; else if(!location.hash) location.hash='#/pasaporte';
-  } else {
-    if(p && VALID.includes(p)) { /* mostrará portada; tras registrarse irá al pasaporte */ }
-  }
+  if(USER && !location.hash) location.hash='#/pasaporte';
   route();
 })();
 </script>
