@@ -564,22 +564,38 @@
         '<b style="font-family:Inter Tight;font-size:15px">🔔 '+pend.length+' reseña'+(pend.length>1?'s':'')+' nueva'+(pend.length>1?'s':'')+' de clientes</b>'+
         '<p class="hint" style="margin-top:4px">Revísalas abajo y toca <b>Aprobar</b> para publicarlas en tu sitio.</p></div>';
     }
+    const visCount = DATA.reviews.filter(x=>x.visible && !x.pendiente).length;
+    h += '<div class="card-form" style="margin-bottom:12px'+(visCount>=10?';border-left:4px solid #B3261E':'')+'">'+
+      '<b style="font-size:14.5px">Rese\u00f1as visibles en tu sitio: '+visCount+' de 10</b>'+
+      (visCount>=10?'<p class="hint" style="margin-top:4px;color:#B3261E"><b>L\u00edmite alcanzado.</b> Para publicar una nueva, primero oculta una de las actuales.</p>':'')+
+      '<p class="hint" style="margin-top:4px">Consejo: ve rotando tu vitrina. Cuando llegue una rese\u00f1a nueva y buena, publ\u00edcala y oculta la m\u00e1s antigua \u2014 as\u00ed tu sitio siempre se ve fresco y con fechas recientes. Las ocultas no se pierden: puedes volver a mostrarlas cuando quieras.</p></div>';
     h += '<p class="hint" style="margin-bottom:12px">Las opiniones de tu sitio. Las nuevas de clientes aparecen marcadas.</p>';
     if(!DATA.reviews.length) h += '<div class="empty-note">Aún no hay opiniones.</div>';
     DATA.reviews.forEach((r,i)=>{
       const esPend = r.pendiente;
-      h += '<div class="item"'+(esPend?' style="border-color:#F0E2BE;background:#FFFDF7"':'')+'><div class="thumb" style="background:'+(r.color||"#B08D4F")+';color:#fff;font-weight:600;font-family:Inter Tight">'+esc(r.ini||"")+'</div>'+
+      const rThumb = r.photo
+        ? '<div class="thumb" style="padding:0;overflow:hidden"><img src="'+r.photo+'" alt="" style="width:100%;height:100%;object-fit:cover"></div>'
+        : '<div class="thumb" style="background:'+(r.color||"#B08D4F")+';color:#fff;font-weight:600;font-family:Inter Tight">'+esc(r.ini||"")+'</div>';
+      h += '<div class="item"'+(esPend?' style="border-color:#F0E2BE;background:#FFFDF7"':'')+'>'+rThumb+
         '<div class="ti"><b>'+esc(r.name)+(esPend?' <span class="st" style="background:#FBEED0;color:#8A6218">Nueva</span>':'')+'</b><span class="sub"><span>'+"★".repeat(r.stars||5)+'</span>'+(r.text?'<span>'+esc(r.text.slice(0,26))+(r.text.length>26?'…':'')+'</span>':'')+'</span></div>'+
         '<div class="acts">'+
         (esPend?'<button class="icon-btn" onclick="approveReview('+i+')" aria-label="Aprobar" style="background:#EAF6ED;border-color:#BFE3C8">✓</button>':'')+
+        (r.photo?'<button class="icon-btn" onclick="verFotoReview('+i+')" aria-label="Ver foto">\ud83d\udcf7</button>':'')+
+        (!esPend?'<button class="icon-btn" onclick="toggleReviewVis('+i+')" aria-label="'+(r.visible?'Ocultar':'Mostrar')+'">'+(r.visible?'\ud83d\udc41':'\ud83d\udc40')+'</button>':'')+
         '<button class="icon-btn" onclick="editReview('+i+')" aria-label="Editar">✎</button>'+
         '<button class="icon-btn" onclick="delReview('+i+')" aria-label="Eliminar">🗑</button></div></div>';
     });
     $("p-opiniones").innerHTML = h;
   }
 
+  function revVisibles(){ return DATA.reviews.filter(x=>x.visible && !x.pendiente).length; }
+
   window.approveReview = async function(i){
     const r = DATA.reviews[i];
+    if(revVisibles() >= 10){
+      toast("L\u00edmite de 10 rese\u00f1as visibles. Oculta una primero (bot\u00f3n del ojo) y vuelve a aprobar.");
+      return;
+    }
     setCloud(true);
     try{
       const maxOrder = Math.max(0, ...DATA.reviews.filter(x=>!x.pendiente).map(x=>x.order||0));
@@ -588,6 +604,54 @@
       toast("✓ Reseña publicada en tu sitio"); renderReviews(); renderDash();
     }catch(e){ console.error(e); toast("No se pudo aprobar"); }
     finally{ setCloud(false); }
+  };
+
+  window.toggleReviewVis = async function(i){
+    const r = DATA.reviews[i];
+    const nuevo = !r.visible;
+    if(nuevo && revVisibles() >= 10){
+      toast("Ya hay 10 rese\u00f1as visibles. Oculta otra antes de mostrar esta.");
+      return;
+    }
+    setCloud(true);
+    try{
+      await updateDoc(doc(db,"testimonials",r._id), { visible:nuevo, updatedAt:serverTimestamp() });
+      r.visible = nuevo;
+      toast(nuevo ? "\u2713 Rese\u00f1a visible en tu sitio" : "\u2713 Rese\u00f1a oculta (guardada, no se borra)");
+      renderReviews(); renderDash();
+    }catch(e){ console.error(e); toast("No se pudo cambiar la visibilidad"); }
+    finally{ setCloud(false); }
+  };
+
+  window.verFotoReview = function(i){
+    const r = DATA.reviews[i];
+    if(!r || !r.photo) return;
+    let v = document.getElementById("revFotoView");
+    if(!v){
+      v = document.createElement("div");
+      v.id = "revFotoView";
+      v.style.cssText = "position:fixed;inset:0;background:rgba(17,17,16,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;padding:18px;gap:14px";
+      v.innerHTML = '<img style="max-width:100%;max-height:74vh;border-radius:14px" alt="Foto de la rese\u00f1a">'+
+        '<div style="display:flex;gap:10px">'+
+        '<button type="button" id="rfQuitar" style="background:#B3261E;color:#fff;border:0;border-radius:12px;font:inherit;font-weight:700;padding:12px 18px;min-height:44px">Quitar esta foto</button>'+
+        '<button type="button" id="rfCerrar" style="background:#fff;color:#111;border:0;border-radius:12px;font:inherit;font-weight:700;padding:12px 18px;min-height:44px">Cerrar</button></div>';
+      document.body.appendChild(v);
+    }
+    v.querySelector("img").src = r.photo;
+    v.style.display = "flex";
+    document.getElementById("rfCerrar").onclick = function(){ v.style.display = "none"; };
+    document.getElementById("rfQuitar").onclick = async function(){
+      if(!confirm("\u00bfQuitar la foto de la rese\u00f1a de "+r.name+"? El texto se conserva.")) return;
+      setCloud(true);
+      try{
+        await updateDoc(doc(db,"testimonials",r._id), { photo:null, updatedAt:serverTimestamp() });
+        r.photo = null;
+        v.style.display = "none";
+        toast("\u2713 Foto eliminada; el texto se conserva");
+        renderReviews();
+      }catch(e){ console.error(e); toast("No se pudo quitar la foto"); }
+      finally{ setCloud(false); }
+    };
   };
 
   function reviewForm(r, isNew){
@@ -1580,7 +1644,7 @@
   };
 
   let rygParts = [], rygClaims = [], rygOpen = "", rygFilter = "todos", rygLoaded = false;
-  let rygView = "participantes", rygEF = "todos", rygMas = "", rygLastLoad = null, rygQ = "";
+  let rygView = "participantes", rygEF = "todos", rygMas = "";
 
   function rygEsc(s){ return String(s==null?"":s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
   function rygFecha(ts){
@@ -1623,7 +1687,6 @@
       const tb = b.createdAt && b.createdAt.toDate ? b.createdAt.toDate().getTime() : 0;
       return tb - ta;
     });
-    rygLastLoad = new Date();
     rygLoaded = true;
   }
 
@@ -2283,32 +2346,6 @@
   window.rygMasAcciones = function(id){ rygMas = (rygMas===id ? "" : id); rygPintar(); };
   window.rygVista = function(v){ rygView = v; rygPintar(); };
   window.rygEstadoFiltro = function(f){ rygEF = f; rygPintar(); };
-  window.rygBuscarInput = function(v){ rygQ = String(v||"").trim().toLowerCase(); rygPintar(); };
-  window.rygLimpiarBusqueda = function(){ rygQ = ""; rygPintar(); };
-
-  function rygNorm(s){ return String(s||"").toLowerCase(); }
-  // Coincidencia de un contacto/regalo con la búsqueda (nombre, teléfono, ciudad, código)
-  function rygMatchClaim(c){
-    if(!rygQ) return true;
-    const p = rygParts.find(x=>x.id===c.referralCode) || {};
-    return [c.recipientName, c.normalizedPhone, c.recipientCity, c.zipCode, c.referralCode, p.participantName]
-      .some(v => rygNorm(v).indexOf(rygQ) >= 0);
-  }
-  // Coincidencia de un participante con la búsqueda (nombre, ciudad, código)
-  function rygMatchPart(p){
-    if(!rygQ) return true;
-    return [p.participantName, p.city, p.id].some(v => rygNorm(v).indexOf(rygQ) >= 0);
-  }
-  // Genera el bloque de búsqueda; conserva foco tras el re-render
-  function rygBusquedaHTML(ph){
-    return '<div class="card-form" style="margin-top:12px"><div class="ryg-lbl">Buscar</div>'+
-      '<div style="position:relative">'+
-      '<input id="rygSearch" type="search" inputmode="search" autocomplete="off" placeholder="'+ph+'" '+
-      'value="'+rygEsc(rygQ)+'" oninput="rygBuscarInput(this.value)" '+
-      'style="width:100%;min-height:46px;border:1px solid #E9E6E0;border-radius:14px;padding:11px 40px 11px 14px;font:inherit;font-size:15px;color:#122A46;background:#fff">'+
-      (rygQ ? '<button type="button" aria-label="Limpiar búsqueda" onclick="rygLimpiarBusqueda()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border:0;background:#F3F1EC;border-radius:50%;color:#66625B;font-size:16px;cursor:pointer;line-height:1">&times;</button>' : '')+
-      '</div></div>';
-  }
 
   function rygDestinatarios(){
     let cs = rygClaims.filter(c=>!c.archived);
@@ -2343,21 +2380,10 @@
     const cE = tot ? Math.round(entreg/tot*100) : 0;
     const cV = tot ? Math.round(ventas/tot*100) : 0;
 
-    const rygLogo = (window.GIFT_CONFIG && window.GIFT_CONFIG.brand && (window.GIFT_CONFIG.brand.logo || window.GIFT_CONFIG.brand.logoPng)) || 'logo-regala-y-gana.webp';
-    const rygLogoSrc = 'regalo/' + String(rygLogo).replace(/^\.?\//,'');
-    const updTxt = rygLastLoad ? rygLastLoad.toLocaleString('es-US',{dateStyle:'medium',timeStyle:'short'}) : '—';
-
     let h = '';
-    h += '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap">';
-    h += '<div style="display:flex;align-items:center;gap:12px;min-width:0">'+
-         '<img src="'+rygLogoSrc+'" alt="Regala y Gana" style="height:44px;width:auto;flex:0 0 auto" '+
-         'onerror="this.onerror=null;this.src=\'regalo/logo-regala-y-gana.png\'">'+
-         '<div style="min-width:0"><h3 style="font-size:18px;font-family:\'Inter Tight\',sans-serif;letter-spacing:-.02em">Regala y Gana</h3>'+
-         '<div style="font-size:12.5px;color:#66625B;margin-top:2px">Administra participantes, reclamos, entregas, ventas y recompensas.</div></div></div>';
-    h += '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">'+
-         '<button class="ryg-b sm" type="button" onclick="rygRecargar()">Actualizar</button>'+
-         '<span style="font-size:11px;color:#9A968E">Actualizado: '+updTxt+'</span></div>';
-    h += '</div>';
+    h += '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">';
+    h += '<h3 style="font-size:17px;font-family:\'Inter Tight\',sans-serif">Regala y Gana</h3>';
+    h += '<button class="ryg-b sm" type="button" onclick="rygRecargar()">Actualizar</button></div>';
 
     h += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px">';
     [['Participantes activos',activos],['Personas con regalo',tot],['Contactos válidos',validos],
@@ -2398,12 +2424,10 @@
       });
       h += '</div></div>';
 
-      h += rygBusquedaHTML('Nombre, teléfono, ciudad o código');
-      const base = rygDestinatarios();
-      const lista = base.filter(rygMatchClaim);
+      const lista = rygDestinatarios();
 
       h += '<div class="card-form" style="margin-top:12px"><h3 style="font-size:16px;margin-bottom:4px">Descargar esta lista</h3>';
-      h += '<p class="hint" style="margin-bottom:10px">'+base.length+' persona'+(base.length===1?'':'s')+' según el filtro. La descarga ignora la búsqueda. Cada descarga queda registrada en la auditoría.</p>';
+      h += '<p class="hint" style="margin-bottom:10px">'+lista.length+' persona'+(lista.length===1?'':'s')+' según el filtro. Cada descarga queda registrada en la auditoría.</p>';
       h += '<div class="ryg-acts" style="margin-top:0">'+
            '<button class="ryg-b next" type="button" onclick="rygPDF(\'regalos\')">Descargar PDF</button>'+
            '<button class="ryg-b" type="button" onclick="rygCSV(\'regalos\')">Descargar CSV</button>'+
@@ -2411,7 +2435,7 @@
            '</div></div>';
 
       h += '<div class="card-form" style="margin-top:12px"><h3 style="font-size:16px;margin-bottom:10px">Personas que reciben regalo ('+lista.length+')</h3>';
-      if(!lista.length) h += '<div class="empty-note">'+(rygQ ? 'Ninguna persona coincide con “'+rygEsc(rygQ)+'”.' : (base.length ? 'No hay personas con este filtro.' : 'Aún nadie ha reclamado un obsequio.'))+'</div>';
+      if(!lista.length) h += '<div class="empty-note">No hay personas con este filtro.</div>';
       else lista.forEach(function(c){ h += rygFichaContacto(c, true); });
       h += '</div>';
 
@@ -2432,17 +2456,14 @@
            '<button class="ryg-b soft" type="button" onclick="rygImprimir(\'filtrado\')">Imprimir</button>'+
            '</div></div>';
 
-      h += rygBusquedaHTML('Nombre, ciudad o código de participante');
       let lista = rygParts.slice();
       if(rygFilter==="activos")  lista = lista.filter(p=>!rygVencida(p));
       if(rygFilter==="vencidos") lista = lista.filter(p=>rygVencida(p));
       if(rygFilter==="premio")   lista = lista.filter(p=>(p.currentLevel||0)>0);
-      const partFiltered = lista.length;
-      lista = lista.filter(rygMatchPart);
 
       h += '<div class="card-form" style="margin-top:12px"><h3 style="font-size:16px;margin-bottom:10px">Participantes ('+lista.length+')</h3>';
       if(!lista.length){
-        h += '<div class="empty-note">'+(rygQ ? 'Ningún participante coincide con “'+rygEsc(rygQ)+'”.' : (partFiltered ? 'Aún no hay participantes en esta vista.' : 'No hay participantes todavía. Los registros aparecerán cuando alguien cree un enlace o reclame un obsequio.'))+'</div>';
+        h += '<div class="empty-note">Aún no hay participantes en esta vista.</div>';
       }else{
         lista.forEach(function(p){
           const n = rygCuenta(p.id);
@@ -2502,10 +2523,6 @@
 
     el.innerHTML = h;
     window.scrollTo({ top:y });
-    if(rygQ){
-      const s = document.getElementById("rygSearch");
-      if(s){ const v = s.value; s.focus(); try{ s.setSelectionRange(v.length, v.length); }catch(_){} }
-    }
   }
 
 
