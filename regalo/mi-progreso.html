@@ -22,6 +22,7 @@
   .top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 0 4px}
   .back{display:inline-flex;align-items:center;gap:7px;color:var(--ink);text-decoration:none;font-weight:600;font-size:14.5px;padding:10px 16px;border:1px solid var(--hairline);border-radius:999px;background:var(--card);min-height:44px}
   .brand{font-family:'Fraunces',serif;font-style:italic;color:var(--gold-text);font-size:15px}
+  .logo{width:132px;height:auto;display:block}
   h1{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:clamp(26px,7vw,34px);letter-spacing:-.03em;line-height:1.1;color:var(--navy);margin-top:14px}
   .who{color:var(--stone);font-size:15px;margin-top:7px}
   .card{background:var(--card);border:1px solid var(--hairline);border-radius:20px;padding:20px;margin-top:18px;box-shadow:var(--shadow)}
@@ -100,7 +101,7 @@
 
   <div class="top">
     <a class="back" href="crear.html">&#8592; Volver</a>
-    <span class="brand" id="brandName">Regala y Gana</span>
+    <img class="logo" id="brandLogo" src="" alt="Regala y Gana" width="933" height="592">
   </div>
 
   <div class="pageload" id="loadingView"><div class="dot" aria-label="Cargando"></div></div>
@@ -189,7 +190,9 @@ const $ = id => document.getElementById(id);
   r.setProperty('--bg',t.bg); r.setProperty('--ink',t.ink); r.setProperty('--navy',t.navy);
   r.setProperty('--gold',t.gold); r.setProperty('--gold-text',t.goldText);
   r.setProperty('--card',t.card); r.setProperty('--hairline',t.hairline);
-  $('brandName').textContent = CFG.texts.programName;
+  var lg = $('brandLogo');
+  lg.src = (CFG.brand && CFG.brand.logo) || '';
+  lg.onerror = function(){ if(CFG.brand && CFG.brand.logoPng && lg.src.indexOf('.png')<0) lg.src = CFG.brand.logoPng; };
   $('footLine').innerHTML = esc(D.name)+' · Distribuidor autorizado Royal Prestige · '+esc(D.city)+
     '<br><a href="../index.html">Página principal</a> · <a href="../privacidad.html">Privacidad</a>';
 })();

@@ -26,6 +26,13 @@ window.GIFT_CONFIG = {
     })()
   },
 
+  /* Identidad visual del programa (logo Regala y Gana) */
+  brand: {
+    logo: "img/logo-regala-y-gana.webp",
+    logoPng: "img/logo-regala-y-gana.png",
+    ogImage: "img/og-regala-y-gana.jpg"
+  },
+
   campaign: {
     durationDays: 30,                // vigencia del enlace de cada participante
     graceDays: 7                     // días administrativos para validar

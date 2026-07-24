@@ -24,6 +24,7 @@
   .top{display:flex;align-items:center;gap:12px;padding:16px 0 8px}
   .back{display:inline-flex;align-items:center;gap:7px;color:var(--ink);text-decoration:none;font-weight:600;font-size:14.5px;padding:10px 16px;border:1px solid var(--hairline);border-radius:999px;background:var(--card);min-height:44px}
   .eyebrow{font-family:'Fraunces',serif;font-style:italic;color:var(--gold-text);font-size:17px;display:block;margin:18px 0 6px}
+  .logo{display:block;width:min(250px,64%);height:auto;margin:20px 0 14px}
   h1{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:clamp(30px,8vw,40px);letter-spacing:-.03em;line-height:1.04;color:var(--navy)}
   .lede{color:var(--stone);font-size:16px;line-height:1.6;margin-top:12px}
   .card{background:var(--card);border:1px solid var(--hairline);border-radius:20px;padding:22px;margin-top:20px;box-shadow:var(--shadow)}
@@ -87,7 +88,7 @@
     <a class="back" href="../index.html" data-tr="RyG crear: volver al inicio">&#8592; Inicio</a>
   </div>
 
-  <span class="eyebrow" id="programName">Regala y Gana</span>
+  <img class="logo" id="programLogo" src="" alt="Regala y Gana" width="933" height="592">
   <h1>Comparte un obsequio.<br>Gana premios de cocina.</h1>
   <p class="lede" id="ledeText">Crea tu enlace personal en un minuto y envíalo a tus familiares y amigos. Ellos reciben un obsequio sin costo y tú avanzas hacia premios reales.</p>
 
@@ -187,7 +188,9 @@ const D = CFG.distributor;
   r.setProperty('--navy', t.navy);   r.setProperty('--gold', t.gold);
   r.setProperty('--gold-text', t.goldText);
   r.setProperty('--card', t.card);   r.setProperty('--hairline', t.hairline);
-  document.getElementById('programName').textContent  = CFG.texts.programName;
+  var lg = document.getElementById('programLogo');
+  lg.src = (CFG.brand && CFG.brand.logo) || '';
+  lg.onerror = function(){ if(CFG.brand && CFG.brand.logoPng && lg.src.indexOf('.png')<0) lg.src = CFG.brand.logoPng; };
   document.getElementById('programName2').textContent = CFG.texts.programName;
   document.getElementById('termsText').textContent    = CFG.texts.termsSummary;
   document.getElementById('footLine').innerHTML =
