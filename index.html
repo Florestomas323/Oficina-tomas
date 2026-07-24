@@ -288,6 +288,15 @@
   }
   @media(min-width:640px){.rev-card{flex-basis:330px}}
   @media(hover:hover){.rev-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}}
+  .rev-photo{display:block;width:100%;margin-top:12px;border:0;padding:0;background:none;cursor:pointer}
+  .rev-photo img{width:100%;max-height:170px;object-fit:cover;border-radius:12px;border:1px solid var(--hairline);display:block}
+  .rm-photo-add{display:inline-flex;align-items:center;gap:8px;border:1.5px dashed var(--gold);border-radius:14px;background:#FDFBF6;color:var(--gold-text);font:inherit;font-size:14px;font-weight:600;padding:12px 16px;min-height:46px;cursor:pointer;width:100%;justify-content:center}
+  .rm-photo-prev{position:relative;margin-top:8px}
+  .rm-photo-prev img{width:100%;max-height:190px;object-fit:cover;border-radius:14px;border:1px solid var(--hairline);display:block}
+  .rm-photo-x{position:absolute;top:8px;right:8px;background:rgba(17,17,16,.72);color:#fff;border:0;border-radius:999px;font:inherit;font-size:12.5px;font-weight:600;padding:7px 12px;cursor:pointer}
+  .rp-view{position:fixed;inset:0;background:rgba(17,17,16,.93);display:none;align-items:center;justify-content:center;z-index:1000;padding:18px}
+  .rp-view.on{display:flex}
+  .rp-view img{max-width:100%;max-height:86vh;border-radius:14px}
   .rev-top{display:flex;align-items:center;gap:12px}
   .avatar{
     flex:0 0 46px;width:46px;height:46px;border-radius:50%;
@@ -1446,6 +1455,7 @@
 </footer>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="rp-view" id="rpView" onclick="this.classList.remove('on')" role="dialog" aria-label="Foto de la reseña"><img id="rpImg" alt="Foto de la reseña"></div>
 
 <!-- =============== LIGHTBOX =============== -->
 <div class="lightbox" id="lightbox" aria-hidden="true">
@@ -1795,7 +1805,7 @@ try{
   }
 
   // Opiniones (testimonials): campo text
-  const revs = vs.docs.map(d=>d.data()).sort(byOrder);
+  const revs = vs.docs.map(d=>d.data()).sort(byOrder).slice(0, 10); // máximo 10 reseñas visibles
   const rt = document.getElementById("revTrack");
   if(revs.length && rt){
     rt.innerHTML = revs.map(v=>
@@ -1803,7 +1813,9 @@ try{
       '<span class="avatar" style="background:'+(v.color||"#8A6FB4")+'">'+esc(v.ini)+'</span>'+
       '<div><div class="rev-name">'+esc(v.name)+(v.city?' <span class="rev-city">\u00b7 '+esc(v.city)+'</span>':'')+'</div><div class="rev-sub">'+esc(v.sub)+'</div></div></div>'+
       '<div class="stars" aria-label="'+(v.stars||5)+' estrellas">'+"★".repeat(v.stars||5)+'</div>'+
-      '<p class="rev-txt">'+esc(v.text||v.txt||"")+'</p></article>'
+      '<p class="rev-txt">'+esc(v.text||v.txt||"")+'</p>'+
+      (v.photo?'<button class="rev-photo" type="button" onclick="openRevPhoto(this)" aria-label="Ver foto de '+esc(v.name)+'"><img src="'+v.photo+'" alt="Foto de '+esc(v.name)+'" loading="lazy"></button>':'')+
+      '</article>'
     ).join("");
   }
 
@@ -1892,6 +1904,60 @@ try{
     if(!b) return;
     stars = parseInt(b.dataset.s,10); paintStars();
   });
+  // ---- Foto opcional de la reseña (comprimida en el teléfono) ----
+  let revPhotoData = "";
+  window.clearRevPhoto = function(){
+    revPhotoData = "";
+    const p = document.getElementById("rmPhotoPrev"), b = document.getElementById("rmPhotoBtn"), f = document.getElementById("rmPhoto");
+    if(p) p.style.display = "none";
+    if(b) b.style.display = "";
+    if(f) f.value = "";
+  };
+  function compressRevPhoto(file){
+    return new Promise(function(res, rej){
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = function(){
+        URL.revokeObjectURL(url);
+        const intentos = [[1000,.78],[880,.68],[760,.58],[640,.5]];
+        for(const [lado, q] of intentos){
+          const esc = Math.min(1, lado/Math.max(img.width, img.height));
+          const c = document.createElement("canvas");
+          c.width = Math.round(img.width*esc); c.height = Math.round(img.height*esc);
+          c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+          const data = c.toDataURL("image/jpeg", q);
+          if(data.length < 680000) return res(data);
+        }
+        rej(new Error("grande"));
+      };
+      img.onerror = function(){ URL.revokeObjectURL(url); rej(new Error("lectura")); };
+      img.src = url;
+    });
+  }
+  document.addEventListener("change", async function(e){
+    if(!e.target || e.target.id !== "rmPhoto" || !e.target.files || !e.target.files[0]) return;
+    const f = e.target.files[0];
+    if(!/^image\//.test(f.type)){ alert("Ese archivo no es una imagen."); e.target.value=""; return; }
+    const btn = document.getElementById("rmPhotoBtn");
+    btn.textContent = "Preparando tu foto…";
+    try{
+      revPhotoData = await compressRevPhoto(f);
+      document.getElementById("rmPhotoImg").src = revPhotoData;
+      document.getElementById("rmPhotoPrev").style.display = "block";
+      btn.style.display = "none";
+    }catch(_){
+      alert("No se pudo procesar esa foto. Intenta con otra.");
+      window.clearRevPhoto();
+    }
+    btn.innerHTML = "&#128247; Agregar una foto de tu platillo o tu cocina";
+  });
+  window.openRevPhoto = function(btn){
+    const im = btn.querySelector("img");
+    if(!im) return;
+    document.getElementById("rpImg").src = im.src;
+    document.getElementById("rpView").classList.add("on");
+  };
+
   window.sendReview = async function(){
     const name = (document.getElementById("rmName").value||"").trim();
     const text = (document.getElementById("rmText").value||"").trim();
@@ -1937,6 +2003,7 @@ try{
       const db = getFirestore(app);
       await addDoc(collection(db, "testimonials"), {
         name, text, stars, ini, color,
+        ...(revPhotoData ? { photo: revPhotoData } : {}),
         sub: "Cliente",
         status: "hidden",   // queda oculta hasta que Tomas la apruebe en el panel
         visible: false,
@@ -1944,7 +2011,8 @@ try{
         pendiente: true,
         createdAt: serverTimestamp(), city:(document.getElementById("rmCity")&&document.getElementById("rmCity").value.trim().slice(0,40))||"", consent:true, consentText:"Autorizo que mi nombre y experiencia sean publicados en esta página. Entiendo que mi información de contacto no será mostrada.", consentAt: serverTimestamp()});
       try{ localStorage.setItem("revLast", String(Date.now())); }catch(e){}
-      if(window.trackEvent) window.trackEvent("Testimonio enviado");
+      if(window.trackEvent) window.trackEvent("Testimonio enviado" + (revPhotoData ? " con foto" : ""));
+      window.clearRevPhoto();
       document.getElementById("revFormWrap").style.display = "none";
       document.getElementById("revThanks").style.display = "block";
     }catch(e){
@@ -1984,6 +2052,13 @@ try{
       <input id="rmCity" type="text" placeholder="Ej. Irving, TX" autocomplete="address-level2">
       <label for="rmText">Tu experiencia</label>
       <textarea id="rmText" placeholder="Cuéntanos cómo te fue con tu equipo o en la demostración…"></textarea>
+      <label>Tu foto <span class="opt">(opcional)</span></label>
+      <input id="rmPhoto" type="file" accept="image/*" style="display:none">
+      <button type="button" class="rm-photo-add" id="rmPhotoBtn" onclick="document.getElementById('rmPhoto').click()">&#128247; Agregar una foto de tu platillo o tu cocina</button>
+      <div class="rm-photo-prev" id="rmPhotoPrev" style="display:none">
+        <img id="rmPhotoImg" alt="Tu foto">
+        <button type="button" class="rm-photo-x" onclick="clearRevPhoto()">Quitar</button>
+      </div>
       <label class="rm-consent" for="rmConsent">
         <input id="rmConsent" type="checkbox">
         <span>Autorizo que mi nombre y experiencia sean publicados en esta página. Entiendo que mi información de contacto no será mostrada.</span>
