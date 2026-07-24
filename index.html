@@ -644,6 +644,30 @@
   .rm-ok{text-align:center;padding:20px 0}
   .rm-ok .big{font-size:44px;margin-bottom:10px}
 
+  /* ---------- Novedades ---------- */
+  .nv-grid{display:grid;gap:14px;grid-template-columns:1fr;max-width:640px}
+  .nv-card{display:flex;gap:16px;align-items:center;background:#fff;border:1px solid var(--hairline);border-radius:20px;padding:16px;box-shadow:var(--shadow-soft);cursor:pointer;text-align:left;font:inherit;width:100%}
+  .nv-card:active{transform:scale(.99)}
+  .nv-ph{flex:0 0 96px;width:96px;height:96px;border-radius:14px;overflow:hidden;background:#F6F1E7;display:flex;align-items:center;justify-content:center}
+  .nv-ph img{width:100%;height:100%;object-fit:cover}
+  .nv-ph svg{width:30px;height:30px;color:var(--gold)}
+  .nv-info{min-width:0}
+  .nv-tag{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+  .nv-name{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:17.5px;letter-spacing:-.02em;line-height:1.2;margin-top:3px}
+  .nv-teaser{color:var(--stone);font-size:13.5px;line-height:1.5;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .nv-more{color:var(--gold-text);font-size:13px;font-weight:700;margin-top:6px;display:inline-block}
+  /* ficha de novedad */
+  .nvm{position:fixed;inset:0;z-index:1001;display:none}
+  .nvm.open{display:block}
+  .nvm-back{position:absolute;inset:0;background:rgba(17,17,16,.55)}
+  .nvm-card{position:absolute;left:0;right:0;bottom:0;background:var(--paper);border-radius:24px 24px 0 0;max-height:88dvh;overflow-y:auto;padding:20px 20px calc(24px + env(safe-area-inset-bottom))}
+  @media(min-width:640px){.nvm-card{left:50%;right:auto;top:50%;bottom:auto;transform:translate(-50%,-50%);width:min(520px,92vw);border-radius:24px;max-height:86dvh}}
+  .nvm-close{position:sticky;top:0;margin-left:auto;display:flex;background:#fff;border:1px solid var(--hairline);border-radius:999px;width:40px;height:40px;align-items:center;justify-content:center;font-size:20px;cursor:pointer;z-index:2}
+  .nvm-img{width:100%;max-height:300px;object-fit:cover;border-radius:16px;margin-top:4px}
+  .nvm-tag{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-top:14px;display:block}
+  .nvm-name{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.02em;line-height:1.15;margin-top:4px}
+  .nvm-desc{color:var(--stone);font-size:15px;line-height:1.65;margin-top:12px;white-space:pre-line}
+  .nvm-cta{margin-top:20px}
   /* ---------- Franja Próximamente (inicio) ---------- */
   .home-soon{margin-top:26px}
   .home-soon .hs-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
@@ -1284,9 +1308,6 @@
     <a class="rec-card rv" href="recetas.html#/receta/pasta-alfredo" style="transition-delay:80ms"><div class="rec-img"><img src="foto-pasta-alfredo.jpg" alt="Pasta Alfredo con Pollo" loading="lazy"></div><div class="rec-body"><h3>Pasta Alfredo con Pollo</h3><p>25 min · Fácil</p></div></a>
     <a class="rec-card rv" href="recetas.html#/receta/flan-casero" style="transition-delay:160ms"><div class="rec-img"><img src="foto-flan-casero.jpg" alt="Flan Casero" loading="lazy"></div><div class="rec-body"><h3>Flan Casero</h3><p>50 min · Media</p></div></a>
   </div>
-  <a class="see-all rv" href="recetas.html">Ver todas las recetas
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-  </a>
   <div class="home-soon rv" id="homeSoon" style="display:none">
     <div class="hs-head">
       <h3>Próximamente</h3>
@@ -1295,6 +1316,14 @@
     <div class="hs-row" id="hsRow"></div>
   </div>
   <div class="mini-cta rv" style="margin-top:8px"><a class="btn btn-line-g" href="recetas.html" data-track="Ver recetas">Ver todas las recetas</a></div>
+</section>
+<!-- =============== NOVEDADES =============== -->
+<section class="block wrap" id="novedades" style="display:none" aria-label="Novedades">
+  <div class="block-head">
+    <span class="eyebrow rv">Lo nuevo</span>
+    <h2 class="sec-h rv">Novedades</h2>
+  </div>
+  <div class="nv-grid" id="nvGrid"></div>
 </section>
 <!-- =============== SOBRE MÍ =============== -->
 <section class="about" id="sobre-mi">
@@ -1455,6 +1484,19 @@
 </footer>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="nvm" id="nvModal" aria-hidden="true">
+  <div class="nvm-back" onclick="closeNovedad()"></div>
+  <div class="nvm-card" role="dialog" aria-label="Detalle de la novedad">
+    <button class="nvm-close" type="button" onclick="closeNovedad()" aria-label="Cerrar">&#10005;</button>
+    <img class="nvm-img" id="nvmImg" alt="" style="display:none">
+    <span class="nvm-tag" id="nvmTag"></span>
+    <h3 class="nvm-name" id="nvmName"></h3>
+    <p class="nvm-desc" id="nvmDesc"></p>
+    <div class="nvm-cta">
+      <a class="btn btn-solid" id="nvmWa" href="#" target="_blank" rel="noopener" style="display:flex">Quiero saber m&aacute;s por WhatsApp</a>
+    </div>
+  </div>
+</div>
 <div class="rp-view" id="rpView" onclick="this.classList.remove('on')" role="dialog" aria-label="Foto de la reseña"><img id="rpImg" alt="Foto de la reseña"></div>
 
 <!-- =============== LIGHTBOX =============== -->
@@ -1852,7 +1894,26 @@ try{
     novedad: {label:"Novedad",         color:"#5A3F86"},
     oferta:  {label:"Oferta especial", color:"#9C3524"}
   };
-  const soonList = us.docs.map(d=>{ const x=d.data(); return {name:x.name, tipo:x.tipo||"receta", img:x.img||"", order:x.order||0}; }).sort(byOrder);
+  const soonAll = us.docs.map(d=>{ const x=d.data(); return {name:x.name, tipo:x.tipo||"receta", img:x.img||"", desc:x.desc||"", order:x.order||0}; }).sort(byOrder);
+  const soonList = soonAll.filter(x=>x.tipo==="receta");
+  const novedades = soonAll.filter(x=>x.tipo!=="receta");
+  if(novedades.length){
+    window.__NOVEDADES = novedades;
+    const ng = document.getElementById("nvGrid");
+    const ns = document.getElementById("novedades");
+    if(ng && ns){
+      ng.innerHTML = novedades.map((n,i)=>{
+        const t = TIPOS_HS[n.tipo] || TIPOS_HS.novedad;
+        return '<button class="nv-card rv in" type="button" onclick="openNovedad('+i+')" data-tr="Novedad: '+esc(n.name).replace(/"/g,'')+'">'+
+          '<span class="nv-ph">'+(n.img?'<img loading="lazy" decoding="async" src="'+n.img+'" alt="">':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M3 12h18M12 8v13"/><path d="M12 8c-1.8 0-4.5-.6-4.5-2.7C7.5 3.9 8.6 3 9.8 3 11.4 3 12 5.2 12 8zm0 0c1.8 0 4.5-.6 4.5-2.7C16.5 3.9 15.4 3 14.2 3 12.6 3 12 5.2 12 8z"/></svg>')+'</span>'+
+          '<span class="nv-info"><span class="nv-tag" style="color:'+t.color+'">'+t.label+'</span>'+
+          '<span class="nv-name" style="display:block">'+esc(n.name)+'</span>'+
+          (n.desc?'<span class="nv-teaser">'+esc(n.desc)+'</span>':'')+
+          '<span class="nv-more">Ver detalles &rsaquo;</span></span></button>';
+      }).join("");
+      ns.style.display = "block";
+    }
+  }
   if(soonList.length){
     const row = document.getElementById("hsRow");
     const box = document.getElementById("homeSoon");
@@ -1951,6 +2012,30 @@ try{
     }
     btn.innerHTML = "&#128247; Agregar una foto de tu platillo o tu cocina";
   });
+  window.openNovedad = function(i){
+    const n = (window.__NOVEDADES||[])[i];
+    if(!n) return;
+    const TIP = { novedad:{label:"Novedad",color:"#5A3F86"}, oferta:{label:"Oferta especial",color:"#9C3524"} };
+    const t = TIP[n.tipo] || TIP.novedad;
+    const im = document.getElementById("nvmImg");
+    if(n.img){ im.src = n.img; im.style.display = "block"; } else { im.style.display = "none"; }
+    const tg = document.getElementById("nvmTag");
+    tg.textContent = t.label; tg.style.color = t.color;
+    document.getElementById("nvmName").textContent = n.name || "";
+    document.getElementById("nvmDesc").textContent = n.desc || "Muy pronto te comparto todos los detalles.";
+    document.getElementById("nvmWa").href = "https://wa.me/16823811576?text=" +
+      encodeURIComponent("Hola Tomas \ud83d\udc4b, quiero saber m\u00e1s de " + (n.name||"la novedad"));
+    const mo = document.getElementById("nvModal");
+    mo.classList.add("open"); mo.setAttribute("aria-hidden","false");
+    document.body.classList.add("lock");
+    if(window.trackEvent) window.trackEvent("Novedad abierta: " + (n.name||"").slice(0,60));
+  };
+  window.closeNovedad = function(){
+    const mo = document.getElementById("nvModal");
+    mo.classList.remove("open"); mo.setAttribute("aria-hidden","true");
+    document.body.classList.remove("lock");
+  };
+
   window.openRevPhoto = function(btn){
     const im = btn.querySelector("img");
     if(!im) return;
