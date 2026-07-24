@@ -1391,9 +1391,42 @@
     return best || {route:ppRoutes[0].name, done:0, total:ppRoutes[0].countries.length, full:false};
   }
 
+  function ppEstilos(){
+    if(document.getElementById("pp-css")) return;
+    const st=document.createElement("style"); st.id="pp-css";
+    st.textContent =
+      '.pp-card{border:1px solid #E9E6E0;border-radius:16px;padding:14px;margin-bottom:11px;background:#fff}'+
+      '.pp-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}'+
+      '.pp-name{font-size:15.5px;line-height:1.2;display:block}'+
+      '.pp-meta{font-size:12.5px;color:#66625B;margin-top:3px}'+
+      '.pp-badge{flex:0 0 auto;font-size:12px;font-weight:700;border:1px solid #E9E6E0;background:#F7F5F0;color:#66625B;border-radius:999px;padding:5px 11px;white-space:nowrap}'+
+      '.pp-track{height:7px;border-radius:99px;background:#F1EEE7;overflow:hidden;margin-top:11px}'+
+      '.pp-fill{height:100%;background:linear-gradient(90deg,#B08D4F,#8A672B);border-radius:99px}'+
+      '.pp-ruta-lbl{font-size:11.5px;color:#8A8A82;margin-top:5px}'+
+      '.pp-fotos{display:flex;gap:8px;overflow-x:auto;margin-top:11px;padding-bottom:3px;-webkit-overflow-scrolling:touch}'+
+      '.pp-fotos::-webkit-scrollbar{display:none}'+
+      '.pp-foto{flex:0 0 84px;margin:0}'+
+      '.pp-foto img{width:84px;height:84px;object-fit:cover;border-radius:11px;border:1px solid #E9E6E0;display:block}'+
+      '.pp-foto figcaption{font-size:10.5px;color:#8A8A82;margin-top:4px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'+
+      '.pp-nofoto{font-size:12.5px;color:#9A968E;margin-top:10px;font-style:italic}'+
+      '.pp-acts{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}'+
+      '.pp-ruta{border:1px solid #E9E6E0;border-radius:16px;padding:14px;margin-bottom:11px;background:#fff}'+
+      '.pp-rhead{display:block}'+
+      '.pp-rname{width:100%;border:1px solid #E9E6E0;border-radius:12px;padding:11px;font-size:15px;font-family:inherit;font-weight:600;box-sizing:border-box}'+
+      '.pp-rrow{display:flex;gap:9px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:10px}'+
+      '.pp-toggle{display:inline-flex;gap:8px;align-items:center;font-size:13.5px;font-weight:600;color:#66625B;cursor:pointer;min-height:38px}'+
+      '.pp-toggle input{width:20px;height:20px;accent-color:#122A46}'+
+      '.pp-dest{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:11px 0;border-top:1px solid #F1EEE7}'+
+      '.pp-dtxt{flex:1;min-width:120px;display:flex;flex-direction:column;line-height:1.25}'+
+      '.pp-dtxt b{font-size:14px}'+
+      '.pp-dtxt small{font-size:12.5px;color:#66625B;margin-top:2px}'+
+      '.pp-dacts{display:flex;gap:5px;flex:0 0 auto}';
+    document.head.appendChild(st);
+  }
+
   window.renderPassportAdmin = async function(){
     const el=$("p-pasaporte");
-    rygEstilos();
+    rygEstilos(); ppEstilos();
     el.innerHTML='<div class="empty-note">Cargando pasaporte…</div>';
     await ppLoad();
 
@@ -1425,30 +1458,38 @@
     });
     html+='</div>';
 
-    // Participantes
-    html+='<div class="card-form" style="margin-top:14px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h3 style="font-size:16px">Participantes ('+total+')</h3><div style="display:flex;gap:7px"><button class="ryg-b sm next" id="ppPdf" type="button">Descargar PDF</button><button class="ryg-b sm" id="ppCsv" type="button">CSV</button></div></div>';
+    // Participantes, cada uno con sus fotos
+    html+='<div class="card-form" style="margin-top:14px"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px"><h3 style="font-size:16px">Participantes ('+total+')</h3><div style="display:flex;gap:7px"><button class="ryg-b sm next" id="ppPdf" type="button">Descargar PDF</button><button class="ryg-b sm" id="ppCsv" type="button">CSV</button></div></div>';
+    html+='<p class="hint" style="margin-bottom:12px">Cada viajero con su avance y las fotos que ha subido.</p>';
     if(!total) html+='<div class="empty-note">Aún no hay viajeros registrados.</div>';
     else{
-      html+='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px"><tr style="text-align:left;color:#66625B"><th style="padding:7px 8px">Nombre</th><th style="padding:7px 8px">WhatsApp</th><th style="padding:7px 8px">Lugar</th><th style="padding:7px 8px">Progreso</th><th></th></tr>';
       ppUsers.forEach(u=>{
         const p=ppUserProg(u);
         const tel=String(u.phone||'').replace(/\D/g,'');
-        const wa=tel? '<a href="https://wa.me/'+(tel.length===10?'1'+tel:tel)+'" target="_blank" rel="noopener" style="color:#1F7A33;font-weight:600;text-decoration:none">'+ppEsc(u.phone)+'</a>' : '—';
-        html+='<tr style="border-top:1px solid #F1EEE7"><td style="padding:8px">'+ppEsc(u.name||'—')+'</td><td style="padding:8px;white-space:nowrap">'+wa+'</td><td style="padding:8px">'+ppEsc([u.city,u.state].filter(Boolean).join(', '))+'</td><td style="padding:8px;white-space:nowrap">'+(p.full?'<b style="color:#1F7A33">✓ Completó</b> · ':'')+p.done+'/'+p.total+(ppRoutes.length>1?' · '+ppEsc(p.route):'')+'</td><td style="padding:4px 8px"><button class="icon-btn" data-ppdel="'+u.uid+'" aria-label="Eliminar viajero" style="border-color:#E3B5B1">\ud83d\uddd1</button></td></tr>';
+        const fecha=u.createdAt&&u.createdAt.seconds ? new Date(u.createdAt.seconds*1000).toLocaleDateString('es-MX',{day:'numeric',month:'short'}) : '';
+        const fotos=ppPhotos.filter(f=>f.uid===u.uid);
+        const pct=p.total ? Math.round(p.done/p.total*100) : 0;
+        html+='<div class="pp-card">';
+        html+='<div class="pp-top"><div style="min-width:0">'+
+              '<b class="pp-name">'+ppEsc(u.name||'—')+'</b>'+
+              '<div class="pp-meta">'+ppEsc([u.city,u.state].filter(Boolean).join(', ')||'Sin ciudad')+(fecha?' · '+fecha:'')+'</div></div>'+
+              '<span class="pp-badge"'+(p.full?' style="background:#EAF5EE;color:#1F7A33;border-color:#BFE3C8"':'')+'>'+(p.full?'✓ Completó':p.done+' de '+p.total)+'</span></div>';
+        html+='<div class="pp-track"><div class="pp-fill" style="width:'+pct+'%"></div></div>';
+        if(ppRoutes.length>1) html+='<div class="pp-ruta-lbl">'+ppEsc(p.route)+'</div>';
+        if(fotos.length){
+          html+='<div class="pp-fotos">';
+          fotos.forEach(f=>{
+            html+='<figure class="pp-foto"><img src="'+f.photo+'" alt="" loading="lazy"><figcaption>'+ppEsc(f.co||'')+'</figcaption></figure>';
+          });
+          html+='</div>';
+        }else{
+          html+='<div class="pp-nofoto">Todavía no ha subido fotos</div>';
+        }
+        html+='<div class="pp-acts">';
+        if(tel) html+='<a class="ryg-b sm wa" href="https://wa.me/'+(tel.length===10?'1'+tel:tel)+'" target="_blank" rel="noopener">WhatsApp</a>';
+        html+='<button class="ryg-b sm danger" data-ppdel="'+u.uid+'" type="button">Eliminar</button>';
+        html+='</div></div>';
       });
-      html+='</table></div>';
-    }
-    html+='</div>';
-
-    // Fotos recientes
-    html+='<div class="card-form" style="margin-top:14px"><h3 style="font-size:16px;margin-bottom:10px">Fotos recientes</h3>';
-    if(!ppPhotos.length) html+='<div class="empty-note">Cuando los viajeros suban fotos, aparecerán aquí.</div>';
-    else{
-      html+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:9px">';
-      ppPhotos.slice(0,18).forEach(f=>{
-        html+='<figure style="margin:0"><img src="'+f.photo+'" alt="" loading="lazy" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:11px;display:block"><figcaption style="font-size:11px;color:#66625B;margin-top:4px;line-height:1.3">'+ppEsc(f.name||'')+'<br>'+ppEsc(f.countryName||f.country||'')+'</figcaption></figure>';
-      });
-      html+='</div>';
     }
     html+='</div>';
 
@@ -1456,25 +1497,27 @@
     html+='<div class="card-form" style="margin-top:14px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><h3 style="font-size:16px">Rutas y destinos</h3><button class="ryg-b sm" id="ppAddRoute" type="button">+ Nueva ruta</button></div>';
     html+='<p class="hint" style="margin-bottom:10px">Los cambios se publican al tocar Guardar. Los viajeros los verán al recargar el pasaporte.</p>';
     ppRoutes.forEach((r,ri)=>{
-      html+='<div style="border:1px solid #E9E6E0;border-radius:14px;padding:13px;margin-bottom:10px">';
-      html+='<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">';
-      html+='<input type="text" value="'+ppEsc(r.name)+'" data-rname="'+ri+'" maxlength="40" style="flex:1;min-width:150px;border:1px solid #E9E6E0;border-radius:10px;padding:9px;font-size:14px;font-family:inherit">';
-      html+='<label style="display:flex;gap:6px;align-items:center;font-size:12.5px"><input type="checkbox" data-ract="'+ri+'" '+(r.active!==false?'checked':'')+'>Activa</label>';
-      html+='<button class="go" data-rtoggle="'+ri+'" type="button">'+(ppOpenRoute===r.id?'Cerrar destinos':'Destinos ('+r.countries.length+')')+'</button>';
+      html+='<div class="pp-ruta">';
+      html+='<div class="pp-rhead">';
+      html+='<input type="text" value="'+ppEsc(r.name)+'" data-rname="'+ri+'" maxlength="40" class="pp-rname" placeholder="Nombre de la ruta">';
+      html+='<div class="pp-rrow"><label class="pp-toggle"><input type="checkbox" data-ract="'+ri+'" '+(r.active!==false?'checked':'')+'><span>Ruta activa</span></label>';
+      html+='<button class="ryg-b sm'+(ppOpenRoute===r.id?'':' next')+'" data-rtoggle="'+ri+'" type="button">'+(ppOpenRoute===r.id?'Cerrar destinos':'Ver destinos ('+r.countries.length+')')+'</button></div>';
       html+='</div>';
       if(ppOpenRoute===r.id){
         html+='<div style="margin-top:11px">';
         r.countries.forEach((c,ci)=>{
-          html+='<div style="display:flex;gap:7px;align-items:center;padding:7px 0;border-top:1px solid #F1EEE7;font-size:13.5px">';
+          html+='<div class="pp-dest">';
           html+='<span style="width:26px;height:26px;border-radius:50%;background:'+ppEsc(c.color||'#888')+';color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800">'+ppEsc(c.mono||'')+'</span>';
-          html+='<span style="flex:1"><b>'+ppEsc(c.co)+'</b> · '+ppEsc(c.dish)+'</span>';
+          html+='<span class="pp-dtxt"><b>'+ppEsc(c.co)+'</b><small>'+ppEsc(c.dish)+'</small></span>';
+          html+='<span class="pp-dacts">';
           html+='<button class="icon-btn" data-cup="'+ri+':'+ci+'" title="Subir" type="button">↑</button>';
           html+='<button class="icon-btn" data-cdown="'+ri+':'+ci+'" title="Bajar" type="button">↓</button>';
           html+='<button class="icon-btn" data-cedit="'+ri+':'+ci+'" title="Editar" type="button">✎</button>';
           html+='<button class="icon-btn" data-cdel="'+ri+':'+ci+'" title="Eliminar" type="button">✕</button>';
+          html+='</span>';
           html+='</div>';
         });
-        html+='<button class="go" data-cadd="'+ri+'" type="button" style="margin-top:9px">+ Agregar destino</button>';
+        html+='<button class="ryg-b sm" data-cadd="'+ri+'" type="button" style="margin-top:11px">+ Agregar destino</button>';
         html+='<div id="ppDestForm"></div>';
         html+='</div>';
       }
