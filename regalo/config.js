@@ -28,9 +28,9 @@ window.GIFT_CONFIG = {
 
   /* Identidad visual del programa (logo Regala y Gana) */
   brand: {
-    logo: "img/logo-regala-y-gana.webp",
-    logoPng: "img/logo-regala-y-gana.png",
-    ogImage: "img/og-regala-y-gana.jpg"
+    logo: "logo-regala-y-gana.webp",
+    logoPng: "logo-regala-y-gana.png",
+    ogImage: "og-regala-y-gana.jpeg"
   },
 
   campaign: {
@@ -73,28 +73,28 @@ window.GIFT_CONFIG = {
      El participante recibe SOLO la recompensa más alta alcanzada. */
   levels: [
     { level: 1, gifts: 4,  sales: 1, prize: "Tabla de cocina",
-      img: "img/tabla-cocina.webp" },
+      img: "tabla-cocina.webp" },
     { level: 2, gifts: 5,  sales: 1, prize: "Set de 3 tazones",
-      img: "img/tazones-3.webp" },
+      img: "tazones-3.webp" },
     { level: 3, gifts: 6,  sales: 1, prize: "Chocolatera",
-      img: "img/chocolatera.webp" },
+      img: "chocolatera.webp" },
     { level: 4, gifts: 7,  sales: 2, prize: "Paellera de 10 pulgadas, 5 capas",
-      img: "img/paellera-10.webp" },
+      img: "paellera-10.webp" },
     { level: 5, gifts: 8,  sales: 2, prize: "Paellera Party de 14 pulgadas",
-      img: "img/paellera-14.webp" },
+      img: "paellera-14.webp" },
     { level: 6, gifts: 9,  sales: 2, prize: "Blender Go",
-      img: "img/blender-go.webp" },
+      img: "blender-go.webp" },
     { level: 7, gifts: 10, sales: 3, prize: "Premio mayor: a elegir",
-      img: "img/premio-mayor.webp",
+      img: "premio-mayor.webp",
       choice: [
-        { name: "Set de 5 piezas", img: "img/premio-set-5.webp" },
-        { name: "Licuadora",       img: "img/premio-licuadora.webp" },
-        { name: "Extractor",       img: "img/premio-extractor.webp" }
+        { name: "Set de 5 piezas", img: "premio-set-5.webp" },
+        { name: "Licuadora",       img: "premio-licuadora.webp" },
+        { name: "Extractor",       img: "premio-extractor.webp" }
       ]
     }
   ],
 
-  fallbackPrizeImg: "img/premio-generico.webp",
+  fallbackPrizeImg: "premio-generico.webp",
 
   firebase: {
     apiKey: "AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",
