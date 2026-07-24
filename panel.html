@@ -1049,7 +1049,9 @@
       lista.forEach(function(r){ const k = r[campo] || "—"; o[k] = (o[k]||0)+1; });
       return Object.keys(o).sort(function(a,b){ return o[b]-o[a]; }).map(function(k){ return [k,o[k]]; });
     }
-    const eventos = rows.filter(function(r){ return r.label!=="Visita"; });
+    /* Botones retirados del sitio: sus clics históricos ya no se muestran */
+    const ANA_RETIRADOS = ["Categoria: Sistemas de cocina", "Categoria: Servicio y garantia"];
+    const eventos = rows.filter(function(r){ return r.label!=="Visita" && ANA_RETIRADOS.indexOf(r.label)<0; });
     const porEvento = agrupar(eventos, "label");
     const porFuente = agrupar(visitas, "src");
     const porDisp   = agrupar(visitas, "dev");
@@ -1182,7 +1184,8 @@
   // ---------- Papelera (30 días) ----------
   const TRASH_DAYS = 30;
   const COLL_ES = { recipes:"Receta", testimonials:"Opinión", gallery:"Foto", upcoming:"Próximamente",
-    giftClaims:"Persona con regalo", giftParticipants:"Participante", giftLinks:"Enlace de campaña" };
+    giftClaims:"Persona con regalo", giftParticipants:"Participante", giftLinks:"Enlace de campaña",
+    passportUsers:"Viajero del pasaporte", passportPhotos:"Foto del pasaporte" };
 
   async function softDelete(coll, id, item, label, kind){
     setCloud(true);
@@ -1254,6 +1257,7 @@
       await setDoc(doc(db, t.origColl, t.origId), clean(t.payload || {}));
       await deleteDoc(doc(db, "trash", t._tid));
       try{ if(String(t.origColl).indexOf("gift")===0) rygLoaded = false; }catch(e){}
+      try{ if(String(t.origColl).indexOf("passport")===0){ renderPassportAdmin._cached = false; ppUsers=[]; ppPhotos=[]; ppRoutes=null; } }catch(e){}
       await loadAll(); renderAll();
       toast('✓ "'+ (t.label||"Elemento") +'" restaurado');
       renderTrash();
@@ -1389,6 +1393,7 @@
 
   window.renderPassportAdmin = async function(){
     const el=$("p-pasaporte");
+    rygEstilos();
     el.innerHTML='<div class="empty-note">Cargando pasaporte…</div>';
     await ppLoad();
 
@@ -1421,15 +1426,15 @@
     html+='</div>';
 
     // Participantes
-    html+='<div class="card-form" style="margin-top:14px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h3 style="font-size:16px">Participantes ('+total+')</h3><button class="go" id="ppCsv" type="button">Descargar CSV</button></div>';
+    html+='<div class="card-form" style="margin-top:14px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h3 style="font-size:16px">Participantes ('+total+')</h3><div style="display:flex;gap:7px"><button class="ryg-b sm next" id="ppPdf" type="button">Descargar PDF</button><button class="ryg-b sm" id="ppCsv" type="button">CSV</button></div></div>';
     if(!total) html+='<div class="empty-note">Aún no hay viajeros registrados.</div>';
     else{
-      html+='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px"><tr style="text-align:left;color:#66625B"><th style="padding:7px 8px">Nombre</th><th style="padding:7px 8px">WhatsApp</th><th style="padding:7px 8px">Lugar</th><th style="padding:7px 8px">Progreso</th></tr>';
+      html+='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px"><tr style="text-align:left;color:#66625B"><th style="padding:7px 8px">Nombre</th><th style="padding:7px 8px">WhatsApp</th><th style="padding:7px 8px">Lugar</th><th style="padding:7px 8px">Progreso</th><th></th></tr>';
       ppUsers.forEach(u=>{
         const p=ppUserProg(u);
         const tel=String(u.phone||'').replace(/\D/g,'');
         const wa=tel? '<a href="https://wa.me/'+(tel.length===10?'1'+tel:tel)+'" target="_blank" rel="noopener" style="color:#1F7A33;font-weight:600;text-decoration:none">'+ppEsc(u.phone)+'</a>' : '—';
-        html+='<tr style="border-top:1px solid #F1EEE7"><td style="padding:8px">'+ppEsc(u.name||'—')+'</td><td style="padding:8px;white-space:nowrap">'+wa+'</td><td style="padding:8px">'+ppEsc([u.city,u.state].filter(Boolean).join(', '))+'</td><td style="padding:8px;white-space:nowrap">'+(p.full?'<b style="color:#1F7A33">✓ Completó</b> · ':'')+p.done+'/'+p.total+(ppRoutes.length>1?' · '+ppEsc(p.route):'')+'</td></tr>';
+        html+='<tr style="border-top:1px solid #F1EEE7"><td style="padding:8px">'+ppEsc(u.name||'—')+'</td><td style="padding:8px;white-space:nowrap">'+wa+'</td><td style="padding:8px">'+ppEsc([u.city,u.state].filter(Boolean).join(', '))+'</td><td style="padding:8px;white-space:nowrap">'+(p.full?'<b style="color:#1F7A33">✓ Completó</b> · ':'')+p.done+'/'+p.total+(ppRoutes.length>1?' · '+ppEsc(p.route):'')+'</td><td style="padding:4px 8px"><button class="icon-btn" data-ppdel="'+u.uid+'" aria-label="Eliminar viajero" style="border-color:#E3B5B1">\ud83d\uddd1</button></td></tr>';
       });
       html+='</table></div>';
     }
@@ -1448,7 +1453,7 @@
     html+='</div>';
 
     // Rutas y destinos
-    html+='<div class="card-form" style="margin-top:14px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><h3 style="font-size:16px">Rutas y destinos</h3><button class="go" id="ppAddRoute" type="button">+ Nueva ruta</button></div>';
+    html+='<div class="card-form" style="margin-top:14px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><h3 style="font-size:16px">Rutas y destinos</h3><button class="ryg-b sm" id="ppAddRoute" type="button">+ Nueva ruta</button></div>';
     html+='<p class="hint" style="margin-bottom:10px">Los cambios se publican al tocar Guardar. Los viajeros los verán al recargar el pasaporte.</p>';
     ppRoutes.forEach((r,ri)=>{
       html+='<div style="border:1px solid #E9E6E0;border-radius:14px;padding:13px;margin-bottom:10px">';
@@ -1475,7 +1480,7 @@
       }
       html+='</div>';
     });
-    html+='<div class="form-acts" style="margin-top:6px"><button class="go" id="ppSave" type="button" style="background:#111;color:#fff;border-color:#111">Guardar y publicar cambios</button></div>';
+    html+='<div class="form-acts" style="margin-top:6px"><button class="ryg-b next" id="ppSave" type="button">Guardar y publicar cambios</button></div>';
     html+='<p class="hint" style="margin-top:8px">Ojo: si eliminas un destino, los sellos que la gente ya ganó ahí dejan de contar para completar esa ruta.</p>';
     html+='</div>';
 
@@ -1511,9 +1516,80 @@
     return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'').slice(0,8) || ('d'+Date.now().toString(36).slice(-4));
   }
 
+  window.ppDelUser = async function(uid){
+    const u = ppUsers.find(x=>x.uid===uid);
+    if(!u) return;
+    const fotos = ppPhotos.filter(f=>f.uid===uid);
+    if(!confirm('\u00bfEliminar a '+(u.name||'este viajero')+' del Pasaporte?\n\nSe enviar\u00e1n a la papelera:\n\u00b7 su registro y sus sellos\n\u00b7 sus '+fotos.length+' foto(s)\n\nPodr\u00e1s restaurarlo durante 30 d\u00edas.')) return;
+    if(fotos.length && !confirm('Confirma una vez m\u00e1s: se eliminar\u00e1 '+(u.name||'el viajero')+' junto con sus '+fotos.length+' foto(s).')) return;
+    setCloud(true);
+    try{
+      for(const f of fotos){
+        const copia = {}; for(const k in f){ if(k!=="id") copia[k]=f[k]; }
+        await softDelete("passportPhotos", f.id, copia, "Foto de "+(u.name||"viajero")+(f.co?" \u00b7 "+f.co:""), "Foto del pasaporte");
+      }
+      const copiaU = {}; for(const k in u){ if(k!=="uid") copiaU[k]=u[k]; }
+      await softDelete("passportUsers", u.uid, copiaU, (u.name||"Viajero")+" \u00b7 Pasaporte", "Viajero del pasaporte");
+      ppPhotos = ppPhotos.filter(f=>f.uid!==uid);
+      ppUsers  = ppUsers.filter(x=>x.uid!==uid);
+      toast("\u2713 Viajero y sus fotos enviados a la papelera");
+      renderPassportAdmin.rerender();
+    }catch(e){ console.error(e); toast("No se pudo eliminar al viajero"); }
+    finally{ setCloud(false); }
+  };
+
+  async function ppPDF(){
+    if(!ppUsers.length){ toast("No hay participantes para exportar"); return; }
+    toast("Generando PDF\u2026");
+    try{
+      await rygCargarScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
+      await rygCargarScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js");
+    }catch(e){ toast("No se pudo cargar el generador de PDF"); return; }
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ orientation:"landscape", unit:"pt", format:"letter" });
+    const W = pdf.internal.pageSize.getWidth();
+    const gen = new Date().toLocaleString("es-US",{dateStyle:"long",timeStyle:"short"});
+    const completos = ppUsers.filter(u=>ppUserProg(u).full).length;
+    const sellos = ppUsers.reduce((acc,u)=>acc+Object.keys(u.stamps||{}).length,0);
+
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(16); pdf.setTextColor(18,42,70);
+    pdf.text("Pasaporte de Sabores \u2014 Participantes", 40, 46);
+    pdf.setFont("helvetica","normal"); pdf.setFontSize(10); pdf.setTextColor(90,100,115);
+    pdf.text("Tomas Flores \u00b7 Royal Prestige \u00b7 Generado: "+gen, 40, 62);
+    pdf.text("Viajeros: "+ppUsers.length+" \u00b7 Completaron la ruta: "+completos+" \u00b7 Sellos estampados: "+sellos+" \u00b7 Fotos recibidas: "+ppPhotos.length, 40, 76);
+
+    pdf.autoTable({
+      startY: 92,
+      head: [["Nombre","WhatsApp","Ciudad","Estado","Progreso","Ruta","Complet\u00f3","Registro","Fotos"]],
+      body: ppUsers.map(u=>{
+        const p = ppUserProg(u);
+        const f = u.createdAt && u.createdAt.seconds ? new Date(u.createdAt.seconds*1000).toLocaleDateString("es-MX") : "\u2014";
+        const nf = ppPhotos.filter(x=>x.uid===u.uid).length;
+        return [u.name||"\u2014", u.phone||"\u2014", u.city||"\u2014", u.state||"\u2014",
+                p.done+" de "+p.total, p.route||"\u2014", p.full?"S\u00ed":"No", f, String(nf)];
+      }),
+      margin: { left:40, right:40, bottom:44 },
+      styles: { font:"helvetica", fontSize:9, cellPadding:5, overflow:"linebreak", textColor:[35,40,50], lineColor:[235,230,222], lineWidth:0.5 },
+      headStyles: { fillColor:[18,42,70], textColor:255, fontStyle:"bold", fontSize:9 },
+      alternateRowStyles: { fillColor:[251,249,244] },
+      columnStyles: { 0:{cellWidth:110}, 1:{cellWidth:90}, 4:{cellWidth:60,halign:"center"}, 6:{cellWidth:56,halign:"center"}, 8:{cellWidth:44,halign:"center"} },
+      didDrawPage: function(){
+        const H = pdf.internal.pageSize.getHeight();
+        pdf.setFont("helvetica","normal"); pdf.setFontSize(8); pdf.setTextColor(120,128,140);
+        pdf.text("Tomas Flores \u00b7 Pasaporte de Sabores \u00b7 "+gen, 40, H-22);
+        pdf.text("P\u00e1gina "+pdf.internal.getNumberOfPages(), W-40, H-22, { align:"right" });
+      }
+    });
+    pdf.save("pasaporte-participantes_"+rygSello()+".pdf");
+    toast("\u2713 PDF descargado ("+ppUsers.length+" participantes)");
+  }
+
   function ppBind(el){
     el.addEventListener('click', async (e)=>{
       const t=e.target;
+      const del = t.closest ? t.closest("[data-ppdel]") : null;
+      if(del){ ppDelUser(del.getAttribute("data-ppdel")); return; }
+      if(t.id==='ppPdf'){ await ppPDF(); return; }
       if(t.id==='ppCsv'){
         let csv='Nombre,WhatsApp,Ciudad,Estado,Progreso,Ruta,Completo,Registro\n';
         ppUsers.forEach(u=>{
