@@ -375,10 +375,16 @@ function render(code, p){
   /* Compartir de nuevo */
   $('linkBox').textContent = link;
   const msg = CFG.texts.shareMessage.replace('{ENLACE}', link);
-  $('btnWa').onclick = function(){ window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank','noopener'); };
+  $('btnWa').onclick = function(){ location.href = 'https://wa.me/?text='+encodeURIComponent(msg); };
   $('btnShare').onclick = async function(){
     if(navigator.share){
-      try{ await navigator.share({ title: CFG.texts.programName, text: msg }); }catch(_){}
+      /* Texto y enlace por separado: asi la app muestra el mensaje y la vista previa */
+      const datos = { title: CFG.texts.programName, text: CFG.texts.shareText || '', url: link };
+      try{ await navigator.share(datos); }
+      catch(err){
+        if(err && err.name === 'AbortError') return;
+        try{ await navigator.share({ text: msg }); }catch(_){}
+      }
     }else{
       try{
         await navigator.clipboard.writeText(link);

@@ -287,11 +287,19 @@ function renderDone(code, data){
 
   const msg = CFG.texts.shareMessage.replace('{ENLACE}', link);
   $('btnWa').onclick = () => {
-    window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+    /* Se navega en la misma pestaña: window.open dejaba un about:blank abierto en iOS */
+    location.href = 'https://wa.me/?text=' + encodeURIComponent(msg);
   };
   $('btnShare').onclick = async () => {
     if(navigator.share){
-      try{ await navigator.share({ title: CFG.texts.programName, text: msg }); }catch(_){}
+      /* El texto va aparte del enlace para que la app muestre la vista previa
+         y el mensaje completo, no solo la direccion. */
+      const datos = { title: CFG.texts.programName, text: CFG.texts.shareText || '', url: link };
+      try{ await navigator.share(datos); }
+      catch(err){
+        if(err && err.name === 'AbortError') return;       /* el usuario cancelo */
+        try{ await navigator.share({ text: msg }); }catch(_){ copyLink(msg); }
+      }
     }else{
       copyLink(msg);
     }

@@ -4,8 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Tienes un obsequio para tu cocina — Regala y Gana</title>
-<meta name="description" content="Alguien pensó en ti y te envió un obsequio para tu cocina. Reclámalo sin costo y sin obligación de compra.">
+<meta name="description" content="Tienes un obsequio para tu cocina. Reclámalo sin costo y sin obligación de compra.">
 <meta name="robots" content="noindex">
+<!-- Vista previa al compartir el enlace (WhatsApp, Facebook, mensajes) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Regala y Gana">
+<meta property="og:title" content="Tienes un obsequio para tu cocina">
+<meta property="og:description" content="Sin costo y sin obligación de compra. Completa tus datos para verificar disponibilidad en tu ciudad.">
+<meta property="og:image" content="https://tomasflores.com/regalo/og-regala-y-gana.jpeg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tienes un obsequio para tu cocina">
+<meta name="twitter:description" content="Sin costo y sin obligación de compra.">
+<meta name="twitter:image" content="https://tomasflores.com/regalo/og-regala-y-gana.jpeg">
 <link rel="icon" href="../favicon-panel.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,6 +32,7 @@
   a{color:var(--gold-text)}
   .topbar{display:flex;justify-content:center;padding:22px 0 4px}
   .brand{font-family:'Fraunces',serif;font-style:italic;color:var(--gold-text);font-size:16px;letter-spacing:.02em}
+  .logo{width:min(215px,58%);height:auto;display:block;margin:0 auto}
   /* --- Encabezado del obsequio --- */
   .hero{text-align:center;margin-top:14px}
   .seal{width:74px;height:74px;border-radius:50%;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;background:#FDFBF6;box-shadow:var(--shadow)}
@@ -78,7 +89,7 @@
 <body>
 <div class="wrap">
 
-  <div class="topbar"><span class="brand" id="programName">Regala y Gana</span></div>
+  <div class="topbar"><img class="logo" id="programLogo" src="" alt="Regala y Gana" width="933" height="592"></div>
 
   <!-- Cargando -->
   <div class="pageload" id="loadingView"><div class="dot" aria-label="Cargando"></div></div>
@@ -182,7 +193,9 @@ const $ = id => document.getElementById(id);
   r.setProperty('--bg',t.bg); r.setProperty('--ink',t.ink); r.setProperty('--navy',t.navy);
   r.setProperty('--gold',t.gold); r.setProperty('--gold-text',t.goldText);
   r.setProperty('--card',t.card); r.setProperty('--hairline',t.hairline);
-  $('programName').textContent = CFG.texts.programName;
+  var lg = $('programLogo');
+  lg.src = (CFG.brand && CFG.brand.logo) || '';
+  lg.onerror = function(){ if(CFG.brand && CFG.brand.logoPng && lg.src.indexOf('.png')<0) lg.src = CFG.brand.logoPng; };
   $('claimBtnLabel').textContent = CFG.texts.claimButton;
   $('footLine').innerHTML = esc(D.name)+' · Distribuidor autorizado Royal Prestige · '+esc(D.city)+
     '<br><a href="../index.html">Página principal</a> · <a href="../privacidad.html">Privacidad</a>';
@@ -254,7 +267,7 @@ function showDone(alreadyName){
   const msg = 'Hola ' + D.name.split(' ')[0] + ', soy ' + who +
     '. Acabo de reclamar el obsequio de cocina que me enviaron con el código ' + CODE + '.';
   $('btnWaConfirm').onclick = () =>
-    window.open('https://wa.me/' + D.whatsapp + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+    location.href = 'https://wa.me/' + D.whatsapp + '?text=' + encodeURIComponent(msg);
   show('doneView');
   window.scrollTo({ top: 0 });
 }
