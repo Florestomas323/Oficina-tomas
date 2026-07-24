@@ -184,6 +184,7 @@
     <button class="tab" data-tab="textos" type="button">Textos</button>
       <button class="tab" data-tab="analitica" type="button">Analítica</button>
       <button class="tab" data-tab="pasaporte" type="button">Pasaporte</button>
+      <button class="tab" data-tab="regalayg" type="button">Regala y Gana</button>
       <button class="tab" data-tab="papelera" type="button">Papelera</button>
   </nav>
   <main class="wrap">
@@ -195,12 +196,14 @@
     <div class="panel" id="p-textos"></div>
     <div class="panel" id="p-analitica"></div>
     <div class="panel" id="p-pasaporte"></div>
+    <div class="panel" id="p-regalayg"></div>
     <div class="panel" id="p-papelera"></div>
   </main>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<script src="regalo/config.js"></script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -1243,6 +1246,7 @@
     if(panel) panel.classList.add("on");
     if(name==="analitica") renderAnalytics();
     if(name==="pasaporte") renderPassportAdmin();
+    if(name==="regalayg") renderGiftAdmin();
     if(name==="papelera") renderTrash();
     window.scrollTo({top:0,behavior:"smooth"});
   };
@@ -1544,6 +1548,474 @@
     renderPassportAdmin._cached=false;
     window.scrollTo({top:y});
   };
+
+  // ==================== REGALA Y GANA ====================
+  const RYG_FALLBACK_LEVELS = [
+    { level:1, gifts:4,  sales:1, prize:"Tabla de cocina" },
+    { level:2, gifts:5,  sales:1, prize:"Set de 3 tazones" },
+    { level:3, gifts:6,  sales:1, prize:"Chocolatera" },
+    { level:4, gifts:7,  sales:2, prize:"Paellera de 10 pulgadas, 5 capas" },
+    { level:5, gifts:8,  sales:2, prize:"Paellera Party de 14 pulgadas" },
+    { level:6, gifts:9,  sales:2, prize:"Blender Go" },
+    { level:7, gifts:10, sales:3, prize:"Premio mayor: a elegir" }
+  ];
+  const RYG_LEVELS = (window.GIFT_CONFIG && window.GIFT_CONFIG.levels) || RYG_FALLBACK_LEVELS;
+  const RYG_DIST   = (window.GIFT_CONFIG && window.GIFT_CONFIG.distributor) || { id:"tomas-dfw", name:"Tomas Flores" };
+
+  const RYG_ST = {
+    claimed:        { t:"Reclamado",          c:"#66625B", bg:"#F3F1EC" },
+    contacted:      { t:"Contactado",         c:"#8A672B", bg:"#FBF3E4" },
+    valid:          { t:"Válido",             c:"#8A672B", bg:"#FBF3E4" },
+    scheduled:      { t:"Cita agendada",      c:"#8A672B", bg:"#FBF3E4" },
+    gift_delivered: { t:"Obsequio entregado", c:"#1E7A46", bg:"#EAF5EE" },
+    sale_confirmed: { t:"Venta confirmada",   c:"#1E7A46", bg:"#EAF5EE" },
+    invalid:        { t:"No válido",          c:"#B3261E", bg:"#FBEDEC" },
+    no_response:    { t:"Sin respuesta",      c:"#66625B", bg:"#F3F1EC" }
+  };
+  const RYG_REW = {
+    pending_validation:"Por validar", approved:"Aprobada",
+    delivered:"Entregada", rejected:"No aprobada", substituted:"Sustituida"
+  };
+
+  let rygParts = [], rygClaims = [], rygOpen = "", rygFilter = "todos", rygLoaded = false;
+
+  function rygEsc(s){ return String(s==null?"":s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+  function rygFecha(ts){
+    if(!ts) return "—";
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    if(isNaN(d)) return "—";
+    return d.toLocaleDateString("es-US",{day:"numeric",month:"short",year:"numeric"});
+  }
+  function rygTel(t){
+    const d = String(t||"").replace(/\D/g,"");
+    if(d.length===11 && d[0]==="1") return "("+d.slice(1,4)+") "+d.slice(4,7)+"-"+d.slice(7);
+    if(d.length===10) return "("+d.slice(0,3)+") "+d.slice(3,6)+"-"+d.slice(6);
+    return d||"—";
+  }
+  function rygMask(nombre){
+    const p = String(nombre||"").trim().split(/\s+/);
+    if(!p[0]) return "Contacto";
+    return p[0] + (p[1] ? " " + p[1][0].toUpperCase() + "." : "");
+  }
+  function rygNivel(g,v){
+    let n = 0;
+    for(const L of RYG_LEVELS){ if(g >= L.gifts && v >= L.sales) n = L.level; }
+    return n;
+  }
+  function rygNombrePremio(n){
+    const L = RYG_LEVELS.find(x=>x.level===n);
+    return L ? L.prize : "—";
+  }
+
+  async function rygLoad(force){
+    if(rygLoaded && !force) return;
+    const [ps, cs] = await Promise.all([
+      getDocs(collection(db,"giftParticipants")),
+      getDocs(collection(db,"giftClaims"))
+    ]);
+    rygParts  = ps.docs.map(d=>({ id:d.id, ...d.data() }));
+    rygClaims = cs.docs.map(d=>({ id:d.id, ...d.data() }));
+    rygParts.sort((a,b)=>{
+      const ta = a.createdAt && a.createdAt.toDate ? a.createdAt.toDate().getTime() : 0;
+      const tb = b.createdAt && b.createdAt.toDate ? b.createdAt.toDate().getTime() : 0;
+      return tb - ta;
+    });
+    rygLoaded = true;
+  }
+
+  function rygDeParticipante(code){
+    return rygClaims.filter(c => c.referralCode === code && !c.archived);
+  }
+  function rygCuenta(code){
+    const cs = rygDeParticipante(code);
+    return {
+      total:      cs.length,
+      entregados: cs.filter(c=>c.status==="gift_delivered"||c.status==="sale_confirmed").length,
+      ventas:     cs.filter(c=>c.status==="sale_confirmed").length,
+      validos:    cs.filter(c=>["valid","scheduled","gift_delivered","sale_confirmed"].includes(c.status)).length,
+      citas:      cs.filter(c=>c.status==="scheduled").length
+    };
+  }
+  function rygVencida(p){
+    if(p.status !== "active") return true;
+    const e = p.expiresAt && p.expiresAt.toDate ? p.expiresAt.toDate() : null;
+    return e ? Date.now() > e.getTime() : false;
+  }
+
+  // ---------- Auditoría ----------
+  async function rygAudit(action, targetId, reason, before, after){
+    try{
+      await addDoc(collection(db,"auditLogs"),{
+        action: action,
+        targetCollection: "giftClaims",
+        targetId: targetId,
+        reason: reason || "",
+        adminEmail: (auth.currentUser && auth.currentUser.email) || "",
+        before: before===undefined ? null : before,
+        after:  after===undefined  ? null : after,
+        at: serverTimestamp()
+      });
+    }catch(e){ console.error("auditoría", e); }
+  }
+
+  // ---------- Recalcular totales del participante ----------
+  async function rygRecalcular(code){
+    const p = rygParts.find(x=>x.id===code);
+    if(!p) return;
+    const n = rygCuenta(code);
+    const nivel = rygNivel(n.entregados, n.ventas);
+    const cs = rygDeParticipante(code).slice().sort((a,b)=>{
+      const ta=a.claimedAt&&a.claimedAt.toDate?a.claimedAt.toDate().getTime():0;
+      const tb=b.claimedAt&&b.claimedAt.toDate?b.claimedAt.toDate().getTime():0;
+      return tb-ta;
+    });
+    const masked = cs.slice(0,40).map(c=>({ n: rygMask(c.recipientName), s: c.status }));
+    let rewardStatus = p.rewardStatus || null;
+    if(nivel > 0 && !["approved","delivered","substituted"].includes(rewardStatus)) rewardStatus = "pending_validation";
+    if(nivel === 0) rewardStatus = null;
+
+    const upd = {
+      claimsTotal: n.total,
+      giftsDelivered: n.entregados,
+      salesConfirmed: n.ventas,
+      currentLevel: nivel,
+      rewardStatus: rewardStatus,
+      maskedContacts: masked,
+      updatedAt: serverTimestamp()
+    };
+    await updateDoc(doc(db,"giftParticipants",code), upd);
+    Object.assign(p, upd, { currentLevel:nivel, rewardStatus:rewardStatus });
+
+    if(nivel > 0){
+      try{
+        await setDoc(doc(db,"rewardRedemptions", code), {
+          participantId: code,
+          participantName: p.participantName || "",
+          distributorId: p.distributorId || RYG_DIST.id,
+          levelReached: nivel,
+          prizeName: rygNombrePremio(nivel),
+          status: rewardStatus,
+          updatedAt: serverTimestamp()
+        }, { merge:true });
+      }catch(e){ console.error("recompensa", e); }
+    }
+  }
+
+  // ---------- Cambio de estado ----------
+  window.rygEstado = async function(claimId, nuevo, motivo){
+    const c = rygClaims.find(x=>x.id===claimId);
+    if(!c) return;
+    const anterior = c.status;
+    if(anterior === nuevo) return;
+
+    const upd = { status:nuevo, updatedAt:serverTimestamp() };
+    if(nuevo==="contacted"      && !c.contactedAt)      upd.contactedAt = serverTimestamp();
+    if(nuevo==="scheduled"      && !c.scheduledAt)      upd.scheduledAt = serverTimestamp();
+    if(nuevo==="gift_delivered" && !c.deliveredAt)      upd.deliveredAt = serverTimestamp();
+    if(nuevo==="sale_confirmed" && !c.saleConfirmedAt)  upd.saleConfirmedAt = serverTimestamp();
+
+    try{
+      await updateDoc(doc(db,"giftClaims",claimId), upd);
+      Object.assign(c, upd, { status:nuevo });
+      await rygAudit("cambio_estado", claimId, motivo||"", anterior, nuevo);
+      await rygRecalcular(c.referralCode);
+      toast("✓ " + (RYG_ST[nuevo] ? RYG_ST[nuevo].t : nuevo));
+      rygPintar();
+    }catch(e){ console.error(e); toast("No se pudo guardar el cambio"); }
+  };
+
+  // ---------- Registrar venta con datos ----------
+  window.rygVenta = async function(claimId){
+    const c = rygClaims.find(x=>x.id===claimId);
+    if(!c) return;
+    const hoy = new Date().toISOString().slice(0,10);
+    const fecha = prompt("Fecha de la venta (AAAA-MM-DD):", hoy);
+    if(fecha===null) return;
+    const producto = prompt("Producto vendido (opcional):","") ;
+    if(producto===null) return;
+    const orden = prompt("Número de orden (opcional):","");
+    if(orden===null) return;
+    const monto = prompt("Monto o volumen (opcional):","");
+    if(monto===null) return;
+    const nota = prompt("Nota de la venta (opcional):","");
+    if(nota===null) return;
+
+    const info = {
+      date: fecha || hoy,
+      product: producto || "",
+      orderNumber: orden || "",
+      amount: monto || "",
+      note: nota || ""
+    };
+    try{
+      await updateDoc(doc(db,"giftClaims",claimId), {
+        status:"sale_confirmed",
+        saleInfo: info,
+        saleConfirmedAt: c.saleConfirmedAt || serverTimestamp(),
+        updatedAt: serverTimestamp()
+      });
+      Object.assign(c, { status:"sale_confirmed", saleInfo:info });
+      await rygAudit("venta_confirmada", claimId, nota||"", c.status, "sale_confirmed");
+      await rygRecalcular(c.referralCode);
+      toast("✓ Venta confirmada");
+      rygPintar();
+    }catch(e){ console.error(e); toast("No se pudo registrar la venta"); }
+  };
+
+  // ---------- Anular entrega o venta ----------
+  window.rygAnular = async function(claimId, tipo){
+    const c = rygClaims.find(x=>x.id===claimId);
+    if(!c) return;
+    const que = tipo==="venta" ? "la venta confirmada" : "el obsequio entregado";
+    const motivo = prompt("¿Por qué anulas "+que+"? (obligatorio)","");
+    if(motivo===null) return;
+    if(!motivo.trim()){ toast("Necesitas escribir un motivo"); return; }
+
+    const anterior = c.status;
+    const upd = { updatedAt:serverTimestamp() };
+    if(tipo==="venta"){ upd.status="gift_delivered"; upd.saleConfirmedAt=null; upd.saleInfo=null; }
+    else { upd.status="valid"; upd.deliveredAt=null; upd.saleConfirmedAt=null; upd.saleInfo=null; }
+
+    try{
+      await updateDoc(doc(db,"giftClaims",claimId), upd);
+      Object.assign(c, upd);
+      await rygAudit(tipo==="venta"?"anular_venta":"anular_entrega", claimId, motivo.trim(), anterior, upd.status);
+      await rygRecalcular(c.referralCode);
+      toast("✓ Anulado");
+      rygPintar();
+    }catch(e){ console.error(e); toast("No se pudo anular"); }
+  };
+
+  // ---------- Notas y archivar ----------
+  window.rygNota = async function(claimId){
+    const c = rygClaims.find(x=>x.id===claimId);
+    if(!c) return;
+    const nota = prompt("Nota administrativa (solo la ves tú):", c.adminNotes||"");
+    if(nota===null) return;
+    try{
+      await updateDoc(doc(db,"giftClaims",claimId), { adminNotes:nota, updatedAt:serverTimestamp() });
+      c.adminNotes = nota;
+      await rygAudit("nota", claimId, "", null, null);
+      toast("✓ Nota guardada");
+      rygPintar();
+    }catch(e){ console.error(e); toast("No se pudo guardar la nota"); }
+  };
+
+  window.rygArchivar = async function(claimId){
+    const c = rygClaims.find(x=>x.id===claimId);
+    if(!c) return;
+    if(!confirm("¿Archivar el contacto de "+(c.recipientName||"")+"? Dejará de contar en los totales, pero no se borra.")) return;
+    try{
+      await updateDoc(doc(db,"giftClaims",claimId), { archived:true, updatedAt:serverTimestamp() });
+      c.archived = true;
+      await rygAudit("archivar", claimId, "", null, null);
+      await rygRecalcular(c.referralCode);
+      toast("✓ Contacto archivado");
+      rygPintar();
+    }catch(e){ console.error(e); toast("No se pudo archivar"); }
+  };
+
+  // ---------- Recompensas ----------
+  window.rygSetPremio = async function(code, nuevo){
+    const p = rygParts.find(x=>x.id===code);
+    if(!p) return;
+    let motivo = "";
+    if(nuevo==="rejected" || nuevo==="substituted"){
+      motivo = prompt(nuevo==="rejected" ? "¿Por qué no se aprueba? (obligatorio)" : "¿Por qué se sustituye? (obligatorio)","") || "";
+      if(!motivo.trim()){ toast("Necesitas escribir un motivo"); return; }
+    }
+    try{
+      await updateDoc(doc(db,"giftParticipants",code), { rewardStatus:nuevo, updatedAt:serverTimestamp() });
+      await setDoc(doc(db,"rewardRedemptions",code), {
+        participantId: code, status:nuevo, levelReached: p.currentLevel||0,
+        prizeName: rygNombrePremio(p.currentLevel||0), updatedAt: serverTimestamp()
+      }, { merge:true });
+      p.rewardStatus = nuevo;
+      await rygAudit("recompensa_"+nuevo, code, motivo.trim(), null, nuevo);
+      toast("✓ Recompensa: "+(RYG_REW[nuevo]||nuevo));
+      rygPintar();
+    }catch(e){ console.error(e); toast("No se pudo actualizar la recompensa"); }
+  };
+
+  // ---------- Interacciones de la vista ----------
+  window.rygAbrir = function(code){ rygOpen = (rygOpen===code ? "" : code); rygPintar(); };
+  window.rygFiltrar = function(f){ rygFilter = f; rygPintar(); };
+  window.rygRecargar = async function(){
+    toast("Actualizando…");
+    try{ await rygLoad(true); }catch(e){ toast("No se pudo actualizar"); return; }
+    rygPintar();
+  };
+
+  // ---------- Pintado ----------
+  window.renderGiftAdmin = async function(){
+    const el = $("p-regalayg");
+    if(!rygLoaded){
+      el.innerHTML = '<div class="empty-note">Cargando Regala y Gana…</div>';
+      try{ await rygLoad(); }
+      catch(e){ console.error(e); el.innerHTML = '<div class="empty-note">No se pudo cargar. Revisa tu conexión y vuelve a entrar a esta pestaña.</div>'; return; }
+    }
+    rygPintar();
+  };
+
+  function rygPintar(){
+    const el = $("p-regalayg");
+    if(!el) return;
+    const y = window.scrollY;
+
+    const activos = rygParts.filter(p=>!rygVencida(p)).length;
+    const vivos   = rygClaims.filter(c=>!c.archived);
+    const tot     = vivos.length;
+    const validos = vivos.filter(c=>["valid","scheduled","gift_delivered","sale_confirmed"].includes(c.status)).length;
+    const citas   = vivos.filter(c=>c.status==="scheduled").length;
+    const entreg  = vivos.filter(c=>["gift_delivered","sale_confirmed"].includes(c.status)).length;
+    const ventas  = vivos.filter(c=>c.status==="sale_confirmed").length;
+    const desbloq = rygParts.filter(p=>(p.currentLevel||0)>0).length;
+    const entregP = rygParts.filter(p=>p.rewardStatus==="delivered").length;
+    const porVal  = rygParts.filter(p=>p.rewardStatus==="pending_validation").length;
+    const cE = tot ? Math.round(entreg/tot*100) : 0;
+    const cV = tot ? Math.round(ventas/tot*100) : 0;
+
+    let h = '';
+
+    h += '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">';
+    h += '<h3 style="font-size:17px;font-family:\'Inter Tight\',sans-serif">Regala y Gana</h3>';
+    h += '<button class="go" onclick="rygRecargar()" type="button">Actualizar</button></div>';
+
+    // Resumen
+    h += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px">';
+    [['Participantes activos',activos],['Reclamos totales',tot],['Contactos válidos',validos],
+     ['Citas agendadas',citas],['Obsequios entregados',entreg],['Ventas confirmadas',ventas],
+     ['Premios desbloqueados',desbloq],['Premios entregados',entregP]].forEach(x=>{
+      h += '<div class="stat-card" style="background:#fff;border:1px solid var(--hairline,#E9E6E0);border-radius:16px;padding:16px;text-align:center">'+
+           '<div style="font-size:26px;font-weight:800;font-family:\'Inter Tight\',sans-serif">'+x[1]+'</div>'+
+           '<div style="font-size:12px;color:#66625B;margin-top:4px">'+x[0]+'</div></div>';
+    });
+    h += '</div>';
+
+    h += '<div class="card-form" style="margin-top:12px"><div style="display:flex;gap:18px;flex-wrap:wrap">'+
+         '<div><div style="font-size:12px;color:#66625B">Reclamos a entregas</div><div style="font-size:22px;font-weight:800;font-family:\'Inter Tight\',sans-serif">'+cE+'%</div></div>'+
+         '<div><div style="font-size:12px;color:#66625B">Reclamos a ventas</div><div style="font-size:22px;font-weight:800;font-family:\'Inter Tight\',sans-serif">'+cV+'%</div></div>'+
+         '</div></div>';
+
+    if(porVal){
+      h += '<div class="card-form" style="margin-top:12px;border-left:4px solid #B08D4F">'+
+           '<b style="font-size:14.5px">'+porVal+' recompensa'+(porVal>1?'s':'')+' por validar.</b>'+
+           '<div class="hint" style="margin-top:4px">Abre el participante y aprueba o marca como entregada.</div></div>';
+    }
+
+    // Filtros
+    const filtros = [['todos','Todos'],['activos','Activos'],['premio','Con premio'],['vencidos','Finalizados']];
+    h += '<div class="card-form" style="margin-top:12px"><div style="display:flex;gap:7px;flex-wrap:wrap">';
+    filtros.forEach(f=>{
+      const on = rygFilter===f[0];
+      h += '<button class="go" type="button" onclick="rygFiltrar(\''+f[0]+'\')" style="'+(on?'background:#122A46;color:#fff;':'')+'">'+f[1]+'</button>';
+    });
+    h += '</div></div>';
+
+    // Lista de participantes
+    let lista = rygParts.slice();
+    if(rygFilter==="activos")  lista = lista.filter(p=>!rygVencida(p));
+    if(rygFilter==="vencidos") lista = lista.filter(p=>rygVencida(p));
+    if(rygFilter==="premio")   lista = lista.filter(p=>(p.currentLevel||0)>0);
+
+    h += '<div class="card-form" style="margin-top:12px"><h3 style="font-size:16px;margin-bottom:10px">Participantes ('+lista.length+')</h3>';
+    if(!lista.length){
+      h += '<div class="empty-note">Aún no hay participantes en esta vista.</div>';
+    }else{
+      lista.forEach(p=>{
+        const n = rygCuenta(p.id);
+        const nivel = rygNivel(n.entregados, n.ventas);
+        const venc = rygVencida(p);
+        const abierto = rygOpen===p.id;
+
+        h += '<div style="border:1px solid #E9E6E0;border-radius:14px;padding:13px;margin-bottom:10px">';
+        h += '<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">';
+        h += '<div style="min-width:0"><b style="font-size:15px">'+rygEsc(p.participantName||"—")+'</b>'+
+             '<div style="font-size:12.5px;color:#66625B;margin-top:2px">'+rygEsc(p.city||"—")+' · '+rygEsc(p.id)+'</div></div>';
+        h += '<span style="font-size:11.5px;font-weight:700;border-radius:99px;padding:5px 10px;white-space:nowrap;'+
+             (venc?'background:#F3F1EC;color:#66625B':'background:#EAF5EE;color:#1E7A46')+'">'+(venc?'Finalizada':'Activa')+'</span>';
+        h += '</div>';
+
+        h += '<div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:9px;font-size:12.5px;color:#66625B">'+
+             '<span>Reclamos <b style="color:#111">'+n.total+'</b></span>'+
+             '<span>Entregas <b style="color:#111">'+n.entregados+'</b></span>'+
+             '<span>Ventas <b style="color:#111">'+n.ventas+'</b></span></div>';
+
+        h += '<div style="font-size:12.5px;color:#66625B;margin-top:6px">Inicio '+rygFecha(p.startsAt)+' · Vence '+rygFecha(p.expiresAt)+'</div>';
+
+        if(nivel>0){
+          h += '<div style="margin-top:9px;background:#FDFBF6;border:1px solid #EADFC9;border-radius:11px;padding:10px">'+
+               '<div style="font-size:12px;color:#8A672B;font-weight:700">NIVEL '+nivel+' · '+rygEsc(RYG_REW[p.rewardStatus]||"Por validar")+'</div>'+
+               '<div style="font-size:14px;font-weight:700;margin-top:2px">'+rygEsc(rygNombrePremio(nivel))+'</div>'+
+               '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">'+
+               '<button class="go" type="button" onclick="rygSetPremio(\''+p.id+'\',\'approved\')">Aprobar</button>'+
+               '<button class="go" type="button" onclick="rygSetPremio(\''+p.id+'\',\'delivered\')">Marcar entregada</button>'+
+               '<button class="go" type="button" onclick="rygSetPremio(\''+p.id+'\',\'substituted\')">Sustituir</button>'+
+               '<button class="go" type="button" onclick="rygSetPremio(\''+p.id+'\',\'rejected\')">No aprobar</button>'+
+               '</div></div>';
+        }
+
+        h += '<button class="go" type="button" onclick="rygAbrir(\''+p.id+'\')" style="margin-top:10px">'+
+             (abierto ? 'Cerrar contactos' : 'Ver contactos ('+n.total+')')+'</button>';
+
+        if(abierto){
+          const cs = rygDeParticipante(p.id).slice().sort((a,b)=>{
+            const ta=a.claimedAt&&a.claimedAt.toDate?a.claimedAt.toDate().getTime():0;
+            const tb=b.claimedAt&&b.claimedAt.toDate?b.claimedAt.toDate().getTime():0;
+            return tb-ta;
+          });
+          h += '<div style="margin-top:11px">';
+          if(!cs.length) h += '<div class="empty-note">Este participante aún no tiene reclamos.</div>';
+          cs.forEach(c=>{
+            const st = RYG_ST[c.status] || RYG_ST.claimed;
+            const tel = String(c.normalizedPhone||"").replace(/\D/g,"");
+            h += '<div style="border-top:1px solid #F1EEE7;padding:11px 0">';
+            h += '<div style="display:flex;justify-content:space-between;gap:9px;align-items:flex-start">'+
+                 '<div style="min-width:0"><b style="font-size:14px">'+rygEsc(c.recipientName||"—")+'</b>'+
+                 '<div style="font-size:12.5px;color:#66625B;margin-top:2px">'+rygTel(c.normalizedPhone)+' · '+rygEsc(c.recipientCity||"—")+
+                 (c.zipCode?' · CP '+rygEsc(c.zipCode):'')+'</div>'+
+                 '<div style="font-size:12px;color:#66625B;margin-top:2px">'+rygFecha(c.claimedAt)+(c.source?' · '+rygEsc(c.source):'')+'</div></div>'+
+                 '<span style="font-size:11px;font-weight:700;border-radius:99px;padding:4px 9px;white-space:nowrap;background:'+st.bg+';color:'+st.c+'">'+st.t+'</span>'+
+                 '</div>';
+
+            if(c.adminNotes) h += '<div style="font-size:12.5px;background:#F7F5F0;border-radius:9px;padding:8px;margin-top:7px">'+rygEsc(c.adminNotes)+'</div>';
+            if(c.saleInfo) h += '<div style="font-size:12px;color:#1E7A46;margin-top:6px">Venta: '+rygEsc(c.saleInfo.date||"")+
+                 (c.saleInfo.product?' · '+rygEsc(c.saleInfo.product):'')+(c.saleInfo.orderNumber?' · #'+rygEsc(c.saleInfo.orderNumber):'')+
+                 (c.saleInfo.amount?' · '+rygEsc(c.saleInfo.amount):'')+'</div>';
+
+            h += '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px">';
+            if(tel){
+              h += '<a class="go" href="https://wa.me/'+tel+'" target="_blank" rel="noopener" style="text-decoration:none">WhatsApp</a>';
+              h += '<a class="go" href="tel:+'+tel+'" style="text-decoration:none">Llamar</a>';
+            }
+            h += '<button class="go" type="button" onclick="rygEstado(\''+c.id+'\',\'contacted\')">Contactado</button>';
+            h += '<button class="go" type="button" onclick="rygEstado(\''+c.id+'\',\'valid\')">Válido</button>';
+            h += '<button class="go" type="button" onclick="rygEstado(\''+c.id+'\',\'scheduled\')">Cita agendada</button>';
+            if(c.status!=="gift_delivered" && c.status!=="sale_confirmed")
+              h += '<button class="go" type="button" onclick="rygEstado(\''+c.id+'\',\'gift_delivered\')" style="background:#1E7A46;color:#fff">Obsequio entregado</button>';
+            if(c.status!=="sale_confirmed")
+              h += '<button class="go" type="button" onclick="rygVenta(\''+c.id+'\')" style="background:#122A46;color:#fff">Venta confirmada</button>';
+            if(c.status==="sale_confirmed")
+              h += '<button class="go" type="button" onclick="rygAnular(\''+c.id+'\',\'venta\')">Anular venta</button>';
+            if(c.status==="gift_delivered" || c.status==="sale_confirmed")
+              h += '<button class="go" type="button" onclick="rygAnular(\''+c.id+'\',\'entrega\')">Anular entrega</button>';
+            h += '<button class="go" type="button" onclick="rygEstado(\''+c.id+'\',\'no_response\')">Sin respuesta</button>';
+            h += '<button class="go" type="button" onclick="rygEstado(\''+c.id+'\',\'invalid\')">No válido</button>';
+            h += '<button class="go" type="button" onclick="rygNota(\''+c.id+'\')">Nota</button>';
+            h += '<button class="go" type="button" onclick="rygArchivar(\''+c.id+'\')">Archivar</button>';
+            h += '</div></div>';
+          });
+          h += '</div>';
+        }
+        h += '</div>';
+      });
+    }
+    h += '</div>';
+
+    el.innerHTML = h;
+    window.scrollTo({ top:y });
+  }
+
 
   $("tabs").addEventListener("click",(e)=>{
     const b=e.target.closest(".tab"); if(!b) return;
