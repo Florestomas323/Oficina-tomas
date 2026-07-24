@@ -16,7 +16,14 @@ window.GIFT_CONFIG = {
     whatsapp: "16823811576",         // solo dígitos, con código de país
     city: "DFW, Texas",
     logo: "../logo-pasaporte.jpeg",
-    siteUrl: "https://florestomas323.github.io/Oficina-tomas"
+    /* La direccion del sitio se detecta sola: funciona en Vercel,
+       en GitHub Pages o en un dominio propio, sin editar nada. */
+    siteUrl: (function(){
+      var p = location.pathname;
+      var i = p.indexOf('/regalo/');
+      var base = (i >= 0) ? p.slice(0, i) : '';
+      return location.origin + base;
+    })()
   },
 
   campaign: {
