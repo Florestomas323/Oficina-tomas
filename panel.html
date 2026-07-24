@@ -1117,7 +1117,8 @@
 
   // ---------- Papelera (30 días) ----------
   const TRASH_DAYS = 30;
-  const COLL_ES = { recipes:"Receta", testimonials:"Opinión", gallery:"Foto", upcoming:"Próximamente" };
+  const COLL_ES = { recipes:"Receta", testimonials:"Opinión", gallery:"Foto", upcoming:"Próximamente",
+    giftClaims:"Persona con regalo", giftParticipants:"Participante", giftLinks:"Enlace de campaña" };
 
   async function softDelete(coll, id, item, label, kind){
     setCloud(true);
@@ -1188,6 +1189,7 @@
     try{
       await setDoc(doc(db, t.origColl, t.origId), clean(t.payload || {}));
       await deleteDoc(doc(db, "trash", t._tid));
+      try{ if(String(t.origColl).indexOf("gift")===0) rygLoaded = false; }catch(e){}
       await loadAll(); renderAll();
       toast('✓ "'+ (t.label||"Elemento") +'" restaurado');
       renderTrash();
@@ -2109,6 +2111,52 @@
     rygPintar();
   };
 
+  // ---------- Borrar (va a la Papelera, restaurable 30 días) ----------
+  window.rygBorrarContacto = async function(claimId){
+    const c = rygClaims.find(x=>x.id===claimId);
+    if(!c) return;
+    if(!confirm('¿Enviar a la papelera a '+(c.recipientName||'esta persona')+'?\n\nDejará de contar en los totales. Podrás restaurarla durante 30 días desde la pestaña Papelera.')) return;
+    const code = c.referralCode;
+    try{
+      const copia = {}; for(const k in c){ if(k!=="id") copia[k]=c[k]; }
+      await softDelete("giftClaims", claimId, copia, (c.recipientName||"Persona")+" · "+rygTel(c.normalizedPhone), "Persona con regalo");
+      await rygAudit("borrar_contacto", claimId, "Enviado a papelera", c.status, "papelera");
+      rygClaims = rygClaims.filter(x=>x.id!==claimId);
+      await rygRecalcular(code);
+      toast("✓ Enviado a la papelera");
+      rygPintar();
+    }catch(e){ console.error(e); toast("No se pudo borrar"); }
+  };
+
+  window.rygBorrarParticipante = async function(code){
+    const p = rygParts.find(x=>x.id===code);
+    if(!p) return;
+    const cs = rygClaims.filter(x=>x.referralCode===code);
+    const nom = p.participantName || code;
+    if(!confirm('¿Eliminar la campaña de '+nom+'?\n\nSe enviarán a la papelera:\n· su campaña\n· su enlace personal (dejará de funcionar)\n· sus '+cs.length+' persona(s) con regalo\n\nPodrás restaurarlo durante 30 días.')) return;
+    if(!confirm('Confirma una vez más: se eliminará '+nom+' y '+cs.length+' registro(s).')) return;
+    try{
+      for(const c of cs){
+        const copia = {}; for(const k in c){ if(k!=="id") copia[k]=c[k]; }
+        await softDelete("giftClaims", c.id, copia, (c.recipientName||"Persona")+" · "+nom, "Persona con regalo");
+      }
+      try{
+        const lk = await getDoc(doc(db,"giftLinks",code));
+        if(lk.exists()) await softDelete("giftLinks", code, lk.data(), "Enlace de "+nom, "Enlace de campaña");
+      }catch(e){}
+      const copiaP = {}; for(const k in p){ if(k!=="id") copiaP[k]=p[k]; }
+      await softDelete("giftParticipants", code, copiaP, nom+" · "+code, "Participante");
+      try{ await deleteDoc(doc(db,"rewardRedemptions",code)); }catch(e){}
+      await rygAudit("borrar_participante", code, "Campaña enviada a papelera con "+cs.length+" contacto(s)", "activa", "papelera");
+
+      rygClaims = rygClaims.filter(x=>x.referralCode!==code);
+      rygParts  = rygParts.filter(x=>x.id!==code);
+      if(rygOpen===code) rygOpen = "";
+      toast("✓ Campaña enviada a la papelera");
+      rygPintar();
+    }catch(e){ console.error(e); toast("No se pudo eliminar la campaña"); }
+  };
+
   function rygEstilos(){
     if(document.getElementById("ryg-css")) return;
     const st = document.createElement("style");
@@ -2199,6 +2247,7 @@
       h += '<div class="ryg-lbl" style="margin-top:11px">Otros</div><div class="ryg-acts" style="margin-top:0">'+
            '<button class="ryg-b sm soft" type="button" onclick="rygNota(\''+c.id+'\')">'+(c.adminNotes?'Editar nota':'Agregar nota')+'</button>'+
            '<button class="ryg-b sm soft" type="button" onclick="rygArchivar(\''+c.id+'\')">Archivar</button>'+
+           '<button class="ryg-b sm danger" type="button" onclick="rygBorrarContacto(\''+c.id+'\')">Eliminar</button>'+
            '</div></div>';
     }
     return h;
@@ -2388,6 +2437,7 @@
                (abierto ? 'Ocultar sus regalos' : 'Ver sus regalos ('+n.total+')')+'</button>'+
                '<button class="ryg-b sm soft" type="button" onclick="rygPDF(\'participante\',\''+p.id+'\')">PDF</button>'+
                '<button class="ryg-b sm soft" type="button" onclick="rygCSV(\'participante\',\''+p.id+'\')">CSV</button>'+
+               '<button class="ryg-b sm danger" type="button" onclick="rygBorrarParticipante(\''+p.id+'\')">Eliminar</button>'+
                '</div>';
 
           if(abierto){
