@@ -1580,7 +1580,7 @@
   };
 
   let rygParts = [], rygClaims = [], rygOpen = "", rygFilter = "todos", rygLoaded = false;
-  let rygView = "participantes", rygEF = "todos", rygMas = "";
+  let rygView = "participantes", rygEF = "todos", rygMas = "", rygLastLoad = null, rygQ = "";
 
   function rygEsc(s){ return String(s==null?"":s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
   function rygFecha(ts){
@@ -1623,6 +1623,7 @@
       const tb = b.createdAt && b.createdAt.toDate ? b.createdAt.toDate().getTime() : 0;
       return tb - ta;
     });
+    rygLastLoad = new Date();
     rygLoaded = true;
   }
 
@@ -2282,6 +2283,32 @@
   window.rygMasAcciones = function(id){ rygMas = (rygMas===id ? "" : id); rygPintar(); };
   window.rygVista = function(v){ rygView = v; rygPintar(); };
   window.rygEstadoFiltro = function(f){ rygEF = f; rygPintar(); };
+  window.rygBuscarInput = function(v){ rygQ = String(v||"").trim().toLowerCase(); rygPintar(); };
+  window.rygLimpiarBusqueda = function(){ rygQ = ""; rygPintar(); };
+
+  function rygNorm(s){ return String(s||"").toLowerCase(); }
+  // Coincidencia de un contacto/regalo con la búsqueda (nombre, teléfono, ciudad, código)
+  function rygMatchClaim(c){
+    if(!rygQ) return true;
+    const p = rygParts.find(x=>x.id===c.referralCode) || {};
+    return [c.recipientName, c.normalizedPhone, c.recipientCity, c.zipCode, c.referralCode, p.participantName]
+      .some(v => rygNorm(v).indexOf(rygQ) >= 0);
+  }
+  // Coincidencia de un participante con la búsqueda (nombre, ciudad, código)
+  function rygMatchPart(p){
+    if(!rygQ) return true;
+    return [p.participantName, p.city, p.id].some(v => rygNorm(v).indexOf(rygQ) >= 0);
+  }
+  // Genera el bloque de búsqueda; conserva foco tras el re-render
+  function rygBusquedaHTML(ph){
+    return '<div class="card-form" style="margin-top:12px"><div class="ryg-lbl">Buscar</div>'+
+      '<div style="position:relative">'+
+      '<input id="rygSearch" type="search" inputmode="search" autocomplete="off" placeholder="'+ph+'" '+
+      'value="'+rygEsc(rygQ)+'" oninput="rygBuscarInput(this.value)" '+
+      'style="width:100%;min-height:46px;border:1px solid #E9E6E0;border-radius:14px;padding:11px 40px 11px 14px;font:inherit;font-size:15px;color:#122A46;background:#fff">'+
+      (rygQ ? '<button type="button" aria-label="Limpiar búsqueda" onclick="rygLimpiarBusqueda()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border:0;background:#F3F1EC;border-radius:50%;color:#66625B;font-size:16px;cursor:pointer;line-height:1">&times;</button>' : '')+
+      '</div></div>';
+  }
 
   function rygDestinatarios(){
     let cs = rygClaims.filter(c=>!c.archived);
@@ -2316,10 +2343,21 @@
     const cE = tot ? Math.round(entreg/tot*100) : 0;
     const cV = tot ? Math.round(ventas/tot*100) : 0;
 
+    const rygLogo = (window.GIFT_CONFIG && window.GIFT_CONFIG.brand && (window.GIFT_CONFIG.brand.logo || window.GIFT_CONFIG.brand.logoPng)) || 'logo-regala-y-gana.webp';
+    const rygLogoSrc = 'regalo/' + String(rygLogo).replace(/^\.?\//,'');
+    const updTxt = rygLastLoad ? rygLastLoad.toLocaleString('es-US',{dateStyle:'medium',timeStyle:'short'}) : '—';
+
     let h = '';
-    h += '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">';
-    h += '<h3 style="font-size:17px;font-family:\'Inter Tight\',sans-serif">Regala y Gana</h3>';
-    h += '<button class="ryg-b sm" type="button" onclick="rygRecargar()">Actualizar</button></div>';
+    h += '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap">';
+    h += '<div style="display:flex;align-items:center;gap:12px;min-width:0">'+
+         '<img src="'+rygLogoSrc+'" alt="Regala y Gana" style="height:44px;width:auto;flex:0 0 auto" '+
+         'onerror="this.onerror=null;this.src=\'regalo/logo-regala-y-gana.png\'">'+
+         '<div style="min-width:0"><h3 style="font-size:18px;font-family:\'Inter Tight\',sans-serif;letter-spacing:-.02em">Regala y Gana</h3>'+
+         '<div style="font-size:12.5px;color:#66625B;margin-top:2px">Administra participantes, reclamos, entregas, ventas y recompensas.</div></div></div>';
+    h += '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">'+
+         '<button class="ryg-b sm" type="button" onclick="rygRecargar()">Actualizar</button>'+
+         '<span style="font-size:11px;color:#9A968E">Actualizado: '+updTxt+'</span></div>';
+    h += '</div>';
 
     h += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px">';
     [['Participantes activos',activos],['Personas con regalo',tot],['Contactos válidos',validos],
@@ -2360,10 +2398,12 @@
       });
       h += '</div></div>';
 
-      const lista = rygDestinatarios();
+      h += rygBusquedaHTML('Nombre, teléfono, ciudad o código');
+      const base = rygDestinatarios();
+      const lista = base.filter(rygMatchClaim);
 
       h += '<div class="card-form" style="margin-top:12px"><h3 style="font-size:16px;margin-bottom:4px">Descargar esta lista</h3>';
-      h += '<p class="hint" style="margin-bottom:10px">'+lista.length+' persona'+(lista.length===1?'':'s')+' según el filtro. Cada descarga queda registrada en la auditoría.</p>';
+      h += '<p class="hint" style="margin-bottom:10px">'+base.length+' persona'+(base.length===1?'':'s')+' según el filtro. La descarga ignora la búsqueda. Cada descarga queda registrada en la auditoría.</p>';
       h += '<div class="ryg-acts" style="margin-top:0">'+
            '<button class="ryg-b next" type="button" onclick="rygPDF(\'regalos\')">Descargar PDF</button>'+
            '<button class="ryg-b" type="button" onclick="rygCSV(\'regalos\')">Descargar CSV</button>'+
@@ -2371,7 +2411,7 @@
            '</div></div>';
 
       h += '<div class="card-form" style="margin-top:12px"><h3 style="font-size:16px;margin-bottom:10px">Personas que reciben regalo ('+lista.length+')</h3>';
-      if(!lista.length) h += '<div class="empty-note">No hay personas con este filtro.</div>';
+      if(!lista.length) h += '<div class="empty-note">'+(rygQ ? 'Ninguna persona coincide con “'+rygEsc(rygQ)+'”.' : (base.length ? 'No hay personas con este filtro.' : 'Aún nadie ha reclamado un obsequio.'))+'</div>';
       else lista.forEach(function(c){ h += rygFichaContacto(c, true); });
       h += '</div>';
 
@@ -2392,14 +2432,17 @@
            '<button class="ryg-b soft" type="button" onclick="rygImprimir(\'filtrado\')">Imprimir</button>'+
            '</div></div>';
 
+      h += rygBusquedaHTML('Nombre, ciudad o código de participante');
       let lista = rygParts.slice();
       if(rygFilter==="activos")  lista = lista.filter(p=>!rygVencida(p));
       if(rygFilter==="vencidos") lista = lista.filter(p=>rygVencida(p));
       if(rygFilter==="premio")   lista = lista.filter(p=>(p.currentLevel||0)>0);
+      const partFiltered = lista.length;
+      lista = lista.filter(rygMatchPart);
 
       h += '<div class="card-form" style="margin-top:12px"><h3 style="font-size:16px;margin-bottom:10px">Participantes ('+lista.length+')</h3>';
       if(!lista.length){
-        h += '<div class="empty-note">Aún no hay participantes en esta vista.</div>';
+        h += '<div class="empty-note">'+(rygQ ? 'Ningún participante coincide con “'+rygEsc(rygQ)+'”.' : (partFiltered ? 'Aún no hay participantes en esta vista.' : 'No hay participantes todavía. Los registros aparecerán cuando alguien cree un enlace o reclame un obsequio.'))+'</div>';
       }else{
         lista.forEach(function(p){
           const n = rygCuenta(p.id);
@@ -2459,6 +2502,10 @@
 
     el.innerHTML = h;
     window.scrollTo({ top:y });
+    if(rygQ){
+      const s = document.getElementById("rygSearch");
+      if(s){ const v = s.value; s.focus(); try{ s.setSelectionRange(v.length, v.length); }catch(_){} }
+    }
   }
 
 

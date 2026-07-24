@@ -641,13 +641,7 @@
   .hero-trust:active{opacity:.7}
 
   /* ---------- Tarjeta Compartir ---------- */
-  .share-card{background:var(--card);border:1px solid var(--hairline);border-radius:24px;padding:clamp(30px,7vw,46px) 26px;text-align:center;box-shadow:var(--shadow-soft);max-width:620px;margin:0 auto;position:relative;overflow:hidden}
-  .share-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-  .share-emoji{font-size:32px;display:block;margin-bottom:14px}
-  .share-h{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:clamp(21px,5.5vw,27px);letter-spacing:-.02em;line-height:1.15;margin-bottom:10px}
-  .share-p{color:var(--stone);font-size:15.5px;line-height:1.55;max-width:36ch;margin:0 auto 24px}
-  .share-btn{touch-action:manipulation}
-  .share-btn svg{pointer-events:none}
+
   .share-ok{display:block;margin-top:16px;color:var(--gold-text);font-weight:600;font-size:14px}
 
   .hero-badge{position:absolute;z-index:3;top:calc(env(safe-area-inset-top) + 18px);left:26px;display:flex;flex-direction:column;line-height:1.15;pointer-events:none}
@@ -690,18 +684,23 @@
   .hero .btn-save{order:1}
   .hero .btn-save svg{width:15px;height:15px;opacity:.9}
   @media(hover:hover){.hero .btn-save:hover{transform:translateY(-1px);background:#fff;box-shadow:0 6px 18px rgba(176,141,79,.2)}}
-  /* "Regala y Gana": misma pildora terciaria, en dorado solido para diferenciarla */
-  .hero .btn-ryg{
-    flex:0 1 auto;align-self:center;width:auto;max-width:100%;margin:4px auto 0;
-    background:var(--gold,#B08D4F);color:#fff;
-    border:1.5px solid var(--gold,#B08D4F);border-radius:999px;
-    font-size:13px;font-weight:700;padding:9px 18px;min-height:44px;
-    box-shadow:0 4px 14px rgba(176,141,79,.28);text-decoration:none;
-    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  /* "Regala y Gana": tarjeta-pildora premium (marfil translucido + acento dorado) */
+  .hero .ryg-pill{
+    order:2;flex:0 1 auto;align-self:center;width:auto;max-width:340px;margin:8px auto 0;
+    display:inline-flex;align-items:center;gap:11px;text-align:left;text-decoration:none;
+    background:rgba(253,251,246,.92);color:var(--navy,#122A46);
+    border:1.5px solid rgba(176,141,79,.6);border-left:4px solid var(--gold,#B08D4F);
+    border-radius:16px;padding:9px 13px;min-height:52px;
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    box-shadow:0 5px 18px rgba(18,42,70,.18);
   }
-  .hero .btn-ryg svg{width:16px;height:16px;opacity:.95}
-  .hero .btn-ryg{order:2}
-  @media(hover:hover){.hero .btn-ryg:hover{transform:translateY(-1px);box-shadow:0 7px 20px rgba(176,141,79,.34)}}
+  .hero .ryg-ic{flex:0 0 34px;width:34px;height:34px;border-radius:9px;background:rgba(176,141,79,.14);color:var(--gold-text,#8A672B);display:inline-flex;align-items:center;justify-content:center}
+  .hero .ryg-ic svg{width:19px;height:19px}
+  .hero .ryg-tx{display:flex;flex-direction:column;line-height:1.2}
+  .hero .ryg-tx b{font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+  .hero .ryg-tx small{font-size:11.5px;color:var(--stone,#5C6B7E);font-weight:500;margin-top:2px}
+  .hero .ryg-arrow{flex:0 0 16px;color:var(--gold,#B08D4F);margin-left:2px}
+  @media(hover:hover){.hero .ryg-pill:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(18,42,70,.24);border-left-color:var(--gold,#B08D4F)}}
 
   /* ---------- Modal de confianza (pre-Calendly) ---------- */
   .cal-pre{padding:22px 22px calc(22px + env(safe-area-inset-bottom))}
@@ -786,6 +785,26 @@
   .pass-cta{display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:#B08D4F;color:#fff;font-weight:700;font-size:14.5px;border-radius:14px;padding:13px 20px;min-height:44px;box-shadow:0 6px 20px rgba(176,141,79,.4)}
   @media(max-width:520px){.pass-in{flex-direction:column;text-align:center}.pass-chips{justify-content:center}}
 
+  /* ---- Modulo Regala y Gana (marfil + dorado, distinto al Pasaporte navy) ---- */
+  #regala-gana{padding-top:8px}
+  .ryg-card{background:var(--card);border:1px solid var(--hairline);border-top:4px solid var(--gold);border-radius:22px;padding:26px 22px;max-width:640px;margin:0 auto;box-shadow:var(--shadow-soft);text-align:center}
+  .ryg-card-head{display:flex;justify-content:center;margin-bottom:16px}
+  .ryg-logo{width:min(220px,66%);height:auto;display:block}
+  .ryg-h{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:clamp(20px,5.2vw,26px);letter-spacing:-.02em;line-height:1.18;color:var(--navy);text-wrap:balance;margin:0 auto;max-width:22ch}
+  .ryg-p{color:var(--stone);font-size:15px;line-height:1.55;max-width:44ch;margin:12px auto 0}
+  .ryg-points{list-style:none;margin:18px auto 0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px 16px;max-width:520px}
+  .ryg-points li{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--navy)}
+  .ryg-points svg{width:16px;height:16px;color:#1E7A46;flex:0 0 16px}
+  .ryg-prizes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px auto 0;max-width:460px}
+  .ryg-prizes figure{margin:0}
+  .ryg-prizes img{width:100%;aspect-ratio:1/1;object-fit:contain;background:#FBF8F1;border:1px solid var(--hairline);border-radius:14px;padding:8px}
+  .ryg-prizes figcaption{font-size:11.5px;color:var(--stone);margin-top:6px;font-weight:600}
+  .ryg-actions{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:22px}
+  .ryg-go{min-height:48px;padding:14px 26px;border-radius:14px}
+  .ryg-how{color:var(--gold-text);font-weight:600;font-size:14px;text-decoration:none;min-height:44px;display:inline-flex;align-items:center;padding:6px 10px}
+  @media(hover:hover){.ryg-how:hover{text-decoration:underline}}
+  @media(min-width:520px){.ryg-actions{flex-direction:row;justify-content:center}}
+
   /* ---- Nav superior ---- */
   .topnav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(250,250,248,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--hairline);transform:translateY(-100%);transition:transform .35s var(--ease)}
   .topnav.show{transform:none}
@@ -831,11 +850,7 @@
   .mini-cta .btn{display:inline-flex}
   .btn-line-g{background:#fff;color:var(--ink);border:1.5px solid var(--gold);display:inline-flex}
   /* ---- CTA final ---- */
-  .final-cta{background:linear-gradient(160deg,#191917,#111110);color:#FAFAF8;text-align:center;padding:52px 20px;margin-top:34px}
-  .final-cta h2{font-family:'Inter Tight',sans-serif;font-size:clamp(23px,6vw,32px);letter-spacing:-.02em;line-height:1.15;max-width:560px;margin:0 auto}
-  .final-cta p{color:#B9B5AC;font-size:15px;line-height:1.6;max-width:480px;margin:14px auto 0}
-  .fc-btns{display:flex;gap:11px;justify-content:center;flex-wrap:wrap;margin-top:22px}
-  .final-cta .btn-ghost{border-color:rgba(250,250,248,.35);color:#FAFAF8}
+
   /* ---- Hero: jerarquía y scroll ---- */
   .btn-save{opacity:.82;font-size:13.5px;padding:11px 16px}
   .scroll-cue{position:absolute;left:50%;transform:translateX(-50%);bottom:14px;color:#FAFAF8;opacity:.75;animation:cueBob 2.2s ease-in-out infinite;z-index:3}
@@ -923,12 +938,11 @@
   track('Visita','view');
 
   document.addEventListener('click', function(e){
-    var t = e.target.closest('[data-track], [data-cal], [data-share], a[href*="wa.me"], [onclick*="openReview"], a[href*="instagram"], a[href*="tiktok"], a[href*="recetas.html"], a[href^="receta-"]');
+    var t = e.target.closest('[data-track], [data-cal], a[href*="wa.me"], [onclick*="openReview"], a[href*="instagram"], a[href*="tiktok"], a[href*="recetas.html"], a[href^="receta-"]');
     if(!t) return;
     var explicit = t.closest('[data-track]');
     if(explicit){ track(explicit.getAttribute('data-track')); return; }
-    if(t.closest('[data-share]')) track('Comparte oficina');
-    else if(t.closest('[data-cal]')) track('Reservar: abre modal');
+    if(t.closest('[data-cal]')) track('Reservar: abre modal');
     else if(t.closest('[onclick*="openReview"]')) track('Testimonio: abre formulario');
     else if(t.closest('a[href*="wa.me"]')){
       var href = (t.closest('a[href*="wa.me"]').getAttribute('href')||'').toLowerCase();
@@ -1010,9 +1024,10 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
         Guardar mi contacto
       </button>
-      <a class="btn btn-ryg" id="heroRyg" href="regalo/crear.html" data-tr="Hero: Regala y Gana">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M3 12h18M12 8v13"/><path d="M12 8c-1.8 0-4.5-.6-4.5-2.7C7.5 3.9 8.6 3 9.8 3 11.4 3 12 5.2 12 8zm0 0c1.8 0 4.5-.6 4.5-2.7C16.5 3.9 15.4 3 14.2 3 12.6 3 12 5.2 12 8z"/></svg>
-        Regala y Gana
+      <a class="ryg-pill" id="heroRyg" href="regalo/crear.html" data-tr="Hero: Regala y Gana" aria-label="Regala y Gana: comparte un obsequio y gana premios para tu cocina">
+        <span class="ryg-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M3 12h18M12 8v13"/><path d="M12 8c-1.8 0-4.5-.6-4.5-2.7C7.5 3.9 8.6 3 9.8 3 11.4 3 12 5.2 12 8zm0 0c1.8 0 4.5-.6 4.5-2.7C16.5 3.9 15.4 3 14.2 3 12.6 3 12 5.2 12 8z"/></svg></span>
+        <span class="ryg-tx"><b>Regala y Gana</b><small>Comparte un obsequio y gana premios para tu cocina</small></span>
+        <svg class="ryg-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
       </a>
     </div>
   </div>
@@ -1165,7 +1180,33 @@
       </div>
     </div>
   </a>
-</section><!-- =============== RECETAS =============== -->
+</section>
+<!-- =============== REGALA Y GANA =============== -->
+<section class="block wrap" id="regala-gana" aria-label="Programa Regala y Gana">
+  <div class="ryg-card rv">
+    <div class="ryg-card-head">
+      <img class="ryg-logo" src="regalo/logo-regala-y-gana.webp" alt="Regala y Gana" width="933" height="592"
+           onerror="this.onerror=null;this.src='regalo/logo-regala-y-gana.png'">
+    </div>
+    <h2 class="ryg-h">Comparte un obsequio. Gana premios para tu cocina.</h2>
+    <p class="ryg-p">Crea tu enlace personal, comp&aacute;rtelo con familiares y amigos y avanza durante 30 d&iacute;as en tu ruta de recompensas.</p>
+    <ul class="ryg-points">
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Sin costo para quien recibe</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Sin obligaci&oacute;n de compra</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Campa&ntilde;a de 30 d&iacute;as</li>
+    </ul>
+    <div class="ryg-prizes" aria-label="Ejemplos de premios">
+      <figure><img src="regalo/tabla-cocina.webp" alt="Tabla de cocina" loading="lazy"><figcaption>Tabla de cocina</figcaption></figure>
+      <figure><img src="regalo/chocolatera.webp" alt="Chocolatera" loading="lazy"><figcaption>Chocolatera</figcaption></figure>
+      <figure><img src="regalo/premio-mayor.webp" alt="Premio mayor a elegir" loading="lazy"><figcaption>Premio mayor</figcaption></figure>
+    </div>
+    <div class="ryg-actions">
+      <a class="btn btn-solid ryg-go" href="regalo/crear.html" data-tr="Modulo RyG: crear enlace">Crear mi enlace</a>
+      <a class="ryg-how" href="regalo/crear.html" data-tr="Modulo RyG: como funciona">C&oacute;mo funciona &rsaquo;</a>
+    </div>
+  </div>
+</section>
+<!-- =============== RECETAS =============== -->
 <section class="block wrap" id="recetas">
   <div class="block-head">
     <span class="eyebrow rv">Cocina con tu Royal Prestige</span>
@@ -1223,19 +1264,8 @@
       <p class="body rv" id="aboutBody">Soy Tomas. Cuando compras conmigo, no termina la relación: empieza. Recetas, servicio, dudas — cuenta conmigo antes, durante y después.</p>
     </div>
   </div>
-</section><!-- =============== COMPARTIR =============== -->
-<section class="block wrap">
-  <div class="share-card rv">
-    <span class="share-emoji" aria-hidden="true">📣</span>
-    <h2 class="share-h">¿Conoces a alguien que quiera cocinar mejor?</h2>
-    <p class="share-p">Comparte mi oficina digital. Toma un segundo — y puede cambiarle la cocina a una familia.</p>
-    <button class="btn btn-solid share-btn" id="shareBtn" type="button" data-share onclick="shareOffice()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
-      Comparte mi oficina
-    </button>
-    <span class="share-ok" id="shareOk" hidden>¡Listo, link copiado!</span>
-  </div>
-</section><!-- =============== FAQ =============== -->
+</section>
+<!-- =============== FAQ =============== -->
 <section class="block wrap" id="faq">
   <div class="block-head">
     <span class="eyebrow rv">Centro de ayuda</span>
@@ -1291,18 +1321,6 @@
       <button class="faq-toggle" id="faqToggle" type="button" aria-expanded="false" aria-controls="faqMore">Ver más preguntas <span class="ft-ic">›</span></button>
   </div>
 </section>
-<!-- =============== CTA FINAL =============== -->
-<section class="final-cta">
-  <div class="wrap">
-    <h2 class="rv">Tu pr&oacute;xima experiencia puede comenzar en tu propia cocina</h2>
-    <p class="rv">Reserva una demostraci&oacute;n y descubre los productos mientras compartimos una receta con tu familia.</p>
-    <div class="fc-btns rv">
-      <button class="btn btn-solid btn-hero" data-cal type="button">Reservar demostraci&oacute;n</button>
-      <a class="btn btn-ghost" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B" target="_blank" rel="noopener">Hablar por WhatsApp</a>
-    </div>
-  </div>
-</section>
-
 <!-- =============== CONTACTO =============== -->
 <section class="block wrap" id="contacto">
   <div class="block-head">
@@ -1906,32 +1924,6 @@ try{
   </div>
 </div>
 
-<script>
-(function(){
-  window.shareOffice = async function(){
-    var base = location.origin + location.pathname;
-    var params = new URLSearchParams(location.search);
-    var ref = params.get('ref');
-    var url = ref ? (base + '?ref=' + encodeURIComponent(ref)) : base;
-    var data = {
-      title: 'Tom\u00e1s Flores \u2014 Royal Prestige',
-      text: 'Te comparto a Tom\u00e1s Flores, mi distribuidor Royal Prestige \ud83d\udc4b Agenda una demostraci\u00f3n gratis:',
-      url: url
-    };
-    try{
-      if(navigator.share){
-        await navigator.share(data);
-      } else if(navigator.clipboard && navigator.clipboard.writeText){
-        await navigator.clipboard.writeText(data.text + ' ' + url);
-        var ok = document.getElementById('shareOk');
-        if(ok){ ok.hidden = false; setTimeout(function(){ ok.hidden = true; }, 3000); }
-      } else {
-        window.open('https://wa.me/?text=' + encodeURIComponent(data.text + ' ' + url), '_blank', 'noopener');
-      }
-    }catch(e){ /* el usuario cancel\u00f3: no hacer nada */ }
-  };
-})();
-</script>
 <div class="bottombar" id="bottomBar" aria-hidden="true">
   <button class="bb-main" data-cal type="button">Reservar demostración</button>
   <a class="bb-wa" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B" target="_blank" rel="noopener" aria-label="Hablar con Tomas">
