@@ -705,6 +705,22 @@
   .bottombar .bb-wa{display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:14px;background:#fff;border:1px solid var(--hairline);color:var(--ink)}
   .bottombar .bb-wa svg{width:22px;height:22px}
   @media(min-width:768px){ .bottombar{display:none} }
+  /* ---------- Panel "¿Qué necesitas hoy?" ---------- */
+  .needs-back{position:fixed;inset:0;z-index:70;background:rgba(14,14,13,.34);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .28s var(--ease)}
+  .needs-back.show{opacity:1;pointer-events:auto}
+  .needs-panel{position:fixed;left:10px;right:10px;z-index:75;bottom:calc(80px + env(safe-area-inset-bottom));background:var(--card);border:1px solid var(--hairline);border-radius:22px;box-shadow:0 -8px 40px rgba(17,17,16,.22);padding:8px;opacity:0;transform:translateY(14px);pointer-events:none;transition:opacity .26s var(--ease),transform .26s var(--ease);max-height:68svh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .needs-panel.show{opacity:1;transform:none;pointer-events:auto}
+  .needs-h{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-text);padding:10px 12px 8px}
+  .needs-opt{display:flex;align-items:center;gap:13px;width:100%;text-align:left;background:transparent;border:0;border-radius:14px;padding:12px;min-height:56px;font:inherit;font-size:15.5px;font-weight:600;color:var(--ink);text-decoration:none;cursor:pointer}
+  .needs-opt + .needs-opt{border-top:1px solid #F4F1EA}
+  .needs-opt:active{background:#F3EFE7}
+  .needs-opt .n-ic{flex:0 0 40px;width:40px;height:40px;border-radius:12px;background:var(--paper);border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;color:var(--gold-text)}
+  .needs-opt .n-ar{margin-left:auto;color:#B7B2A8;flex:0 0 auto}
+  @media(min-width:768px){ .needs-panel,.needs-back{display:none} }
+  /* La burbuja de WhatsApp no debe solaparse con el panel abierto */
+  body.needs-open .fab-wrap{opacity:0;pointer-events:none}
+  /* Con el menú móvil abierto, los flotantes se retiran */
+  body.menu-open .bottombar,body.menu-open .fab-wrap{opacity:0;pointer-events:none;transition:opacity .2s var(--ease)}
   /* (El FAB ahora aparece junto con la barra, elevado sobre ella; ver regla body.bar-on .fab-wrap arriba) */
 
   /* ---------- Filtros de galería ---------- */
@@ -1558,10 +1574,8 @@
 <div class="fab-wrap" id="fabWrap">
   <div class="fab-note" id="fabNote"><span class="live-dot" aria-hidden="true"></span>Normalmente respondo rápido por WhatsApp</div>
   <div class="fab-menu" id="fabMenu" role="menu" aria-label="Opciones de contacto">
-    <button class="fab-opt" data-cal role="menuitem" type="button"><span class="icon-3d sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21a1 1 0 0 0 1-1v-5.35c1.78-.47 3-2.08 3-3.9a4 4 0 0 0-4-4 4.5 4.5 0 0 0-8 0 4 4 0 0 0-4 4c0 1.82 1.22 3.43 3 3.9V20a1 1 0 0 0 1 1z"/><path d="M6 17h12"/></svg></span>Reservar demostración</button>
-    <a class="fab-opt" role="menuitem" href="https://wa.me/16823811576?text=Hola%20Tomas%20👋,%20necesito%20un%20servicio%20para%20mi%20equipo%20Royal%20Prestige" target="_blank" rel="noopener"><span class="icon-3d sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>Solicitar servicio</a>
-    <a class="fab-opt" role="menuitem" href="recetas.html"><span class="icon-3d sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span>Ver recetas</a>
-    <a class="fab-opt" role="menuitem" href="https://wa.me/16823811576?text=Hola%20Tomas%20👋" target="_blank" rel="noopener"><span class="icon-3d sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M12.04 2C6.55 2 2.1 6.44 2.1 11.93c0 1.76.46 3.47 1.34 4.98L2 22l5.22-1.37a9.9 9.9 0 0 0 4.82 1.23h.01c5.49 0 9.94-4.45 9.94-9.93A9.88 9.88 0 0 0 12.04 2zm0 18.14h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.1.81.83-3.02-.2-.31a8.2 8.2 0 0 1-1.26-4.36c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 8.23 8.24c0 4.54-3.7 8.2-8.24 8.2zm4.52-6.16c-.25-.12-1.47-.72-1.69-.8-.23-.09-.39-.13-.56.12-.16.25-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28z"/></svg></span>WhatsApp</a>
+    <a class="fab-opt" role="menuitem" href="https://wa.me/16823811576?text=Hola%20Tomas%20👋" target="_blank" rel="noopener"><span class="icon-3d sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M12.04 2C6.55 2 2.1 6.44 2.1 11.93c0 1.76.46 3.47 1.34 4.98L2 22l5.22-1.37a9.9 9.9 0 0 0 4.82 1.23h.01c5.49 0 9.94-4.45 9.94-9.93A9.88 9.88 0 0 0 12.04 2zm0 18.14h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.1.81.83-3.02-.2-.31a8.2 8.2 0 0 1-1.26-4.36c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 8.23 8.24c0 4.54-3.7 8.2-8.24 8.2z"/></svg></span>Escribir por WhatsApp</a>
+    <a class="fab-opt" role="menuitem" href="tel:+16823811576"><span class="icon-3d sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg></span>Llamar ahora</a>
   </div>
   <button class="fab" id="fabBtn" aria-expanded="false" aria-label="Abrir menú de contacto" type="button">
     <svg class="ic ic-chat" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
@@ -2173,11 +2187,17 @@ try{
   </div>
 </div>
 
+<div class="needs-back" id="needsBack"></div>
+<div class="needs-panel" id="needsPanel" role="dialog" aria-modal="false" aria-label="¿Qué necesitas hoy?" aria-hidden="true">
+  <div class="needs-h">¿Qué necesitas hoy?</div>
+  <a class="needs-opt" href="#servicio"><span class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4"/><path d="M12 17.5h.01"/></svg></span>Necesito ayuda<svg class="n-ar" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+  <a class="needs-opt" href="recetas.html"><span class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>Ver recetas<svg class="n-ar" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+  <a class="needs-opt" href="https://wa.me/16823811576?text=Hola%20Tomas%20👋,%20me%20gustar%C3%ADa%20solicitar%20una%20visita" target="_blank" rel="noopener"><span class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V10"/><path d="M9.5 21v-6h5v6"/></svg></span>Solicitar una visita<svg class="n-ar" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+  <a class="needs-opt" href="pasaporte.html"><span class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2.5" width="16" height="19" rx="2.5"/><circle cx="12" cy="10" r="3"/><path d="M8.5 17.5h7"/></svg></span>Continuar mi Pasaporte<svg class="n-ar" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+  <a class="needs-opt" href="regalo/crear.html"><span class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M3 12h18M12 8v13"/><path d="M12 8c-1.8 0-4.5-.6-4.5-2.7C7.5 3.9 8.6 3 9.8 3 11.4 3 12 5.2 12 8zm0 0c1.8 0 4.5-.6 4.5-2.7C16.5 3.9 15.4 3 14.2 3 12.6 3 12 5.2 12 8z"/></svg></span>Enviar un regalo a un amigo<svg class="n-ar" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+</div>
 <div class="bottombar" id="bottomBar" aria-hidden="true">
-  <button class="bb-main" data-cal type="button">Reservar demostración</button>
-  <a class="bb-wa" href="https://wa.me/16823811576?text=Hola%20Tomas%20👋" target="_blank" rel="noopener" aria-label="Hablar con Tomas">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-  </a>
+  <button class="bb-main" id="needsBtn" type="button" aria-expanded="false" aria-controls="needsPanel" aria-haspopup="dialog">¿Qué necesitas hoy?</button>
 </div>
 <script>
 (function(){
@@ -2263,11 +2283,40 @@ try{
     burger.addEventListener('click', function(){
       var open=links.classList.toggle('open');
       burger.setAttribute('aria-expanded', open?'true':'false');
+      document.body.classList.toggle('menu-open', open);
     });
     links.addEventListener('click', function(e){
-      if(e.target.closest('a')){ links.classList.remove('open'); burger.setAttribute('aria-expanded','false'); }
+      if(e.target.closest('a')){ links.classList.remove('open'); burger.setAttribute('aria-expanded','false'); document.body.classList.remove('menu-open'); }
     });
   }
+})();
+</script>
+<script>
+/* Panel "¿Qué necesitas hoy?" — abre, cierra al tocar fuera, al elegir y con Escape */
+(function(){
+  var btn = document.getElementById('needsBtn');
+  var panel = document.getElementById('needsPanel');
+  var back = document.getElementById('needsBack');
+  if(!btn || !panel || !back) return;
+  function abrir(){
+    panel.classList.add('show'); back.classList.add('show');
+    panel.setAttribute('aria-hidden','false'); btn.setAttribute('aria-expanded','true');
+    document.body.classList.add('needs-open');
+    if(window.trackEvent) window.trackEvent('Panel: qué necesitas hoy');
+  }
+  function cerrar(){
+    panel.classList.remove('show'); back.classList.remove('show');
+    panel.setAttribute('aria-hidden','true'); btn.setAttribute('aria-expanded','false');
+    document.body.classList.remove('needs-open');
+  }
+  btn.addEventListener('click', function(){
+    panel.classList.contains('show') ? cerrar() : abrir();
+  });
+  back.addEventListener('click', cerrar);
+  panel.addEventListener('click', function(e){ if(e.target.closest('.needs-opt')) cerrar(); });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && panel.classList.contains('show')) cerrar();
+  });
 })();
 </script>
 </body>
