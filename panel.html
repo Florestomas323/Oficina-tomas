@@ -1433,9 +1433,89 @@
     html += '<h3 class="ana-h">De dónde llegan</h3>' + lista(porFuente, totalVisitas);
     html += '<h3 class="ana-h">Con qué dispositivo</h3>' + lista(porDisp, totalVisitas);
 
+    html += anaGuardarOficina(rows);
+
     html += '<p class="ana-tip">Para saber si tus QR funcionan, usa un enlace con etiqueta: <b>tomasflores.com/?utm_source=qr</b>. Lo mismo para Instagram (<b>?utm_source=instagram</b>) o TikTok (<b>?utm_source=tiktok</b>).</p>';
     html += '<button class="btn btn-line btn-block" type="button" onclick="reloadAnalytics()" style="margin-top:18px">↻ Actualizar datos</button>';
     cont.innerHTML = html;
+  }
+
+  // ---------- Métrica: Guardar oficina digital ----------
+  let anaSgoAbierto = false;
+  window.anaSgoToggle = function(){ anaSgoAbierto = !anaSgoAbierto; renderAnalytics(); };
+
+  function anaGuardarOficina(rows){
+    const P = "Guardar oficina: ";
+    const evs = rows.filter(r => String(r.label||"").indexOf(P) === 0);
+
+    /* Un mismo dispositivo cuenta una vez por acción y por día */
+    const unicos = {};
+    evs.forEach(r => {
+      const acc = String(r.label).slice(P.length);
+      const dia = r.t ? new Date(r.t).toISOString().slice(0,10) : "0";
+      unicos[(r.vid||"?") + "|" + acc + "|" + dia] = { acc:acc, dev:r.dev||"", t:r.t||0 };
+    });
+    const lista = Object.keys(unicos).map(k => unicos[k]);
+
+    const cuenta = (a) => lista.filter(x => x.acc === a).length;
+    const aperturas = cuenta("abre panel");
+    const acciones = [
+      ["Añadir a pantalla de inicio", cuenta("pantalla de inicio") + cuenta("instalar android")],
+      ["Guardar contacto",            cuenta("guardar contacto")],
+      ["Copiar enlace",               cuenta("copiar enlace")],
+      ["Compartir página",            cuenta("compartir pagina")]
+    ];
+    const totalAcc = acciones.reduce((a,x) => a + x[1], 0);
+    const clicsGuardar = cuenta("guardar ahora");
+    const ultima = lista.reduce((a,x) => x.t > a ? x.t : a, 0);
+
+    let h = '<div class="card-form" style="margin-top:16px;border-left:4px solid #B08D4F">';
+    h += '<button type="button" onclick="anaSgoToggle()" style="display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;background:none;border:0;padding:0;font:inherit;cursor:pointer;text-align:left">'+
+      '<span><b style="font-size:16px;font-family:\'Inter Tight\',sans-serif">Guardar oficina digital</b>'+
+      '<span style="display:block;font-size:12.5px;color:#66625B;margin-top:3px">'+aperturas+' apertura'+(aperturas===1?'':'s')+' · '+totalAcc+' acción'+(totalAcc===1?'':'es')+'</span></span>'+
+      '<span style="font-size:19px;color:#8A672B">'+(anaSgoAbierto?'−':'+')+'</span></button>';
+
+    if(anaSgoAbierto){
+      if(!lista.length){
+        h += '<div class="empty-note" style="margin-top:12px">Todavía nadie ha usado esta opción en este periodo.</div>';
+      }else{
+        h += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-top:14px">';
+        [["Aperturas del panel",aperturas],["Clics en «Guardar ahora»",clicsGuardar],
+         ["Acciones completadas",totalAcc]].forEach(function(x){
+          h += '<div class="stat-card" style="background:#fff;border:1px solid #E9E6E0;border-radius:14px;padding:12px;text-align:center">'+
+               '<div style="font-size:21px;font-weight:800;font-family:\'Inter Tight\',sans-serif">'+x[1]+'</div>'+
+               '<div style="font-size:11.5px;color:#66625B;margin-top:3px">'+x[0]+'</div></div>';
+        });
+        h += '</div>';
+
+        h += '<div style="margin-top:14px"><div style="font-size:11.5px;font-weight:700;color:#8A8A82;letter-spacing:.05em;text-transform:uppercase;margin-bottom:7px">Qué eligen</div>';
+        acciones.forEach(function(a2){
+          const pct = totalAcc ? Math.round(a2[1]/totalAcc*100) : 0;
+          h += '<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:3px">'+
+               '<span>'+a2[0]+'</span><b>'+a2[1]+' · '+pct+'%</b></div>'+
+               '<div style="height:7px;background:#F1EEE7;border-radius:99px;overflow:hidden">'+
+               '<div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,#B08D4F,#8A672B);border-radius:99px"></div></div></div>';
+        });
+        h += '</div>';
+
+        /* Dispositivo y sistema, de forma anónima */
+        const movil = lista.filter(x => /iPhone|Android|iPad|Tablet/i.test(x.dev)).length;
+        const esc2  = lista.length - movil;
+        const ios   = lista.filter(x => /iPhone|iPad/i.test(x.dev)).length;
+        const andr  = lista.filter(x => /Android/i.test(x.dev)).length;
+        const otro  = lista.length - ios - andr;
+        h += '<div style="margin-top:14px"><div style="font-size:11.5px;font-weight:700;color:#8A8A82;letter-spacing:.05em;text-transform:uppercase;margin-bottom:7px">Desde qué dispositivo</div>'+
+             '<div style="font-size:13.5px;color:#66625B;line-height:1.7">'+
+             'Móvil: <b style="color:#111">'+movil+'</b> · Computadora: <b style="color:#111">'+esc2+'</b><br>'+
+             'iPhone o iPad: <b style="color:#111">'+ios+'</b> · Android: <b style="color:#111">'+andr+'</b> · Otro: <b style="color:#111">'+otro+'</b></div></div>';
+
+        h += '<div style="font-size:12.5px;color:#8A8A82;margin-top:12px">Última interacción: '+
+             (ultima ? new Date(ultima).toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"}) : "—")+'</div>';
+        h += '<p class="hint" style="margin-top:10px">Datos anónimos: se cuenta una acción por dispositivo y día, sin nombres ni teléfonos.</p>';
+      }
+    }
+    h += '</div>';
+    return h;
   }
 
   // ---------- Generador de páginas de recetas ----------

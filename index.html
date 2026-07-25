@@ -24,6 +24,12 @@
 <meta name="twitter:image" content="https://tomasflores.com/og-image.jpeg">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://tomasflores.com/">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icono-oficina-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icono-oficina-512.png">
+<meta name="apple-mobile-web-app-title" content="Tomas Flores">
+<meta name="application-name" content="Tomas Flores">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500&display=swap" rel="stylesheet">
@@ -705,6 +711,31 @@
   .bottombar .bb-wa{display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:14px;background:#fff;border:1px solid var(--hairline);color:var(--ink)}
   .bottombar .bb-wa svg{width:22px;height:22px}
   @media(min-width:768px){ .bottombar{display:none} }
+  /* ---------- Guardar esta oficina digital ---------- */
+  .sgo{position:fixed;inset:0;z-index:1300;display:none}
+  .sgo.open{display:block}
+  .sgo-back{position:absolute;inset:0;background:rgba(17,17,16,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+  .sgo-card{position:absolute;left:0;right:0;bottom:0;background:var(--paper);border-radius:24px 24px 0 0;max-height:88dvh;display:flex;flex-direction:column;box-shadow:0 -10px 50px rgba(17,17,16,.28)}
+  @media(min-width:640px){.sgo-card{left:50%;right:auto;top:50%;bottom:auto;transform:translate(-50%,-50%);width:min(440px,94vw);border-radius:24px;max-height:86dvh}}
+  .sgo-head{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--hairline);background:var(--card);border-radius:24px 24px 0 0;flex:0 0 auto}
+  .sgo-head h3{font-family:'Inter Tight',sans-serif;font-size:17px;letter-spacing:-.01em}
+  .sgo-x{margin-left:auto;width:38px;height:38px;border-radius:50%;background:var(--paper);border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;flex:0 0 auto}
+  .sgo-body{padding:14px 18px calc(20px + env(safe-area-inset-bottom));overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1}
+  .sgo-opt{display:flex;align-items:center;gap:13px;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--hairline);border-radius:16px;padding:14px;min-height:60px;font:inherit;font-size:15.5px;font-weight:600;color:var(--ink);cursor:pointer;margin-bottom:9px}
+  .sgo-opt:active{transform:scale(.99);background:#F3EFE7}
+  .sgo-opt .s-ic{flex:0 0 42px;width:42px;height:42px;border-radius:12px;background:var(--paper);border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;color:var(--gold-text)}
+  .sgo-opt .s-tx{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+  .sgo-opt .s-tx small{font-size:12.5px;color:var(--stone);font-weight:500;margin-top:2px}
+  .sgo-steps{background:var(--card);border:1px solid var(--hairline);border-radius:16px;padding:16px;margin-bottom:10px}
+  .sgo-steps b{display:block;font-size:14.5px;margin-bottom:10px}
+  .sgo-steps ol{margin:0;padding-left:20px}
+  .sgo-steps li{font-size:14px;line-height:1.6;color:var(--stone);margin-bottom:6px}
+  .sgo-back-btn{display:inline-flex;align-items:center;gap:7px;background:none;border:0;color:var(--gold-text);font:inherit;font-size:14px;font-weight:600;padding:10px 4px;min-height:44px;cursor:pointer}
+  /* Tarjeta discreta al final de la portada */
+  .sgo-card2{background:var(--card);border:1px solid var(--hairline);border-left:4px solid var(--gold);border-radius:20px;padding:20px;max-width:560px;margin:26px auto 0;text-align:center}
+  .sgo-card2 h3{font-family:'Inter Tight',sans-serif;font-size:19px;letter-spacing:-.02em}
+  .sgo-card2 p{color:var(--stone);font-size:14.5px;line-height:1.55;margin:8px auto 14px;max-width:38ch}
+  body.sgo-open .fab-wrap,body.sgo-open .bottombar{opacity:0;pointer-events:none}
   /* ---------- Centro de ayuda ---------- */
   .ay-modal{position:fixed;inset:0;z-index:1200;display:none}
   .ay-modal.open{display:block}
@@ -1541,6 +1572,14 @@
   </p>
 </section>
 
+<div class="wrap" style="padding-bottom:8px">
+  <div class="sgo-card2 rv" id="sgoCard">
+    <h3>Guarda esta oficina digital</h3>
+    <p>Ten siempre a mano mis recetas, ayuda, beneficios y contacto directo.</p>
+    <button class="btn btn-solid" type="button" id="sgoOpen2" aria-label="Guardar esta oficina digital">Guardar ahora</button>
+  </div>
+</div>
+
 <footer>
   <b>Tomas Flores</b> · "Más que vender, sirvo."<br>
   <span class="foot-legal">Sitio personal de Tomas Flores, Distribuidor Autorizado Independiente de Royal Prestige®. Royal Prestige® y sus marcas pertenecen a sus respectivos propietarios.</span><br>
@@ -2235,6 +2274,16 @@ try{
   </div>
 </div>
 
+<div class="sgo" id="sgoModal" aria-hidden="true">
+  <div class="sgo-back" data-sgoclose></div>
+  <div class="sgo-card" role="dialog" aria-modal="true" aria-labelledby="sgoTitle">
+    <div class="sgo-head">
+      <h3 id="sgoTitle">Guarda esta oficina digital</h3>
+      <button class="sgo-x" type="button" data-sgoclose aria-label="Cerrar">&#10005;</button>
+    </div>
+    <div class="sgo-body" id="sgoBody"></div>
+  </div>
+</div>
 <div class="ay-modal" id="ayModal" aria-hidden="true">
   <div class="ay-back" data-ayclose></div>
   <div class="ay-card" role="dialog" aria-modal="true" aria-labelledby="ayTitle">
@@ -2254,6 +2303,7 @@ try{
   <a class="needs-opt" href="https://wa.me/16823811576?text=Hola%20Tomas%20👋,%20me%20gustar%C3%ADa%20solicitar%20una%20visita" target="_blank" rel="noopener"><span class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V10"/><path d="M9.5 21v-6h5v6"/></svg></span>Solicitar una visita<svg class="n-ar" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
   <a class="needs-opt" href="pasaporte.html"><span class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2.5" width="16" height="19" rx="2.5"/><circle cx="12" cy="10" r="3"/><path d="M8.5 17.5h7"/></svg></span>Continuar mi Pasaporte<svg class="n-ar" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
   <a class="needs-opt" href="regalo/crear.html"><span class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M3 12h18M12 8v13"/><path d="M12 8c-1.8 0-4.5-.6-4.5-2.7C7.5 3.9 8.6 3 9.8 3 11.4 3 12 5.2 12 8zm0 0c1.8 0 4.5-.6 4.5-2.7C16.5 3.9 15.4 3 14.2 3 12.6 3 12 5.2 12 8z"/></svg></span>Enviar un regalo a un amigo<svg class="n-ar" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+  <button class="needs-opt" type="button" id="sgoOpen" aria-label="Guardar esta oficina digital"><span class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><path d="M9.2 10.6 12 8.3l2.8 2.3"/><path d="M10.1 10.2V13h3.8v-2.8"/></svg></span>Guardar esta oficina digital<svg class="n-ar" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
 </div>
 <div class="bottombar" id="bottomBar" aria-hidden="true">
   <button class="bb-main" id="needsBtn" type="button" aria-expanded="false" aria-controls="needsPanel" aria-haspopup="dialog">¿Qué necesitas hoy?</button>
@@ -2747,6 +2797,201 @@ var GARANTIA_URL = "garantia.html";
   });
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape' && modal.classList.contains('open')) cerrar();
+  });
+})();
+</script>
+<script>
+/* ============ GUARDAR ESTA OFICINA DIGITAL ============
+   Reutiliza la vCard existente, el sistema de eventos existente y el
+   diseño actual. No crea PWA ni service workers. */
+(function(){
+  var modal = document.getElementById('sgoModal');
+  var body  = document.getElementById('sgoBody');
+  if(!modal || !body) return;
+
+  var URL_CANON = (function(){
+    var l = document.querySelector('link[rel="canonical"]');
+    return (l && l.href) ? l.href : location.href.split('#')[0];
+  })();
+  var TEXTO_COMPARTIR = 'Te comparto la oficina digital de Tomás Flores. Aquí puedes encontrar recetas, ayuda, beneficios y contacto directo.';
+  var instalable = null;   /* evento de instalación, si el navegador lo ofrece */
+
+  function ev(n){ if(window.trackEvent) window.trackEvent('Guardar oficina: ' + n); }
+
+  function so(){
+    var u = navigator.userAgent || '';
+    if(/iPad|iPhone|iPod/.test(u) || (/Macintosh/.test(u) && navigator.maxTouchPoints > 1)) return 'ios';
+    if(/Android/i.test(u)) return 'android';
+    return 'otro';
+  }
+
+  var IC = function(d){
+    return '<span class="s-ic"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg></span>';
+  };
+
+  function menu(){
+    var h = '';
+    h += '<p style="font-size:14px;color:var(--stone);line-height:1.55;margin-bottom:14px">Elige cómo prefieres conservarla.</p>';
+    h += '<button class="sgo-opt" type="button" data-sgo="inicio" aria-label="Añadir a pantalla de inicio">'+
+      IC('<rect x="5" y="2" width="14" height="20" rx="2.5"/><path d="M12 7v6M9 10h6"/><path d="M10.5 18.5h3"/>')+
+      '<span class="s-tx">Añadir a pantalla de inicio<small>Como si fuera una aplicación</small></span></button>';
+    h += '<button class="sgo-opt" type="button" data-sgo="contacto" aria-label="Guardar contacto">'+
+      IC('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/>')+
+      '<span class="s-tx">Guardar contacto<small>Me tienes en tu agenda</small></span></button>';
+    h += '<button class="sgo-opt" type="button" data-sgo="copiar" aria-label="Copiar enlace">'+
+      IC('<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>')+
+      '<span class="s-tx">Copiar enlace<small>Para pegarlo donde quieras</small></span></button>';
+    h += '<button class="sgo-opt" type="button" data-sgo="compartir" aria-label="Compartir página">'+
+      IC('<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>')+
+      '<span class="s-tx">Compartir página<small>Con quien tú quieras</small></span></button>';
+    return h;
+  }
+
+  function pasos(){
+    var s2 = so(), h = '';
+    if(s2 === 'ios'){
+      h += '<div class="sgo-steps"><b>En tu iPhone o iPad</b><ol>'+
+        '<li>Toca el botón <b>Compartir</b> del navegador (el cuadrito con la flecha hacia arriba).</li>'+
+        '<li>Desliza y elige <b>Añadir a pantalla de inicio</b>.</li>'+
+        '<li>Confirma tocando <b>Añadir</b>.</li></ol>'+
+        '<p style="font-size:13px;color:var(--stone);margin-top:10px;line-height:1.5">Safari necesita que completes estos pasos; no puedo hacerlo por ti desde aquí.</p></div>';
+    }else if(s2 === 'android'){
+      h += '<div class="sgo-steps"><b>En tu Android</b><ol>'+
+        '<li>Abre el menú del navegador (los tres puntos).</li>'+
+        '<li>Elige <b>Añadir a pantalla principal</b> o <b>Instalar aplicación</b>.</li>'+
+        '<li>Confirma.</li></ol></div>';
+      if(instalable){
+        h += '<button class="btn btn-solid" type="button" id="sgoInstalar" style="width:100%;justify-content:center;min-height:50px">Añadir ahora</button>';
+      }
+    }else{
+      h += '<div class="sgo-steps"><b>En tu computadora</b><ol>'+
+        '<li>Guarda esta página en tus favoritos con <b>Ctrl + D</b> (o <b>Cmd + D</b> en Mac).</li>'+
+        '<li>O copia el enlace y ábrelo desde tu teléfono.</li></ol></div>';
+    }
+    h += '<button class="sgo-back-btn" type="button" data-sgo="volver">&#8592; Volver</button>';
+    return h;
+  }
+
+  function pintar(vista){
+    body.innerHTML = (vista === 'pasos') ? pasos() : menu();
+    body.scrollTop = 0;
+    var ins = document.getElementById('sgoInstalar');
+    if(ins) ins.addEventListener('click', async function(){
+      if(!instalable) return;
+      ev('instalar android');
+      try{ instalable.prompt(); await instalable.userChoice; }catch(e){}
+      instalable = null;
+      cerrar();
+    });
+  }
+
+  function abrir(){
+    pintar('menu');
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.classList.add('lock','sgo-open');
+    var f = body.querySelector('.sgo-opt');
+    if(f) f.focus();
+    ev('abre panel');
+  }
+  function cerrar(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.classList.remove('lock','sgo-open');
+    body.innerHTML = '';
+  }
+
+  function copiar(){
+    var listo = function(){ if(window.toast) toast('Enlace copiado'); ev('copiar enlace'); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(URL_CANON).then(listo).catch(alterno);
+    }else{ alterno(); }
+    function alterno(){
+      /* Si el navegador bloquea el portapapeles, se selecciona para copiar a mano */
+      try{
+        var t = document.createElement('textarea');
+        t.value = URL_CANON;
+        t.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:420px;padding:14px;font-size:16px;border:2px solid #B08D4F;border-radius:12px;z-index:2000';
+        document.body.appendChild(t);
+        t.focus(); t.select();
+        var ok = false;
+        try{ ok = document.execCommand('copy'); }catch(e){}
+        t.remove();
+        if(ok){ listo(); }
+        else if(window.toast) toast('Copia el enlace: ' + URL_CANON);
+      }catch(e){ if(window.toast) toast('Copia el enlace: ' + URL_CANON); }
+    }
+  }
+
+  async function compartir(){
+    if(navigator.share){
+      try{
+        await navigator.share({ title:'Tomas Flores — Royal Prestige', text:TEXTO_COMPARTIR, url:URL_CANON });
+        ev('compartir pagina');
+        cerrar();
+      }catch(err){
+        if(err && err.name === 'AbortError') return;   /* el usuario canceló */
+        copiar();
+      }
+    }else{ copiar(); }
+  }
+
+  /* Un mismo toque no debe contarse dos veces */
+  var ultimo = 0;
+  body.addEventListener('click', function(e){
+    var b = e.target.closest('[data-sgo]');
+    if(!b) return;
+    var ahora = Date.now();
+    if(ahora - ultimo < 600) return;
+    ultimo = ahora;
+    var q = b.getAttribute('data-sgo');
+    if(q === 'volver'){ pintar('menu'); return; }
+    if(q === 'inicio'){ ev('pantalla de inicio'); pintar('pasos'); return; }
+    if(q === 'contacto'){
+      ev('guardar contacto');
+      if(typeof __saveContactVCard === 'function') __saveContactVCard();
+      cerrar(); return;
+    }
+    if(q === 'copiar'){ copiar(); return; }
+    if(q === 'compartir'){ compartir(); return; }
+  });
+
+  ['sgoOpen','sgoOpen2'].forEach(function(id){
+    var b = document.getElementById(id);
+    if(b) b.addEventListener('click', function(){
+      if(id === 'sgoOpen2') ev('guardar ahora');
+      var np = document.getElementById('needsPanel');
+      if(np && np.classList.contains('show')){
+        np.classList.remove('show');
+        var nb = document.getElementById('needsBack');
+        if(nb) nb.classList.remove('show');
+        document.body.classList.remove('needs-open');
+        var nx = document.getElementById('needsBtn');
+        if(nx) nx.setAttribute('aria-expanded','false');
+      }
+      abrir();
+    });
+  });
+
+  document.addEventListener('click', function(e){
+    if(e.target.closest('[data-sgoclose]')) cerrar();
+  });
+  document.addEventListener('keydown', function(e){
+    if(!modal.classList.contains('open')) return;
+    if(e.key === 'Escape'){ cerrar(); return; }
+    if(e.key === 'Tab'){
+      /* El foco se queda dentro del panel mientras está abierto */
+      var f = modal.querySelectorAll('button, [href], input, select, textarea');
+      if(!f.length) return;
+      var pri = f[0], ult = f[f.length-1];
+      if(e.shiftKey && document.activeElement === pri){ e.preventDefault(); ult.focus(); }
+      else if(!e.shiftKey && document.activeElement === ult){ e.preventDefault(); pri.focus(); }
+    }
+  });
+
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    instalable = e;
   });
 })();
 </script>
