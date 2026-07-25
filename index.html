@@ -224,6 +224,15 @@
   .rec-img img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
   .rec-img .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:52px}
   .rec-body{padding:16px 18px 18px}
+  /* Receta de la semana: borde dorado arriba + sello sobre la foto */
+  .rec-card.destacada{border-top:4px solid var(--gold);box-shadow:0 2px 6px rgba(17,17,16,.06),0 14px 34px rgba(176,141,79,.20)}
+  @media(hover:hover){.rec-card.destacada:hover{box-shadow:0 4px 10px rgba(17,17,16,.08),0 20px 44px rgba(176,141,79,.26)}}
+  .rec-sello{position:absolute;left:10px;top:10px;z-index:2;display:inline-flex;align-items:center;gap:6px;
+    background:var(--gold);color:#fff;border-radius:999px;padding:7px 12px;
+    font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    box-shadow:0 3px 10px rgba(17,17,16,.28)}
+  .rec-sello svg{width:13px;height:13px;flex:0 0 auto}
+  @media(max-width:639px){.rec-sello{font-size:11.5px;padding:8px 14px}}
   .rec-body h3{font-family:'Inter Tight',sans-serif;font-weight:600;font-size:18px;letter-spacing:-.015em;line-height:1.25}
   .rec-body p{color:var(--stone);font-size:13.5px;font-weight:500;margin-top:6px}
   .see-all{
@@ -1910,12 +1919,13 @@ try{
   const GAL_BACKUP = ["foto-galeria-1.jpg", "foto-galeria-2.jpg", "foto-galeria-3.jpg", "foto-galeria-4.jpg"];
   const FEATURED = ["costillas-bbq", "pasta-alfredo", "flan-casero"];
 
-  const [st, rs, vs, gs, us] = await Promise.all([
+  const [st, rs, vs, gs, us, fe] = await Promise.all([
     getDoc(doc(db,"settings","public")),
     getDocs(pub("recipes")),
     getDocs(pub("testimonials")),
     getDocs(pub("gallery")),
-    getDocs(collection(db,"upcoming"))
+    getDocs(collection(db,"upcoming")),
+    getDoc(doc(db,"settings","featured")).catch(()=>null)
   ]);
 
   // Textos y configuración
@@ -1942,16 +1952,57 @@ try{
 
   // Recetas destacadas (3), foto de respaldo por id
   const recs = rs.docs.map(d=>({id:d.id, ...d.data()})).sort(byOrder);
+
+  /* Semana ISO: cambia cada lunes. Misma regla que usa el recetario,
+     para que la receta de la semana coincida en las dos páginas. */
+  const semanaISO = (d)=>{
+    const f = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    const dia = f.getUTCDay() || 7;
+    f.setUTCDate(f.getUTCDate() + 4 - dia);
+    const ini = new Date(Date.UTC(f.getUTCFullYear(), 0, 1));
+    return { semana: Math.ceil(((f - ini) / 86400000 + 1) / 7), anio: f.getUTCFullYear() };
+  };
+  /* Prioridad: la que Tomas eligió a mano si está vigente; si no, rotación semanal */
+  const laDeLaSemana = (lista, cfg)=>{
+    if(!lista.length) return null;
+    if(cfg && cfg.mode === "manual" && cfg.recipeId){
+      const existe = lista.find(r=>r.id === cfg.recipeId);
+      const hoy = new Date(); hoy.setHours(0,0,0,0);
+      const desde = cfg.from ? new Date(cfg.from + "T00:00:00") : null;
+      const hasta = cfg.to   ? new Date(cfg.to   + "T23:59:59") : null;
+      const vigente = (!desde || hoy >= desde) && (!hasta || new Date() <= hasta);
+      if(existe && vigente) return existe;
+    }
+    const s = semanaISO(new Date());
+    return lista[(s.anio * 53 + s.semana) % lista.length];
+  };
+
   if(recs.length){
-    let picks = FEATURED.map(id=>recs.find(r=>r.id===id)).filter(Boolean);
-    if(picks.length < 3) picks = recs.slice(0,3);
+    const cfgFe = (fe && fe.exists && fe.exists()) ? fe.data() : null;
+    const dest = laDeLaSemana(recs, cfgFe);
+
+    /* La de la semana primero; el resto completa hasta tres sin repetir */
+    let picks = [];
+    if(dest) picks.push(dest);
+    FEATURED.forEach(id=>{
+      if(picks.length >= 3) return;
+      const r = recs.find(x=>x.id === id);
+      if(r && !picks.some(p=>p.id === r.id)) picks.push(r);
+    });
+    recs.forEach(r=>{
+      if(picks.length < 3 && !picks.some(p=>p.id === r.id)) picks.push(r);
+    });
     picks = picks.slice(0,3);
+
+    const SELLO = '<span class="rec-sello"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>Receta de la semana</span>';
+
     const grid = document.getElementById("recGrid");
     if(grid && picks.length){
       grid.innerHTML = picks.map((r,i)=>{
+        const esDest = !!(dest && r.id === dest.id);
         const img = (r.img && (r.img.indexOf("http")===0 || r.img.indexOf("data:")===0)) ? r.img : (IMG_BACKUP[r.id] || "");
-        return '<a class="rec-card rv in" href="recetas.html#/receta/'+r.id+'"'+(i?' style="transition-delay:'+(i*80)+'ms"':'')+'>'+
-        '<div class="rec-img">'+(img?'<img src="'+img+'" alt="'+esc(r.name)+'" loading="lazy">':'<div class="ph" style="background:'+(r.tone||"#5A4630")+'"></div>')+'</div>'+
+        return '<a class="rec-card rv in'+(esDest?' destacada':'')+'" href="recetas.html#/receta/'+r.id+'"'+(i?' style="transition-delay:'+(i*80)+'ms"':'')+'>'+
+        '<div class="rec-img">'+(esDest?SELLO:'')+(img?'<img src="'+img+'" alt="'+esc(r.name)+'" loading="lazy">':'<div class="ph" style="background:'+(r.tone||"#5A4630")+'"></div>')+'</div>'+
         '<div class="rec-body"><h3>'+esc(r.name)+'</h3><p>'+esc(r.time)+' · '+esc(r.diff)+'</p></div></a>';
       }).join("");
     }
