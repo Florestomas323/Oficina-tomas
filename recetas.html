@@ -176,6 +176,43 @@
     transition:transform .25s var(--ease);z-index:2;
   }
   .fav-btn:active{transform:scale(.85)}
+  /* --- Receta destacada de la semana --- */
+  .feat-wrap{max-width:1120px;margin:0 auto;padding:0 20px 4px}
+  @media(min-width:768px){.feat-wrap{padding:0 40px 4px}}
+  .feat{display:block;background:var(--card,#fff);border:1px solid var(--hairline,#E9E6E0);border-top:4px solid var(--gold,#B08D4F);border-radius:22px;overflow:hidden;box-shadow:0 1px 2px rgba(17,17,16,.04),0 8px 24px rgba(17,17,16,.06)}
+  .feat-in{display:flex;flex-direction:column}
+  @media(min-width:720px){.feat-in{flex-direction:row;align-items:stretch}}
+  .feat-img{position:relative;aspect-ratio:16/10;background:#EDEAE4;overflow:hidden;flex:0 0 auto}
+  @media(min-width:720px){.feat-img{width:44%;aspect-ratio:auto;min-height:250px}}
+  .feat-img img{width:100%;height:100%;object-fit:cover;display:block}
+  .feat-tag{position:absolute;left:12px;top:12px;background:var(--gold,#B08D4F);color:#fff;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:6px 12px}
+  .feat-body{padding:20px;display:flex;flex-direction:column;flex:1}
+  .feat-eyebrow{font-family:'Fraunces',serif;font-style:italic;font-size:14.5px;color:var(--gold-text,#8A672B)}
+  .feat-body h2{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:clamp(21px,5vw,27px);letter-spacing:-.02em;line-height:1.15;margin-top:5px}
+  .feat-desc{color:var(--stone,#66625B);font-size:14.5px;line-height:1.55;margin-top:9px}
+  .feat-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;font-size:12.5px;color:var(--stone,#66625B)}
+  .feat-meta span{display:inline-flex;align-items:center;gap:6px;background:#F7F5F0;border-radius:999px;padding:6px 12px}
+  .feat-acts{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:16px}
+  .feat-go{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--ink,#111110);color:#fff;border:0;border-radius:999px;font:inherit;font-size:15px;font-weight:600;padding:13px 22px;min-height:46px;cursor:pointer}
+  .feat-go:active{transform:scale(.98)}
+  /* --- Botones me gusta y guardar --- */
+  .rx{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;min-width:44px;border:1.5px solid var(--hairline,#E9E6E0);background:#fff;border-radius:999px;padding:9px 15px;font:inherit;font-size:14px;font-weight:600;color:var(--stone,#66625B);cursor:pointer}
+  .rx svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;transition:all .22s}
+  .rx:active{transform:scale(.95)}
+  .rx.on{border-color:#E0455A;color:#E0455A}
+  .rx.on svg{fill:#E0455A;stroke:#E0455A}
+  .rx.sv.on{border-color:var(--gold,#B08D4F);color:var(--gold-text,#8A672B)}
+  .rx.sv.on svg{fill:var(--gold,#B08D4F);stroke:var(--gold,#B08D4F)}
+  .rx .n{font-variant-numeric:tabular-nums}
+  @keyframes rxPop{0%{transform:scale(1)}45%{transform:scale(1.28)}100%{transform:scale(1)}}
+  .rx.pop svg{animation:rxPop .4s var(--ease)}
+  /* Corazón de me gusta sobre la tarjeta de la rejilla */
+  .like-btn{position:absolute;left:12px;bottom:12px;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:0;border-radius:999px;padding:7px 12px;font:inherit;font-size:12.5px;font-weight:700;color:#6B655C;cursor:pointer;box-shadow:0 2px 8px rgba(17,17,16,.12);min-height:34px}
+  .like-btn svg{width:15px;height:15px;fill:none;stroke:#9A958C;stroke-width:2.2;transition:all .22s}
+  .like-btn.on{color:#E0455A}
+  .like-btn.on svg{fill:#E0455A;stroke:#E0455A}
+  .like-btn:active{transform:scale(.94)}
+  .like-btn.pop svg{animation:rxPop .4s var(--ease)}
   .fav-btn svg{width:19px;height:19px;fill:none;stroke:#9A958C;stroke-width:2;transition:all .25s}
   .fav-btn.faved svg{fill:#E0455A;stroke:#E0455A}
   .fav-btn.pop svg{animation:favPop .4s var(--ease)}
@@ -519,6 +556,10 @@
     </div>
   </div>
 
+  <div class="feat-wrap" id="featWrap" style="display:none">
+    <article class="feat" id="featCard"></article>
+  </div>
+
   <nav class="filters" id="filters" aria-label="Filtrar recetas">
     <div class="chip-row" id="chipRow"></div>
   </nav>
@@ -794,6 +835,7 @@ function $(s){ return document.querySelector(s); }
 var potIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10h16v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-6z"/><path d="M2 10h20M8 6c0-1.5 8-1.5 8 0"/></svg>';
 var arrow = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
 var heartSvg = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2.6 4.6 6.4 4.6c2.2 0 3.9 1.2 5.6 3.3 1.7-2.1 3.4-3.3 5.6-3.3 3.8 0 6 3.8 4.4 7.1C19.5 16.4 12 21 12 21z"/></svg>';
+var markSvg = '<svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
 
 function wa(msg){ return 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(msg); }
 
@@ -823,6 +865,52 @@ function toggleFav(id){
   var added = i === -1;
   if(added){ favs.push(id); } else { favs.splice(i,1); }
   setFavs(favs);
+  return added;
+}
+
+/* --- Me gusta (marca anónima por navegador + contador en la nube) --- */
+var memLikes = [];
+var RSTATS = {};          /* {recetaId: {likes, saves}} */
+function getLikes(){
+  try{ return JSON.parse(localStorage.getItem('tf_likes') || '[]'); }
+  catch(e){ return memLikes; }
+}
+function setLikes(list){
+  memLikes = list;
+  try{ localStorage.setItem('tf_likes', JSON.stringify(list)); }catch(e){}
+}
+function isLiked(id){ return getLikes().indexOf(id) !== -1; }
+function statOf(id, campo){
+  var r = RSTATS[id];
+  return (r && typeof r[campo] === 'number' && r[campo] > 0) ? r[campo] : 0;
+}
+function paintLike(btn, id){
+  var on = isLiked(id);
+  btn.classList.toggle('on', on);
+  btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  var n = btn.querySelector('.n');
+  if(n){ var v = statOf(id,'likes'); n.textContent = v > 0 ? v : ''; }
+}
+function paintSave(btn, id){
+  var on = isFav(id);
+  btn.classList.toggle('on', on);
+  btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+}
+/* Suma o resta de uno en uno en la nube; si falla, la página sigue funcionando */
+function bumpStat(id, campo, delta){
+  if(!window.__rxBump) return;
+  window.__rxBump(id, campo, delta);
+}
+function toggleLike(id){
+  var likes = getLikes();
+  var i = likes.indexOf(id);
+  var added = i === -1;
+  if(added){ likes.push(id); } else { likes.splice(i,1); }
+  setLikes(likes);
+  if(!RSTATS[id]) RSTATS[id] = {likes:0, saves:0};
+  RSTATS[id].likes = Math.max(0, (RSTATS[id].likes||0) + (added?1:-1));
+  bumpStat(id, 'likes', added?1:-1);
+  if(window.trackEvent) window.trackEvent((added?'Receta me gusta: ':'Receta quita me gusta: ') + id);
   return added;
 }
 
@@ -912,7 +1000,8 @@ function renderGrid(){
     return '<div class="card rv" style="transition-delay:' + Math.min(i*60,240) + 'ms" data-recipe="' + r.id + '" role="button" tabindex="0" aria-label="' + r.name + '">' +
       '<div class="card-img">' + imgTag(r,'card-img') +
         '<span class="badge">' + r.badge + '</span>' +
-        '<button class="fav-btn' + (isFav(r.id)?' faved':'') + '" data-fav="' + r.id + '" aria-label="Guardar en favoritos">' + heartSvg + '</button>' +
+        '<button class="fav-btn' + (isFav(r.id)?' faved':'') + '" data-fav="' + r.id + '" aria-label="Guardar receta" aria-pressed="' + (isFav(r.id)?'true':'false') + '">' + markSvg + '</button>' +
+        '<button class="like-btn' + (isLiked(r.id)?' on':'') + '" data-like="' + r.id + '" aria-label="Me gusta" aria-pressed="' + (isLiked(r.id)?'true':'false') + '">' + heartSvg + '<span class="n">' + (statOf(r.id,'likes')||'') + '</span></button>' +
       '</div>' +
       '<div class="card-body">' +
         '<h3>' + r.name + '</h3>' +
@@ -926,7 +1015,7 @@ function renderGrid(){
   for(var i=0;i<cards.length;i++){
     (function(el){
       el.addEventListener('click', function(e){
-        if(e.target.closest('[data-fav]')) return;
+        if(e.target.closest('[data-fav]') || e.target.closest('[data-like]')) return;
         location.hash = '#/receta/' + el.dataset.recipe;
       });
       el.addEventListener('keydown', function(e){
@@ -935,6 +1024,7 @@ function renderGrid(){
     })(cards[i]);
   }
   bindFavButtons(grid);
+  bindLikeButtons(grid);
   observeReveals();
 }
 
@@ -948,12 +1038,114 @@ function bindFavButtons(root){
         var all = document.querySelectorAll('[data-fav="' + b.dataset.fav + '"]');
         for(var j=0;j<all.length;j++){ all[j].classList.toggle('faved', added); }
         b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop');
-        toast(added ? 'Guardada en tus favoritos' : 'Eliminada de favoritos');
+        toast(added ? 'Receta guardada en favoritos' : 'Receta eliminada de favoritos');
+        if(!RSTATS[b.dataset.fav]) RSTATS[b.dataset.fav] = {likes:0, saves:0};
+        RSTATS[b.dataset.fav].saves = Math.max(0, (RSTATS[b.dataset.fav].saves||0) + (added?1:-1));
+        bumpStat(b.dataset.fav, 'saves', added?1:-1);
+        if(window.trackEvent) window.trackEvent((added?'Receta guardada: ':'Receta quita guardado: ') + b.dataset.fav);
         if(activeFilter === 'favoritos' && !added){ renderGrid(); }
       });
     })(btns[i]);
   }
 }
+
+function bindLikeButtons(root){
+  var btns = root.querySelectorAll('[data-like]');
+  for(var i=0;i<btns.length;i++){
+    (function(b){
+      b.addEventListener('click', function(e){
+        e.stopPropagation();
+        var id = b.dataset.like;
+        var added = toggleLike(id);
+        var all = document.querySelectorAll('[data-like="' + id + '"]');
+        for(var j=0;j<all.length;j++){
+          all[j].classList.toggle('on', added);
+          all[j].setAttribute('aria-pressed', added ? 'true' : 'false');
+          var n = all[j].querySelector('.n');
+          if(n){ var v = statOf(id,'likes'); n.textContent = v > 0 ? v : ''; }
+        }
+        b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop');
+        toast(added ? '¡Gracias! Te gustó esta receta' : 'Quitaste tu me gusta');
+      });
+    })(btns[i]);
+  }
+}
+
+/* =============== RECETA DESTACADA DE LA SEMANA =============== */
+var FEATURED = null;   /* { id, modo } */
+
+/* Número de semana ISO: cambia cada lunes */
+function semanaISO(d){
+  var f = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  var dia = f.getUTCDay() || 7;
+  f.setUTCDate(f.getUTCDate() + 4 - dia);
+  var ini = new Date(Date.UTC(f.getUTCFullYear(), 0, 1));
+  return { semana: Math.ceil(((f - ini) / 86400000 + 1) / 7), anio: f.getUTCFullYear() };
+}
+
+/* Prioridad: manual vigente > rotación automática por semana */
+function resolverDestacada(cfg){
+  var lista = (window.RECIPES || []).slice();
+  if(!lista.length) return null;
+  if(cfg && cfg.mode === 'manual' && cfg.recipeId){
+    var existe = lista.filter(function(r){ return r.id === cfg.recipeId; })[0];
+    var hoy = new Date(); hoy.setHours(0,0,0,0);
+    var desde = cfg.from ? new Date(cfg.from + 'T00:00:00') : null;
+    var hasta = cfg.to   ? new Date(cfg.to   + 'T23:59:59') : null;
+    var vigente = (!desde || hoy >= desde) && (!hasta || new Date() <= hasta);
+    if(existe && vigente) return { id: existe.id, modo: 'manual' };
+  }
+  var s = semanaISO(new Date());
+  var idx = (s.anio * 53 + s.semana) % lista.length;
+  return { id: lista[idx].id, modo: 'auto' };
+}
+
+function renderFeatured(){
+  var wrap = document.getElementById('featWrap');
+  var card = document.getElementById('featCard');
+  if(!wrap || !card || !FEATURED) return;
+  var r = (window.RECIPES || []).filter(function(x){ return x.id === FEATURED.id; })[0];
+  if(!r){ wrap.style.display = 'none'; return; }
+
+  var img = r.img
+    ? '<img src="' + r.img + '" alt="' + r.name + '" loading="lazy">'
+    : '<div style="width:100%;height:100%;background:' + (r.tone||'#5A4630') + '"></div>';
+  var meta = '';
+  if(r.time)    meta += '<span>' + r.time + '</span>';
+  if(r.diff)    meta += '<span>' + r.diff + '</span>';
+  if(r.utensil) meta += '<span>' + potIcon + ' ' + r.utensil + '</span>';
+
+  card.innerHTML =
+    '<div class="feat-in">' +
+      '<div class="feat-img">' + img + '<span class="feat-tag">Destacada esta semana</span></div>' +
+      '<div class="feat-body">' +
+        '<span class="feat-eyebrow">Receta destacada de la semana</span>' +
+        '<h2>' + r.name + '</h2>' +
+        (r.desc ? '<p class="feat-desc">' + r.desc + '</p>' : '') +
+        (meta ? '<div class="feat-meta">' + meta + '</div>' : '') +
+        '<div class="feat-acts">' +
+          '<button class="feat-go" type="button" data-featgo="' + r.id + '">Ver receta completa ' + arrow + '</button>' +
+          '<button class="rx' + (isLiked(r.id)?' on':'') + '" data-like="' + r.id + '" aria-label="Me gusta" aria-pressed="' + (isLiked(r.id)?'true':'false') + '">' + heartSvg + '<span class="n">' + (statOf(r.id,'likes')||'') + '</span></button>' +
+          '<button class="rx sv' + (isFav(r.id)?' on':'') + '" data-fav="' + r.id + '" aria-label="Guardar receta" aria-pressed="' + (isFav(r.id)?'true':'false') + '">' + markSvg + '<span>Guardar</span></button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  var go = card.querySelector('[data-featgo]');
+  if(go) go.addEventListener('click', function(){
+    if(window.trackEvent) window.trackEvent('Receta destacada abierta: ' + r.id);
+    location.hash = '#/receta/' + r.id;
+  });
+  bindFavButtons(card);
+  bindLikeButtons(card);
+  wrap.style.display = 'block';
+  if(!renderFeatured._visto){
+    renderFeatured._visto = true;
+    if(window.trackEvent) window.trackEvent('Receta destacada vista: ' + r.id + ' (' + FEATURED.modo + ')');
+  }
+}
+window.renderFeatured = renderFeatured;
+window.resolverDestacada = resolverDestacada;
 
 /* =============== MOOD + PRÓXIMAMENTE =============== */
 $('#moodGrid').innerHTML = MOODS.map(function(m){
@@ -1176,7 +1368,7 @@ route();
 /* ETAPA 4 — El recetario lee de la nube (Firestore). Si algo falla, usa el contenido integrado. */
 try{
   const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
-  const { getFirestore, collection, getDocs, getDoc, doc, query, where } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+  const { getFirestore, collection, getDocs, getDoc, doc, query, where, setDoc, deleteDoc, increment } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
   const app = initializeApp({
     apiKey:"AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",
     authDomain:"oficina-digital-tomas.firebaseapp.com",
@@ -1191,11 +1383,41 @@ try{
   const IMG_BACKUP = {"costillas-bbq": "foto-costillas-bbq.jpg", "tamales-caseros": "foto-tamales-caseros.jpg", "pollo-romero": "foto-pollo-romero.jpg", "ribeye-mantequilla": "foto-ribeye-mantequilla.jpg", "pasta-alfredo": "foto-pasta-alfredo.jpg", "flan-casero": "foto-flan-casero.jpg"};
 
   const pub = (c)=> query(collection(db,c), where("status","==","published"), where("visible","==",true));
-  const [st, rs, us] = await Promise.all([
+  const [st, rs, us, fe, sta] = await Promise.all([
     getDoc(doc(db,"settings","public")),
     getDocs(pub("recipes")),
-    getDocs(pub("upcoming"))
+    getDocs(pub("upcoming")),
+    getDoc(doc(db,"settings","featured")).catch(()=>null),
+    getDocs(collection(db,"recipeStats")).catch(()=>null)
   ]);
+
+  /* Contadores públicos de me gusta y guardados */
+  if(sta){
+    sta.docs.forEach(d=>{
+      const x = d.data() || {};
+      window.RSTATS[d.id] = { likes: x.likes||0, saves: x.saves||0 };
+    });
+  }
+
+  /* Suma o resta de uno en uno. Una marca anónima evita contar dos veces
+     desde el mismo navegador. Si algo falla, la página sigue funcionando. */
+  window.__rxBump = async function(id, campo, delta){
+    try{
+      let vid = "";
+      try{ vid = localStorage.getItem("_vid") || ""; }catch(e){}
+      if(campo === "likes" && vid){
+        const marca = doc(db, "recipeLikes", id + "__" + vid);
+        if(delta > 0){
+          const y = await getDoc(marca);
+          if(y.exists()) return;            /* este navegador ya dio me gusta */
+          await setDoc(marca, { recipeId: id });
+        }else{
+          await deleteDoc(marca).catch(()=>{});
+        }
+      }
+      await setDoc(doc(db, "recipeStats", id), { [campo]: increment(delta) }, { merge:true });
+    }catch(e){ /* el contador local ya se actualizó; no se interrumpe al usuario */ }
+  };
 
   // Recetas desde la nube (texto), con foto de respaldo por id
   const rlist = rs.docs.map(d=>{
@@ -1231,6 +1453,13 @@ try{
     if(window.renderSoonRow) window.renderSoonRow();
     window.route();
   }
+
+  /* Receta destacada: manual vigente si existe, si no rotación semanal */
+  try{
+    const cfg = (fe && fe.exists()) ? fe.data() : null;
+    window.FEATURED = window.resolverDestacada(cfg);
+    if(window.FEATURED) window.renderFeatured();
+  }catch(e){}
 }catch(e){ /* sin conexión o sin datos: se muestra el contenido integrado */ }
 </script>
 <script>
