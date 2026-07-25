@@ -185,6 +185,7 @@
       <button class="tab" data-tab="analitica" type="button">Analítica</button>
       <button class="tab" data-tab="pasaporte" type="button">Pasaporte</button>
       <button class="tab" data-tab="regalayg" type="button">Regala y Gana</button>
+      <button class="tab" data-tab="ayuda" type="button">Clientes y solicitudes</button>
       <button class="tab" data-tab="papelera" type="button">Papelera</button>
   </nav>
   <main class="wrap">
@@ -197,6 +198,7 @@
     <div class="panel" id="p-analitica"></div>
     <div class="panel" id="p-pasaporte"></div>
     <div class="panel" id="p-regalayg"></div>
+    <div class="panel" id="p-ayuda"></div>
     <div class="panel" id="p-papelera"></div>
   </main>
 </div>
@@ -1522,7 +1524,8 @@
   const TRASH_DAYS = 30;
   const COLL_ES = { recipes:"Receta", testimonials:"Opinión", gallery:"Foto", upcoming:"Próximamente",
     giftClaims:"Persona con regalo", giftParticipants:"Participante", giftLinks:"Enlace de campaña",
-    passportUsers:"Viajero del pasaporte", passportPhotos:"Foto del pasaporte" };
+    passportUsers:"Viajero del pasaporte", passportPhotos:"Foto del pasaporte",
+    helpRequests:"Solicitud de ayuda" };
 
   async function softDelete(coll, id, item, label, kind){
     setCloud(true);
@@ -1595,6 +1598,7 @@
       await deleteDoc(doc(db, "trash", t._tid));
       try{ if(String(t.origColl).indexOf("gift")===0) rygLoaded = false; }catch(e){}
       try{ if(String(t.origColl).indexOf("passport")===0){ renderPassportAdmin._cached = false; ppUsers=[]; ppPhotos=[]; ppRoutes=null; } }catch(e){}
+      try{ if(t.origColl === "helpRequests") ayCargado = false; }catch(e){}
       await loadAll(); renderAll();
       toast('✓ "'+ (t.label||"Elemento") +'" restaurado');
       renderTrash();
@@ -1654,9 +1658,433 @@
     if(name==="analitica") renderAnalytics();
     if(name==="pasaporte") renderPassportAdmin();
     if(name==="regalayg") renderGiftAdmin();
+    if(name==="ayuda") renderAyuda();
     if(name==="papelera") renderTrash();
     window.scrollTo({top:0,behavior:"smooth"});
   };
+
+  // ==================== SOLICITUDES DE AYUDA ====================
+  let AY = [], ayCargado = false, ayTipo = "todos", ayEstado = "todos", ayBusca = "", ayAbierta = "";
+  let ayVista = "solicitudes", CLI = [], CLINOTAS = {}, cliAbierta = "";
+
+  const AY_TIPOS = { producto:"Ayuda con producto", servicio:"Servicio", garantia:"Garantía",
+                     llamada:"Llamada", visita:"Visita" };
+  const AY_EST = {
+    nueva:      { t:"Nueva",             bg:"#EAF2FB", c:"#1B4F86" },
+    revision:   { t:"En revisión",       bg:"#FDF6EC", c:"#7A5C22" },
+    contactado: { t:"Contactado",        bg:"#F3EFE7", c:"#66625B" },
+    esperando:  { t:"Esperando respuesta",bg:"#FBF3E8", c:"#8A672B" },
+    visita:     { t:"Visita programada", bg:"#EDE9F6", c:"#5A3F86" },
+    resuelta:   { t:"Resuelta",          bg:"#EAF5EE", c:"#1E7A46" },
+    cerrada:    { t:"Cerrada",           bg:"#F1EFEC", c:"#8A8A82" }
+  };
+  const AY_ORDEN = ["nueva","revision","contactado","esperando","visita","resuelta","cerrada"];
+
+  function ayEsc(t){ return esc(t); }
+  function ayFecha(ts){
+    if(!ts) return "—";
+    const d = ts.toDate ? ts.toDate() : (ts.seconds ? new Date(ts.seconds*1000) : null);
+    return d ? d.toLocaleDateString("es-MX",{day:"numeric",month:"short",year:"numeric"}) : "—";
+  }
+  function ayTel(t){
+    const d = String(t||"").replace(/\D/g,"");
+    if(d.length===11 && d[0]==="1") return "("+d.slice(1,4)+") "+d.slice(4,7)+"-"+d.slice(7);
+    if(d.length===10) return "("+d.slice(0,3)+") "+d.slice(3,6)+"-"+d.slice(6);
+    return t || "—";
+  }
+  function ayCodigo(r){
+    return r.code ? String(r.code) : ("#" + String(r._id||"").slice(-6).toUpperCase());
+  }
+  function ayWa(t){
+    const d = String(t||"").replace(/\D/g,"");
+    return d.length===10 ? "1"+d : d;
+  }
+
+  async function ayCargar(forzar){
+    if(ayCargado && !forzar) return;
+    const snap = await getDocs(collection(db,"helpRequests"));
+    AY = snap.docs.map(d=>({ _id:d.id, ...(d.data()||{}) }))
+      .sort((a,b)=>{
+        const ta = a.createdAt && a.createdAt.seconds ? a.createdAt.seconds : 0;
+        const tb = b.createdAt && b.createdAt.seconds ? b.createdAt.seconds : 0;
+        return tb - ta;
+      });
+    try{
+      const cn = await getDocs(collection(db,"clients"));
+      CLINOTAS = {};
+      cn.docs.forEach(d=>{ CLINOTAS[d.id] = d.data() || {}; });
+    }catch(e){ CLINOTAS = {}; }
+    ayAgrupar();
+    ayCargado = true;
+  }
+
+  /* ---------- Fichas de cliente ----------
+     No se guardan por separado al enviar el formulario: se construyen agrupando
+     las solicitudes por teléfono y por número de cuenta. Así es imposible que
+     nazcan fichas duplicadas y nada anterior se sobrescribe. */
+  function ayTelKey(t){
+    const d = String(t||"").replace(/\D/g,"");
+    return d.length >= 10 ? d.slice(-10) : (d || "");
+  }
+  function ayCtaKey(c){
+    const v = String(c||"").replace(/[^a-zA-Z0-9]/g,"").toUpperCase();
+    return v.length >= 4 ? v : "";
+  }
+  function ayAgrupar(){
+    /* Une en un mismo grupo las solicitudes que comparten teléfono o cuenta */
+    const grupos = [];
+    const porTel = {}, porCta = {};
+    AY.forEach(r=>{
+      const tk = ayTelKey(r.phone), ck = ayCtaKey(r.cuenta);
+      let g = (tk && porTel[tk] !== undefined) ? porTel[tk]
+            : (ck && porCta[ck] !== undefined) ? porCta[ck] : null;
+      if(g === null){ g = grupos.length; grupos.push([]); }
+      grupos[g].push(r);
+      if(tk) porTel[tk] = g;
+      if(ck) porCta[ck] = g;
+    });
+
+    CLI = grupos.filter(g=>g.length).map(g=>{
+      const orden = g.slice().sort((a,b)=>{
+        const ta = a.createdAt && a.createdAt.seconds ? a.createdAt.seconds : 0;
+        const tb = b.createdAt && b.createdAt.seconds ? b.createdAt.seconds : 0;
+        return tb - ta;
+      });
+      const ult = orden[0], pri = orden[orden.length-1];
+      const primero = (campo) => { for(const r of orden){ if(r[campo]) return r[campo]; } return ""; };
+      const key = ayTelKey(ult.phone) || ayCtaKey(ult.cuenta) || ult._id;
+      const productos = [];
+      orden.forEach(r=>{ if(r.producto && productos.indexOf(r.producto) < 0) productos.push(r.producto); });
+      return {
+        key: key,
+        nombre: primero("nombre"), apellido: primero("apellido"),
+        phone: primero("phone"), cuenta: primero("cuenta"), ciudad: primero("ciudad"),
+        medio: primero("medio"), horario: primero("horario"),
+        productos: productos,
+        creado: pri.createdAt, ultima: ult.createdAt,
+        historial: orden,
+        news: orden.some(r=>r.news === true),
+        notas: (CLINOTAS[key] || {}).notas || ""
+      };
+    }).sort((a,b)=>{
+      const ta = a.ultima && a.ultima.seconds ? a.ultima.seconds : 0;
+      const tb = b.ultima && b.ultima.seconds ? b.ultima.seconds : 0;
+      return tb - ta;
+    });
+  }
+
+  window.ayVer = function(v){ ayVista = v; renderAyuda(); };
+  window.ayIrCliente = function(k){ ayVista = "clientes"; cliAbierta = k; ayBusca = ""; renderAyuda(); };
+  window.cliAbrir = function(k){ cliAbierta = (cliAbierta===k ? "" : k); renderAyuda(); };
+  window.cliNota = async function(k){
+    const c = CLI.find(x=>x.key===k);
+    if(!c) return;
+    const v = prompt("Nota interna del cliente (solo tú la ves):", c.notas || "");
+    if(v === null) return;
+    setCloud(true);
+    try{
+      await setDoc(doc(db,"clients",k), {
+        notas: v, nombre: c.nombre, apellido: c.apellido, phone: c.phone,
+        updatedAt: serverTimestamp()
+      }, { merge:true });
+      CLINOTAS[k] = Object.assign({}, CLINOTAS[k] || {}, { notas:v });
+      c.notas = v;
+      toast("✓ Nota guardada");
+      renderAyuda();
+    }catch(e){ console.error(e); toast("No se pudo guardar la nota"); }
+    finally{ setCloud(false); }
+  };
+
+  window.ayFiltrar = function(campo, valor){
+    if(campo==="tipo") ayTipo = valor;
+    if(campo==="estado") ayEstado = valor;
+    renderAyuda();
+  };
+  window.ayBuscar = function(v){ ayBusca = String(v||"").toLowerCase().trim(); renderAyuda(); };
+  window.ayAbrir = function(id){ ayAbierta = (ayAbierta===id ? "" : id); renderAyuda(); };
+  window.ayRecargar = async function(){ ayCargado=false; await ayCargar(true); ayAgrupar(); renderAyuda(); };
+
+  window.ayEstadoSet = async function(id, nuevo){
+    const r = AY.find(x=>x._id===id);
+    if(!r) return;
+    setCloud(true);
+    try{
+      const cambios = { status:nuevo, updatedAt:serverTimestamp() };
+      if(nuevo==="resuelta" || nuevo==="cerrada") cambios.resolvedAt = serverTimestamp();
+      await updateDoc(doc(db,"helpRequests",id), cambios);
+      r.status = nuevo;
+      ayAgrupar();
+      if(cambios.resolvedAt) r.resolvedAt = { seconds: Math.floor(Date.now()/1000) };
+      toast("✓ "+(AY_EST[nuevo]||{t:nuevo}).t);
+      renderAyuda();
+    }catch(e){ console.error(e); toast("No se pudo cambiar el estado"); }
+    finally{ setCloud(false); }
+  };
+
+  window.ayNota = async function(id){
+    const r = AY.find(x=>x._id===id);
+    if(!r) return;
+    const v = prompt("Nota interna (solo tú la ves):", r.notas || "");
+    if(v === null) return;
+    setCloud(true);
+    try{
+      await updateDoc(doc(db,"helpRequests",id), { notas:v, updatedAt:serverTimestamp() });
+      r.notas = v;
+      toast("✓ Nota guardada");
+      renderAyuda();
+    }catch(e){ console.error(e); toast("No se pudo guardar la nota"); }
+    finally{ setCloud(false); }
+  };
+
+  window.aySeguimiento = async function(id){
+    const r = AY.find(x=>x._id===id);
+    if(!r) return;
+    const v = prompt("Fecha de seguimiento (formato AAAA-MM-DD):", r.followUp || "");
+    if(v === null) return;
+    if(v && !/^\d{4}-\d{2}-\d{2}$/.test(v)){ toast("Usa el formato AAAA-MM-DD"); return; }
+    setCloud(true);
+    try{
+      await updateDoc(doc(db,"helpRequests",id), { followUp:v, updatedAt:serverTimestamp() });
+      r.followUp = v;
+      toast(v ? "✓ Seguimiento para el "+v : "✓ Seguimiento quitado");
+      renderAyuda();
+    }catch(e){ console.error(e); toast("No se pudo guardar"); }
+    finally{ setCloud(false); }
+  };
+
+  window.ayVerFoto = function(id){
+    const r = AY.find(x=>x._id===id);
+    if(!r || !r.photo) return;
+    let v = document.getElementById("ayFotoView");
+    if(!v){
+      v = document.createElement("div");
+      v.id = "ayFotoView";
+      v.style.cssText = "position:fixed;inset:0;background:rgba(17,17,16,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;padding:18px;gap:14px";
+      v.innerHTML = '<img style="max-width:100%;max-height:78vh;border-radius:14px" alt="Foto de la solicitud">'+
+        '<button type="button" style="background:#fff;color:#111;border:0;border-radius:12px;font:inherit;font-weight:700;padding:12px 20px;min-height:44px">Cerrar</button>';
+      document.body.appendChild(v);
+      v.querySelector("button").onclick = function(){ v.style.display="none"; };
+    }
+    v.querySelector("img").src = r.photo;
+    v.style.display = "flex";
+  };
+
+  window.ayBorrar = async function(id){
+    const r = AY.find(x=>x._id===id);
+    if(!r) return;
+    if(!confirm("¿Enviar a la papelera la solicitud de "+(r.nombre||"")+" "+(r.apellido||"")+"?\n\nPodrás restaurarla durante 30 días.")) return;
+    setCloud(true);
+    try{
+      const copia = {}; for(const k in r){ if(k!=="_id") copia[k]=r[k]; }
+      await softDelete("helpRequests", id, copia,
+        (r.nombre||"Solicitud")+" "+(r.apellido||"")+" · "+(AY_TIPOS[r.tipo]||r.tipo), "Solicitud de ayuda");
+      AY = AY.filter(x=>x._id!==id);
+      ayAgrupar();
+      toast("✓ Enviada a la papelera");
+      renderAyuda();
+    }catch(e){ console.error(e); toast("No se pudo borrar"); }
+    finally{ setCloud(false); }
+  };
+
+  async function renderAyuda(){
+    const el = $("p-ayuda");
+    if(!el) return;
+    if(!ayCargado){
+      el.innerHTML = '<div class="empty-note">Cargando solicitudes…</div>';
+      try{ await ayCargar(); }
+      catch(e){ el.innerHTML = '<div class="empty-note">No se pudieron cargar las solicitudes.</div>'; return; }
+    }
+    rygEstilos();
+    const y = window.scrollY;
+
+    let lista = AY.slice();
+    if(ayTipo   !== "todos") lista = lista.filter(r=>r.tipo === ayTipo);
+    if(ayEstado !== "todos") lista = lista.filter(r=>(r.status||"nueva") === ayEstado);
+    if(ayBusca){
+      const soloNum = ayBusca.replace(/\D/g,"");
+      lista = lista.filter(r=>{
+        const n = ((r.nombre||"")+" "+(r.apellido||"")).toLowerCase();
+        const t = String(r.phone||"").replace(/\D/g,"");
+        const c = String(r.cuenta||"").toLowerCase();
+        const k = ayCodigo(r).toLowerCase();
+        return n.indexOf(ayBusca) >= 0
+            || (soloNum && t.indexOf(soloNum) >= 0)
+            || (c && c.indexOf(ayBusca) >= 0)
+            || k.indexOf(ayBusca.replace("#","")) >= 0;
+      });
+    }
+
+    const nuevas = AY.filter(r=>(r.status||"nueva")==="nueva").length;
+    let h = '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">'+
+      '<h3 style="font-size:17px;font-family:\'Inter Tight\',sans-serif">Clientes y solicitudes</h3>'+
+      '<button class="ryg-b sm" type="button" onclick="ayRecargar()">Actualizar</button></div>';
+
+    h += '<div class="ryg-nav">'+
+      '<button type="button" class="'+(ayVista==="clientes"?"on":"")+'" onclick="ayVer(\'clientes\')">Clientes ('+CLI.length+')</button>'+
+      '<button type="button" class="'+(ayVista==="solicitudes"?"on":"")+'" onclick="ayVer(\'solicitudes\')">Solicitudes ('+AY.length+')</button>'+
+      '</div>';
+
+    if(ayVista === "clientes"){
+      let cl = CLI.slice();
+      if(ayBusca){
+        const soloNum2 = ayBusca.replace(/\D/g,"");
+        cl = cl.filter(c=>{
+          const n = ((c.nombre||"")+" "+(c.apellido||"")).toLowerCase();
+          const t = String(c.phone||"").replace(/\D/g,"");
+          const q = String(c.cuenta||"").toLowerCase();
+          return n.indexOf(ayBusca)>=0 || (soloNum2 && t.indexOf(soloNum2)>=0) || (q && q.indexOf(ayBusca)>=0);
+        });
+      }
+      h += '<div class="card-form" style="margin-bottom:12px">'+
+           '<label>Buscar por nombre, teléfono o número de cuenta</label>'+
+           '<input id="ayQ" type="search" value="'+ayEsc(ayBusca)+'" placeholder="Ej. María o 6825550134" oninput="ayBuscar(this.value)"></div>';
+      h += '<div class="card-form"><h3 style="font-size:16px;margin-bottom:4px">'+cl.length+' cliente'+(cl.length===1?'':'s')+'</h3>'+
+           '<p class="hint" style="margin-bottom:10px">Cada ficha reúne todas las solicitudes de una misma persona. Se agrupan por teléfono y número de cuenta, así que no se crean fichas repetidas.</p>';
+      if(!cl.length){
+        h += '<div class="empty-note">Todavía no hay clientes registrados desde el Centro de ayuda.</div>';
+      }else{
+        cl.forEach(function(c){
+          const ab = cliAbierta === c.key;
+          const sinAtender = c.historial.filter(r=>(r.status||"nueva")==="nueva").length;
+          h += '<div class="ryg-card">';
+          h += '<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">'+
+               '<div style="min-width:0"><b style="font-size:15.5px">'+ayEsc((c.nombre||"")+" "+(c.apellido||""))+'</b>'+
+               '<div style="font-size:13px;color:#66625B;margin-top:3px">'+ayTel(c.phone)+
+               (c.ciudad?' · '+ayEsc(c.ciudad):'')+'</div>'+
+               (c.cuenta?'<div style="font-size:12.5px;color:#66625B;margin-top:2px">Cuenta: '+ayEsc(c.cuenta)+'</div>':'')+
+               '<div style="font-size:12px;color:#9A968E;margin-top:3px">Cliente desde '+ayFecha(c.creado)+' · última solicitud '+ayFecha(c.ultima)+'</div>'+
+               '</div>'+
+               '<span class="ryg-badge"'+(sinAtender?' style="background:#EAF2FB;color:#1B4F86"':'')+'>'+
+               c.historial.length+' solicitud'+(c.historial.length===1?'':'es')+'</span></div>';
+
+          if(c.productos.length)
+            h += '<div style="font-size:13px;margin-top:8px"><b>Productos:</b> '+ayEsc(c.productos.join(", "))+'</div>';
+          h += '<div style="font-size:12.5px;color:#66625B;margin-top:4px">Prefiere '+ayEsc(c.medio||"—")+
+               (c.horario?' · '+ayEsc(c.horario):'')+'</div>';
+          h += '<div style="font-size:12px;margin-top:5px;color:#1E7A46;font-weight:600">Autorizó contacto para sus solicitudes'+
+               (c.news?' · acepta recetas y novedades':'')+'</div>';
+          if(c.notas)
+            h += '<div style="font-size:13px;background:#FDF6EC;border:1px solid #EADFC9;border-radius:10px;padding:9px;margin-top:8px"><b>Nota:</b> '+ayEsc(c.notas)+'</div>';
+
+          h += '<div class="ryg-acts">';
+          if(c.phone){
+            h += '<a class="ryg-b sm wa" href="https://wa.me/'+ayWa(c.phone)+'" target="_blank" rel="noopener">WhatsApp</a>';
+            h += '<a class="ryg-b sm" href="tel:+'+ayWa(c.phone)+'">Llamar</a>';
+          }
+          h += '<button class="ryg-b sm'+(ab?'':' next')+'" type="button" onclick="cliAbrir(\''+c.key+'\')">'+
+               (ab?'Ocultar historial':'Ver historial ('+c.historial.length+')')+'</button>';
+          h += '<button class="ryg-b sm soft" type="button" onclick="cliNota(\''+c.key+'\')">'+(c.notas?'Editar nota':'Agregar nota')+'</button>';
+          h += '</div>';
+
+          if(ab){
+            h += '<div class="ryg-sep">';
+            c.historial.forEach(function(r){
+              const e2 = AY_EST[r.status||"nueva"] || AY_EST.nueva;
+              h += '<div style="border-left:3px solid '+e2.c+';padding:8px 0 8px 11px;margin-bottom:9px">'+
+                   '<div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap">'+
+                   '<b style="font-size:13.5px">'+ayEsc(AY_TIPOS[r.tipo]||r.tipo)+' · '+ayEsc(ayCodigo(r))+'</b>'+
+                   '<span style="font-size:11.5px;color:'+e2.c+';font-weight:700">'+e2.t+'</span></div>'+
+                   '<div style="font-size:12px;color:#9A968E;margin-top:2px">'+ayFecha(r.createdAt)+
+                   (r.producto?' · '+ayEsc(r.producto):'')+'</div>'+
+                   (r.detalle?'<div style="font-size:12.5px;color:#66625B;margin-top:4px">'+ayEsc(String(r.detalle).slice(0,140))+(String(r.detalle).length>140?'…':'')+'</div>':'')+
+                   '</div>';
+            });
+            h += '</div>';
+          }
+          h += '</div>';
+        });
+      }
+      h += '</div>';
+      el.innerHTML = h;
+      window.scrollTo({ top:y });
+      return;
+    }
+
+
+    h += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:12px">';
+    [["Sin atender",nuevas],["En proceso",AY.filter(r=>["revision","contactado","esperando","visita"].indexOf(r.status||"nueva")>=0).length],
+     ["Resueltas",AY.filter(r=>["resuelta","cerrada"].indexOf(r.status)>=0).length],["Total",AY.length]].forEach(function(x){
+      h += '<div class="stat-card" style="background:#fff;border:1px solid #E9E6E0;border-radius:16px;padding:14px;text-align:center">'+
+           '<div style="font-size:24px;font-weight:800;font-family:\'Inter Tight\',sans-serif">'+x[1]+'</div>'+
+           '<div style="font-size:11.5px;color:#66625B;margin-top:4px">'+x[0]+'</div></div>';
+    });
+    h += '</div>';
+
+    h += '<div class="card-form" style="margin-bottom:12px">';
+    h += '<label>Buscar por nombre, teléfono, cuenta o código</label>'+
+         '<input id="ayQ" type="search" value="'+ayEsc(ayBusca)+'" placeholder="Ej. María, 6825550134 o K7M2P" oninput="ayBuscar(this.value)">';
+    h += '<div class="ryg-lbl" style="margin-top:12px">Tipo</div><div class="ryg-chips">';
+    [["todos","Todos"]].concat(Object.keys(AY_TIPOS).map(k=>[k,AY_TIPOS[k]])).forEach(function(f){
+      h += '<button class="ryg-chip'+(ayTipo===f[0]?' on':'')+'" type="button" onclick="ayFiltrar(\'tipo\',\''+f[0]+'\')">'+f[1]+'</button>';
+    });
+    h += '</div>';
+    h += '<div class="ryg-lbl" style="margin-top:12px">Estado</div><div class="ryg-chips">';
+    [["todos","Todos"]].concat(AY_ORDEN.map(k=>[k,AY_EST[k].t])).forEach(function(f){
+      h += '<button class="ryg-chip'+(ayEstado===f[0]?' on':'')+'" type="button" onclick="ayFiltrar(\'estado\',\''+f[0]+'\')">'+f[1]+'</button>';
+    });
+    h += '</div></div>';
+
+    h += '<div class="card-form"><h3 style="font-size:16px;margin-bottom:10px">'+lista.length+' solicitud'+(lista.length===1?'':'es')+'</h3>';
+    if(!lista.length){
+      h += '<div class="empty-note">No hay solicitudes con estos filtros.</div>';
+    }else{
+      lista.forEach(function(r){
+        const est = AY_EST[r.status||"nueva"] || AY_EST.nueva;
+        const abierta = ayAbierta === r._id;
+        h += '<div class="ryg-card">';
+        h += '<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">'+
+             '<div style="min-width:0"><b style="font-size:15px">'+ayEsc((r.nombre||"")+" "+(r.apellido||""))+'</b>'+
+             '<div style="font-size:12.5px;color:#66625B;margin-top:3px">'+ayEsc(AY_TIPOS[r.tipo]||r.tipo||"—")+' · '+ayEsc(ayCodigo(r))+' · '+ayFecha(r.createdAt)+'</div>'+
+             '<div style="font-size:13px;color:#66625B;margin-top:2px">'+ayTel(r.phone)+
+             (r.medio?' · prefiere '+ayEsc(r.medio):'')+(r.horario?' · '+ayEsc(r.horario):'')+'</div>'+
+             (r.ciudad?'<div style="font-size:12.5px;color:#66625B;margin-top:2px">'+ayEsc(r.ciudad)+'</div>':'')+
+             '</div>'+
+             '<span class="ryg-badge" style="background:'+est.bg+';color:'+est.c+'">'+est.t+'</span></div>';
+
+        if(r.producto) h += '<div style="font-size:13px;margin-top:8px"><b>Producto:</b> '+ayEsc(r.producto)+'</div>';
+        if(r.motivo)   h += '<div style="font-size:13px;margin-top:3px"><b>Motivo:</b> '+ayEsc(r.motivo)+'</div>';
+        if(r.detalle)  h += '<div style="font-size:13.5px;background:#F7F5F0;border-radius:10px;padding:10px;margin-top:8px;white-space:pre-line">'+ayEsc(r.detalle)+'</div>';
+        if(r.cuenta)      h += '<div style="font-size:12.5px;color:#66625B;margin-top:5px">Cuenta: '+ayEsc(r.cuenta)+'</div>';
+        if(r.fechaCompra) h += '<div style="font-size:12.5px;color:#66625B;margin-top:2px">Compra aprox.: '+ayEsc(r.fechaCompra)+'</div>';
+        if(r.dia)         h += '<div style="font-size:12.5px;color:#66625B;margin-top:2px">Día preferido: '+ayEsc(r.dia)+(r.zona?' · '+ayEsc(r.zona):'')+'</div>';
+        if(r.comentario)  h += '<div style="font-size:12.5px;color:#66625B;margin-top:2px">Comentario: '+ayEsc(r.comentario)+'</div>';
+        if(r.news)        h += '<div style="font-size:12px;color:#8A672B;margin-top:5px;font-weight:600">Aceptó recibir recetas y novedades</div>';
+        if(r.followUp)    h += '<div style="font-size:12.5px;color:#5A3F86;margin-top:5px;font-weight:600">Seguimiento: '+ayEsc(r.followUp)+'</div>';
+        if(r.resolvedAt)  h += '<div style="font-size:12.5px;color:#1E7A46;margin-top:2px;font-weight:600">Resuelta el '+ayFecha(r.resolvedAt)+'</div>';
+        if(r.notas)       h += '<div style="font-size:13px;background:#FDF6EC;border:1px solid #EADFC9;border-radius:10px;padding:9px;margin-top:8px"><b>Nota:</b> '+ayEsc(r.notas)+'</div>';
+
+        h += '<div class="ryg-acts">';
+        if(String(r.medio||"").indexOf("WhatsApp") === 0 && r.phone)
+          h += '<a class="ryg-b sm wa" href="https://wa.me/'+ayWa(r.phone)+'" target="_blank" rel="noopener">WhatsApp</a>';
+        if(r.phone) h += '<a class="ryg-b sm" href="tel:+'+ayWa(r.phone)+'">Llamar</a>';
+        if(r.photo) h += '<button class="ryg-b sm" type="button" onclick="ayVerFoto(\''+r._id+'\')">Ver foto</button>';
+        const cl = CLI.find(function(c){ return c.historial.some(function(x){ return x._id===r._id; }); });
+        if(cl) h += '<button class="ryg-b sm" type="button" onclick="ayIrCliente(\''+cl.key+'\')">Ficha del cliente</button>';
+        h += '<button class="ryg-b sm soft" type="button" onclick="ayAbrir(\''+r._id+'\')">'+(abierta?'Menos opciones':'Más opciones')+'</button>';
+        h += '</div>';
+
+        if(abierta){
+          h += '<div class="ryg-sep"><div class="ryg-lbl">Cambiar estado</div><div class="ryg-acts" style="margin-top:0">';
+          AY_ORDEN.forEach(function(k){
+            const on = (r.status||"nueva") === k;
+            h += '<button class="ryg-b sm'+(on?' gold':'')+'" type="button" onclick="ayEstadoSet(\''+r._id+'\',\''+k+'\')"'+
+                 (on?' disabled style="opacity:.55"':'')+'>'+AY_EST[k].t+'</button>';
+          });
+          h += '</div>';
+          h += '<div class="ryg-lbl" style="margin-top:11px">Seguimiento</div><div class="ryg-acts" style="margin-top:0">'+
+               '<button class="ryg-b sm soft" type="button" onclick="ayNota(\''+r._id+'\')">'+(r.notas?'Editar nota':'Agregar nota')+'</button>'+
+               '<button class="ryg-b sm soft" type="button" onclick="aySeguimiento(\''+r._id+'\')">'+(r.followUp?'Cambiar fecha':'Fecha de seguimiento')+'</button>'+
+               '<button class="ryg-b sm danger" type="button" onclick="ayBorrar(\''+r._id+'\')">Eliminar</button>'+
+               '</div></div>';
+        }
+        h += '</div>';
+      });
+    }
+    h += '</div>';
+
+    el.innerHTML = h;
+    window.scrollTo({ top:y });
+  }
 
   // ==================== PASAPORTE DE SABORES ====================
   const PP_SEED = [
