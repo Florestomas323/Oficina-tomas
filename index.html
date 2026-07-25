@@ -1549,6 +1549,7 @@
     <a class="foot-link" href="terminos.html">Términos</a> <span class="foot-sep">·</span>
     <a class="foot-link" href="reglas.html#regala-y-gana">Regala y Gana</a> <span class="foot-sep">·</span>
     <a class="foot-link" href="reglas.html#pasaporte">Pasaporte de Sabores</a> <span class="foot-sep">·</span>
+    <a class="foot-link" href="garantia.html">Garantía</a> <span class="foot-sep">·</span>
     <a class="foot-link" href="reglas.html#regalos">Regalos y recompensas</a> <span class="foot-sep">·</span>
     <a class="foot-link" href="reglas.html#fotografias">Fotografías y testimonios</a> <span class="foot-sep">·</span>
     <a class="foot-link" href="privacidad.html#mis-datos">Administrar mis datos</a> <span class="foot-sep">·</span>
@@ -2383,7 +2384,7 @@ try{
    Ejemplo:  var GARANTIA_URL = "garantia-royal-prestige.pdf";
    Con el campo vacío se muestra el aviso de "próximamente" y los botones
    de ver y descargar permanecen ocultos. No hace falta tocar nada más. */
-var GARANTIA_URL = "";
+var GARANTIA_URL = "garantia.html";
 
 (function(){
   var modal = document.getElementById('ayModal');
@@ -2515,9 +2516,12 @@ var GARANTIA_URL = "";
     var h = '<div class="ay-gar">';
     h += '<div class="ay-note">Consulta cómo funciona la garantía de tu equipo y, si lo necesitas, pide ayuda con tu caso.</div>';
     if(doc){
+      var esPagina = /\.html?($|[?#])/i.test(doc);
       h += '<div style="display:flex;gap:9px;flex-wrap:wrap;margin:14px 0">'+
            '<a class="btn btn-solid" href="'+esc(doc)+'" target="_blank" rel="noopener" style="flex:1;justify-content:center;min-height:48px">Ver garantía completa</a>'+
-           '<a class="btn btn-ghost" href="'+esc(doc)+'" download style="flex:1;justify-content:center;min-height:48px">Descargar documento</a></div>';
+           (esPagina ? '' :
+             '<a class="btn btn-ghost" href="'+esc(doc)+'" download style="flex:1;justify-content:center;min-height:48px">Descargar documento</a>')+
+           '</div>';
     }else{
       h += '<div class="ay-soon"><b>Documento oficial de garantía próximamente disponible</b>'+
            '<span>Mientras tanto, puedes escribirme y reviso tu caso personalmente.</span></div>';
