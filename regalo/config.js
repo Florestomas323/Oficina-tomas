@@ -11,9 +11,9 @@ window.GIFT_CONFIG = {
 
   distributor: {
     id: "tomas-dfw",                 // identificador interno (sin espacios)
-    name: "Tomas Flores",
+    name: (window.OFICINA && window.OFICINA.nombre) || "Tomas Flores",
     phone: "16823811576",            // solo dígitos, con código de país
-    whatsapp: "16823811576",         // solo dígitos, con código de país
+    whatsapp: (window.OFICINA && window.OFICINA.tel) || "16823811576",
     city: "DFW, Texas",
     logo: "../logo-pasaporte.jpeg",
     /* La direccion del sitio se detecta sola: funciona en Vercel,
@@ -21,7 +21,7 @@ window.GIFT_CONFIG = {
     /* Direccion publica del sitio. Se usa SIEMPRE esta, aunque la pagina
        se abra desde una direccion temporal de Vercel: asi el enlace que
        comparte el participante nunca apunta a una version protegida. */
-    siteUrl: "https://tomasflores.com"
+    siteUrl: (window.OFICINA && window.OFICINA.dominio) || "https://tomasflores.com"
   },
 
   /* Identidad visual del programa (logo Regala y Gana) */
@@ -100,12 +100,5 @@ window.GIFT_CONFIG = {
 
   fallbackPrizeImg: "premio-generico.webp",
 
-  firebase: {
-    apiKey: "AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",
-    authDomain: "oficina-digital-tomas.firebaseapp.com",
-    projectId: "oficina-digital-tomas",
-    storageBucket: "oficina-digital-tomas.firebasestorage.app",
-    messagingSenderId: "898342341243",
-    appId: "1:898342341243:web:7ee15b8b3533f3889570de"
-  }
+  firebase: (window.OFICINA && window.OFICINA.firebase) || {}
 };
