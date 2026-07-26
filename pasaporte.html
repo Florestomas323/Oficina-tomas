@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script src="config.js"></script>
 <title>Pasaporte de Sabores — Tomas Flores</title>
 <meta name="description" content="Un continente. Muchas cocinas. Un viaje para compartir. Prepara seis recetas, toma tu foto, gana tus sellos y completa la ruta.">
 <link rel="canonical" href="https://tomasflores.com/pasaporte.html">
@@ -409,14 +410,7 @@ import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12
 import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const CFG = {
-  apiKey:"AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",
-  authDomain:"oficina-digital-tomas.firebaseapp.com",
-  projectId:"oficina-digital-tomas",
-  storageBucket:"oficina-digital-tomas.firebasestorage.app",
-  messagingSenderId:"898342341243",
-  appId:"1:898342341243:web:7ee15b8b3533f3889570de"
-};
+const CFG = window.OFICINA.firebase;
 const WA = "16823811576";
 
 const COUNTRIES = [

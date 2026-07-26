@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script src="config.js"></script>
 <meta name="theme-color" content="#FAFAF8">
 <title>Recetas para Inspirarte — Tomas Flores · Royal Prestige</title>
 <meta name="description" content="Recetas seleccionadas para cocinar con tus utensilios Royal Prestige. Por Tomas Flores, tu distribuidor.">
@@ -1369,14 +1370,7 @@ route();
 try{
   const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
   const { getFirestore, collection, getDocs, getDoc, doc, query, where, setDoc, deleteDoc, increment } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
-  const app = initializeApp({
-    apiKey:"AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",
-    authDomain:"oficina-digital-tomas.firebaseapp.com",
-    projectId:"oficina-digital-tomas",
-    storageBucket:"oficina-digital-tomas.firebasestorage.app",
-    messagingSenderId:"898342341243",
-    appId:"1:898342341243:web:7ee15b8b3533f3889570de"
-  });
+  const app = initializeApp(window.OFICINA.firebase);
   const db = getFirestore(app);
 
   // Fotos de respaldo (mientras las imágenes no estén en Storage — Etapa 5)
@@ -1501,7 +1495,7 @@ try{
 
   (async function(){
     try{
-      var CFG={apiKey:"AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",authDomain:"oficina-digital-tomas.firebaseapp.com",projectId:"oficina-digital-tomas",storageBucket:"oficina-digital-tomas.firebasestorage.app",messagingSenderId:"898342341243",appId:"1:898342341243:web:7ee15b8b3533f3889570de"};
+      var CFG=window.OFICINA.firebase;
       var a = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
       var f = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
       var app = (a.getApps && a.getApps().length) ? a.getApps()[0] : a.initializeApp(CFG);

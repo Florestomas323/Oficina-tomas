@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script src="config.js"></script>
 <title>Tamales Caseros — Receta de Tomas Flores | Royal Prestige</title>
 <meta name="description" content="Tamales tradicionales cocinados al vapor con una textura perfecta. Receta paso a paso con Tamalera Royal Prestige. 1 h 30 min, Media.">
 <link rel="canonical" href="https://tomasflores.com/receta-tamales-caseros.html">
@@ -190,7 +191,7 @@ window.__RECETA="Tamales Caseros";
   var SRC=fuente(), DEV=device(), Q=[], DB=null, ADD=null, COL=null, TS=null;
   (async function(){
     try{
-      var CFG={apiKey:"AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",authDomain:"oficina-digital-tomas.firebaseapp.com",projectId:"oficina-digital-tomas",storageBucket:"oficina-digital-tomas.firebasestorage.app",messagingSenderId:"898342341243",appId:"1:898342341243:web:7ee15b8b3533f3889570de"};
+      var CFG=window.OFICINA.firebase;
       var a=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
       var f=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
       var app=(a.getApps&&a.getApps().length)?a.getApps()[0]:a.initializeApp(CFG);
