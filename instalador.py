@@ -27,24 +27,39 @@ from urllib.parse import quote
 #  DATOS DEL DISTRIBUIDOR NUEVO — lo único que se edita
 # ============================================================
 DISTRIBUIDOR = {
-    "nombre":        "María González",
-    "nombreCorto":   "María",
-    "apellido":      "González",
-    "telefono":      "12145559876",
-    "dominio":       "mariagonzalez.com",
-    "correoAdmin":   "maria.gonzalez@gmail.com",
-    "calendly":      "https://calendly.com/mariagonzalez/demo-royal",
-    "instagram":     "maria_rp",
-    "tiktok":        "mariagonzalez_rp",
-    "facebook":      "https://www.facebook.com/share/EJEMPLO/",
-    "idDistribuidor":"maria-dfw",
+    "nombre":        "Oscar Navarro",
+    "nombreCorto":   "Oscar",
+    "apellido":      "Navarro",
+    "telefono":      "16265579943",
+    "dominio":       "oficina-oscar.vercel.app",
+    "correoAdmin":   "unanuevavida85503@gmail.com",
+    "calendly":      "PENDIENTE-CALENDARIO",
+    "instagram":     "oscar_navarro85503",
+    "tiktok":        "SIN-TIKTOK",
+    "facebook":      "https://www.facebook.com/oscar.escobar.80531",
+    "idDistribuidor":"oscar-ca",
+    # --- Zona de trabajo ---
+    "zonaCorta":     "California",                 # aparece en el pie y en las fichas
+    "ciudadBase":    "Los Angeles",                # desde donde se mide el radio de entrega
+    "region":        "CA",                         # dos letras del estado
+    "areaLarga":     "California",                 # nombre largo de la zona
+    "ciudades":      ["Los Angeles","San Diego","San Jose","San Francisco",
+                      "Fresno","Sacramento","Long Beach","Anaheim"],
+    "estado":        "California",
+    "siglaEstado":   "CA",
+    "abrevZona":     "California",        # como se abrevia la zona (DFW, SoCal...)
+    "husoHorario":   "Hora del Pacifico",
+    # Textos tal como se leen en la página. Se escriben completos para que
+    # no salgan repeticiones del tipo "California - California".
+    "textoPie":      "California",                 # junto al icono de ubicacion
+    "textoArea":     "otras ciudades de California",
     "firebase": {
-        "apiKey":            "PENDIENTE",
-        "authDomain":        "oficina-digital-maria.firebaseapp.com",
-        "projectId":         "oficina-digital-maria",
-        "storageBucket":     "oficina-digital-maria.firebasestorage.app",
-        "messagingSenderId": "000000000000",
-        "appId":             "1:000000000000:web:0000000000000000000000",
+        "apiKey":            "AIzaSyDIHJbgYBLRHa-BAel8bI4GFvtwfvClGP0",
+        "authDomain":        "oficina-digital-oscar.firebaseapp.com",
+        "projectId":         "oficina-digital-oscar",
+        "storageBucket":     "oficina-digital-oscar.firebasestorage.app",
+        "messagingSenderId": "373900646510",
+        "appId":             "1:373900646510:web:10e6cc6aecb90771eaae7f",
     },
 }
 
@@ -63,6 +78,18 @@ MAESTRO = {
     "tiktok":        "titoflores45",
     "facebook":      "https://www.facebook.com/share/1E2SByaNAR/",
     "idDistribuidor":"tomas-dfw",
+    "zonaCorta":     "DFW, Texas",
+    "ciudadBase":    "Dallas",
+    "region":        "TX",
+    "areaLarga":     "Dallas-Fort Worth",
+    "ciudades":      ["Dallas","Irving","Arlington","Grand Prairie",
+                      "Farmers Branch","Addison","Plano","Fort Worth"],
+    "estado":        "Texas",
+    "siglaEstado":   "TX",
+    "abrevZona":     "DFW",
+    "husoHorario":   "Hora del Centro",
+    "textoPie":      "DFW \u2014 Texas",
+    "textoArea":     "otras ciudades del \u00e1rea DFW",
     "firebase": {
         "apiKey":            "AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",
         "authDomain":        "oficina-digital-tomas.firebaseapp.com",
@@ -133,6 +160,59 @@ def construir_reglas():
     for k in MAESTRO["firebase"]:
         R.append((MAESTRO["firebase"][k], DISTRIBUIDOR["firebase"][k]))
 
+    # --- Textos de zona escritos completos: van primero de todo ---
+    for k in ["textoPie", "textoArea"]:
+        R.append((MAESTRO[k], DISTRIBUIDOR[k]))
+        for vv, nn in variantes(MAESTRO[k], DISTRIBUIDOR[k])[1:]:
+            R.append((vv, nn))
+
+    # --- Geografía: primero las frases compuestas, que son las que más fallan ---
+    ME, DE = MAESTRO, DISTRIBUIDOR
+    compuestas = [
+        # "Dallas-Fort Worth, Texas"  /  "Dallas–Fort Worth"
+        (f'{ME["areaLarga"]}, {ME["estado"]}',      f'{DE["areaLarga"]}, {DE["estado"]}'),
+        (ME["areaLarga"].replace("-", "\u2013"),    DE["areaLarga"].replace("-", "\u2013")),
+        # "DFW — Texas"  /  "DFW, Texas"  /  "area DFW"  /  "DFW"
+        (f'{ME["abrevZona"]} \u2014 {ME["estado"]}', f'{DE["abrevZona"]} \u2014 {DE["estado"]}'),
+        (f'{ME["abrevZona"]}, {ME["estado"]}',      f'{DE["abrevZona"]}, {DE["estado"]}'),
+        (f'\u00e1rea {ME["abrevZona"]}',            f'\u00e1rea {DE["abrevZona"]}'),
+        (f'&aacute;rea {ME["abrevZona"]}',          f'&aacute;rea {DE["abrevZona"]}'),
+        # "Dallas, Texas"  (ciudad base con estado)
+        (f'{ME["ciudadBase"]}, {ME["estado"]}',     f'{DE["ciudadBase"]}, {DE["estado"]}'),
+        # Huso horario
+        (ME["husoHorario"],                          DE["husoHorario"]),
+    ]
+    for v, n in compuestas:
+        R.append((v, n))
+        for vv, nn in variantes(v, n)[1:]:
+            R.append((vv, nn))
+
+    # --- Geografía: listas de ciudades, zona y región ---
+    cM, cD = MAESTRO["ciudades"], DISTRIBUIDOR["ciudades"]
+    # Lista separada por comas dentro de un texto
+    R.append((", ".join(cM[:-1]) + " y " + cM[-1],
+              ", ".join(cD[:-1]) + " y " + cD[-1]))
+    R.append((", ".join(cM), ", ".join(cD)))
+    # Lista en formato JSON de los datos estructurados
+    R.append(('"' + '","'.join(cM) + '"', '"' + '","'.join(cD) + '"'))
+    # Ciudades sueltas que puedan quedar
+    for i, ciudad in enumerate(cM):
+        destino = cD[i] if i < len(cD) else cD[0]
+        R.append((ciudad, destino))
+    # Zona, region y area
+    for k in ["zonaCorta", "areaLarga", "ciudadBase"]:
+        R.extend(variantes(MAESTRO[k], DISTRIBUIDOR[k]))
+    R.append(('"addressRegion":"' + MAESTRO["region"] + '"',
+              '"addressRegion":"' + DISTRIBUIDOR["region"] + '"'))
+    R.append((", " + MAESTRO["region"], ", " + DISTRIBUIDOR["region"]))
+    R.append(("area " + MAESTRO["zonaCorta"].split(",")[0], "area " + DISTRIBUIDOR["zonaCorta"]))
+
+    # Estado y sigla, ya sueltos
+    R.extend(variantes(MAESTRO["estado"], DISTRIBUIDOR["estado"]))
+    R.append((MAESTRO["abrevZona"], DISTRIBUIDOR["abrevZona"]))
+    R.append(('placeholder="' + MAESTRO["siglaEstado"] + '"',
+              'placeholder="' + DISTRIBUIDOR["siglaEstado"] + '"'))
+
     # --- Datos sueltos, del más largo al más corto ---
     simples = ["calendly", "facebook", "correoAdmin", "nombre", "dominio",
                "telefono", "instagram", "tiktok", "idDistribuidor", "nombreCorto"]
@@ -194,6 +274,10 @@ def revisar(carpeta, archivos):
         "proyecto Firebase":MAESTRO["firebase"]["projectId"],
         "Instagram":        MAESTRO["instagram"],
         "TikTok":           MAESTRO["tiktok"],
+        "ciudad base":      MAESTRO["ciudadBase"],
+        "zona":             MAESTRO["zonaCorta"],
+        "estado":           MAESTRO["estado"],
+        "abreviatura zona": MAESTRO["abrevZona"],
     }
     problemas = 0
     for etiqueta, aguja in rastros.items():
