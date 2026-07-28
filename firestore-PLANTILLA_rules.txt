@@ -1,16 +1,4 @@
 rules_version = '2';
-
-// ============================================================
-//  REGLAS DE SEGURIDAD - OFICINA DIGITAL
-// ------------------------------------------------------------
-//  AL INSTALAR UNA OFICINA NUEVA:
-//  cambia el correo de la linea marcada como CORREO DEL PANEL
-//  por el del distribuidor. Es lo UNICO que se cambia aqui.
-//
-//  Si te equivocas en ese correo, el distribuidor no podra
-//  entrar a su panel y tu si podrias ver sus datos. Revisalo.
-// ============================================================
-
 service cloud.firestore {
   match /databases/{database}/documents {
     // Solo el distribuidor puede editar y borrar.
@@ -119,6 +107,44 @@ service cloud.firestore {
     // Nadie del publico escribe aqui; solo el distribuidor guarda notas y datos internos.
     match /clients/{docId} {
       allow read, write: if esAdmin();
+    }
+    // ---------- AGENDA DE DEMOSTRACIONES ----------
+    // Huecos ocupados: el publico los lee para saber que horas quedan libres
+    // y crea uno al reservar. NO contienen ningun dato personal, solo la fecha
+    // y la hora. El nombre del documento es la propia fecha_hora, asi que dos
+    // personas no pueden reservar el mismo hueco ni queriendo.
+    match /busySlots/{slotId} {
+      allow read, list: if true;
+      allow create: if !exists(/databases/$(database)/documents/busySlots/$(slotId))
+        && request.resource.data.keys().hasOnly(['fecha','hora','tipo'])
+        && request.resource.data.fecha is string
+        && request.resource.data.fecha.matches('[0-9]{4}-[0-9]{2}-[0-9]{2}')
+        && request.resource.data.hora is string
+        && request.resource.data.hora.matches('[0-9]{2}:[0-9]{2}');
+      allow update: if false;
+      allow delete: if esAdmin();
+    }
+    // Citas con los datos del cliente: cualquiera puede pedir una,
+    // pero SOLO el distribuidor puede leerlas.
+    match /appointments/{docId} {
+      allow read, list: if esAdmin();
+      allow update, delete: if esAdmin();
+      allow create: if request.resource.data.tipo == 'demostracion'
+        && request.resource.data.nombre is string
+        && request.resource.data.nombre.size() > 0
+        && request.resource.data.nombre.size() < 80
+        && request.resource.data.apellido is string
+        && request.resource.data.apellido.size() < 80
+        && request.resource.data.phone is string
+        && request.resource.data.phone.size() >= 7
+        && request.resource.data.phone.size() < 30
+        && request.resource.data.fecha is string
+        && request.resource.data.fecha.matches('[0-9]{4}-[0-9]{2}-[0-9]{2}')
+        && request.resource.data.hora is string
+        && request.resource.data.hora.matches('[0-9]{2}:[0-9]{2}')
+        && request.resource.data.consent == true
+        && request.resource.data.status == 'solicitada'
+        && (!('notas' in request.resource.data) || request.resource.data.notas.size() < 1000);
     }
     // Papelera (30 dias): solo el distribuidor.
     match /trash/{docId} {

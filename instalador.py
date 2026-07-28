@@ -38,6 +38,7 @@ DISTRIBUIDOR = {
     "tiktok":        "SIN-TIKTOK",
     "facebook":      "https://www.facebook.com/oscar.escobar.80531",
     "idDistribuidor":"oscar-ca",
+    "repo":          "oficina-digital-oscar",     # repositorio y subdominio de Vercel
     # --- Zona de trabajo ---
     "zonaCorta":     "California",                 # aparece en el pie y en las fichas
     "ciudadBase":    "Los Angeles",                # desde donde se mide el radio de entrega
@@ -49,6 +50,8 @@ DISTRIBUIDOR = {
     "siglaEstado":   "CA",
     "abrevZona":     "California",        # como se abrevia la zona (DFW, SoCal...)
     "husoHorario":   "Hora del Pacifico",
+    "prefijoTel":    "626",                        # prefijo de su zona, para los ejemplos
+    "cpEjemplo":     "91731",                      # codigo postal de ejemplo
     # Textos tal como se leen en la página. Se escriben completos para que
     # no salgan repeticiones del tipo "California - California".
     "textoPie":      "California",                 # junto al icono de ubicacion
@@ -78,6 +81,7 @@ MAESTRO = {
     "tiktok":        "titoflores45",
     "facebook":      "https://www.facebook.com/share/1E2SByaNAR/",
     "idDistribuidor":"tomas-dfw",
+    "repo":          "oficina-tomas",
     "zonaCorta":     "DFW, Texas",
     "ciudadBase":    "Dallas",
     "region":        "TX",
@@ -88,6 +92,8 @@ MAESTRO = {
     "siglaEstado":   "TX",
     "abrevZona":     "DFW",
     "husoHorario":   "Hora del Centro",
+    "prefijoTel":    "682",
+    "cpEjemplo":     "76039",
     "textoPie":      "DFW \u2014 Texas",
     "textoArea":     "otras ciudades del \u00e1rea DFW",
     "firebase": {
@@ -160,6 +166,24 @@ def construir_reglas():
     for k in MAESTRO["firebase"]:
         R.append((MAESTRO["firebase"][k], DISTRIBUIDOR["firebase"][k]))
 
+    # --- El dominio escrito a secas, sin https ni terminacion ---
+    # Aparece en la analitica: r.indexOf("tomasflores")
+    def raiz(dom):
+        d = dom.replace("https://","").replace("http://","").replace("www.","")
+        return d.split(".")[0]
+    rm, rd = raiz(MAESTRO["dominio"]), raiz(DISTRIBUIDOR["dominio"])
+    if rm and rm != rd:
+        R.append(('"' + rm + '"', '"' + rd + '"'))
+        R.append(("'" + rm + "'", "'" + rd + "'"))
+
+    # --- Ejemplos dentro de los formularios ---
+    # "Ej. 682 381 1576" / "Ej. 682 555 0134" -> prefijo de su zona
+    R.append(('Ej. ' + MAESTRO["telefono"][1:4] + ' ' + MAESTRO["telefono"][4:7] + ' ' + MAESTRO["telefono"][7:],
+              'Ej. ' + DISTRIBUIDOR["telefono"][1:4] + ' ' + DISTRIBUIDOR["telefono"][4:7] + ' ' + DISTRIBUIDOR["telefono"][7:]))
+    R.append(('Ej. ' + MAESTRO["prefijoTel"] + ' 555 0134',
+              'Ej. ' + DISTRIBUIDOR["prefijoTel"] + ' 555 1234'))
+    R.append(('Ej. ' + MAESTRO["cpEjemplo"], 'Ej. ' + DISTRIBUIDOR["cpEjemplo"]))
+
     # --- Textos de zona escritos completos: van primero de todo ---
     for k in ["textoPie", "textoArea"]:
         R.append((MAESTRO[k], DISTRIBUIDOR[k]))
@@ -215,7 +239,7 @@ def construir_reglas():
 
     # --- Datos sueltos, del más largo al más corto ---
     simples = ["calendly", "facebook", "correoAdmin", "nombre", "dominio",
-               "telefono", "instagram", "tiktok", "idDistribuidor", "nombreCorto"]
+               "telefono", "repo", "instagram", "tiktok", "idDistribuidor", "nombreCorto"]
     for k in simples:
         R.extend(variantes(MAESTRO[k], DISTRIBUIDOR[k]))
 
@@ -276,6 +300,9 @@ def revisar(carpeta, archivos):
         "TikTok":           MAESTRO["tiktok"],
         "ciudad base":      MAESTRO["ciudadBase"],
         "zona":             MAESTRO["zonaCorta"],
+        "nombre del repo":  MAESTRO["repo"],
+        "prefijo telefónico": "Ej. " + MAESTRO["prefijoTel"],
+        "raiz del dominio":   MAESTRO["dominio"].replace("https://","").split(".")[0],
         "estado":           MAESTRO["estado"],
         "abreviatura zona": MAESTRO["abrevZona"],
     }
