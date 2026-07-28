@@ -188,6 +188,7 @@
       <button class="tab" data-tab="pasaporte" type="button">Pasaporte</button>
       <button class="tab" data-tab="regalayg" type="button">Regala y Gana</button>
       <button class="tab" data-tab="ayuda" type="button">Clientes y solicitudes</button>
+      <button class="tab" data-tab="agenda" type="button">Agenda</button>
       <button class="tab" data-tab="papelera" type="button">Papelera</button>
   </nav>
   <main class="wrap">
@@ -201,6 +202,7 @@
     <div class="panel" id="p-pasaporte"></div>
     <div class="panel" id="p-regalayg"></div>
     <div class="panel" id="p-ayuda"></div>
+    <div class="panel" id="p-agenda"></div>
     <div class="panel" id="p-papelera"></div>
   </main>
 </div>
@@ -1612,7 +1614,7 @@
   const COLL_ES = { recipes:"Receta", testimonials:"Opinión", gallery:"Foto", upcoming:"Próximamente",
     giftClaims:"Persona con regalo", giftParticipants:"Participante", giftLinks:"Enlace de campaña",
     passportUsers:"Viajero del pasaporte", passportPhotos:"Foto del pasaporte",
-    helpRequests:"Solicitud de ayuda" };
+    helpRequests:"Solicitud de ayuda", appointments:"Cita" };
 
   async function softDelete(coll, id, item, label, kind){
     setCloud(true);
@@ -1746,9 +1748,302 @@
     if(name==="pasaporte") renderPassportAdmin();
     if(name==="regalayg") renderGiftAdmin();
     if(name==="ayuda") renderAyuda();
+    if(name==="agenda") renderAgenda();
     if(name==="papelera") renderTrash();
     window.scrollTo({top:0,behavior:"smooth"});
   };
+
+  // ==================== AGENDA DE DEMOSTRACIONES ====================
+  const AG_DIAS = [["1","Lunes"],["2","Martes"],["3","Miércoles"],["4","Jueves"],
+                   ["5","Viernes"],["6","Sábado"],["0","Domingo"]];
+  const AG_DEF = {
+    duracion:60, traslado:30, maxDia:6, anticipo:24, ventana:30,
+    dias:{ "1":["10:00","20:00"], "2":["10:00","20:00"], "3":["10:00","20:00"],
+           "4":["10:00","20:00"], "5":["10:00","20:00"], "6":["09:00","18:00"], "0":[] },
+    bloqueados:[]
+  };
+  const AG_TEMAS = ["Ollas y sartenes","Filtración de agua","Licuadora y extractor",
+                    "Purificador de aire","Cuchillos y accesorios"];
+  const AG_EST = {
+    solicitada:{ t:"Por confirmar", bg:"#EAF2FB", c:"#1B4F86" },
+    confirmada:{ t:"Confirmada",    bg:"#EAF5EE", c:"#1E7A46" },
+    realizada: { t:"Realizada",     bg:"#F3EFE7", c:"#66625B" },
+    cancelada: { t:"Cancelada",     bg:"#FBEDEC", c:"#B3261E" },
+    noasistio: { t:"No asistió",    bg:"#FDF6EC", c:"#7A5C22" }
+  };
+  const AG_ORDEN = ["solicitada","confirmada","realizada","noasistio","cancelada"];
+
+  let AGCFG = null, CITAS = [], agCargado = false, agVista = "citas", agFiltro = "proximas", agAbierta = "";
+
+  function agMin(h){ const p = String(h||"0:0").split(":"); return (+p[0])*60 + (+p[1]); }
+  function agHora(m){ const h=Math.floor(m/60), mm=m%60; return (h<10?"0":"")+h+":"+(mm<10?"0":"")+mm; }
+  function agHora12(h){
+    const m = agMin(h), hh = Math.floor(m/60), mm = m%60;
+    const ap = hh >= 12 ? "pm" : "am";
+    let h12 = hh % 12; if(h12 === 0) h12 = 12;
+    return h12 + (mm ? ":"+(mm<10?"0":"")+mm : "") + " " + ap;
+  }
+  function agFechaLarga(f){
+    const d = new Date(f + "T12:00:00");
+    return d.toLocaleDateString("es-MX", { weekday:"long", day:"numeric", month:"long" });
+  }
+
+  async function agCargar(forzar){
+    if(agCargado && !forzar) return;
+    try{
+      const c = await getDoc(doc(db,"settings","agenda"));
+      AGCFG = c.exists() ? Object.assign({}, AG_DEF, c.data()) : Object.assign({}, AG_DEF);
+      if(!AGCFG.dias) AGCFG.dias = Object.assign({}, AG_DEF.dias);
+      if(!AGCFG.bloqueados) AGCFG.bloqueados = [];
+    }catch(e){ AGCFG = Object.assign({}, AG_DEF); }
+    try{
+      const snap = await getDocs(collection(db,"appointments"));
+      CITAS = snap.docs.map(d=>({ _id:d.id, ...(d.data()||{}) }))
+        .sort((a,b)=> (a.fecha+a.hora).localeCompare(b.fecha+b.hora));
+    }catch(e){ CITAS = []; }
+    agCargado = true;
+  }
+
+  window.agVer = function(v){ agVista = v; renderAgenda(); };
+  window.agFiltrar = function(f){ agFiltro = f; renderAgenda(); };
+  window.agAbrir = function(id){ agAbierta = (agAbierta===id ? "" : id); renderAgenda(); };
+  window.agRecargar = async function(){ agCargado=false; await agCargar(true); renderAgenda(); };
+
+  /* ---------- Guardar la disponibilidad ---------- */
+  window.agGuardar = async function(){
+    const cfg = { duracion:60, dias:{}, bloqueados:[] };
+    cfg.traslado = Math.max(0, parseInt(($("agTraslado")||{}).value,10) || 0);
+    cfg.maxDia   = Math.max(1, parseInt(($("agMax")||{}).value,10) || 6);
+    cfg.anticipo = Math.max(0, parseInt(($("agAnticipo")||{}).value,10) || 24);
+    cfg.ventana  = Math.max(1, parseInt(($("agVentana")||{}).value,10) || 30);
+    cfg.duracion = Math.max(15, parseInt(($("agDuracion")||{}).value,10) || 60);
+
+    let algun = false;
+    for(const [k] of AG_DIAS){
+      const on = $("agOn"+k) && $("agOn"+k).checked;
+      const de = ($("agDe"+k)||{}).value || "";
+      const a  = ($("agA"+k)||{}).value || "";
+      if(on && de && a){
+        if(agMin(a) - agMin(de) < cfg.duracion){
+          toast("El "+AG_DIAS.find(x=>x[0]===k)[1]+" la franja es más corta que una demostración");
+          return;
+        }
+        cfg.dias[k] = [de, a]; algun = true;
+      }else{
+        cfg.dias[k] = [];
+      }
+    }
+    if(!algun){ toast("Marca al menos un día de atención"); return; }
+
+    const bl = (($("agBloq")||{}).value || "").split(/[\s,]+/).filter(Boolean);
+    for(const f of bl){
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(f)){ toast("Fecha bloqueada mal escrita: "+f+" (usa AAAA-MM-DD)"); return; }
+    }
+    cfg.bloqueados = bl;
+
+    setCloud(true);
+    try{
+      await setDoc(doc(db,"settings","agenda"), Object.assign({}, cfg, { updatedAt: serverTimestamp() }), { merge:false });
+      AGCFG = Object.assign({}, cfg);
+      toast("✓ Disponibilidad publicada");
+      renderAgenda();
+    }catch(e){ console.error(e); toast("No se pudo guardar"); }
+    finally{ setCloud(false); }
+  };
+
+  /* ---------- Estado de una cita ---------- */
+  window.agEstado = async function(id, nuevo){
+    const c = CITAS.find(x=>x._id===id);
+    if(!c) return;
+    if(nuevo === "cancelada" && !confirm("¿Cancelar la cita de "+(c.nombre||"")+"?\n\nEl hueco volverá a quedar libre.")) return;
+    setCloud(true);
+    try{
+      await updateDoc(doc(db,"appointments",id), { status:nuevo, updatedAt:serverTimestamp() });
+      c.status = nuevo;
+      /* Al cancelar, liberar el hueco para que otro pueda tomarlo */
+      if(nuevo === "cancelada"){
+        try{ await deleteDoc(doc(db,"busySlots", c.fecha+"_"+String(c.hora).replace(":","-"))); }catch(e){}
+      }
+      toast("✓ "+(AG_EST[nuevo]||{t:nuevo}).t);
+      renderAgenda();
+    }catch(e){ console.error(e); toast("No se pudo cambiar"); }
+    finally{ setCloud(false); }
+  };
+
+  window.agNota = async function(id){
+    const c = CITAS.find(x=>x._id===id);
+    if(!c) return;
+    const v = prompt("Nota interna (solo tú la ves):", c.notasAdmin || "");
+    if(v === null) return;
+    setCloud(true);
+    try{
+      await updateDoc(doc(db,"appointments",id), { notasAdmin:v, updatedAt:serverTimestamp() });
+      c.notasAdmin = v; toast("✓ Nota guardada"); renderAgenda();
+    }catch(e){ console.error(e); toast("No se pudo guardar"); }
+    finally{ setCloud(false); }
+  };
+
+  window.agBorrar = async function(id){
+    const c = CITAS.find(x=>x._id===id);
+    if(!c) return;
+    if(!confirm("¿Enviar a la papelera la cita de "+(c.nombre||"")+"?\n\nPodrás restaurarla durante 30 días.")) return;
+    setCloud(true);
+    try{
+      const copia = {}; for(const k in c){ if(k!=="_id") copia[k]=c[k]; }
+      await softDelete("appointments", id, copia,
+        (c.nombre||"Cita")+" · "+agFechaLarga(c.fecha)+" "+agHora12(c.hora), "Cita");
+      try{ await deleteDoc(doc(db,"busySlots", c.fecha+"_"+String(c.hora).replace(":","-"))); }catch(e){}
+      CITAS = CITAS.filter(x=>x._id!==id);
+      toast("✓ Enviada a la papelera"); renderAgenda();
+    }catch(e){ console.error(e); toast("No se pudo borrar"); }
+    finally{ setCloud(false); }
+  };
+
+  async function renderAgenda(){
+    const el = $("p-agenda");
+    if(!el) return;
+    if(!agCargado){
+      el.innerHTML = '<div class="empty-note">Cargando agenda…</div>';
+      await agCargar();
+    }
+    rygEstilos();
+    const y = window.scrollY;
+    const hoy = new Date(); hoy.setHours(0,0,0,0);
+    const hoyISO = hoy.toISOString().slice(0,10);
+
+    const proximas = CITAS.filter(c => c.fecha >= hoyISO && ["solicitada","confirmada"].indexOf(c.status)>=0);
+    const porConf  = CITAS.filter(c => c.status === "solicitada");
+
+    let h = '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">'+
+      '<h3 style="font-size:17px;font-family:\'Inter Tight\',sans-serif">Agenda</h3>'+
+      '<button class="ryg-b sm" type="button" onclick="agRecargar()">Actualizar</button></div>';
+
+    h += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:12px">';
+    [["Por confirmar",porConf.length],["Próximas",proximas.length],
+     ["Realizadas",CITAS.filter(c=>c.status==="realizada").length],["Total",CITAS.length]].forEach(function(x){
+      h += '<div class="stat-card" style="background:#fff;border:1px solid #E9E6E0;border-radius:16px;padding:14px;text-align:center">'+
+           '<div style="font-size:24px;font-weight:800;font-family:\'Inter Tight\',sans-serif">'+x[1]+'</div>'+
+           '<div style="font-size:11.5px;color:#66625B;margin-top:4px">'+x[0]+'</div></div>';
+    });
+    h += '</div>';
+
+    h += '<div class="ryg-nav">'+
+      '<button type="button" class="'+(agVista==="citas"?"on":"")+'" onclick="agVer(\'citas\')">Mis citas</button>'+
+      '<button type="button" class="'+(agVista==="config"?"on":"")+'" onclick="agVer(\'config\')">Mi disponibilidad</button>'+
+      '</div>';
+
+    if(agVista === "config"){
+      h += '<div class="card-form"><h3 style="font-size:16px;margin-bottom:4px">Días y horarios de atención</h3>'+
+           '<p class="hint" style="margin-bottom:12px">Marca los días que atiendes y su franja. Solo se ofrecen huecos dentro de ese rango.</p>';
+      AG_DIAS.forEach(function(d){
+        const k = d[0], f = (AGCFG.dias && AGCFG.dias[k]) || [];
+        const on = f.length === 2;
+        h += '<div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap;padding:9px 0;border-bottom:1px solid #F1EEE7">'+
+             '<label class="pp-toggle" style="flex:0 0 132px;min-height:38px">'+
+             '<input type="checkbox" id="agOn'+k+'" '+(on?'checked':'')+'><span>'+d[1]+'</span></label>'+
+             '<input type="time" id="agDe'+k+'" value="'+(on?f[0]:'10:00')+'" style="width:auto;flex:1;min-width:104px">'+
+             '<span style="color:#8A8A82;font-size:13px">a</span>'+
+             '<input type="time" id="agA'+k+'" value="'+(on?f[1]:'20:00')+'" style="width:auto;flex:1;min-width:104px">'+
+             '</div>';
+      });
+      h += '</div>';
+
+      h += '<div class="card-form" style="margin-top:12px"><h3 style="font-size:16px;margin-bottom:10px">Cómo se reparten las citas</h3>';
+      h += '<div class="row2"><div><label>Duración (minutos)</label><input type="number" id="agDuracion" min="15" step="15" value="'+(AGCFG.duracion||60)+'"></div>'+
+           '<div><label>Traslado entre citas (minutos)</label><input type="number" id="agTraslado" min="0" step="15" value="'+(AGCFG.traslado||30)+'"></div></div>';
+      h += '<div class="row2"><div><label>Máximo de citas por día</label><input type="number" id="agMax" min="1" max="20" value="'+(AGCFG.maxDia||6)+'"></div>'+
+           '<div><label>Antelación mínima (horas)</label><input type="number" id="agAnticipo" min="0" max="168" value="'+(AGCFG.anticipo||24)+'"></div></div>';
+      h += '<label>Se puede agendar hasta dentro de (días)</label><input type="number" id="agVentana" min="1" max="120" value="'+(AGCFG.ventana||30)+'">';
+      h += '<p class="hint" style="margin-top:6px">Con 1 hora y 30 minutos de traslado, un día de 10:00 a 20:00 ofrece 7 huecos.</p>';
+      h += '</div>';
+
+      h += '<div class="card-form" style="margin-top:12px"><h3 style="font-size:16px;margin-bottom:4px">Días que no atiendes</h3>'+
+           '<p class="hint" style="margin-bottom:8px">Vacaciones, festivos o días ya ocupados. Uno por línea, con formato AAAA-MM-DD.</p>'+
+           '<textarea id="agBloq" rows="3" placeholder="2026-12-24&#10;2026-12-25">'+esc((AGCFG.bloqueados||[]).join("\n"))+'</textarea></div>';
+
+      h += '<div class="form-acts" style="margin-top:12px"><button class="btn btn-solid" onclick="agGuardar()">Publicar disponibilidad</button></div>';
+      el.innerHTML = h;
+      window.scrollTo({ top:y });
+      return;
+    }
+
+    /* ---------- Mis citas ---------- */
+    const filtros = [["proximas","Próximas"],["solicitada","Por confirmar"],["confirmada","Confirmadas"],
+                     ["realizada","Realizadas"],["pasadas","Anteriores"],["todas","Todas"]];
+    h += '<div class="card-form"><div class="ryg-lbl">Filtrar</div><div class="ryg-chips">';
+    filtros.forEach(function(f){
+      h += '<button class="ryg-chip'+(agFiltro===f[0]?' on':'')+'" type="button" onclick="agFiltrar(\''+f[0]+'\')">'+f[1]+'</button>';
+    });
+    h += '</div></div>';
+
+    let lista = CITAS.slice();
+    if(agFiltro === "proximas")      lista = lista.filter(c=>c.fecha >= hoyISO && ["solicitada","confirmada"].indexOf(c.status)>=0);
+    else if(agFiltro === "pasadas")  lista = lista.filter(c=>c.fecha < hoyISO);
+    else if(agFiltro !== "todas")    lista = lista.filter(c=>c.status === agFiltro);
+    if(agFiltro === "pasadas") lista.reverse();
+
+    h += '<div class="card-form" style="margin-top:12px"><h3 style="font-size:16px;margin-bottom:10px">'+lista.length+' cita'+(lista.length===1?'':'s')+'</h3>';
+    if(!lista.length){
+      h += '<div class="empty-note">No hay citas con este filtro.</div>';
+    }else{
+      let ultimaFecha = "";
+      lista.forEach(function(c){
+        if(c.fecha !== ultimaFecha){
+          ultimaFecha = c.fecha;
+          h += '<div style="font-size:12px;font-weight:700;color:#8A672B;letter-spacing:.04em;text-transform:uppercase;margin:14px 0 8px">'+
+               agFechaLarga(c.fecha)+(c.fecha===hoyISO?' · HOY':'')+'</div>';
+        }
+        const e = AG_EST[c.status||"solicitada"] || AG_EST.solicitada;
+        const ab = agAbierta === c._id;
+        const tel = String(c.phone||"").replace(/\D/g,"");
+        const wa = tel.length===10 ? "1"+tel : tel;
+        h += '<div class="ryg-card">';
+        h += '<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">'+
+             '<div style="min-width:0"><b style="font-size:15.5px">'+agHora12(c.hora)+' · '+esc((c.nombre||"")+" "+(c.apellido||""))+'</b>'+
+             (c.tema?'<div style="font-size:13px;color:#8A672B;font-weight:600;margin-top:3px">'+esc(c.tema)+'</div>':'')+
+             '<div style="font-size:13px;color:#66625B;margin-top:3px">'+ayTel(c.phone)+
+             (c.medio?' · prefiere '+esc(c.medio):'')+'</div>'+
+             (c.dir1?'<div style="font-size:12.5px;color:#66625B;margin-top:3px">'+esc(c.dir1)+
+               (c.dir2?', '+esc(c.dir2):'')+'<br>'+esc(c.ciudad||"")+(c.estado?', '+esc(c.estado):'')+
+               (c.cp?' '+esc(c.cp):'')+'</div>':'')+
+             '</div>'+
+             '<span class="ryg-badge" style="background:'+e.bg+';color:'+e.c+'">'+e.t+'</span></div>';
+        if(c.notas)      h += '<div style="font-size:13px;background:#F7F5F0;border-radius:10px;padding:9px;margin-top:8px;white-space:pre-line">'+esc(c.notas)+'</div>';
+        if(c.notasAdmin) h += '<div style="font-size:13px;background:#FDF6EC;border:1px solid #EADFC9;border-radius:10px;padding:9px;margin-top:8px"><b>Nota:</b> '+esc(c.notasAdmin)+'</div>';
+        if(c.code)       h += '<div style="font-size:12px;color:#9A968E;margin-top:5px">Código '+esc(c.code)+'</div>';
+
+        h += '<div class="ryg-acts">';
+        if(c.status === "solicitada")
+          h += '<button class="ryg-b sm ok" type="button" onclick="agEstado(\''+c._id+'\',\'confirmada\')">Confirmar</button>';
+        if(tel){
+          h += '<a class="ryg-b sm wa" href="https://wa.me/'+wa+'?text='+encodeURIComponent('Hola '+(c.nombre||'')+', te escribo por tu demostración del '+agFechaLarga(c.fecha)+' a las '+agHora12(c.hora)+'.')+'" target="_blank" rel="noopener">WhatsApp</a>';
+          h += '<a class="ryg-b sm" href="tel:+'+wa+'">Llamar</a>';
+        }
+        if(c.dir1)
+          h += '<a class="ryg-b sm" href="https://maps.google.com/?q='+encodeURIComponent([c.dir1,c.dir2,c.ciudad,c.estado,c.cp].filter(Boolean).join(", "))+'" target="_blank" rel="noopener">Cómo llegar</a>';
+        h += '<button class="ryg-b sm soft" type="button" onclick="agAbrir(\''+c._id+'\')">'+(ab?'Menos opciones':'Más opciones')+'</button>';
+        h += '</div>';
+
+        if(ab){
+          h += '<div class="ryg-sep"><div class="ryg-lbl">Cambiar estado</div><div class="ryg-acts" style="margin-top:0">';
+          AG_ORDEN.forEach(function(k){
+            const on = (c.status||"solicitada") === k;
+            h += '<button class="ryg-b sm'+(on?' gold':'')+'" type="button" onclick="agEstado(\''+c._id+'\',\''+k+'\')"'+
+                 (on?' disabled style="opacity:.55"':'')+'>'+AG_EST[k].t+'</button>';
+          });
+          h += '</div><div class="ryg-lbl" style="margin-top:11px">Otros</div><div class="ryg-acts" style="margin-top:0">'+
+               '<button class="ryg-b sm soft" type="button" onclick="agNota(\''+c._id+'\')">'+(c.notasAdmin?'Editar nota':'Agregar nota')+'</button>'+
+               '<button class="ryg-b sm danger" type="button" onclick="agBorrar(\''+c._id+'\')">Eliminar</button>'+
+               '</div></div>';
+        }
+        h += '</div>';
+      });
+    }
+    h += '</div>';
+
+    el.innerHTML = h;
+    window.scrollTo({ top:y });
+  }
 
   // ==================== SOLICITUDES DE AYUDA ====================
   let AY = [], ayCargado = false, ayTipo = "todos", ayEstado = "todos", ayBusca = "", ayAbierta = "";

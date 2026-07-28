@@ -542,7 +542,7 @@
     background:#34C759;border:2.5px solid var(--paper);
   }
 
-  /* ---------- Modal Calendly ---------- */
+  /* ---------- Modal de reserva ---------- */
   .modal{position:fixed;inset:0;z-index:110;display:none;align-items:flex-end;justify-content:center}
   @media(min-width:640px){.modal{align-items:center;padding:28px}}
   .modal.open{display:flex}
@@ -850,7 +850,7 @@
   .hero .ryg-arrow{flex:0 0 16px;color:var(--gold,#B08D4F);margin-left:2px}
   @media(hover:hover){.hero .ryg-pill:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(18,42,70,.24);border-left-color:var(--gold,#B08D4F)}}
 
-  /* ---------- Modal de confianza (pre-Calendly) ---------- */
+  /* ---------- Modal de confianza (antes de agendar) ---------- */
   .cal-pre{padding:22px 22px calc(22px + env(safe-area-inset-bottom))}
   .trust-list{list-style:none;margin:2px 0 16px;padding:0}
   .trust-list li{display:flex;align-items:center;gap:11px;padding:11px 0;font-size:16.5px;font-weight:600;border-bottom:1px solid var(--hairline)}
@@ -1640,7 +1640,7 @@
   </figure>
 </div>
 
-<!-- =============== MODAL CALENDLY =============== -->
+<!-- =============== MODAL DE RESERVA =============== -->
 <div class="modal" id="calModal" aria-hidden="true">
   <div class="modal-back" data-cal-close></div>
   <div class="modal-card" role="dialog" aria-modal="true" aria-label="Reservar demostración gratuita">
@@ -1660,7 +1660,7 @@
         <li><span class="tl-ico">✓</span>En tu hogar</li>
         <li><span class="tl-ico">✓</span>Sin compromiso de compra</li>
       </ul>
-      <p class="cal-note">Después de reservar, te escribiré personalmente por WhatsApp para confirmar la dirección, el número de personas y el menú.</p>
+      <p class="cal-note">Elige el tema que te interesa, el día y la hora. Después te escribo personalmente para confirmar la cita.</p>
       <button class="btn btn-solid btn-block" id="calGo" type="button">Elegir fecha y hora</button>
     </div>
   </div>
@@ -1728,7 +1728,7 @@ function __saveContactVCard(){
 document.getElementById('saveContact').addEventListener('click', __saveContactVCard);
 var __hsc = document.getElementById('heroSaveContact'); if(__hsc) __hsc.addEventListener('click', __saveContactVCard);
 
-/* --- Modal Calendly --- */
+/* --- Modal de reserva --- */
 var calModal = document.getElementById('calModal');
 var lastFocus = null;
 
@@ -1746,24 +1746,14 @@ function closeCal(){
   document.body.classList.remove('lock');
   if(lastFocus) lastFocus.focus();
 }
-var CAL_URL = 'https://calendly.com/florestomas/demo-royal';
-function buildCalUrl(){
-  var url = window.CAL_URL || CAL_URL;
-  var p = new URLSearchParams(location.search);
-  var ref = p.get('ref'); var src = p.get('utm_source');
-  var extra = [];
-  if(ref){ extra.push('utm_campaign=referido'); extra.push('utm_content=' + encodeURIComponent(ref)); }
-  if(src){ extra.push('utm_source=' + encodeURIComponent(src)); }
-  if(extra.length){ url += (url.indexOf('?')>=0?'&':'?') + extra.join('&'); }
-  return url;
-}
 document.querySelectorAll('[data-cal]').forEach(function(b){
   b.addEventListener('click', function(){ openCal(); });
 });
 var calGoBtn = document.getElementById('calGo');
 if(calGoBtn){ calGoBtn.addEventListener('click', function(){
   if(window.trackEvent) window.trackEvent('Reserva: abre calendario');
-  window.open(buildCalUrl(), '_blank', 'noopener');
+  /* Agenda propia: el visitante elige tema, día y hora en el sitio */
+  location.href = 'agendar.html';
   closeCal();
 }); }
 document.querySelectorAll('[data-cal-close]').forEach(function(b){
@@ -1939,7 +1929,6 @@ try{
       const fmt = (d.length===11 && d[0]==="1") ? "+1 ("+d.slice(1,4)+") "+d.slice(4,7)+"-"+d.slice(7) : "+"+d;
       const pt = document.getElementById("phoneTxt"); if(pt) pt.textContent = fmt;
     }
-    if(S.cal){ window.CAL_URL = S.cal; }
     if(S.ig){ const a=document.querySelector('a[href*="instagram.com"]'); if(a){ a.href="https://www.instagram.com/"+S.ig; const cd=a.querySelector(".cd"); if(cd) cd.textContent="@"+S.ig; } }
     if(S.tt){ const a=document.querySelector('a[href*="tiktok.com"]'); if(a){ a.href="https://www.tiktok.com/@"+S.tt; const cd=a.querySelector(".cd"); if(cd) cd.textContent="@"+S.tt; } }
   }
@@ -2106,6 +2095,20 @@ try{
     modal.classList.add("open"); modal.setAttribute("aria-hidden","false");
     document.body.classList.add("lock");
   };
+
+  /* Si se llega con #resena (por ejemplo desde un código QR),
+     el formulario se abre solo en cuanto carga la página. */
+  (function(){
+    function abrirSiToca(){
+      var h = (location.hash || '').toLowerCase();
+      if(h === '#resena' || h === '#resena/' || h === '#opinar'){
+        setTimeout(function(){ try{ window.openReview(); }catch(e){} }, 450);
+      }
+    }
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', abrirSiToca);
+    else abrirSiToca();
+    window.addEventListener('hashchange', abrirSiToca);
+  })();
   window.closeReview = function(){
     const modal = getModal(); if(!modal) return;
     modal.classList.remove("open"); modal.setAttribute("aria-hidden","true");
@@ -2655,7 +2658,6 @@ var GARANTIA_URL = "garantia.html";
           if(window.trackEvent) window.trackEvent('Ayuda: visita · ' + motivo);
           cerrar();
           if(typeof openCal === 'function') openCal();
-          else if(window.CAL_URL) location.href = window.CAL_URL;
         });
       });
     }else if(tipo === 'garantia'){
