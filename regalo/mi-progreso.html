@@ -389,7 +389,7 @@ function render(code, p){
   /* Compartir de nuevo */
   $('linkBox').textContent = link;
   const msg = CFG.texts.shareMessage.replace('{ENLACE}', link);
-  $('btnWa').onclick = function(){ location.href = 'https://wa.me/?text='+encodeURIComponent(msg); };
+  $('btnWa').onclick = function(){ window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank','noopener'); };
   $('btnShare').onclick = async function(){
     if(navigator.share){
       /* Texto y enlace por separado: asi la app muestra el mensaje y la vista previa */

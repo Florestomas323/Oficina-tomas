@@ -6,6 +6,8 @@
 <script src="config.js"></script>
 <meta name="theme-color" content="#FAFAF8">
 <title>Tomas Flores — Tu distribuidor Royal Prestige | Demostraciones, recetas y servicio</title>
+<link rel="icon" type="image/png" href="assets/trabaja/logo-impact.png">
+<link rel="apple-touch-icon" href="assets/trabaja/logo-impact.png">
 <meta name="description" content="Reserva tu demostración gratuita, solicita servicio para tu equipo, encuentra recetas y guarda mi contacto. Tomas Flores, distribuidor autorizado Royal Prestige en DFW, Texas.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Tomas Flores — Royal Prestige">
@@ -25,8 +27,6 @@
 <meta name="twitter:image" content="https://tomasflores.com/og-image.jpeg">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://tomasflores.com/">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icono-oficina-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icono-oficina-512.png">
 <meta name="apple-mobile-web-app-title" content="Tomas Flores">
@@ -1109,7 +1109,7 @@
   track('Visita','view');
 
   document.addEventListener('click', function(e){
-    var t = e.target.closest('[data-track], [data-cal], a[href*="wa.me"], [onclick*="openReview"], a[href*="instagram"], a[href*="tiktok"], a[href*="recetas.html"], a[href^="receta-"], a[href*="trabaja-conmigo.html"]');
+    var t = e.target.closest('[data-track], [data-cal], a[href*="wa.me"], [onclick*="openReview"], a[href*="instagram"], a[href*="tiktok"], a[href*="recetas.html"], a[href^="receta-"], a[href*="trabaja-conmigo"]');
     if(!t) return;
     var explicit = t.closest('[data-track]');
     if(explicit){ track(explicit.getAttribute('data-track')); return; }
@@ -1167,7 +1167,7 @@
       <a href="#categorias">Productos</a>
       <a href="recetas.html">Recetas</a>
       <a href="#servicio">Servicio</a>
-      <a href="trabaja-conmigo.html">Trabaja conmigo</a>
+      <a href="/trabaja-conmigo.html">Trabaja conmigo</a>
       <a href="#contacto">Contacto</a>
     </nav>
     <button class="btn tn-cta" data-cal type="button">Reservar</button>
@@ -1188,8 +1188,8 @@
     <a class="hero-trust rv in" href="#opiniones" aria-label="Ver experiencias de clientes"><span>Experiencias reales de mis clientes ›</span></a>
 <div class="hero-cta rv in">
       <button class="btn btn-solid btn-hero" data-cal type="button">Reservar demostración</button>
-      <a class="btn btn-ghost" href="trabaja-conmigo.html">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+      <a class="btn btn-ghost" href="/trabaja-conmigo.html" data-track="Trabaja conmigo">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
         Trabaja conmigo
       </a>
       <button class="btn btn-save" id="heroSaveContact" type="button">
@@ -1206,159 +1206,6 @@
   <div class="ts-item rv"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Atenci&oacute;n personalizada</span></div>
   <div class="ts-item rv"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg><span>Servicio despu&eacute;s de la compra</span></div>
   <div class="ts-item rv"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Dallas&ndash;Fort Worth</span></div>
-</section>
-<!-- =============== RECETAS =============== -->
-<section class="block wrap" id="recetas">
-  <div class="block-head">
-    <span class="eyebrow rv">Cocina con tu Royal Prestige</span>
-    <h2 class="sec-h rv">Recetas para inspirarte</h2>
-  </div>
-  <div class="rec-grid" id="recGrid">
-    <a class="rec-card rv" href="recetas.html#/receta/costillas-bbq"><div class="rec-img"><img src="foto-costillas-bbq.jpg" alt="Costillas BBQ en Olla de Presión" loading="lazy"></div><div class="rec-body"><h3>Costillas BBQ en Olla de Presión</h3><p>35 min · Fácil</p></div></a>
-    <a class="rec-card rv" href="recetas.html#/receta/pasta-alfredo" style="transition-delay:80ms"><div class="rec-img"><img src="foto-pasta-alfredo.jpg" alt="Pasta Alfredo con Pollo" loading="lazy"></div><div class="rec-body"><h3>Pasta Alfredo con Pollo</h3><p>25 min · Fácil</p></div></a>
-    <a class="rec-card rv" href="recetas.html#/receta/flan-casero" style="transition-delay:160ms"><div class="rec-img"><img src="foto-flan-casero.jpg" alt="Flan Casero" loading="lazy"></div><div class="rec-body"><h3>Flan Casero</h3><p>50 min · Media</p></div></a>
-  </div>
-  <div class="home-soon rv" id="homeSoon" style="display:none">
-    <div class="hs-head">
-      <h3>Próximamente</h3>
-      <a class="hs-link" href="recetas.html#soon">Ver más ›</a>
-    </div>
-    <div class="hs-row" id="hsRow"></div>
-  </div>
-  <div class="mini-cta rv" style="margin-top:8px"><a class="btn btn-line-g" href="recetas.html" data-track="Ver recetas">Ver todas las recetas</a></div>
-</section>
-<!-- =============== SERVICIO PARA CLIENTES =============== -->
-<section class="block wrap" id="servicio">
-  <div class="block-head">
-    <span class="eyebrow rv">Mi compromiso no termina con la compra</span>
-    <h2 class="sec-h rv">¿Ya eres cliente?</h2>
-  </div>
-  <p class="cat-lead rv">Si ya cocinas con tus productos, aquí puedes solicitar ayuda, consultar la garantía, pedir servicio o coordinar una atención personalizada. Elige la opción que mejor describa lo que necesitas.</p>
-  <div class="help-grid">
-    <button class="help-card rv" type="button" data-ayuda="producto">
-      <span class="icon-3d" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4"/><path d="M12 17.5h.01"/></svg></span>
-      <span class="h-txt"><h3>Ayuda con un producto</h3><p>Dudas de uso, cuidado o funcionamiento</p></span>
-      <svg class="h-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-    </button>
-    <button class="help-card rv" type="button" data-ayuda="servicio">
-      <span class="icon-3d" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
-      <span class="h-txt"><h3>Solicitar servicio</h3><p>Mantenimiento, revisión o una pieza</p></span>
-      <svg class="h-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-    </button>
-    <button class="help-card rv" type="button" data-ayuda="garantia">
-      <span class="icon-3d" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span>
-      <span class="h-txt"><h3>Consultar garantía</h3><p>Cómo funciona y cómo pedir ayuda</p></span>
-      <svg class="h-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-    </button>
-    <button class="help-card rv" type="button" data-ayuda="visita">
-      <span class="icon-3d" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V10"/><path d="M9.5 21v-6h5v6"/></svg></span>
-      <span class="h-txt"><h3>Solicitar una visita</h3><p>Coordinamos día y hora</p></span>
-      <svg class="h-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-    </button>
-    <button class="help-card rv" type="button" data-ayuda="llamada">
-      <span class="icon-3d" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg></span>
-      <span class="h-txt"><h3>Solicitar una llamada</h3><p>Dime cuándo te viene bien</p></span>
-      <svg class="h-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-    </button>
-  </div>
-</section>
-<!-- =============== SOBRE MÍ =============== -->
-<section class="about" id="sobre-mi">
-  <div class="about-inner">
-    <div class="about-photo rv"><img id="aboutImg" src="foto-about.jpg" alt="Tomas Flores" loading="lazy"></div>
-    <div class="about-txt">
-      <span class="eyebrow rv">Sobre mí</span>
-      <h2 class="rv" id="aboutH">Estoy aquí para servirte, no solo para venderte.</h2>
-      <p class="motto rv" id="aboutMotto">"Más que vender, sirvo."</p>
-      <p class="body rv" id="aboutBody">Soy Tomas. Cuando compras conmigo, no termina la relación: empieza. Recetas, servicio, dudas — cuenta conmigo antes, durante y después.</p>
-    </div>
-  </div>
-</section>
-<!-- =============== PASAPORTE DE SABORES =============== -->
-<section class="block wrap pass-sec" id="pasaporte">
-  <a class="pass-card rv" href="pasaporte.html" data-track="Pasaporte desde inicio" aria-label="Comenzar el Pasaporte de Sabores">
-    <div class="pass-in">
-      <img class="pass-emb" src="emblema-pasaporte.jpeg" alt="Pasaporte de Sabores" loading="lazy" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='emblema-pasaporte.jpg'}else{this.style.display='none'}">
-      <div>
-        <span class="pass-eyebrow">Nuevo &middot; Una aventura en tu cocina</span>
-        <h2 class="pass-h">&iquest;Te atreves a viajar por Latinoam&eacute;rica sin salir de tu cocina?</h2>
-        <p class="pass-p">Seis pa&iacute;ses, seis recetas, un sello por cada platillo que logres&hellip; y al completar la ruta, un <b style="color:#F2ECDD">regalo sorpresa</b> que te entrego personalmente.</p>
-        <div class="pass-chips"><span class="pass-chip">Gratis</span><span class="pass-chip">Sin compras</span><span class="pass-chip">A tu ritmo</span></div>
-        <div class="pass-mini-b"><span>Nuevas recetas</span><span>&middot;</span><span>Sellos por logro</span><span>&middot;</span><span>Regalo al completar</span></div>
-        <span class="pass-cta">Comenzar mi pasaporte &rarr;</span>
-      </div>
-    </div>
-  </a>
-</section>
-<!-- =============== REGALA Y GANA =============== -->
-<section class="block wrap" id="regala-gana" aria-label="Programa Regala y Gana">
-  <div class="ryg-card rv">
-    <div class="ryg-card-head">
-      <img class="ryg-logo" src="regalo/logo-regala-y-gana.webp" alt="Regala y Gana" width="933" height="592"
-           onerror="this.onerror=null;this.src='regalo/logo-regala-y-gana.png'">
-    </div>
-    <h2 class="ryg-h">Comparte un obsequio. Gana premios para tu cocina.</h2>
-    <p class="ryg-p">Crea tu enlace personal, comp&aacute;rtelo con familiares y amigos y avanza durante 30 d&iacute;as en tu ruta de recompensas.</p>
-    <ul class="ryg-points">
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Sin costo para quien recibe</li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Sin obligaci&oacute;n de compra</li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Campa&ntilde;a de 30 d&iacute;as</li>
-    </ul>
-    <div class="ryg-prizes" aria-label="Ejemplos de premios">
-      <figure><img src="regalo/tabla-cocina.webp" alt="Tabla de cocina" loading="lazy"><figcaption>Tabla de cocina</figcaption></figure>
-      <figure><img src="regalo/chocolatera.webp" alt="Chocolatera" loading="lazy"><figcaption>Chocolatera</figcaption></figure>
-      <figure><img src="regalo/premio-mayor.webp" alt="Premio mayor a elegir" loading="lazy"><figcaption>Premio mayor</figcaption></figure>
-    </div>
-    <div class="ryg-actions">
-      <a class="btn btn-solid ryg-go" href="regalo/crear.html" data-tr="Modulo RyG: crear enlace">Crear mi enlace</a>
-      <a class="ryg-how" href="regalo/crear.html" data-tr="Modulo RyG: como funciona">C&oacute;mo funciona &rsaquo;</a>
-    </div>
-  </div>
-</section>
-<section class="block wrap" id="opiniones">
-  <div class="block-head">
-    <span class="eyebrow rv">Mi compromiso no termina con la compra</span>
-      <h2 class="sec-h rv">Experiencias reales de mis clientes</h2>
-  </div>
-  <div class="rev-intro rv">
-      <p>Estas son experiencias compartidas por personas a quienes he acompañado durante su demostración y después de recibir sus productos.</p>
-      <p class="rev-note">Cada testimonio fue enviado directamente por el cliente y solo puede haberse editado para mejorar su claridad, sin cambiar su experiencia.</p>
-    </div>
-  <div class="rev-track rv" aria-label="Opiniones de clientes" id="revTrack">
-    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#8A6FB4">MG</span><div><div class="rev-name">María G.</div><div class="rev-sub">Cliente desde 2024</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">La demostración fue increíble. Tomas cocinó para toda mi familia y nos explicó todo con muchísima paciencia. Ahora cocino más rápido y más saludable.</p></article>
-    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#B08D4F">CR</span><div><div class="rev-name">Carlos R.</div><div class="rev-sub">Cliente desde 2023</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Lo que más valoro es el servicio después de la compra. Tuve una duda con mi olla de presión, le escribí y me respondió en minutos. Así se atiende a un cliente.</p></article>
-    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#5B8A72">AP</span><div><div class="rev-name">Ana P.</div><div class="rev-sub">Cliente desde 2025</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Las recetas de su página son mi salvación entre semana. Los tamales me quedaron perfectos a la primera con su tamalera y sus consejos.</p></article>
-    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#7A6A5A">LM</span><div><div class="rev-name">Luis M.</div><div class="rev-sub">Cliente desde 2024</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Comparé con otros distribuidores y me quedé con Tomas por su seriedad. Todo lo que prometió en la demostración se cumplió.</p></article>
-    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#4E6B9B">RT</span><div><div class="rev-name">Rosa T.</div><div class="rev-sub">Cliente desde 2023</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Mi ribeye nunca había quedado así. El sartén es otra cosa y Tomas siempre está pendiente de que le saquemos provecho a todo el equipo.</p></article>
-  </div>
-  <p class="rev-note rv">¿Ya cocinas con tu Royal Prestige? <button type="button" class="rev-open" onclick="openReview()" style="font-weight:600;color:var(--ink);border-bottom:1px solid var(--gold);background:none;cursor:pointer">Deja tu reseña ⭐</button></p>
-</section>
-<!-- =============== GALERÍA =============== -->
-<section class="block wrap" id="galeria">
-  <div class="block-head">
-    <span class="eyebrow rv">Momentos reales</span>
-    <h2 class="sec-h rv">Galería</h2>
-  </div>
-  <div class="gal-filters" id="galFilters" hidden></div>
-    <div class="gal-grid" id="galGrid">
-    <button class="gal-item rv" data-lb="0" type="button" aria-label="Ver foto: Demostración en vivo"><img src="foto-galeria-1.jpg" alt="Tomas en una demostración en vivo" loading="lazy"><span class="gal-tag">Demostración en vivo</span></button>
-    <button class="gal-item rv" data-lb="1" type="button" style="transition-delay:60ms" aria-label="Ver foto: Cocinando con clientes"><img src="foto-galeria-2.jpg" alt="Tomas cocinando junto a una clienta" loading="lazy"><span class="gal-tag">Cocinando con clientes</span></button>
-    <button class="gal-item rv" data-lb="2" type="button" style="transition-delay:120ms" aria-label="Ver foto: El toque del chef"><img src="foto-galeria-3.jpg" alt="Tomas sazonando durante una demostración" loading="lazy"><span class="gal-tag">El toque del chef</span></button>
-    <button class="gal-item rv" data-lb="3" type="button" style="transition-delay:180ms" aria-label="Ver foto: Tomas Flores"><img src="foto-galeria-4.jpg" alt="Retrato de Tomas Flores" loading="lazy"><span class="gal-tag">Tomas Flores</span></button>
-  </div>
-
-  <div class="mini-cta rv">
-    <p>&iquest;Te gustar&iacute;a vivir tu propia experiencia?</p>
-    <button class="btn btn-solid" data-cal type="button">Reservar mi demostraci&oacute;n</button>
-  </div>
-</section>
-<!-- =============== NOVEDADES =============== -->
-<section class="block wrap" id="novedades" style="display:none" aria-label="Novedades">
-  <div class="block-head">
-    <span class="eyebrow rv">Lo nuevo</span>
-    <h2 class="sec-h rv">Novedades</h2>
-  </div>
-  <div class="nv-grid" id="nvGrid"></div>
 </section>
 <!-- =============== BENEFICIOS =============== -->
 <section class="block wrap" id="beneficios">
@@ -1413,40 +1260,6 @@
 </div>
   </details>
 </section>
-<!-- =============== CATEGORÍAS DE PRODUCTOS =============== -->
-<section class="block wrap" id="categorias">
-  <div class="block-head">
-    <span class="eyebrow rv">Explora sin compromiso</span>
-    <h2 class="sec-h rv">¿Qué te gustaría conocer?</h2>
-  </div>
-  <p class="cat-lead rv">Elige lo que te interesa y te comparto información por WhatsApp, sin ningún compromiso.</p>
-  <div class="cat-grid">
-    <div class="cat-card rv">
-      <span class="cat-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h11a3 3 0 0 1 0 6H8"/><path d="M14 12a5 5 0 0 0-5-5H5a2 2 0 0 0-2 2v3"/><path d="M18 12h3"/></svg></span>
-      <h3>Sartenes y ollas</h3>
-      <p>Cocina con poca agua, casi nada de aceite y todo el sabor. Acero hecho para toda la vida: la mayoría con 50 años de garantía.</p>
-      <a class="cat-btn" href="https://wa.me/16823811576?text=Hola%20Tomas%20👋,%20quiero%20conocer%20los%20sartenes%20y%20ollas" target="_blank" rel="noopener" data-tr="Categoria: Sartenes y ollas">Conócelo en tu demostración y pregunta por tu beneficio especial<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
-    </div>
-    <div class="cat-card rv">
-      <span class="cat-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.7c-3.5 3.2-5.5 6-5.5 9a5.5 5.5 0 0 0 11 0c0-3-2-5.8-5.5-9z"/></svg></span>
-      <h3>Purificación de agua</h3>
-      <p>Filtra plomo, cloro e impurezas para que en tu casa se beba agua más limpia todos los días.</p>
-      <a class="cat-btn" href="https://wa.me/16823811576?text=Hola%20Tomas%20👋,%20quiero%20conocer%20la%20purificación%20de%20agua" target="_blank" rel="noopener" data-tr="Categoria: Purificacion de agua">Conócelo en tu demostración y pregunta por tu beneficio especial<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
-    </div>
-    <div class="cat-card rv">
-      <span class="cat-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l6-6"/><path d="M14 4l6 6-3 3-6-6z"/><path d="M11 7L8 4 4 8l3 3"/></svg></span>
-      <h3>Cuchillos y accesorios</h3>
-      <p>Precisión que hace tu día en la cocina más fácil y rápido. La mayoría con 50 años de garantía.</p>
-      <a class="cat-btn" href="https://wa.me/16823811576?text=Hola%20Tomas%20👋,%20quiero%20conocer%20los%20cuchillos%20y%20accesorios" target="_blank" rel="noopener" data-tr="Categoria: Cuchillos y accesorios">Conócelo en tu demostración y pregunta por tu beneficio especial<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
-    </div>
-    <div class="cat-card rv">
-      <span class="cat-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l-1 5H9L8 3z"/><path d="M9 8c-1 2-1.5 3.5-1.5 6A4.5 4.5 0 0 0 12 18.5 4.5 4.5 0 0 0 16.5 14c0-2.5-.5-4-1.5-6"/><path d="M9.5 21h5"/></svg></span>
-      <h3>Licuadoras y extractores</h3>
-      <p>Jugos naturales, salsas y recetas saludables en minutos. Una forma práctica de cuidar a los tuyos desde la cocina.</p>
-      <a class="cat-btn" href="https://wa.me/16823811576?text=Hola%20Tomas%20👋,%20quiero%20conocer%20las%20licuadoras%20y%20extractores" target="_blank" rel="noopener" data-tr="Categoria: Licuadoras y extractores">Conócelo en tu demostración y pregunta por tu beneficio especial<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
-    </div>
-  </div>
-</section>
 <!-- =============== CÓMO FUNCIONA =============== -->
 <section class="block wrap" id="como-funciona">
   <div class="block-head">
@@ -1468,25 +1281,207 @@
     <h3 class="zona-h">Demostraciones en Dallas–Fort Worth</h3>
     <p class="zona-p">Atiendo familias en <b>Dallas, Irving, Arlington, Grand Prairie, Farmers Branch, Addison, Plano, Fort Worth</b> y otras ciudades del área DFW.</p>
     <p class="zona-q">¿No ves tu ciudad? Escríbeme por WhatsApp para confirmar disponibilidad.</p>
-    <a class="btn btn-line zona-btn" href="https://wa.me/16823811576?text=Hola%20Tomas%20👋,%20quiero%20saber%20si%20haces%20demostraciones%20en%20mi%20ciudad" target="_blank" rel="noopener">
+    <a class="btn btn-line zona-btn" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Quiero%20saber%20si%20haces%20demostraciones%20en%20mi%20ciudad" target="_blank" rel="noopener">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.55 2 2.1 6.44 2.1 11.93c0 1.76.46 3.47 1.34 4.98L2 22l5.22-1.37a9.9 9.9 0 0 0 4.82 1.23h.01c5.49 0 9.94-4.45 9.94-9.93A9.88 9.88 0 0 0 12.04 2z"/></svg>
       Consultar disponibilidad en mi ciudad
     </a>
   </div>
 </section>
-<!-- =============== CTA FINAL =============== -->
-<section class="final-cta" aria-label="Reservar demostración">
-  <div class="wrap">
-    <span class="eyebrow rv" style="color:#E7D9BE">Da el primer paso</span>
-    <h2 class="fc-h rv">¿Listo para vivir una experiencia de cocina diferente?</h2>
-    <p class="fc-p rv">Elige una fecha o escríbeme directamente. La demostración es gratuita y sin compromiso.</p>
-    <div class="fc-btns rv">
-      <button class="btn btn-solid btn-hero" data-cal type="button">Reservar mi demostración</button>
-      <a class="btn btn-ghost fc-wa" href="https://wa.me/16823811576?text=Hola%20Tomas%20👋" target="_blank" rel="noopener">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.55 2 2.1 6.44 2.1 11.93c0 1.76.46 3.47 1.34 4.98L2 22l5.22-1.37a9.9 9.9 0 0 0 4.82 1.23h.01c5.49 0 9.94-4.45 9.94-9.93A9.88 9.88 0 0 0 12.04 2z"/></svg>
-        Hablar por WhatsApp
-      </a>
+<section class="block wrap" id="opiniones">
+  <div class="block-head">
+    <span class="eyebrow rv">Mi compromiso no termina con la compra</span>
+      <h2 class="sec-h rv">Experiencias reales de mis clientes</h2>
+  </div>
+  <div class="rev-intro rv">
+      <p>Estas son experiencias compartidas por personas a quienes he acompañado durante su demostración y después de recibir sus productos.</p>
+      <p class="rev-note">Cada testimonio fue enviado directamente por el cliente y solo puede haberse editado para mejorar su claridad, sin cambiar su experiencia.</p>
     </div>
+  <div class="rev-track rv" aria-label="Opiniones de clientes" id="revTrack">
+    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#8A6FB4">MG</span><div><div class="rev-name">María G.</div><div class="rev-sub">Cliente desde 2024</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">La demostración fue increíble. Tomas cocinó para toda mi familia y nos explicó todo con muchísima paciencia. Ahora cocino más rápido y más saludable.</p></article>
+    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#B08D4F">CR</span><div><div class="rev-name">Carlos R.</div><div class="rev-sub">Cliente desde 2023</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Lo que más valoro es el servicio después de la compra. Tuve una duda con mi olla de presión, le escribí y me respondió en minutos. Así se atiende a un cliente.</p></article>
+    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#5B8A72">AP</span><div><div class="rev-name">Ana P.</div><div class="rev-sub">Cliente desde 2025</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Las recetas de su página son mi salvación entre semana. Los tamales me quedaron perfectos a la primera con su tamalera y sus consejos.</p></article>
+    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#7A6A5A">LM</span><div><div class="rev-name">Luis M.</div><div class="rev-sub">Cliente desde 2024</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Comparé con otros distribuidores y me quedé con Tomas por su seriedad. Todo lo que prometió en la demostración se cumplió.</p></article>
+    <article class="rev-card"><div class="rev-top"><span class="avatar" style="background:#4E6B9B">RT</span><div><div class="rev-name">Rosa T.</div><div class="rev-sub">Cliente desde 2023</div></div></div><div class="stars" aria-label="5 estrellas">★★★★★</div><p class="rev-txt">Mi ribeye nunca había quedado así. El sartén es otra cosa y Tomas siempre está pendiente de que le saquemos provecho a todo el equipo.</p></article>
+  </div>
+  <p class="rev-note rv">¿Ya cocinas con tu Royal Prestige? <button type="button" class="rev-open" onclick="openReview()" style="font-weight:600;color:var(--ink);border-bottom:1px solid var(--gold);background:none;cursor:pointer">Deja tu reseña ⭐</button></p>
+
+  <div class="post-rev-cta rv">
+    <h3>Vive tu propia demostración en casa</h3>
+    <div class="prc-btns">
+      <button class="btn btn-solid" data-cal type="button">Reservar demostración gratuita</button>
+      <a class="btn btn-ghost" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Tengo%20una%20pregunta" target="_blank" rel="noopener">Preguntar por WhatsApp</a>
+    </div>
+  </div>
+</section>
+<!-- =============== GALERÍA =============== -->
+<section class="block wrap" id="galeria">
+  <div class="block-head">
+    <span class="eyebrow rv">Momentos reales</span>
+    <h2 class="sec-h rv">Galería</h2>
+  </div>
+  <div class="gal-filters" id="galFilters" hidden></div>
+    <div class="gal-grid" id="galGrid">
+    <button class="gal-item rv" data-lb="0" type="button" aria-label="Ver foto: Demostración en vivo"><img src="foto-galeria-1.jpg" alt="Tomas en una demostración en vivo" loading="lazy"><span class="gal-tag">Demostración en vivo</span></button>
+    <button class="gal-item rv" data-lb="1" type="button" style="transition-delay:60ms" aria-label="Ver foto: Cocinando con clientes"><img src="foto-galeria-2.jpg" alt="Tomas cocinando junto a una clienta" loading="lazy"><span class="gal-tag">Cocinando con clientes</span></button>
+    <button class="gal-item rv" data-lb="2" type="button" style="transition-delay:120ms" aria-label="Ver foto: El toque del chef"><img src="foto-galeria-3.jpg" alt="Tomas sazonando durante una demostración" loading="lazy"><span class="gal-tag">El toque del chef</span></button>
+    <button class="gal-item rv" data-lb="3" type="button" style="transition-delay:180ms" aria-label="Ver foto: Tomas Flores"><img src="foto-galeria-4.jpg" alt="Retrato de Tomas Flores" loading="lazy"><span class="gal-tag">Tomas Flores</span></button>
+  </div>
+
+  <div class="mini-cta rv">
+    <p>&iquest;Te gustar&iacute;a vivir tu propia experiencia?</p>
+    <button class="btn btn-solid" data-cal type="button">Reservar mi demostraci&oacute;n</button>
+  </div>
+</section>
+<!-- =============== CATEGORÍAS DE PRODUCTOS =============== -->
+<section class="block wrap" id="categorias">
+  <div class="block-head">
+    <span class="eyebrow rv">Explora sin compromiso</span>
+    <h2 class="sec-h rv">¿Qué te gustaría conocer?</h2>
+  </div>
+  <p class="cat-lead rv">Elige lo que te interesa y te comparto información por WhatsApp, sin ningún compromiso.</p>
+  <div class="cat-grid">
+    <div class="cat-card rv">
+      <span class="cat-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11h16M6 11V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4M5 11l1 8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-8"/></svg></span>
+      <h3>Sistemas de cocina</h3>
+      <p>El método completo para cocinar con menos agua y aceite añadido.</p>
+      <a class="cat-btn" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Quiero%20conocer%20los%20sistemas%20de%20cocina%20Royal%20Prestige" target="_blank" rel="noopener" data-tr="Categoria: Sistemas de cocina">Quiero conocer esta opción<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="cat-card rv">
+      <span class="cat-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h11a3 3 0 0 1 0 6H8"/><path d="M14 12a5 5 0 0 0-5-5H5a2 2 0 0 0-2 2v3"/><path d="M18 12h3"/></svg></span>
+      <h3>Sartenes y ollas</h3>
+      <p>Piezas de acero para dorar, guisar y cocinar con calor uniforme.</p>
+      <a class="cat-btn" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Quiero%20conocer%20los%20sartenes%20y%20ollas" target="_blank" rel="noopener" data-tr="Categoria: Sartenes y ollas">Quiero conocer esta opción<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="cat-card rv">
+      <span class="cat-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.7c-3.5 3.2-5.5 6-5.5 9a5.5 5.5 0 0 0 11 0c0-3-2-5.8-5.5-9z"/></svg></span>
+      <h3>Purificación de agua</h3>
+      <p>Sistemas para tener agua más limpia en casa para tu familia.</p>
+      <a class="cat-btn" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Quiero%20conocer%20la%20purificaci%C3%B3n%20de%20agua" target="_blank" rel="noopener" data-tr="Categoria: Purificacion de agua">Quiero conocer esta opción<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="cat-card rv">
+      <span class="cat-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l6-6"/><path d="M14 4l6 6-3 3-6-6z"/><path d="M11 7L8 4 4 8l3 3"/></svg></span>
+      <h3>Cuchillos y accesorios</h3>
+      <p>Cuchillería y complementos para completar tu cocina.</p>
+      <a class="cat-btn" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Quiero%20conocer%20los%20cuchillos%20y%20accesorios" target="_blank" rel="noopener" data-tr="Categoria: Cuchillos y accesorios">Quiero conocer esta opción<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="cat-card rv">
+      <span class="cat-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l-1 5H9L8 3z"/><path d="M9 8c-1 2-1.5 3.5-1.5 6A4.5 4.5 0 0 0 12 18.5 4.5 4.5 0 0 0 16.5 14c0-2.5-.5-4-1.5-6"/><path d="M9.5 21h5"/></svg></span>
+      <h3>Licuadoras y extractores</h3>
+      <p>Para preparar jugos, salsas y recetas de forma práctica.</p>
+      <a class="cat-btn" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Quiero%20conocer%20las%20licuadoras%20y%20extractores" target="_blank" rel="noopener" data-tr="Categoria: Licuadoras y extractores">Quiero conocer esta opción<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="cat-card rv">
+      <span class="cat-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span>
+      <h3>Servicio y garantía</h3>
+      <p>Acompañamiento, mantenimiento y garantía para tu equipo.</p>
+      <a class="cat-btn" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Necesito%20servicio%20o%20garant%C3%ADa%20para%20mi%20equipo" target="_blank" rel="noopener" data-tr="Categoria: Servicio y garantia">Quiero conocer esta opción<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+    </div>
+  </div>
+</section>
+<!-- =============== REGALA Y GANA =============== -->
+<section class="block wrap" id="regala-gana" aria-label="Programa Regala y Gana">
+  <div class="ryg-card rv">
+    <div class="ryg-card-head">
+      <img class="ryg-logo" src="regalo/logo-regala-y-gana.webp" alt="Regala y Gana" width="933" height="592"
+           onerror="this.onerror=null;this.src='regalo/logo-regala-y-gana.png'">
+    </div>
+    <h2 class="ryg-h">Comparte un obsequio. Gana premios para tu cocina.</h2>
+    <p class="ryg-p">Crea tu enlace personal, comp&aacute;rtelo con familiares y amigos y avanza durante 30 d&iacute;as en tu ruta de recompensas.</p>
+    <ul class="ryg-points">
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Sin costo para quien recibe</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Sin obligaci&oacute;n de compra</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Campa&ntilde;a de 30 d&iacute;as</li>
+    </ul>
+    <div class="ryg-prizes" aria-label="Ejemplos de premios">
+      <figure><img src="regalo/tabla-cocina.webp" alt="Tabla de cocina" loading="lazy"><figcaption>Tabla de cocina</figcaption></figure>
+      <figure><img src="regalo/chocolatera.webp" alt="Chocolatera" loading="lazy"><figcaption>Chocolatera</figcaption></figure>
+      <figure><img src="regalo/premio-mayor.webp" alt="Premio mayor a elegir" loading="lazy"><figcaption>Premio mayor</figcaption></figure>
+    </div>
+    <div class="ryg-actions">
+      <a class="btn btn-solid ryg-go" href="regalo/crear.html" data-tr="Modulo RyG: crear enlace">Crear mi enlace</a>
+      <a class="ryg-how" href="regalo/crear.html" data-tr="Modulo RyG: como funciona">C&oacute;mo funciona &rsaquo;</a>
+    </div>
+  </div>
+</section>
+<!-- =============== PASAPORTE DE SABORES =============== -->
+<section class="block wrap pass-sec" id="pasaporte">
+  <a class="pass-card rv" href="pasaporte.html" data-track="Pasaporte desde inicio" aria-label="Comenzar el Pasaporte de Sabores">
+    <div class="pass-in">
+      <img class="pass-emb" src="emblema-pasaporte.jpeg" alt="Pasaporte de Sabores" loading="lazy" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='emblema-pasaporte.jpg'}else{this.style.display='none'}">
+      <div>
+        <span class="pass-eyebrow">Nuevo &middot; Una aventura en tu cocina</span>
+        <h2 class="pass-h">&iquest;Te atreves a viajar por Latinoam&eacute;rica sin salir de tu cocina?</h2>
+        <p class="pass-p">Seis pa&iacute;ses, seis recetas, un sello por cada platillo que logres&hellip; y al completar la ruta, un <b style="color:#F2ECDD">regalo sorpresa</b> que te entrego personalmente.</p>
+        <div class="pass-chips"><span class="pass-chip">Gratis</span><span class="pass-chip">Sin compras</span><span class="pass-chip">A tu ritmo</span></div>
+        <div class="pass-mini-b"><span>Nuevas recetas</span><span>&middot;</span><span>Sellos por logro</span><span>&middot;</span><span>Regalo al completar</span></div>
+        <span class="pass-cta">Comenzar mi pasaporte &rarr;</span>
+      </div>
+    </div>
+  </a>
+</section>
+<!-- =============== RECETAS =============== -->
+<section class="block wrap" id="recetas">
+  <div class="block-head">
+    <span class="eyebrow rv">Cocina con tu Royal Prestige</span>
+    <h2 class="sec-h rv">Recetas para inspirarte</h2>
+  </div>
+  <div class="rec-grid" id="recGrid">
+    <a class="rec-card rv" href="recetas.html#/receta/costillas-bbq"><div class="rec-img"><img src="foto-costillas-bbq.jpg" alt="Costillas BBQ en Olla de Presión" loading="lazy"></div><div class="rec-body"><h3>Costillas BBQ en Olla de Presión</h3><p>35 min · Fácil</p></div></a>
+    <a class="rec-card rv" href="recetas.html#/receta/pasta-alfredo" style="transition-delay:80ms"><div class="rec-img"><img src="foto-pasta-alfredo.jpg" alt="Pasta Alfredo con Pollo" loading="lazy"></div><div class="rec-body"><h3>Pasta Alfredo con Pollo</h3><p>25 min · Fácil</p></div></a>
+    <a class="rec-card rv" href="recetas.html#/receta/flan-casero" style="transition-delay:160ms"><div class="rec-img"><img src="foto-flan-casero.jpg" alt="Flan Casero" loading="lazy"></div><div class="rec-body"><h3>Flan Casero</h3><p>50 min · Media</p></div></a>
+  </div>
+  <a class="see-all rv" href="recetas.html">Ver todas las recetas
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+  </a>
+  <div class="home-soon rv" id="homeSoon" style="display:none">
+    <div class="hs-head">
+      <h3>Próximamente</h3>
+      <a class="hs-link" href="recetas.html#soon">Ver más ›</a>
+    </div>
+    <div class="hs-row" id="hsRow"></div>
+  </div>
+  <div class="mini-cta rv" style="margin-top:8px"><a class="btn btn-line-g" href="recetas.html" data-track="Ver recetas">Ver todas las recetas</a></div>
+</section>
+<!-- =============== SOBRE MÍ =============== -->
+<section class="about" id="sobre-mi">
+  <div class="about-inner">
+    <div class="about-photo rv"><img id="aboutImg" src="foto-about.jpg" alt="Tomas Flores" loading="lazy"></div>
+    <div class="about-txt">
+      <span class="eyebrow rv">Sobre mí</span>
+      <h2 class="rv" id="aboutH">Estoy aquí para servirte, no solo para venderte.</h2>
+      <p class="motto rv" id="aboutMotto">"Más que vender, sirvo."</p>
+      <p class="body rv" id="aboutBody">Soy Tomas. Cuando compras conmigo, no termina la relación: empieza. Recetas, servicio, dudas — cuenta conmigo antes, durante y después.</p>
+    </div>
+  </div>
+</section>
+<!-- =============== SERVICIO PARA CLIENTES =============== -->
+<section class="block wrap" id="servicio">
+  <div class="block-head">
+    <span class="eyebrow rv">Mi compromiso no termina con la compra</span>
+    <h2 class="sec-h rv">¿Ya eres cliente?</h2>
+  </div>
+  <p class="cat-lead rv">Si ya cocinas con tu Royal Prestige, aquí encuentras ayuda rápida. Te acompaño personalmente.</p>
+  <div class="help-grid">
+    <a class="help-card rv" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Necesito%20un%20servicio%20para%20mi%20equipo%20Royal%20Prestige" target="_blank" rel="noopener" data-tr="Servicio: solicitar">
+      <span class="icon-3d" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+      <span class="h-txt"><h3>Solicitar un servicio</h3><p>Mantenimiento o ayuda con tu equipo</p></span>
+      <svg class="h-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+    <a class="help-card rv" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Quiero%20consultar%20la%20garant%C3%ADa%20de%20mi%20equipo" target="_blank" rel="noopener" data-tr="Servicio: garantia">
+      <span class="icon-3d" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span>
+      <span class="h-txt"><h3>Consultar garantía</h3><p>Revisa la cobertura de tu equipo</p></span>
+      <svg class="h-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+    <a class="help-card rv" href="recetas.html" data-track="Servicio: ver recetas">
+      <span class="icon-3d" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+      <span class="h-txt"><h3>Ver recetas</h3><p>Aprovecha al máximo tu equipo</p></span>
+      <svg class="h-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+    <a class="help-card rv" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Tengo%20una%20pregunta" target="_blank" rel="noopener">
+      <span class="icon-3d" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/></svg></span>
+      <span class="h-txt"><h3>Tengo una pregunta</h3><p>Escríbeme, respondo personalmente</p></span>
+      <svg class="h-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
   </div>
 </section>
 <!-- =============== FAQ =============== -->
@@ -1543,6 +1538,21 @@
       </details>
       </div>
       <button class="faq-toggle" id="faqToggle" type="button" aria-expanded="false" aria-controls="faqMore">Ver más preguntas <span class="ft-ic">›</span></button>
+  </div>
+</section>
+<!-- =============== CTA FINAL =============== -->
+<section class="final-cta" aria-label="Reservar demostración">
+  <div class="wrap">
+    <span class="eyebrow rv" style="color:#E7D9BE">Da el primer paso</span>
+    <h2 class="fc-h rv">¿Listo para vivir una experiencia de cocina diferente?</h2>
+    <p class="fc-p rv">Elige una fecha o escríbeme directamente. La demostración es gratuita y sin compromiso.</p>
+    <div class="fc-btns rv">
+      <button class="btn btn-solid btn-hero" data-cal type="button">Reservar mi demostración</button>
+      <a class="btn btn-ghost fc-wa" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.55 2 2.1 6.44 2.1 11.93c0 1.76.46 3.47 1.34 4.98L2 22l5.22-1.37a9.9 9.9 0 0 0 4.82 1.23h.01c5.49 0 9.94-4.45 9.94-9.93A9.88 9.88 0 0 0 12.04 2z"/></svg>
+        Hablar por WhatsApp
+      </a>
+    </div>
   </div>
 </section>
 <!-- =============== CONTACTO =============== -->
