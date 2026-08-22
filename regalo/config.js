@@ -11,19 +11,17 @@ window.GIFT_CONFIG = {
 
   distributor: {
     id: "tomas-dfw",                 // identificador interno (sin espacios)
-    name: "Tomas Flores",
+    name: (window.OFICINA && window.OFICINA.nombre) || "Tomas Flores",
     phone: "16823811576",            // solo dígitos, con código de país
-    whatsapp: "16823811576",         // solo dígitos, con código de país
+    whatsapp: (window.OFICINA && window.OFICINA.tel) || "16823811576",
     city: "DFW, Texas",
     logo: "../logo-pasaporte.jpeg",
     /* La direccion del sitio se detecta sola: funciona en Vercel,
        en GitHub Pages o en un dominio propio, sin editar nada. */
-    siteUrl: (function(){
-      var p = location.pathname;
-      var i = p.indexOf('/regalo/');
-      var base = (i >= 0) ? p.slice(0, i) : '';
-      return location.origin + base;
-    })()
+    /* Direccion publica del sitio. Se usa SIEMPRE esta, aunque la pagina
+       se abra desde una direccion temporal de Vercel: asi el enlace que
+       comparte el participante nunca apunta a una version protegida. */
+    siteUrl: (window.OFICINA && window.OFICINA.dominio) || "https://tomasflores.com"
   },
 
   /* Identidad visual del programa (logo Regala y Gana) */
@@ -53,12 +51,18 @@ window.GIFT_CONFIG = {
     heroClaim: "{NOMBRE} te ha enviado un obsequio para tu cocina.",
     subClaim: "Sin costo. Sin obligación de compra. Sujeto a disponibilidad y zona de servicio.",
     claimButton: "Reclamar mi obsequio",
+    /* Mensaje completo: para WhatsApp y para copiar. Lleva el enlace dentro. */
     shareMessage:
       "Te envié un obsequio para tu cocina.\n\n" +
       "Pensé en ti y quise compartir este regalo contigo.\n\n" +
       "Puedes reclamarlo sin costo y sin obligación de compra aquí:\n\n" +
-      "{ENLACE}\n\n" +
-      "Completa tus datos para verificar disponibilidad en tu ciudad.",
+      "{ENLACE}",
+    /* Mismo mensaje SIN el enlace: se usa al compartir con otras apps,
+       donde el enlace viaja aparte para que se vea la vista previa. */
+    shareText:
+      "Te envié un obsequio para tu cocina.\n\n" +
+      "Pensé en ti y quise compartir este regalo contigo.\n\n" +
+      "Puedes reclamarlo sin costo y sin obligación de compra.",
     afterClaimTitle: "¡Listo! Tu obsequio quedó registrado.",
     afterClaimBody: "Muy pronto te contactaremos para coordinar la entrega según disponibilidad en tu ciudad.",
     termsSummary:
@@ -96,12 +100,5 @@ window.GIFT_CONFIG = {
 
   fallbackPrizeImg: "premio-generico.webp",
 
-  firebase: {
-    apiKey: "AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",
-    authDomain: "oficina-digital-tomas.firebaseapp.com",
-    projectId: "oficina-digital-tomas",
-    storageBucket: "oficina-digital-tomas.firebasestorage.app",
-    messagingSenderId: "898342341243",
-    appId: "1:898342341243:web:7ee15b8b3533f3889570de"
-  }
+  firebase: (window.OFICINA && window.OFICINA.firebase) || {}
 };

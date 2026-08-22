@@ -5,6 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Mi progreso — Regala y Gana</title>
 <meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Regala y Gana">
+<meta property="og:title" content="Mi progreso — Regala y Gana">
+<meta property="og:description" content="Sigue tu avance en Regala y Gana y descubre qué premio de cocina has desbloqueado.">
+<meta property="og:url" content="https://tomasflores.com/regalo/mi-progreso.html">
+<meta property="og:image" content="https://tomasflores.com/regalo/og-regala-y-gana.jpeg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="es_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mi progreso — Regala y Gana">
+<meta name="twitter:image" content="https://tomasflores.com/regalo/og-regala-y-gana.jpeg">
 <link rel="icon" href="../favicon-panel.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -189,6 +202,7 @@
   <p class="foot" id="footLine"></p>
 </div>
 
+<script src="../config.js"></script>
 <script src="config.js"></script>
 <script type="module">
 /* ============================================================
@@ -375,10 +389,23 @@ function render(code, p){
   /* Compartir de nuevo */
   $('linkBox').textContent = link;
   const msg = CFG.texts.shareMessage.replace('{ENLACE}', link);
+<<<<<<< HEAD
   $('btnWa').onclick = function(){ window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank','noopener'); };
   $('btnShare').onclick = async function(){
     if(navigator.share){
       try{ await navigator.share({ title: CFG.texts.programName, text: msg }); }catch(_){}
+=======
+  $('btnWa').onclick = function(){ location.href = 'https://wa.me/?text='+encodeURIComponent(msg); };
+  $('btnShare').onclick = async function(){
+    if(navigator.share){
+      /* Texto y enlace por separado: asi la app muestra el mensaje y la vista previa */
+      const datos = { title: CFG.texts.programName, text: CFG.texts.shareText || '', url: link };
+      try{ await navigator.share(datos); }
+      catch(err){
+        if(err && err.name === 'AbortError') return;
+        try{ await navigator.share({ text: msg }); }catch(_){}
+      }
+>>>>>>> origin/main
     }else{
       try{
         await navigator.clipboard.writeText(link);

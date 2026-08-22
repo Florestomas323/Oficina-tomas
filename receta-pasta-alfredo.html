@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script src="config.js"></script>
 <title>Pasta Alfredo con Pollo — Receta de Tomas Flores | Royal Prestige</title>
 <link rel="icon" type="image/png" href="assets/trabaja/logo-impact.png">
 <link rel="apple-touch-icon" href="assets/trabaja/logo-impact.png">
@@ -188,7 +189,7 @@ window.__RECETA="Pasta Alfredo con Pollo";
   var SRC=fuente(), DEV=device(), Q=[], DB=null, ADD=null, COL=null, TS=null;
   (async function(){
     try{
-      var CFG={apiKey:"AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",authDomain:"oficina-digital-tomas.firebaseapp.com",projectId:"oficina-digital-tomas",storageBucket:"oficina-digital-tomas.firebasestorage.app",messagingSenderId:"898342341243",appId:"1:898342341243:web:7ee15b8b3533f3889570de"};
+      var CFG=window.OFICINA.firebase;
       var a=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
       var f=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
       var app=(a.getApps&&a.getApps().length)?a.getApps()[0]:a.initializeApp(CFG);

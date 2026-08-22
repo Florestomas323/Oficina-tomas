@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script src="config.js"></script>
 <meta name="theme-color" content="#FAFAF8">
 <title>Tomas Flores — Tu distribuidor Royal Prestige | Demostraciones, recetas y servicio</title>
 <link rel="icon" type="image/png" href="assets/trabaja/logo-impact.png">
@@ -26,6 +27,10 @@
 <meta name="twitter:image" content="https://tomasflores.com/og-image.jpeg">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://tomasflores.com/">
+<link rel="icon" type="image/png" sizes="192x192" href="icono-oficina-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icono-oficina-512.png">
+<meta name="apple-mobile-web-app-title" content="Tomas Flores">
+<meta name="application-name" content="Tomas Flores">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500&display=swap" rel="stylesheet">
@@ -220,6 +225,15 @@
   .rec-img img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
   .rec-img .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:52px}
   .rec-body{padding:16px 18px 18px}
+  /* Receta de la semana: borde dorado arriba + sello sobre la foto */
+  .rec-card.destacada{border-top:4px solid var(--gold);box-shadow:0 2px 6px rgba(17,17,16,.06),0 14px 34px rgba(176,141,79,.20)}
+  @media(hover:hover){.rec-card.destacada:hover{box-shadow:0 4px 10px rgba(17,17,16,.08),0 20px 44px rgba(176,141,79,.26)}}
+  .rec-sello{position:absolute;left:10px;top:10px;z-index:2;display:inline-flex;align-items:center;gap:6px;
+    background:var(--gold);color:#fff;border-radius:999px;padding:7px 12px;
+    font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    box-shadow:0 3px 10px rgba(17,17,16,.28)}
+  .rec-sello svg{width:13px;height:13px;flex:0 0 auto}
+  @media(max-width:639px){.rec-sello{font-size:11.5px;padding:8px 14px}}
   .rec-body h3{font-family:'Inter Tight',sans-serif;font-weight:600;font-size:18px;letter-spacing:-.015em;line-height:1.25}
   .rec-body p{color:var(--stone);font-size:13.5px;font-weight:500;margin-top:6px}
   .see-all{
@@ -290,6 +304,15 @@
   }
   @media(min-width:640px){.rev-card{flex-basis:330px}}
   @media(hover:hover){.rev-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}}
+  .rev-photo{display:block;width:100%;margin-top:12px;border:0;padding:0;background:none;cursor:pointer}
+  .rev-photo img{width:100%;max-height:170px;object-fit:cover;border-radius:12px;border:1px solid var(--hairline);display:block}
+  .rm-photo-add{display:inline-flex;align-items:center;gap:8px;border:1.5px dashed var(--gold);border-radius:14px;background:#FDFBF6;color:var(--gold-text);font:inherit;font-size:14px;font-weight:600;padding:12px 16px;min-height:46px;cursor:pointer;width:100%;justify-content:center}
+  .rm-photo-prev{position:relative;margin-top:8px}
+  .rm-photo-prev img{width:100%;max-height:190px;object-fit:cover;border-radius:14px;border:1px solid var(--hairline);display:block}
+  .rm-photo-x{position:absolute;top:8px;right:8px;background:rgba(17,17,16,.72);color:#fff;border:0;border-radius:999px;font:inherit;font-size:12.5px;font-weight:600;padding:7px 12px;cursor:pointer}
+  .rp-view{position:fixed;inset:0;background:rgba(17,17,16,.93);display:none;align-items:center;justify-content:center;z-index:1000;padding:18px}
+  .rp-view.on{display:flex}
+  .rp-view img{max-width:100%;max-height:86vh;border-radius:14px}
   .rev-top{display:flex;align-items:center;gap:12px}
   .avatar{
     flex:0 0 46px;width:46px;height:46px;border-radius:50%;
@@ -519,7 +542,7 @@
     background:#34C759;border:2.5px solid var(--paper);
   }
 
-  /* ---------- Modal Calendly ---------- */
+  /* ---------- Modal de reserva ---------- */
   .modal{position:fixed;inset:0;z-index:110;display:none;align-items:flex-end;justify-content:center}
   @media(min-width:640px){.modal{align-items:center;padding:28px}}
   .modal.open{display:flex}
@@ -637,6 +660,30 @@
   .rm-ok{text-align:center;padding:20px 0}
   .rm-ok .big{font-size:44px;margin-bottom:10px}
 
+  /* ---------- Novedades ---------- */
+  .nv-grid{display:grid;gap:14px;grid-template-columns:1fr;max-width:640px}
+  .nv-card{display:flex;gap:16px;align-items:center;background:#fff;border:1px solid var(--hairline);border-radius:20px;padding:16px;box-shadow:var(--shadow-soft);cursor:pointer;text-align:left;font:inherit;width:100%}
+  .nv-card:active{transform:scale(.99)}
+  .nv-ph{flex:0 0 96px;width:96px;height:96px;border-radius:14px;overflow:hidden;background:#F6F1E7;display:flex;align-items:center;justify-content:center}
+  .nv-ph img{width:100%;height:100%;object-fit:cover}
+  .nv-ph svg{width:30px;height:30px;color:var(--gold)}
+  .nv-info{min-width:0}
+  .nv-tag{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+  .nv-name{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:17.5px;letter-spacing:-.02em;line-height:1.2;margin-top:3px}
+  .nv-teaser{color:var(--stone);font-size:13.5px;line-height:1.5;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .nv-more{color:var(--gold-text);font-size:13px;font-weight:700;margin-top:6px;display:inline-block}
+  /* ficha de novedad */
+  .nvm{position:fixed;inset:0;z-index:1001;display:none}
+  .nvm.open{display:block}
+  .nvm-back{position:absolute;inset:0;background:rgba(17,17,16,.55)}
+  .nvm-card{position:absolute;left:0;right:0;bottom:0;background:var(--paper);border-radius:24px 24px 0 0;max-height:88dvh;overflow-y:auto;padding:20px 20px calc(24px + env(safe-area-inset-bottom))}
+  @media(min-width:640px){.nvm-card{left:50%;right:auto;top:50%;bottom:auto;transform:translate(-50%,-50%);width:min(520px,92vw);border-radius:24px;max-height:86dvh}}
+  .nvm-close{position:sticky;top:0;margin-left:auto;display:flex;background:#fff;border:1px solid var(--hairline);border-radius:999px;width:40px;height:40px;align-items:center;justify-content:center;font-size:20px;cursor:pointer;z-index:2}
+  .nvm-img{width:100%;max-height:300px;object-fit:cover;border-radius:16px;margin-top:4px}
+  .nvm-tag{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-top:14px;display:block}
+  .nvm-name{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.02em;line-height:1.15;margin-top:4px}
+  .nvm-desc{color:var(--stone);font-size:15px;line-height:1.65;margin-top:12px;white-space:pre-line}
+  .nvm-cta{margin-top:20px}
   /* ---------- Franja Próximamente (inicio) ---------- */
   .home-soon{margin-top:26px}
   .home-soon .hs-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
@@ -674,6 +721,89 @@
   .bottombar .bb-wa{display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:14px;background:#fff;border:1px solid var(--hairline);color:var(--ink)}
   .bottombar .bb-wa svg{width:22px;height:22px}
   @media(min-width:768px){ .bottombar{display:none} }
+  /* ---------- Guardar esta oficina digital ---------- */
+  .sgo{position:fixed;inset:0;z-index:1300;display:none}
+  .sgo.open{display:block}
+  .sgo-back{position:absolute;inset:0;background:rgba(17,17,16,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+  .sgo-card{position:absolute;left:0;right:0;bottom:0;background:var(--paper);border-radius:24px 24px 0 0;max-height:88dvh;display:flex;flex-direction:column;box-shadow:0 -10px 50px rgba(17,17,16,.28)}
+  @media(min-width:640px){.sgo-card{left:50%;right:auto;top:50%;bottom:auto;transform:translate(-50%,-50%);width:min(440px,94vw);border-radius:24px;max-height:86dvh}}
+  .sgo-head{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--hairline);background:var(--card);border-radius:24px 24px 0 0;flex:0 0 auto}
+  .sgo-head h3{font-family:'Inter Tight',sans-serif;font-size:17px;letter-spacing:-.01em}
+  .sgo-x{margin-left:auto;width:38px;height:38px;border-radius:50%;background:var(--paper);border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;flex:0 0 auto}
+  .sgo-body{padding:14px 18px calc(20px + env(safe-area-inset-bottom));overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1}
+  .sgo-opt{display:flex;align-items:center;gap:13px;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--hairline);border-radius:16px;padding:14px;min-height:60px;font:inherit;font-size:15.5px;font-weight:600;color:var(--ink);cursor:pointer;margin-bottom:9px}
+  .sgo-opt:active{transform:scale(.99);background:#F3EFE7}
+  .sgo-opt .s-ic{flex:0 0 42px;width:42px;height:42px;border-radius:12px;background:var(--paper);border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;color:var(--gold-text)}
+  .sgo-opt .s-tx{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+  .sgo-opt .s-tx small{font-size:12.5px;color:var(--stone);font-weight:500;margin-top:2px}
+  .sgo-steps{background:var(--card);border:1px solid var(--hairline);border-radius:16px;padding:16px;margin-bottom:10px}
+  .sgo-steps b{display:block;font-size:14.5px;margin-bottom:10px}
+  .sgo-steps ol{margin:0;padding-left:20px}
+  .sgo-steps li{font-size:14px;line-height:1.6;color:var(--stone);margin-bottom:6px}
+  .sgo-back-btn{display:inline-flex;align-items:center;gap:7px;background:none;border:0;color:var(--gold-text);font:inherit;font-size:14px;font-weight:600;padding:10px 4px;min-height:44px;cursor:pointer}
+  /* Tarjeta discreta al final de la portada */
+  .sgo-card2{background:var(--card);border:1px solid var(--hairline);border-left:4px solid var(--gold);border-radius:20px;padding:20px;max-width:560px;margin:26px auto 0;text-align:center}
+  .sgo-card2 h3{font-family:'Inter Tight',sans-serif;font-size:19px;letter-spacing:-.02em}
+  .sgo-card2 p{color:var(--stone);font-size:14.5px;line-height:1.55;margin:8px auto 14px;max-width:38ch}
+  body.sgo-open .fab-wrap,body.sgo-open .bottombar{opacity:0;pointer-events:none}
+  /* ---------- Centro de ayuda ---------- */
+  .ay-modal{position:fixed;inset:0;z-index:1200;display:none}
+  .ay-modal.open{display:block}
+  .ay-back{position:absolute;inset:0;background:rgba(17,17,16,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+  .ay-card{position:absolute;left:0;right:0;bottom:0;background:var(--paper);border-radius:24px 24px 0 0;max-height:92dvh;display:flex;flex-direction:column;box-shadow:0 -10px 50px rgba(17,17,16,.28)}
+  @media(min-width:640px){.ay-card{left:50%;right:auto;top:50%;bottom:auto;transform:translate(-50%,-50%);width:min(560px,94vw);border-radius:24px;max-height:90dvh}}
+  .ay-head{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--hairline);background:var(--card);border-radius:24px 24px 0 0;flex:0 0 auto}
+  .ay-head h3{font-family:'Inter Tight',sans-serif;font-size:17px;letter-spacing:-.01em;line-height:1.2}
+  .ay-x{margin-left:auto;width:38px;height:38px;border-radius:50%;background:var(--paper);border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;flex:0 0 auto}
+  .ay-body{padding:18px;overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1}
+  .ay-foot{padding:14px 18px calc(16px + env(safe-area-inset-bottom));border-top:1px solid var(--hairline);background:var(--card);flex:0 0 auto}
+  .ay-note{background:#F6F4EF;border-radius:12px;padding:12px 14px;font-size:13.5px;line-height:1.55;color:var(--stone);margin-bottom:16px}
+  .ay-warn{background:#FDF6EC;border:1px solid #EADFC9;border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.55;color:#7A5C22;margin:14px 0}
+  .ay-modal label{display:block;font-size:12.5px;font-weight:600;color:var(--stone);margin:13px 0 6px}
+  .ay-modal input[type=text],.ay-modal input[type=tel],.ay-modal input[type=date],.ay-modal select,.ay-modal textarea{width:100%;background:var(--card);border:1px solid var(--hairline);border-radius:12px;padding:13px 14px;font:inherit;font-size:16px;color:inherit;min-height:48px}
+  .ay-modal textarea{min-height:92px;resize:vertical}
+  .ay-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:479px){.ay-row{grid-template-columns:1fr;gap:0}}
+  .ay-opt{font-weight:400;color:#8B857B;font-size:11.5px}
+  .ay-cons{display:flex;gap:11px;align-items:flex-start;margin-top:16px;cursor:pointer;font-size:13.5px;line-height:1.5;color:var(--ink)}
+  .ay-cons input{margin-top:2px;width:20px;height:20px;flex:0 0 20px;accent-color:var(--gold-text)}
+  .ay-err{color:#B3261E;font-size:13px;font-weight:600;margin-top:12px;display:none}
+  .ay-err.show{display:block}
+  .ay-send{width:100%;justify-content:center;min-height:52px}
+  .ay-ph{display:inline-flex;align-items:center;gap:8px;border:1.5px dashed var(--gold);border-radius:14px;background:#FDFBF6;color:var(--gold-text);font:inherit;font-size:14px;font-weight:600;padding:12px 16px;min-height:48px;cursor:pointer;width:100%;justify-content:center}
+  .ay-phprev{position:relative;margin-top:8px}
+  .ay-phprev img{width:100%;max-height:190px;object-fit:cover;border-radius:14px;border:1px solid var(--hairline);display:block}
+  .ay-phx{position:absolute;top:8px;right:8px;background:rgba(17,17,16,.72);color:#fff;border:0;border-radius:999px;font:inherit;font-size:12.5px;font-weight:600;padding:7px 12px;cursor:pointer}
+  .ay-pick{display:flex;flex-direction:column;gap:9px;margin-top:6px}
+  .ay-pick button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--hairline);border-radius:14px;padding:14px 16px;font:inherit;font-size:15px;font-weight:600;color:var(--ink);min-height:56px;cursor:pointer}
+  .ay-pick button:active{transform:scale(.99);background:#F3EFE7}
+  .ay-ok{text-align:center;padding:16px 0}
+  .ay-ok .big{font-size:44px;margin-bottom:12px}
+  .ay-ok h4{font-family:'Inter Tight',sans-serif;font-size:20px;letter-spacing:-.02em;margin-bottom:10px}
+  .ay-ok p{color:var(--stone);font-size:15px;line-height:1.6;max-width:40ch;margin:0 auto}
+  .ay-gar h4{font-family:'Inter Tight',sans-serif;font-size:16px;margin:18px 0 8px}
+  .ay-gar ul{margin:0;padding-left:20px}
+  .ay-gar li{font-size:14.5px;line-height:1.6;color:var(--stone);margin-bottom:6px}
+  .ay-soon{background:var(--card);border:1px dashed var(--hairline);border-radius:16px;padding:22px 18px;text-align:center;margin:14px 0}
+  .ay-soon b{display:block;font-size:15px;margin-bottom:5px}
+  .ay-soon span{font-size:13.5px;color:var(--stone)}
+  body.ay-open .fab-wrap,body.ay-open .bottombar{opacity:0;pointer-events:none}
+  /* ---------- Panel "¿Qué necesitas hoy?" ---------- */
+  .needs-back{position:fixed;inset:0;z-index:70;background:rgba(14,14,13,.34);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .28s var(--ease)}
+  .needs-back.show{opacity:1;pointer-events:auto}
+  .needs-panel{position:fixed;left:10px;right:10px;z-index:75;bottom:calc(80px + env(safe-area-inset-bottom));background:var(--card);border:1px solid var(--hairline);border-radius:22px;box-shadow:0 -8px 40px rgba(17,17,16,.22);padding:8px;opacity:0;transform:translateY(14px);pointer-events:none;transition:opacity .26s var(--ease),transform .26s var(--ease);max-height:68svh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .needs-panel.show{opacity:1;transform:none;pointer-events:auto}
+  .needs-h{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-text);padding:10px 12px 8px}
+  .needs-opt{display:flex;align-items:center;gap:13px;width:100%;text-align:left;background:transparent;border:0;border-radius:14px;padding:12px;min-height:56px;font:inherit;font-size:15.5px;font-weight:600;color:var(--ink);text-decoration:none;cursor:pointer}
+  .needs-opt + .needs-opt{border-top:1px solid #F4F1EA}
+  .needs-opt:active{background:#F3EFE7}
+  .needs-opt .n-ic{flex:0 0 40px;width:40px;height:40px;border-radius:12px;background:var(--paper);border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;color:var(--gold-text)}
+  .needs-opt .n-ar{margin-left:auto;color:#B7B2A8;flex:0 0 auto}
+  @media(min-width:768px){ .needs-panel,.needs-back{display:none} }
+  /* La burbuja de WhatsApp no debe solaparse con el panel abierto */
+  body.needs-open .fab-wrap{opacity:0;pointer-events:none}
+  /* Con el menú móvil abierto, los flotantes se retiran */
+  body.menu-open .bottombar,body.menu-open .fab-wrap{opacity:0;pointer-events:none;transition:opacity .2s var(--ease)}
   /* (El FAB ahora aparece junto con la barra, elevado sobre ella; ver regla body.bar-on .fab-wrap arriba) */
 
   /* ---------- Filtros de galería ---------- */
@@ -720,7 +850,7 @@
   .hero .ryg-arrow{flex:0 0 16px;color:var(--gold,#B08D4F);margin-left:2px}
   @media(hover:hover){.hero .ryg-pill:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(18,42,70,.24);border-left-color:var(--gold,#B08D4F)}}
 
-  /* ---------- Modal de confianza (pre-Calendly) ---------- */
+  /* ---------- Modal de confianza (antes de agendar) ---------- */
   .cal-pre{padding:22px 22px calc(22px + env(safe-area-inset-bottom))}
   .trust-list{list-style:none;margin:2px 0 16px;padding:0}
   .trust-list li{display:flex;align-items:center;gap:11px;padding:11px 0;font-size:16.5px;font-weight:600;border-bottom:1px solid var(--hairline)}
@@ -736,6 +866,7 @@
   .rm-consent input{margin-top:3px;width:17px;height:17px;flex:0 0 17px;accent-color:var(--gold-text)}
   .rm-legal{font-size:12px;color:#8B857B;line-height:1.5;margin-top:10px;padding-top:10px;border-top:1px solid var(--hairline)}
   .foot-legal{display:block;font-size:11.5px;color:#8B857B;max-width:52ch;margin:10px auto 0;line-height:1.55}
+  .foot-links{display:block;max-width:640px;margin:0 auto;line-height:2.4}
   .foot-link{display:inline-block;margin-top:10px;color:var(--gold-text);font-weight:600;text-decoration:none;font-size:12.5px;border-bottom:1px solid var(--gold)}
   .how-list{list-style:none;max-width:560px}
   .how-list li{display:flex;gap:16px;padding:15px 0;border-bottom:1px solid var(--hairline)}
@@ -808,10 +939,10 @@
   .ryg-card{background:var(--card);border:1px solid var(--hairline);border-top:4px solid var(--gold);border-radius:22px;padding:26px 22px;max-width:640px;margin:0 auto;box-shadow:var(--shadow-soft);text-align:center}
   .ryg-card-head{display:flex;justify-content:center;margin-bottom:16px}
   .ryg-logo{width:min(220px,66%);height:auto;display:block}
-  .ryg-h{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:clamp(20px,5.2vw,26px);letter-spacing:-.02em;line-height:1.18;color:var(--navy);text-wrap:balance;margin:0 auto;max-width:22ch}
+  .ryg-h{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:clamp(20px,5.2vw,26px);letter-spacing:-.02em;line-height:1.18;color:var(--navy,#122A46);text-wrap:balance;margin:0 auto;max-width:22ch}
   .ryg-p{color:var(--stone);font-size:15px;line-height:1.55;max-width:44ch;margin:12px auto 0}
   .ryg-points{list-style:none;margin:18px auto 0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px 16px;max-width:520px}
-  .ryg-points li{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--navy)}
+  .ryg-points li{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--navy,#122A46)}
   .ryg-points svg{width:16px;height:16px;color:#1E7A46;flex:0 0 16px}
   .ryg-prizes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px auto 0;max-width:460px}
   .ryg-prizes figure{margin:0}
@@ -978,7 +1109,7 @@
   track('Visita','view');
 
   document.addEventListener('click', function(e){
-    var t = e.target.closest('[data-track], [data-cal], a[href*="wa.me"], [onclick*="openReview"], a[href*="instagram"], a[href*="tiktok"], a[href*="recetas.html"], a[href^="receta-"]');
+    var t = e.target.closest('[data-track], [data-cal], a[href*="wa.me"], [onclick*="openReview"], a[href*="instagram"], a[href*="tiktok"], a[href*="recetas.html"], a[href^="receta-"], a[href*="trabaja-conmigo"]');
     if(!t) return;
     var explicit = t.closest('[data-track]');
     if(explicit){ track(explicit.getAttribute('data-track')); return; }
@@ -994,6 +1125,7 @@
     else if(t.closest('a[href*="tiktok"]')) track('TikTok');
     else if(t.closest('a[href^="receta-"]')) track('Receta abierta');
     else if(t.closest('a[href*="recetas.html"]')) track('Ver recetas');
+    else if(t.closest('a[href*="trabaja-conmigo.html"]')) track('Trabaja conmigo: nav');
   }, true);
 })();
 </script>
@@ -1035,6 +1167,7 @@
       <a href="#categorias">Productos</a>
       <a href="recetas.html">Recetas</a>
       <a href="#servicio">Servicio</a>
+      <a href="/trabaja-conmigo.html">Trabaja conmigo</a>
       <a href="#contacto">Contacto</a>
     </nav>
     <button class="btn tn-cta" data-cal type="button">Reservar</button>
@@ -1429,7 +1562,7 @@
     <h2 class="sec-h rv">Contacto</h2>
   </div>
   <div class="contact-list">
-    <a class="c-item primary rv" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B" target="_blank" rel="noopener">
+    <a class="c-item primary rv" href="https://wa.me/16823811576?text=Hola%20Tomas%20👋" target="_blank" rel="noopener">
       <span class="c-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.55 2 2.1 6.44 2.1 11.93c0 1.76.46 3.47 1.34 4.98L2 22l5.22-1.37a9.9 9.9 0 0 0 4.82 1.23h.01c5.49 0 9.94-4.45 9.94-9.93A9.88 9.88 0 0 0 12.04 2zm0 18.14h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.1.81.83-3.02-.2-.31a8.2 8.2 0 0 1-1.26-4.36c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 8.23 8.24c0 4.54-3.7 8.2-8.24 8.2z"/></svg></span>
       <span><span class="cn">Hablar por WhatsApp</span><br><span class="cd"><span id="phoneTxt">+1 (682) 381-1576</span> · Respondo rápido</span></span>
       <svg class="h-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
@@ -1461,13 +1594,45 @@
   </p>
 </section>
 
+<div class="wrap" style="padding-bottom:8px">
+  <div class="sgo-card2 rv" id="sgoCard">
+    <h3>Guarda esta oficina digital</h3>
+    <p>Ten siempre a mano mis recetas, ayuda, beneficios y contacto directo.</p>
+    <button class="btn btn-solid" type="button" id="sgoOpen2" aria-label="Guardar esta oficina digital">Guardar ahora</button>
+  </div>
+</div>
+
 <footer>
   <b>Tomas Flores</b> · "Más que vender, sirvo."<br>
   <span class="foot-legal">Sitio personal de Tomas Flores, Distribuidor Autorizado Independiente de Royal Prestige®. Royal Prestige® y sus marcas pertenecen a sus respectivos propietarios.</span><br>
-  <a class="foot-link" href="privacidad.html">Política de privacidad</a> <span class="foot-sep">·</span> <a class="foot-link" href="terminos.html">Términos y aviso legal</a>
+  <span class="foot-links">
+    <a class="foot-link" href="privacidad.html">Privacidad</a> <span class="foot-sep">·</span>
+    <a class="foot-link" href="terminos.html">Términos</a> <span class="foot-sep">·</span>
+    <a class="foot-link" href="reglas.html#regala-y-gana">Regala y Gana</a> <span class="foot-sep">·</span>
+    <a class="foot-link" href="reglas.html#pasaporte">Pasaporte de Sabores</a> <span class="foot-sep">·</span>
+    <a class="foot-link" href="garantia.html">Garantía</a> <span class="foot-sep">·</span>
+    <a class="foot-link" href="reglas.html#regalos">Regalos y recompensas</a> <span class="foot-sep">·</span>
+    <a class="foot-link" href="reglas.html#fotografias">Fotografías y testimonios</a> <span class="foot-sep">·</span>
+    <a class="foot-link" href="privacidad.html#mis-datos">Administrar mis datos</a> <span class="foot-sep">·</span>
+    <a class="foot-link" href="terminos.html#distribuidor">Aviso de distribuidor independiente</a>
+  </span>
 </footer>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="nvm" id="nvModal" aria-hidden="true">
+  <div class="nvm-back" onclick="closeNovedad()"></div>
+  <div class="nvm-card" role="dialog" aria-label="Detalle de la novedad">
+    <button class="nvm-close" type="button" onclick="closeNovedad()" aria-label="Cerrar">&#10005;</button>
+    <img class="nvm-img" id="nvmImg" alt="" style="display:none">
+    <span class="nvm-tag" id="nvmTag"></span>
+    <h3 class="nvm-name" id="nvmName"></h3>
+    <p class="nvm-desc" id="nvmDesc"></p>
+    <div class="nvm-cta">
+      <a class="btn btn-solid" id="nvmWa" href="#" target="_blank" rel="noopener" style="display:flex">Quiero saber m&aacute;s por WhatsApp</a>
+    </div>
+  </div>
+</div>
+<div class="rp-view" id="rpView" onclick="this.classList.remove('on')" role="dialog" aria-label="Foto de la reseña"><img id="rpImg" alt="Foto de la reseña"></div>
 
 <!-- =============== LIGHTBOX =============== -->
 <div class="lightbox" id="lightbox" aria-hidden="true">
@@ -1487,7 +1652,7 @@
   </figure>
 </div>
 
-<!-- =============== MODAL CALENDLY =============== -->
+<!-- =============== MODAL DE RESERVA =============== -->
 <div class="modal" id="calModal" aria-hidden="true">
   <div class="modal-back" data-cal-close></div>
   <div class="modal-card" role="dialog" aria-modal="true" aria-label="Reservar demostración gratuita">
@@ -1507,7 +1672,7 @@
         <li><span class="tl-ico">✓</span>En tu hogar</li>
         <li><span class="tl-ico">✓</span>Sin compromiso de compra</li>
       </ul>
-      <p class="cal-note">Después de reservar, te escribiré personalmente por WhatsApp para confirmar la dirección, el número de personas y el menú.</p>
+      <p class="cal-note">Elige el tema que te interesa, el día y la hora. Después te escribo personalmente para confirmar la cita.</p>
       <button class="btn btn-solid btn-block" id="calGo" type="button">Elegir fecha y hora</button>
     </div>
   </div>
@@ -1518,10 +1683,8 @@
 <div class="fab-wrap" id="fabWrap">
   <div class="fab-note" id="fabNote"><span class="live-dot" aria-hidden="true"></span>Normalmente respondo rápido por WhatsApp</div>
   <div class="fab-menu" id="fabMenu" role="menu" aria-label="Opciones de contacto">
-    <button class="fab-opt" data-cal role="menuitem" type="button"><span class="icon-3d sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21a1 1 0 0 0 1-1v-5.35c1.78-.47 3-2.08 3-3.9a4 4 0 0 0-4-4 4.5 4.5 0 0 0-8 0 4 4 0 0 0-4 4c0 1.82 1.22 3.43 3 3.9V20a1 1 0 0 0 1 1z"/><path d="M6 17h12"/></svg></span>Reservar demostración</button>
-    <a class="fab-opt" role="menuitem" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Necesito%20un%20servicio%20para%20mi%20equipo%20Royal%20Prestige" target="_blank" rel="noopener"><span class="icon-3d sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>Solicitar servicio</a>
-    <a class="fab-opt" role="menuitem" href="recetas.html"><span class="icon-3d sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span>Ver recetas</a>
-    <a class="fab-opt" role="menuitem" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B" target="_blank" rel="noopener"><span class="icon-3d sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M12.04 2C6.55 2 2.1 6.44 2.1 11.93c0 1.76.46 3.47 1.34 4.98L2 22l5.22-1.37a9.9 9.9 0 0 0 4.82 1.23h.01c5.49 0 9.94-4.45 9.94-9.93A9.88 9.88 0 0 0 12.04 2zm0 18.14h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.1.81.83-3.02-.2-.31a8.2 8.2 0 0 1-1.26-4.36c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 8.23 8.24c0 4.54-3.7 8.2-8.24 8.2zm4.52-6.16c-.25-.12-1.47-.72-1.69-.8-.23-.09-.39-.13-.56.12-.16.25-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28z"/></svg></span>WhatsApp</a>
+    <a class="fab-opt" role="menuitem" href="https://wa.me/16823811576?text=Hola%20Tomas%20👋" target="_blank" rel="noopener"><span class="icon-3d sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M12.04 2C6.55 2 2.1 6.44 2.1 11.93c0 1.76.46 3.47 1.34 4.98L2 22l5.22-1.37a9.9 9.9 0 0 0 4.82 1.23h.01c5.49 0 9.94-4.45 9.94-9.93A9.88 9.88 0 0 0 12.04 2zm0 18.14h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.1.81.83-3.02-.2-.31a8.2 8.2 0 0 1-1.26-4.36c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 8.23 8.24c0 4.54-3.7 8.2-8.24 8.2z"/></svg></span>Escribir por WhatsApp</a>
+    <a class="fab-opt" role="menuitem" href="tel:+16823811576"><span class="icon-3d sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg></span>Llamar ahora</a>
   </div>
   <button class="fab" id="fabBtn" aria-expanded="false" aria-label="Abrir menú de contacto" type="button">
     <svg class="ic ic-chat" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
@@ -1577,7 +1740,7 @@ function __saveContactVCard(){
 document.getElementById('saveContact').addEventListener('click', __saveContactVCard);
 var __hsc = document.getElementById('heroSaveContact'); if(__hsc) __hsc.addEventListener('click', __saveContactVCard);
 
-/* --- Modal Calendly --- */
+/* --- Modal de reserva --- */
 var calModal = document.getElementById('calModal');
 var lastFocus = null;
 
@@ -1595,24 +1758,14 @@ function closeCal(){
   document.body.classList.remove('lock');
   if(lastFocus) lastFocus.focus();
 }
-var CAL_URL = 'https://calendly.com/florestomas/demo-royal';
-function buildCalUrl(){
-  var url = window.CAL_URL || CAL_URL;
-  var p = new URLSearchParams(location.search);
-  var ref = p.get('ref'); var src = p.get('utm_source');
-  var extra = [];
-  if(ref){ extra.push('utm_campaign=referido'); extra.push('utm_content=' + encodeURIComponent(ref)); }
-  if(src){ extra.push('utm_source=' + encodeURIComponent(src)); }
-  if(extra.length){ url += (url.indexOf('?')>=0?'&':'?') + extra.join('&'); }
-  return url;
-}
 document.querySelectorAll('[data-cal]').forEach(function(b){
   b.addEventListener('click', function(){ openCal(); });
 });
 var calGoBtn = document.getElementById('calGo');
 if(calGoBtn){ calGoBtn.addEventListener('click', function(){
   if(window.trackEvent) window.trackEvent('Reserva: abre calendario');
-  window.open(buildCalUrl(), '_blank', 'noopener');
+  /* Agenda propia: el visitante elige tema, día y hora en el sitio */
+  location.href = 'agendar.html';
   closeCal();
 }); }
 document.querySelectorAll('[data-cal-close]').forEach(function(b){
@@ -1749,14 +1902,7 @@ window.addEventListener('scroll', function(){
 try{
   const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
   const { getFirestore, collection, getDocs, getDoc, doc, query, where, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
-  const app = initializeApp({
-    apiKey:"AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",
-    authDomain:"oficina-digital-tomas.firebaseapp.com",
-    projectId:"oficina-digital-tomas",
-    storageBucket:"oficina-digital-tomas.firebasestorage.app",
-    messagingSenderId:"898342341243",
-    appId:"1:898342341243:web:7ee15b8b3533f3889570de"
-  });
+  const app = initializeApp(window.OFICINA.firebase);
   const db = getFirestore(app);
   // Llaves del formulario de reseñas: disponibles SIEMPRE, aunque falle lo demás
   window.__db = db;
@@ -1769,12 +1915,13 @@ try{
   const GAL_BACKUP = ["foto-galeria-1.jpg", "foto-galeria-2.jpg", "foto-galeria-3.jpg", "foto-galeria-4.jpg"];
   const FEATURED = ["costillas-bbq", "pasta-alfredo", "flan-casero"];
 
-  const [st, rs, vs, gs, us] = await Promise.all([
+  const [st, rs, vs, gs, us, fe] = await Promise.all([
     getDoc(doc(db,"settings","public")),
     getDocs(pub("recipes")),
     getDocs(pub("testimonials")),
     getDocs(pub("gallery")),
-    getDocs(collection(db,"upcoming"))
+    getDocs(collection(db,"upcoming")),
+    getDoc(doc(db,"settings","featured")).catch(()=>null)
   ]);
 
   // Textos y configuración
@@ -1794,30 +1941,70 @@ try{
       const fmt = (d.length===11 && d[0]==="1") ? "+1 ("+d.slice(1,4)+") "+d.slice(4,7)+"-"+d.slice(7) : "+"+d;
       const pt = document.getElementById("phoneTxt"); if(pt) pt.textContent = fmt;
     }
-    if(S.cal){ window.CAL_URL = S.cal; }
     if(S.ig){ const a=document.querySelector('a[href*="instagram.com"]'); if(a){ a.href="https://www.instagram.com/"+S.ig; const cd=a.querySelector(".cd"); if(cd) cd.textContent="@"+S.ig; } }
     if(S.tt){ const a=document.querySelector('a[href*="tiktok.com"]'); if(a){ a.href="https://www.tiktok.com/@"+S.tt; const cd=a.querySelector(".cd"); if(cd) cd.textContent="@"+S.tt; } }
   }
 
   // Recetas destacadas (3), foto de respaldo por id
   const recs = rs.docs.map(d=>({id:d.id, ...d.data()})).sort(byOrder);
+
+  /* Semana ISO: cambia cada lunes. Misma regla que usa el recetario,
+     para que la receta de la semana coincida en las dos páginas. */
+  const semanaISO = (d)=>{
+    const f = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    const dia = f.getUTCDay() || 7;
+    f.setUTCDate(f.getUTCDate() + 4 - dia);
+    const ini = new Date(Date.UTC(f.getUTCFullYear(), 0, 1));
+    return { semana: Math.ceil(((f - ini) / 86400000 + 1) / 7), anio: f.getUTCFullYear() };
+  };
+  /* Prioridad: la que Tomas eligió a mano si está vigente; si no, rotación semanal */
+  const laDeLaSemana = (lista, cfg)=>{
+    if(!lista.length) return null;
+    if(cfg && cfg.mode === "manual" && cfg.recipeId){
+      const existe = lista.find(r=>r.id === cfg.recipeId);
+      const hoy = new Date(); hoy.setHours(0,0,0,0);
+      const desde = cfg.from ? new Date(cfg.from + "T00:00:00") : null;
+      const hasta = cfg.to   ? new Date(cfg.to   + "T23:59:59") : null;
+      const vigente = (!desde || hoy >= desde) && (!hasta || new Date() <= hasta);
+      if(existe && vigente) return existe;
+    }
+    const s = semanaISO(new Date());
+    return lista[(s.anio * 53 + s.semana) % lista.length];
+  };
+
   if(recs.length){
-    let picks = FEATURED.map(id=>recs.find(r=>r.id===id)).filter(Boolean);
-    if(picks.length < 3) picks = recs.slice(0,3);
+    const cfgFe = (fe && fe.exists && fe.exists()) ? fe.data() : null;
+    const dest = laDeLaSemana(recs, cfgFe);
+
+    /* La de la semana primero; el resto completa hasta tres sin repetir */
+    let picks = [];
+    if(dest) picks.push(dest);
+    FEATURED.forEach(id=>{
+      if(picks.length >= 3) return;
+      const r = recs.find(x=>x.id === id);
+      if(r && !picks.some(p=>p.id === r.id)) picks.push(r);
+    });
+    recs.forEach(r=>{
+      if(picks.length < 3 && !picks.some(p=>p.id === r.id)) picks.push(r);
+    });
     picks = picks.slice(0,3);
+
+    const SELLO = '<span class="rec-sello"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>Receta de la semana</span>';
+
     const grid = document.getElementById("recGrid");
     if(grid && picks.length){
       grid.innerHTML = picks.map((r,i)=>{
+        const esDest = !!(dest && r.id === dest.id);
         const img = (r.img && (r.img.indexOf("http")===0 || r.img.indexOf("data:")===0)) ? r.img : (IMG_BACKUP[r.id] || "");
-        return '<a class="rec-card rv in" href="recetas.html#/receta/'+r.id+'"'+(i?' style="transition-delay:'+(i*80)+'ms"':'')+'>'+
-        '<div class="rec-img">'+(img?'<img src="'+img+'" alt="'+esc(r.name)+'" loading="lazy">':'<div class="ph" style="background:'+(r.tone||"#5A4630")+'"></div>')+'</div>'+
+        return '<a class="rec-card rv in'+(esDest?' destacada':'')+'" href="recetas.html#/receta/'+r.id+'"'+(i?' style="transition-delay:'+(i*80)+'ms"':'')+'>'+
+        '<div class="rec-img">'+(esDest?SELLO:'')+(img?'<img src="'+img+'" alt="'+esc(r.name)+'" loading="lazy">':'<div class="ph" style="background:'+(r.tone||"#5A4630")+'"></div>')+'</div>'+
         '<div class="rec-body"><h3>'+esc(r.name)+'</h3><p>'+esc(r.time)+' · '+esc(r.diff)+'</p></div></a>';
       }).join("");
     }
   }
 
   // Opiniones (testimonials): campo text
-  const revs = vs.docs.map(d=>d.data()).sort(byOrder);
+  const revs = vs.docs.map(d=>d.data()).sort(byOrder).slice(0, 10); // máximo 10 reseñas visibles
   const rt = document.getElementById("revTrack");
   if(revs.length && rt){
     rt.innerHTML = revs.map(v=>
@@ -1825,7 +2012,9 @@ try{
       '<span class="avatar" style="background:'+(v.color||"#8A6FB4")+'">'+esc(v.ini)+'</span>'+
       '<div><div class="rev-name">'+esc(v.name)+(v.city?' <span class="rev-city">\u00b7 '+esc(v.city)+'</span>':'')+'</div><div class="rev-sub">'+esc(v.sub)+'</div></div></div>'+
       '<div class="stars" aria-label="'+(v.stars||5)+' estrellas">'+"★".repeat(v.stars||5)+'</div>'+
-      '<p class="rev-txt">'+esc(v.text||v.txt||"")+'</p></article>'
+      '<p class="rev-txt">'+esc(v.text||v.txt||"")+'</p>'+
+      (v.photo?'<button class="rev-photo" type="button" onclick="openRevPhoto(this)" aria-label="Ver foto de '+esc(v.name)+'"><img src="'+v.photo+'" alt="Foto de '+esc(v.name)+'" loading="lazy"></button>':'')+
+      '</article>'
     ).join("");
   }
 
@@ -1862,7 +2051,26 @@ try{
     novedad: {label:"Novedad",         color:"#5A3F86"},
     oferta:  {label:"Oferta especial", color:"#9C3524"}
   };
-  const soonList = us.docs.map(d=>{ const x=d.data(); return {name:x.name, tipo:x.tipo||"receta", img:x.img||"", order:x.order||0}; }).sort(byOrder);
+  const soonAll = us.docs.map(d=>{ const x=d.data(); return {name:x.name, tipo:x.tipo||"receta", img:x.img||"", desc:x.desc||"", order:x.order||0}; }).sort(byOrder);
+  const soonList = soonAll.filter(x=>x.tipo==="receta");
+  const novedades = soonAll.filter(x=>x.tipo!=="receta");
+  if(novedades.length){
+    window.__NOVEDADES = novedades;
+    const ng = document.getElementById("nvGrid");
+    const ns = document.getElementById("novedades");
+    if(ng && ns){
+      ng.innerHTML = novedades.map((n,i)=>{
+        const t = TIPOS_HS[n.tipo] || TIPOS_HS.novedad;
+        return '<button class="nv-card rv in" type="button" onclick="openNovedad('+i+')" data-tr="Novedad: '+esc(n.name).replace(/"/g,'')+'">'+
+          '<span class="nv-ph">'+(n.img?'<img loading="lazy" decoding="async" src="'+n.img+'" alt="">':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M3 12h18M12 8v13"/><path d="M12 8c-1.8 0-4.5-.6-4.5-2.7C7.5 3.9 8.6 3 9.8 3 11.4 3 12 5.2 12 8zm0 0c1.8 0 4.5-.6 4.5-2.7C16.5 3.9 15.4 3 14.2 3 12.6 3 12 5.2 12 8z"/></svg>')+'</span>'+
+          '<span class="nv-info"><span class="nv-tag" style="color:'+t.color+'">'+t.label+'</span>'+
+          '<span class="nv-name" style="display:block">'+esc(n.name)+'</span>'+
+          (n.desc?'<span class="nv-teaser">'+esc(n.desc)+'</span>':'')+
+          '<span class="nv-more">Ver detalles &rsaquo;</span></span></button>';
+      }).join("");
+      ns.style.display = "block";
+    }
+  }
   if(soonList.length){
     const row = document.getElementById("hsRow");
     const box = document.getElementById("homeSoon");
@@ -1899,6 +2107,20 @@ try{
     modal.classList.add("open"); modal.setAttribute("aria-hidden","false");
     document.body.classList.add("lock");
   };
+
+  /* Si se llega con #resena (por ejemplo desde un código QR),
+     el formulario se abre solo en cuanto carga la página. */
+  (function(){
+    function abrirSiToca(){
+      var h = (location.hash || '').toLowerCase();
+      if(h === '#resena' || h === '#resena/' || h === '#opinar'){
+        setTimeout(function(){ try{ window.openReview(); }catch(e){} }, 450);
+      }
+    }
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', abrirSiToca);
+    else abrirSiToca();
+    window.addEventListener('hashchange', abrirSiToca);
+  })();
   window.closeReview = function(){
     const modal = getModal(); if(!modal) return;
     modal.classList.remove("open"); modal.setAttribute("aria-hidden","true");
@@ -1914,6 +2136,84 @@ try{
     if(!b) return;
     stars = parseInt(b.dataset.s,10); paintStars();
   });
+  // ---- Foto opcional de la reseña (comprimida en el teléfono) ----
+  let revPhotoData = "";
+  window.clearRevPhoto = function(){
+    revPhotoData = "";
+    const p = document.getElementById("rmPhotoPrev"), b = document.getElementById("rmPhotoBtn"), f = document.getElementById("rmPhoto");
+    if(p) p.style.display = "none";
+    if(b) b.style.display = "";
+    if(f) f.value = "";
+  };
+  function compressRevPhoto(file){
+    return new Promise(function(res, rej){
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = function(){
+        URL.revokeObjectURL(url);
+        const intentos = [[1000,.78],[880,.68],[760,.58],[640,.5]];
+        for(const [lado, q] of intentos){
+          const esc = Math.min(1, lado/Math.max(img.width, img.height));
+          const c = document.createElement("canvas");
+          c.width = Math.round(img.width*esc); c.height = Math.round(img.height*esc);
+          c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+          const data = c.toDataURL("image/jpeg", q);
+          if(data.length < 680000) return res(data);
+        }
+        rej(new Error("grande"));
+      };
+      img.onerror = function(){ URL.revokeObjectURL(url); rej(new Error("lectura")); };
+      img.src = url;
+    });
+  }
+  document.addEventListener("change", async function(e){
+    if(!e.target || e.target.id !== "rmPhoto" || !e.target.files || !e.target.files[0]) return;
+    const f = e.target.files[0];
+    if(!/^image\//.test(f.type)){ alert("Ese archivo no es una imagen."); e.target.value=""; return; }
+    const btn = document.getElementById("rmPhotoBtn");
+    btn.textContent = "Preparando tu foto…";
+    try{
+      revPhotoData = await compressRevPhoto(f);
+      document.getElementById("rmPhotoImg").src = revPhotoData;
+      document.getElementById("rmPhotoPrev").style.display = "block";
+      btn.style.display = "none";
+    }catch(_){
+      alert("No se pudo procesar esa foto. Intenta con otra.");
+      window.clearRevPhoto();
+    }
+    btn.innerHTML = "&#128247; Agregar una foto de tu platillo o tu cocina";
+  });
+  window.openNovedad = function(i){
+    const n = (window.__NOVEDADES||[])[i];
+    if(!n) return;
+    const TIP = { novedad:{label:"Novedad",color:"#5A3F86"}, oferta:{label:"Oferta especial",color:"#9C3524"} };
+    const t = TIP[n.tipo] || TIP.novedad;
+    const im = document.getElementById("nvmImg");
+    if(n.img){ im.src = n.img; im.style.display = "block"; } else { im.style.display = "none"; }
+    const tg = document.getElementById("nvmTag");
+    tg.textContent = t.label; tg.style.color = t.color;
+    document.getElementById("nvmName").textContent = n.name || "";
+    document.getElementById("nvmDesc").textContent = n.desc || "Muy pronto te comparto todos los detalles.";
+    document.getElementById("nvmWa").href = "https://wa.me/16823811576?text=" +
+      encodeURIComponent("Hola Tomas \ud83d\udc4b, quiero saber m\u00e1s de " + (n.name||"la novedad"));
+    const mo = document.getElementById("nvModal");
+    mo.classList.add("open"); mo.setAttribute("aria-hidden","false");
+    document.body.classList.add("lock");
+    if(window.trackEvent) window.trackEvent("Novedad abierta: " + (n.name||"").slice(0,60));
+  };
+  window.closeNovedad = function(){
+    const mo = document.getElementById("nvModal");
+    mo.classList.remove("open"); mo.setAttribute("aria-hidden","true");
+    document.body.classList.remove("lock");
+  };
+
+  window.openRevPhoto = function(btn){
+    const im = btn.querySelector("img");
+    if(!im) return;
+    document.getElementById("rpImg").src = im.src;
+    document.getElementById("rpView").classList.add("on");
+  };
+
   window.sendReview = async function(){
     const name = (document.getElementById("rmName").value||"").trim();
     const text = (document.getElementById("rmText").value||"").trim();
@@ -1945,20 +2245,14 @@ try{
       const COLORS = ["#8A6FB4","#B08D4F","#5B8A72","#7A6A5A","#4E6B9B","#B07A6A"];
       const color = COLORS[Math.floor(Math.random()*COLORS.length)];
       // ---- Firebase propio del formulario: no depende del resto de la página ----
-      const CFG = {
-        apiKey:"AIzaSyD5EuL7wMb95SRafwcvmBThK5jv-d6H_jA",
-        authDomain:"oficina-digital-tomas.firebaseapp.com",
-        projectId:"oficina-digital-tomas",
-        storageBucket:"oficina-digital-tomas.firebasestorage.app",
-        messagingSenderId:"898342341243",
-        appId:"1:898342341243:web:7ee15b8b3533f3889570de"
-      };
+      const CFG = window.OFICINA.firebase;
       const { initializeApp, getApps } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
       const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
       const app = (getApps && getApps().length) ? getApps()[0] : initializeApp(CFG);
       const db = getFirestore(app);
       await addDoc(collection(db, "testimonials"), {
         name, text, stars, ini, color,
+        ...(revPhotoData ? { photo: revPhotoData } : {}),
         sub: "Cliente",
         status: "hidden",   // queda oculta hasta que Tomas la apruebe en el panel
         visible: false,
@@ -1966,7 +2260,8 @@ try{
         pendiente: true,
         createdAt: serverTimestamp(), city:(document.getElementById("rmCity")&&document.getElementById("rmCity").value.trim().slice(0,40))||"", consent:true, consentText:"Autorizo que mi nombre y experiencia sean publicados en esta página. Entiendo que mi información de contacto no será mostrada.", consentAt: serverTimestamp()});
       try{ localStorage.setItem("revLast", String(Date.now())); }catch(e){}
-      if(window.trackEvent) window.trackEvent("Testimonio enviado");
+      if(window.trackEvent) window.trackEvent("Testimonio enviado" + (revPhotoData ? " con foto" : ""));
+      window.clearRevPhoto();
       document.getElementById("revFormWrap").style.display = "none";
       document.getElementById("revThanks").style.display = "block";
     }catch(e){
@@ -2006,6 +2301,13 @@ try{
       <input id="rmCity" type="text" placeholder="Ej. Irving, TX" autocomplete="address-level2">
       <label for="rmText">Tu experiencia</label>
       <textarea id="rmText" placeholder="Cuéntanos cómo te fue con tu equipo o en la demostración…"></textarea>
+      <label>Tu foto <span class="opt">(opcional)</span></label>
+      <input id="rmPhoto" type="file" accept="image/*" style="display:none">
+      <button type="button" class="rm-photo-add" id="rmPhotoBtn" onclick="document.getElementById('rmPhoto').click()">&#128247; Agregar una foto de tu platillo o tu cocina</button>
+      <div class="rm-photo-prev" id="rmPhotoPrev" style="display:none">
+        <img id="rmPhotoImg" alt="Tu foto">
+        <button type="button" class="rm-photo-x" onclick="clearRevPhoto()">Quitar</button>
+      </div>
       <label class="rm-consent" for="rmConsent">
         <input id="rmConsent" type="checkbox">
         <span>Autorizo que mi nombre y experiencia sean publicados en esta página. Entiendo que mi información de contacto no será mostrada.</span>
@@ -2025,11 +2327,42 @@ try{
   </div>
 </div>
 
+<<<<<<< HEAD
+=======
+<div class="sgo" id="sgoModal" aria-hidden="true">
+  <div class="sgo-back" data-sgoclose></div>
+  <div class="sgo-card" role="dialog" aria-modal="true" aria-labelledby="sgoTitle">
+    <div class="sgo-head">
+      <h3 id="sgoTitle">Guarda esta oficina digital</h3>
+      <button class="sgo-x" type="button" data-sgoclose aria-label="Cerrar">&#10005;</button>
+    </div>
+    <div class="sgo-body" id="sgoBody"></div>
+  </div>
+</div>
+<div class="ay-modal" id="ayModal" aria-hidden="true">
+  <div class="ay-back" data-ayclose></div>
+  <div class="ay-card" role="dialog" aria-modal="true" aria-labelledby="ayTitle">
+    <div class="ay-head">
+      <h3 id="ayTitle">Centro de ayuda</h3>
+      <button class="ay-x" type="button" data-ayclose aria-label="Cerrar">&#10005;</button>
+    </div>
+    <div class="ay-body" id="ayBody"></div>
+    <div class="ay-foot" id="ayFoot"></div>
+  </div>
+</div>
+<div class="needs-back" id="needsBack"></div>
+<div class="needs-panel" id="needsPanel" role="dialog" aria-modal="false" aria-label="¿Qué necesitas hoy?" aria-hidden="true">
+  <div class="needs-h">¿Qué necesitas hoy?</div>
+  <a class="needs-opt" href="#servicio"><span class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4"/><path d="M12 17.5h.01"/></svg></span>Necesito ayuda<svg class="n-ar" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+  <a class="needs-opt" href="recetas.html"><span class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>Ver recetas<svg class="n-ar" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+  <a class="needs-opt" href="https://wa.me/16823811576?text=Hola%20Tomas%20👋,%20me%20gustar%C3%ADa%20solicitar%20una%20visita" target="_blank" rel="noopener"><span class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V10"/><path d="M9.5 21v-6h5v6"/></svg></span>Solicitar una visita<svg class="n-ar" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+  <a class="needs-opt" href="pasaporte.html"><span class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2.5" width="16" height="19" rx="2.5"/><circle cx="12" cy="10" r="3"/><path d="M8.5 17.5h7"/></svg></span>Continuar mi Pasaporte<svg class="n-ar" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+  <a class="needs-opt" href="regalo/crear.html"><span class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M3 12h18M12 8v13"/><path d="M12 8c-1.8 0-4.5-.6-4.5-2.7C7.5 3.9 8.6 3 9.8 3 11.4 3 12 5.2 12 8zm0 0c1.8 0 4.5-.6 4.5-2.7C16.5 3.9 15.4 3 14.2 3 12.6 3 12 5.2 12 8z"/></svg></span>Enviar un regalo a un amigo<svg class="n-ar" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+  <button class="needs-opt" type="button" id="sgoOpen" aria-label="Guardar esta oficina digital"><span class="n-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><path d="M9.2 10.6 12 8.3l2.8 2.3"/><path d="M10.1 10.2V13h3.8v-2.8"/></svg></span>Guardar esta oficina digital<svg class="n-ar" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+</div>
+>>>>>>> origin/main
 <div class="bottombar" id="bottomBar" aria-hidden="true">
-  <button class="bb-main" data-cal type="button">Reservar demostración</button>
-  <a class="bb-wa" href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B" target="_blank" rel="noopener" aria-label="Hablar con Tomas">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-  </a>
+  <button class="bb-main" id="needsBtn" type="button" aria-expanded="false" aria-controls="needsPanel" aria-haspopup="dialog">¿Qué necesitas hoy?</button>
 </div>
 <script>
 (function(){
@@ -2115,11 +2448,599 @@ try{
     burger.addEventListener('click', function(){
       var open=links.classList.toggle('open');
       burger.setAttribute('aria-expanded', open?'true':'false');
+      document.body.classList.toggle('menu-open', open);
     });
     links.addEventListener('click', function(e){
-      if(e.target.closest('a')){ links.classList.remove('open'); burger.setAttribute('aria-expanded','false'); }
+      if(e.target.closest('a')){ links.classList.remove('open'); burger.setAttribute('aria-expanded','false'); document.body.classList.remove('menu-open'); }
     });
   }
+})();
+</script>
+<script>
+/* Panel "¿Qué necesitas hoy?" — abre, cierra al tocar fuera, al elegir y con Escape */
+(function(){
+  var btn = document.getElementById('needsBtn');
+  var panel = document.getElementById('needsPanel');
+  var back = document.getElementById('needsBack');
+  if(!btn || !panel || !back) return;
+  function abrir(){
+    panel.classList.add('show'); back.classList.add('show');
+    panel.setAttribute('aria-hidden','false'); btn.setAttribute('aria-expanded','true');
+    document.body.classList.add('needs-open');
+    if(window.trackEvent) window.trackEvent('Panel: qué necesitas hoy');
+  }
+  function cerrar(){
+    panel.classList.remove('show'); back.classList.remove('show');
+    panel.setAttribute('aria-hidden','true'); btn.setAttribute('aria-expanded','false');
+    document.body.classList.remove('needs-open');
+  }
+  btn.addEventListener('click', function(){
+    panel.classList.contains('show') ? cerrar() : abrir();
+  });
+  back.addEventListener('click', cerrar);
+  panel.addEventListener('click', function(e){ if(e.target.closest('.needs-opt')) cerrar(); });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && panel.classList.contains('show')) cerrar();
+  });
+})();
+</script>
+<script>
+/* ============ CENTRO DE AYUDA ============
+   Documento oficial de garantía: cuando lo tengas, escribe aquí su ruta.
+   Ejemplo:  var GARANTIA_URL = "garantia-royal-prestige.pdf";
+   Con el campo vacío se muestra el aviso de "próximamente" y los botones
+   de ver y descargar permanecen ocultos. No hace falta tocar nada más. */
+var GARANTIA_URL = "garantia.html";
+
+(function(){
+  var modal = document.getElementById('ayModal');
+  var body  = document.getElementById('ayBody');
+  var foot  = document.getElementById('ayFoot');
+  var titl  = document.getElementById('ayTitle');
+  if(!modal || !body || !foot) return;
+
+  var TITULOS = {
+    producto:'Ayuda con un producto',
+    servicio:'Solicitar servicio',
+    garantia:'Consultar garantía',
+    visita:'Solicitar una visita',
+    llamada:'Solicitar una llamada'
+  };
+  var MEDIOS  = ['WhatsApp','Llamada','Mensaje de texto'];
+  var HORAS   = ['Mañana (8am - 12pm)','Tarde (12pm - 5pm)','Noche (5pm - 8pm)','Cualquier horario'];
+  var RESPUESTA = 'Nos comunicaremos contigo dentro de un máximo de 3 días hábiles.';
+  var fotoDatos = '';
+  var enviando = false;
+
+  function esc(t){ return String(t==null?'':t).replace(/[&<>"]/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function sel(id, lista, etiqueta, opcional){
+    var h = '<label for="'+id+'">'+etiqueta+(opcional?' <span class="ay-opt">(opcional)</span>':'')+'</label><select id="'+id+'">';
+    h += '<option value="">— Elige una opción —</option>';
+    lista.forEach(function(o){ h += '<option value="'+esc(o)+'">'+esc(o)+'</option>'; });
+    return h + '</select>';
+  }
+  function campo(id, etiqueta, tipo, opcional, ph){
+    return '<label for="'+id+'">'+etiqueta+(opcional?' <span class="ay-opt">(opcional)</span>':'')+'</label>'+
+           '<input id="'+id+'" type="'+(tipo||'text')+'"'+(ph?' placeholder="'+esc(ph)+'"':'')+
+           (tipo==='tel'?' inputmode="tel" autocomplete="tel"':'')+'>';
+  }
+  function bloqueFoto(){
+    return '<label>Fotografía <span class="ay-opt">(opcional)</span></label>'+
+      '<input id="ayFoto" type="file" accept="image/*" style="display:none">'+
+      '<button type="button" class="ay-ph" id="ayFotoBtn" onclick="document.getElementById(\'ayFoto\').click()">&#128247; Agregar una fotografía</button>'+
+      '<div class="ay-phprev" id="ayFotoPrev" style="display:none"><img id="ayFotoImg" alt="Foto adjunta">'+
+      '<button type="button" class="ay-phx" onclick="ayQuitarFoto()">Quitar</button></div>';
+  }
+  function bloqueContacto(){
+    return sel('ayMedio', MEDIOS, 'Medio de contacto preferido') +
+           sel('ayHorario', HORAS, 'Horario preferido');
+  }
+  function bloqueConsent(){
+    return '<label class="ay-cons" for="ayConsent"><input id="ayConsent" type="checkbox">'+
+      '<span>Autorizo que me contacten por el medio seleccionado para atender esta solicitud.</span></label>'+
+      '<label class="ay-cons" for="ayNews"><input id="ayNews" type="checkbox">'+
+      '<span>Deseo recibir recetas, beneficios y novedades. <span class="ay-opt">(opcional)</span></span></label>'+
+      '<div class="ay-err" id="ayErr"></div>';
+  }
+  function datosBase(){
+    return '<div class="ay-row"><div>'+campo('ayNombre','Nombre')+'</div>'+
+           '<div>'+campo('ayApellido','Apellido')+'</div></div>'+
+           campo('ayTel','Teléfono','tel',false,'(682) 555-0134')+
+           campo('ayCuenta','Número de cuenta','text',true);
+  }
+  function botonEnviar(txt){
+    return '<p style="font-size:12.5px;line-height:1.55;color:var(--stone);margin-bottom:12px">'+
+      'Utilizaremos esta información para registrar, revisar y dar seguimiento a tu solicitud desde nuestro panel de atención. '+
+      'No utilizaremos tus datos para enviarte promociones sin tu autorización. '+
+      '<a href="privacidad.html" target="_blank" rel="noopener" style="color:var(--gold-text);font-weight:600">Consulta nuestra Política de Privacidad</a>.</p>'+
+      '<button class="btn btn-solid ay-send" type="button" id="ayEnviar">'+(txt||'Enviar solicitud')+'</button>';
+  }
+
+  /* ---------- Formularios ---------- */
+  var FORMS = {
+    producto: function(){
+      return {
+        cuerpo:'<div class="ay-note">Utiliza este formulario para dudas de uso, funcionamiento, cuidado o mantenimiento básico de un producto.</div>'+
+          datosBase()+
+          campo('ayProducto','Producto','text',false,'Ej. Olla de presión')+
+          sel('ayMotivo',['No sé cómo utilizarlo','No funciona correctamente','Limpieza o mantenimiento','Pieza o accesorio','Otro'],'Tipo de ayuda')+
+          '<label for="ayDetalle">Detalle del problema</label><textarea id="ayDetalle" placeholder="Cuéntame con tus palabras qué necesitas"></textarea>'+
+          bloqueFoto()+bloqueContacto()+bloqueConsent(),
+        ok:'Recibimos tu solicitud. Tomás o una persona autorizada se comunicará contigo dentro de un máximo de 3 días hábiles.',
+        req:['ayNombre','ayApellido','ayTel','ayProducto','ayMotivo','ayDetalle','ayMedio','ayHorario']
+      };
+    },
+    servicio: function(){
+      return {
+        cuerpo:'<div class="ay-note">Completa la información para que podamos revisar tu caso y orientarte sobre los siguientes pasos.</div>'+
+          datosBase()+
+          campo('ayCiudad','Ciudad','text',false,'Ej. Irving, TX')+
+          campo('ayProducto','Producto','text',false,'Ej. Sartén de 10 pulgadas')+
+          sel('ayMotivo',['Mantenimiento','Revisión','Pieza o accesorio','Equipo dañado','Otro'],'Tipo de servicio')+
+          '<label for="ayDetalle">Detalle de la solicitud</label><textarea id="ayDetalle" placeholder="Describe qué ocurre con tu equipo"></textarea>'+
+          bloqueFoto()+bloqueContacto()+
+          '<div class="ay-warn">Enviar esta solicitud no confirma automáticamente una visita, reparación ni cobertura de garantía. El caso será revisado primero.</div>'+
+          bloqueConsent(),
+        ok:'Tu solicitud de servicio fue recibida. Revisaremos la información y nos comunicaremos contigo dentro de un máximo de 3 días hábiles.',
+        req:['ayNombre','ayApellido','ayTel','ayCiudad','ayProducto','ayMotivo','ayDetalle','ayMedio','ayHorario']
+      };
+    },
+    garantia: function(){
+      return {
+        cuerpo:'<div class="ay-note">Aquí encuentras cómo funciona la garantía y cómo pedir ayuda si tu equipo la necesita.</div>'+
+          datosBase()+
+          campo('ayProducto','Producto','text',false,'Ej. Juego de ollas')+
+          campo('ayFecha','Fecha aproximada de compra','date',true)+
+          '<label for="ayDetalle">Descripción del problema</label><textarea id="ayDetalle" placeholder="Cuéntame qué está pasando con tu equipo"></textarea>'+
+          bloqueFoto()+bloqueContacto()+bloqueConsent(),
+        ok:'Recibimos tu consulta de garantía. Revisaremos la información y nos comunicaremos contigo dentro de un máximo de 3 días hábiles.',
+        req:['ayNombre','ayApellido','ayTel','ayProducto','ayDetalle','ayMedio','ayHorario']
+      };
+    },
+    llamada: function(){
+      return {
+        cuerpo:'<div class="ay-note">Dime cuándo te viene bien y te llamo. El horario que elijas es una preferencia y puede requerir confirmación.</div>'+
+          '<div class="ay-row"><div>'+campo('ayNombre','Nombre')+'</div>'+
+          '<div>'+campo('ayApellido','Apellido')+'</div></div>'+
+          campo('ayTel','Teléfono','tel',false,'(682) 555-0134')+
+          '<label for="ayDetalle">Motivo de la llamada</label><textarea id="ayDetalle" placeholder="¿De qué te gustaría que hablemos?"></textarea>'+
+          campo('ayDia','Día preferido','date')+
+          sel('ayHorario', HORAS, 'Horario preferido')+
+          campo('ayZona','Zona horaria','text',true,'Ej. Hora del Centro (Texas)')+
+          '<label for="ayComent">Comentario <span class="ay-opt">(opcional)</span></label><textarea id="ayComent" placeholder="Algo más que deba saber antes de llamarte"></textarea>'+
+          bloqueConsent(),
+        ok:'Recibimos tu solicitud. Intentaremos llamarte dentro del horario seleccionado. El horario indicado es una preferencia y puede requerir confirmación. '+RESPUESTA,
+        req:['ayNombre','ayApellido','ayTel','ayDetalle','ayDia','ayHorario']
+      };
+    }
+  };
+
+  /* ---------- Pantallas especiales ---------- */
+  function pantallaGarantia(){
+    var doc = (GARANTIA_URL || '').trim();
+    var h = '<div class="ay-gar">';
+    h += '<div class="ay-note">Consulta cómo funciona la garantía de tu equipo y, si lo necesitas, pide ayuda con tu caso.</div>';
+    if(doc){
+      var esPagina = /\.html?($|[?#])/i.test(doc);
+      h += '<div style="display:flex;gap:9px;flex-wrap:wrap;margin:14px 0">'+
+           '<a class="btn btn-solid" href="'+esc(doc)+'" target="_blank" rel="noopener" style="flex:1;justify-content:center;min-height:48px">Ver garantía completa</a>'+
+           (esPagina ? '' :
+             '<a class="btn btn-ghost" href="'+esc(doc)+'" download style="flex:1;justify-content:center;min-height:48px">Descargar documento</a>')+
+           '</div>';
+    }else{
+      h += '<div class="ay-soon"><b>Documento oficial de garantía próximamente disponible</b>'+
+           '<span>Mientras tanto, puedes escribirme y reviso tu caso personalmente.</span></div>';
+    }
+    h += '<h4>Pasos para solicitar asistencia</h4><ul>'+
+         '<li>Reúne la información de tu equipo y del problema.</li>'+
+         '<li>Envía el formulario con una fotografía, si la tienes.</li>'+
+         '<li>Reviso tu caso y te contacto para indicarte los siguientes pasos.</li></ul>';
+    h += '<h4>Ten preparado</h4><ul>'+
+         '<li>Nombre del producto.</li>'+
+         '<li>Fecha aproximada de compra, si la recuerdas.</li>'+
+         '<li>Número de cuenta, si lo tienes a la mano.</li>'+
+         '<li>Una fotografía donde se vea el problema.</li></ul>';
+    h += '<div class="ay-warn">La cobertura final depende de las condiciones oficiales aplicables, la revisión del producto y la documentación disponible.</div>';
+    h += '</div>';
+    return h;
+  }
+
+  function pantallaVisita(){
+    var motivos = ['Ayuda con un producto','Seguimiento después de la compra','Revisión general','Entrega de regalo','Conocer una novedad','Otro'];
+    var h = '<div class="ay-note">Elige el motivo de tu visita y luego escoges el día y la hora en mi calendario.</div>';
+    h += '<div class="ay-pick">';
+    motivos.forEach(function(m){
+      h += '<button type="button" data-visita="'+esc(m)+'">'+esc(m)+'</button>';
+    });
+    h += '</div>';
+    h += '<div class="ay-warn">Solicitar una visita no implica obligación de compra. La disponibilidad y confirmación final pueden depender del área de servicio y del motivo seleccionado.</div>';
+    return h;
+  }
+
+  /* ---------- Apertura y cierre ---------- */
+  var tipoActual = '';
+  function abrir(tipo){
+    tipoActual = tipo;
+    fotoDatos = '';
+    titl.textContent = TITULOS[tipo] || 'Centro de ayuda';
+    if(tipo === 'visita'){
+      body.innerHTML = pantallaVisita();
+      foot.innerHTML = '';
+      body.querySelectorAll('[data-visita]').forEach(function(b){
+        b.addEventListener('click', function(){
+          var motivo = b.getAttribute('data-visita');
+          if(window.trackEvent) window.trackEvent('Ayuda: visita · ' + motivo);
+          cerrar();
+          if(typeof openCal === 'function') openCal();
+        });
+      });
+    }else if(tipo === 'garantia'){
+      body.innerHTML = pantallaGarantia();
+      foot.innerHTML = '<button class="btn btn-solid ay-send" type="button" id="ayGarGo">Necesito ayuda con una garantía</button>';
+      document.getElementById('ayGarGo').addEventListener('click', function(){ montarForm('garantia'); });
+    }else{
+      montarForm(tipo);
+    }
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.classList.add('lock','ay-open');
+    if(window.trackEvent) window.trackEvent('Ayuda abre: ' + tipo);
+  }
+  function montarForm(tipo){
+    tipoActual = tipo;
+    var f = FORMS[tipo]();
+    body.innerHTML = f.cuerpo;
+    body.scrollTop = 0;
+    foot.innerHTML = botonEnviar();
+    document.getElementById('ayEnviar').addEventListener('click', function(){ enviar(tipo, f); });
+  }
+  function cerrar(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.classList.remove('lock','ay-open');
+    body.innerHTML = ''; foot.innerHTML = '';
+    fotoDatos = ''; enviando = false;
+  }
+  window.ayQuitarFoto = function(){
+    fotoDatos = '';
+    var p = document.getElementById('ayFotoPrev'), b = document.getElementById('ayFotoBtn'), i = document.getElementById('ayFoto');
+    if(p) p.style.display='none'; if(b) b.style.display=''; if(i) i.value='';
+  };
+
+  /* ---------- Foto: se reduce en el teléfono antes de enviarse ---------- */
+  function comprimir(file){
+    return new Promise(function(res, rej){
+      var img = new Image(), url = URL.createObjectURL(file);
+      img.onload = function(){
+        URL.revokeObjectURL(url);
+        var intentos = [[1000,.78],[880,.68],[760,.58],[640,.5]];
+        for(var k=0;k<intentos.length;k++){
+          var lado = intentos[k][0], q = intentos[k][1];
+          var e = Math.min(1, lado/Math.max(img.width,img.height));
+          var c = document.createElement('canvas');
+          c.width = Math.round(img.width*e); c.height = Math.round(img.height*e);
+          c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+          var d = c.toDataURL('image/jpeg', q);
+          if(d.length < 680000) return res(d);
+        }
+        rej(new Error('grande'));
+      };
+      img.onerror = function(){ URL.revokeObjectURL(url); rej(new Error('lectura')); };
+      img.src = url;
+    });
+  }
+  document.addEventListener('change', async function(e){
+    if(!e.target || e.target.id !== 'ayFoto' || !e.target.files || !e.target.files[0]) return;
+    var f = e.target.files[0];
+    if(!/^image\//.test(f.type)){ alert('Ese archivo no es una imagen.'); e.target.value=''; return; }
+    var btn = document.getElementById('ayFotoBtn');
+    btn.textContent = 'Preparando tu foto…';
+    try{
+      fotoDatos = await comprimir(f);
+      document.getElementById('ayFotoImg').src = fotoDatos;
+      document.getElementById('ayFotoPrev').style.display = 'block';
+      btn.style.display = 'none';
+    }catch(_){
+      alert('No se pudo procesar esa foto. Intenta con otra.');
+      window.ayQuitarFoto();
+    }
+    btn.innerHTML = '&#128247; Agregar una fotografía';
+  });
+
+  /* ---------- Envío ---------- */
+  function val(id){ var e = document.getElementById(id); return e ? String(e.value||'').trim() : ''; }
+  function error(msg){
+    var e = document.getElementById('ayErr');
+    if(e){ e.textContent = msg; e.classList.add('show'); }
+  }
+  async function enviar(tipo, f){
+    if(enviando) return;
+    var err = document.getElementById('ayErr');
+    if(err) err.classList.remove('show');
+
+    var faltan = f.req.filter(function(id){ return !val(id); });
+    if(faltan.length){
+      error('Falta completar algún dato. Revisa los campos marcados.');
+      var p = document.getElementById(faltan[0]);
+      if(p){ p.focus(); p.scrollIntoView({block:'center', behavior:'smooth'}); }
+      return;
+    }
+    var tel = val('ayTel').replace(/\D/g,'');
+    if(tel.length < 10){ error('Revisa tu teléfono: faltan dígitos.'); document.getElementById('ayTel').focus(); return; }
+    var cons = document.getElementById('ayConsent');
+    if(!cons || !cons.checked){ error('Para poder atenderte necesito tu autorización para contactarte.'); return; }
+
+    enviando = true;
+    var btn = document.getElementById('ayEnviar');
+    if(btn){ btn.disabled = true; btn.textContent = 'Enviando…'; }
+
+    try{
+      var CFG = window.OFICINA.firebase;
+      var a = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+      var fs = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+      var app = (a.getApps && a.getApps().length) ? a.getApps()[0] : a.initializeApp(CFG);
+      var db = fs.getFirestore(app);
+
+      /* Código corto para identificar la solicitud en el panel y al hablar con el cliente */
+      var CH = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', cod = '';
+      try{
+        var rnd = new Uint8Array(5); crypto.getRandomValues(rnd);
+        for(var k=0;k<5;k++) cod += CH[rnd[k] % CH.length];
+      }catch(_){
+        for(var k2=0;k2<5;k2++) cod += CH[Math.floor(Math.random()*CH.length)];
+      }
+
+      var datos = {
+        tipo: tipo,
+        code: cod,
+        nombre: val('ayNombre'),
+        apellido: val('ayApellido'),
+        phone: val('ayTel'),
+        cuenta: val('ayCuenta'),
+        ciudad: val('ayCiudad'),
+        producto: val('ayProducto'),
+        motivo: val('ayMotivo'),
+        detalle: val('ayDetalle'),
+        fechaCompra: val('ayFecha'),
+        dia: val('ayDia'),
+        horario: val('ayHorario'),
+        zona: val('ayZona'),
+        comentario: val('ayComent'),
+        medio: val('ayMedio') || 'Llamada',
+        consent: true,
+        news: !!(document.getElementById('ayNews') && document.getElementById('ayNews').checked),
+        status: 'nueva',
+        notas: '',
+        createdAt: fs.serverTimestamp()
+      };
+      if(fotoDatos) datos.photo = fotoDatos;
+      Object.keys(datos).forEach(function(k){ if(datos[k] === '') delete datos[k]; });
+
+      await fs.addDoc(fs.collection(db, 'helpRequests'), datos);
+      if(window.trackEvent) window.trackEvent('Ayuda enviada: ' + tipo);
+
+      titl.textContent = 'Solicitud enviada';
+      body.innerHTML = '<div class="ay-ok"><div class="big">&#128077;</div>'+
+        '<h4>¡Gracias!</h4><p>'+esc(f.ok)+'</p>'+
+        '<p style="margin-top:14px;font-size:13.5px">Número de tu solicitud: <b>'+esc(cod)+'</b></p></div>';
+      foot.innerHTML = '<button class="btn btn-solid ay-send" type="button" data-ayclose>Cerrar</button>';
+      foot.querySelector('[data-ayclose]').addEventListener('click', cerrar);
+      body.scrollTop = 0;
+    }catch(e){
+      console.error('Ayuda:', e);
+      enviando = false;
+      if(btn){ btn.disabled = false; btn.textContent = 'Enviar solicitud'; }
+      if(e && e.code === 'permission-denied') error('La nube rechazó la solicitud. Avísale a Tomas.');
+      else if(e && (e.code === 'unavailable' || /network|failed to fetch/i.test(String(e.message)))) error('No hay conexión. Revisa tu internet e inténtalo de nuevo.');
+      else error('No se pudo enviar. Inténtalo de nuevo en un momento.');
+    }
+  }
+
+  /* ---------- Enlaces ---------- */
+  document.addEventListener('click', function(e){
+    var t = e.target.closest('[data-ayuda]');
+    if(t){ e.preventDefault(); abrir(t.getAttribute('data-ayuda')); return; }
+    if(e.target.closest('[data-ayclose]')) cerrar();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && modal.classList.contains('open')) cerrar();
+  });
+})();
+</script>
+<script>
+/* ============ GUARDAR ESTA OFICINA DIGITAL ============
+   Reutiliza la vCard existente, el sistema de eventos existente y el
+   diseño actual. No crea PWA ni service workers. */
+(function(){
+  var modal = document.getElementById('sgoModal');
+  var body  = document.getElementById('sgoBody');
+  if(!modal || !body) return;
+
+  var URL_CANON = (function(){
+    var l = document.querySelector('link[rel="canonical"]');
+    return (l && l.href) ? l.href : location.href.split('#')[0];
+  })();
+  var TEXTO_COMPARTIR = 'Te comparto la oficina digital de Tomás Flores. Aquí puedes encontrar recetas, ayuda, beneficios y contacto directo.';
+  var instalable = null;   /* evento de instalación, si el navegador lo ofrece */
+
+  function ev(n){ if(window.trackEvent) window.trackEvent('Guardar oficina: ' + n); }
+
+  function so(){
+    var u = navigator.userAgent || '';
+    if(/iPad|iPhone|iPod/.test(u) || (/Macintosh/.test(u) && navigator.maxTouchPoints > 1)) return 'ios';
+    if(/Android/i.test(u)) return 'android';
+    return 'otro';
+  }
+
+  var IC = function(d){
+    return '<span class="s-ic"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg></span>';
+  };
+
+  function menu(){
+    var h = '';
+    h += '<p style="font-size:14px;color:var(--stone);line-height:1.55;margin-bottom:14px">Elige cómo prefieres conservarla.</p>';
+    h += '<button class="sgo-opt" type="button" data-sgo="inicio" aria-label="Añadir a pantalla de inicio">'+
+      IC('<rect x="5" y="2" width="14" height="20" rx="2.5"/><path d="M12 7v6M9 10h6"/><path d="M10.5 18.5h3"/>')+
+      '<span class="s-tx">Añadir a pantalla de inicio<small>Como si fuera una aplicación</small></span></button>';
+    h += '<button class="sgo-opt" type="button" data-sgo="contacto" aria-label="Guardar contacto">'+
+      IC('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/>')+
+      '<span class="s-tx">Guardar contacto<small>Me tienes en tu agenda</small></span></button>';
+    h += '<button class="sgo-opt" type="button" data-sgo="copiar" aria-label="Copiar enlace">'+
+      IC('<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>')+
+      '<span class="s-tx">Copiar enlace<small>Para pegarlo donde quieras</small></span></button>';
+    h += '<button class="sgo-opt" type="button" data-sgo="compartir" aria-label="Compartir página">'+
+      IC('<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>')+
+      '<span class="s-tx">Compartir página<small>Con quien tú quieras</small></span></button>';
+    return h;
+  }
+
+  function pasos(){
+    var s2 = so(), h = '';
+    if(s2 === 'ios'){
+      h += '<div class="sgo-steps"><b>En tu iPhone o iPad</b><ol>'+
+        '<li>Toca el botón <b>Compartir</b> del navegador (el cuadrito con la flecha hacia arriba).</li>'+
+        '<li>Desliza y elige <b>Añadir a pantalla de inicio</b>.</li>'+
+        '<li>Confirma tocando <b>Añadir</b>.</li></ol>'+
+        '<p style="font-size:13px;color:var(--stone);margin-top:10px;line-height:1.5">Safari necesita que completes estos pasos; no puedo hacerlo por ti desde aquí.</p></div>';
+    }else if(s2 === 'android'){
+      h += '<div class="sgo-steps"><b>En tu Android</b><ol>'+
+        '<li>Abre el menú del navegador (los tres puntos).</li>'+
+        '<li>Elige <b>Añadir a pantalla principal</b> o <b>Instalar aplicación</b>.</li>'+
+        '<li>Confirma.</li></ol></div>';
+      if(instalable){
+        h += '<button class="btn btn-solid" type="button" id="sgoInstalar" style="width:100%;justify-content:center;min-height:50px">Añadir ahora</button>';
+      }
+    }else{
+      h += '<div class="sgo-steps"><b>En tu computadora</b><ol>'+
+        '<li>Guarda esta página en tus favoritos con <b>Ctrl + D</b> (o <b>Cmd + D</b> en Mac).</li>'+
+        '<li>O copia el enlace y ábrelo desde tu teléfono.</li></ol></div>';
+    }
+    h += '<button class="sgo-back-btn" type="button" data-sgo="volver">&#8592; Volver</button>';
+    return h;
+  }
+
+  function pintar(vista){
+    body.innerHTML = (vista === 'pasos') ? pasos() : menu();
+    body.scrollTop = 0;
+    var ins = document.getElementById('sgoInstalar');
+    if(ins) ins.addEventListener('click', async function(){
+      if(!instalable) return;
+      ev('instalar android');
+      try{ instalable.prompt(); await instalable.userChoice; }catch(e){}
+      instalable = null;
+      cerrar();
+    });
+  }
+
+  function abrir(){
+    pintar('menu');
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.classList.add('lock','sgo-open');
+    var f = body.querySelector('.sgo-opt');
+    if(f) f.focus();
+    ev('abre panel');
+  }
+  function cerrar(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.classList.remove('lock','sgo-open');
+    body.innerHTML = '';
+  }
+
+  function copiar(){
+    var listo = function(){ if(window.toast) toast('Enlace copiado'); ev('copiar enlace'); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(URL_CANON).then(listo).catch(alterno);
+    }else{ alterno(); }
+    function alterno(){
+      /* Si el navegador bloquea el portapapeles, se selecciona para copiar a mano */
+      try{
+        var t = document.createElement('textarea');
+        t.value = URL_CANON;
+        t.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:420px;padding:14px;font-size:16px;border:2px solid #B08D4F;border-radius:12px;z-index:2000';
+        document.body.appendChild(t);
+        t.focus(); t.select();
+        var ok = false;
+        try{ ok = document.execCommand('copy'); }catch(e){}
+        t.remove();
+        if(ok){ listo(); }
+        else if(window.toast) toast('Copia el enlace: ' + URL_CANON);
+      }catch(e){ if(window.toast) toast('Copia el enlace: ' + URL_CANON); }
+    }
+  }
+
+  async function compartir(){
+    if(navigator.share){
+      try{
+        await navigator.share({ title:'Tomas Flores — Royal Prestige', text:TEXTO_COMPARTIR, url:URL_CANON });
+        ev('compartir pagina');
+        cerrar();
+      }catch(err){
+        if(err && err.name === 'AbortError') return;   /* el usuario canceló */
+        copiar();
+      }
+    }else{ copiar(); }
+  }
+
+  /* Un mismo toque no debe contarse dos veces */
+  var ultimo = 0;
+  body.addEventListener('click', function(e){
+    var b = e.target.closest('[data-sgo]');
+    if(!b) return;
+    var ahora = Date.now();
+    if(ahora - ultimo < 600) return;
+    ultimo = ahora;
+    var q = b.getAttribute('data-sgo');
+    if(q === 'volver'){ pintar('menu'); return; }
+    if(q === 'inicio'){ ev('pantalla de inicio'); pintar('pasos'); return; }
+    if(q === 'contacto'){
+      ev('guardar contacto');
+      if(typeof __saveContactVCard === 'function') __saveContactVCard();
+      cerrar(); return;
+    }
+    if(q === 'copiar'){ copiar(); return; }
+    if(q === 'compartir'){ compartir(); return; }
+  });
+
+  ['sgoOpen','sgoOpen2'].forEach(function(id){
+    var b = document.getElementById(id);
+    if(b) b.addEventListener('click', function(){
+      if(id === 'sgoOpen2') ev('guardar ahora');
+      var np = document.getElementById('needsPanel');
+      if(np && np.classList.contains('show')){
+        np.classList.remove('show');
+        var nb = document.getElementById('needsBack');
+        if(nb) nb.classList.remove('show');
+        document.body.classList.remove('needs-open');
+        var nx = document.getElementById('needsBtn');
+        if(nx) nx.setAttribute('aria-expanded','false');
+      }
+      abrir();
+    });
+  });
+
+  document.addEventListener('click', function(e){
+    if(e.target.closest('[data-sgoclose]')) cerrar();
+  });
+  document.addEventListener('keydown', function(e){
+    if(!modal.classList.contains('open')) return;
+    if(e.key === 'Escape'){ cerrar(); return; }
+    if(e.key === 'Tab'){
+      /* El foco se queda dentro del panel mientras está abierto */
+      var f = modal.querySelectorAll('button, [href], input, select, textarea');
+      if(!f.length) return;
+      var pri = f[0], ult = f[f.length-1];
+      if(e.shiftKey && document.activeElement === pri){ e.preventDefault(); ult.focus(); }
+      else if(!e.shiftKey && document.activeElement === ult){ e.preventDefault(); pri.focus(); }
+    }
+  });
+
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    instalable = e;
+  });
 })();
 </script>
 </body>
