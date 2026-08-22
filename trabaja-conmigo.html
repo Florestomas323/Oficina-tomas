@@ -2,23 +2,29 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0c">
 <title>Trabaja conmigo — Tomás Flores | Impact Enterprises</title>
 <meta name="description" content="Conoce cómo trabajar junto a Tomás Flores e Impact Enterprises como distribuidor independiente de Royal Prestige. Formación, ventas, liderazgo y acompañamiento desde cero.">
-<link rel="canonical" href="https://tomasflores.com/trabaja-conmigo">
-<!-- Open Graph — REEMPLAZAR og:image con una foto real antes de publicar -->
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://tomasflores.com/trabaja-conmigo.html">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Tomas Flores — Royal Prestige">
 <meta property="og:title" content="Trabaja conmigo — Tomás Flores">
 <meta property="og:description" content="Construye un negocio en ventas con acompañamiento real, junto a Impact Enterprises y Royal Prestige.">
-<meta property="og:type" content="website">
-<meta property="og:image" content=""><!-- REEMPLAZAR: URL de imagen real (ej. /assets/og-image.jpg) antes de publicar -->
-<meta property="og:url" content="https://tomasflores.com/trabaja-conmigo">
+<meta property="og:image" content="https://tomasflores.com/assets/trabaja/hero-trabaja.jpg">
+<meta property="og:image:alt" content="Tomás Flores, distribuidor independiente de Royal Prestige">
+<meta property="og:url" content="https://tomasflores.com/trabaja-conmigo.html">
+<meta property="og:locale" content="es_US">
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Trabaja conmigo — Tomás Flores">
 <meta name="twitter:description" content="Construye un negocio en ventas con acompañamiento real, junto a Impact Enterprises y Royal Prestige.">
-<meta name="twitter:image" content=""><!-- REEMPLAZAR: misma imagen que og:image -->
-<link rel="icon" href="/favicon.ico"><!-- REEMPLAZAR con favicon real -->
+<meta name="twitter:image" content="https://tomasflores.com/assets/trabaja/hero-trabaja.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="assets/trabaja/hero-trabaja.jpg" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -61,7 +67,7 @@
 
   nav { position: sticky; top:0; z-index: 50; background: rgba(10,10,12,0.82); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
   nav .wrap { display:flex; align-items:center; justify-content:space-between; height:72px; }
-  .brand { display:flex; align-items:center; gap:10px; }
+  .brand { display:flex; align-items:center; gap:10px; text-decoration:none; }
   .brand img { height: 34px; width:auto; }
   .brand span { font-family:'Playfair Display', serif; font-size:15px; letter-spacing:0.08em; color: var(--silver-bright); }
   .nav-cta {
@@ -296,17 +302,164 @@
     .floating-cta { display:flex; }
     body { padding-bottom: 78px; }
   }
+
+  /* ============================================================
+     PREMIUM ENHANCEMENTS (layered over base styles)
+  ============================================================ */
+  :root{
+    --grad-violet: linear-gradient(135deg, var(--violet-glow), var(--violet-deep));
+    --shadow-card: 0 26px 54px -32px rgba(0,0,0,0.8);
+    --shadow-glow: 0 40px 90px -46px rgba(124,58,237,0.6);
+  }
+  body{
+    background:
+      radial-gradient(1100px 560px at 82% -8%, rgba(124,58,237,0.12), transparent 60%),
+      radial-gradient(820px 480px at -8% 16%, rgba(124,58,237,0.07), transparent 55%),
+      var(--black);
+    background-attachment: fixed;
+  }
+  ::selection{ background: rgba(167,139,250,0.32); color:#fff; }
+
+  /* Scroll reveal */
+  [data-reveal]{ opacity:0; transform: translateY(26px); transition: opacity .7s cubic-bezier(.16,.84,.44,1), transform .7s cubic-bezier(.16,.84,.44,1); will-change: opacity, transform; }
+  [data-reveal].revealed{ opacity:1; transform:none; }
+
+  /* Hero entrance + polish */
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:none} }
+  .hero-copy{ position:relative; }
+  .hero-copy::before{
+    content:''; position:absolute; top:8%; left:-12%; width:60%; height:52%;
+    background: radial-gradient(ellipse at center, rgba(124,58,237,0.22), transparent 70%);
+    filter: blur(14px); pointer-events:none; z-index:0;
+  }
+  .hero-copy > *{ position:relative; z-index:1; }
+  .hero-copy .eyebrow{ animation: fadeUp .7s .02s both; }
+  .hero-copy h1{ animation: fadeUp .75s .08s both; }
+  .hero-copy p.lead{ animation: fadeUp .75s .16s both; }
+  .hero-copy .cta-row{ animation: fadeUp .75s .24s both; }
+  .hero-copy .micro-benefits{ animation: fadeUp .75s .32s both; }
+  .hero-img img{ transform: scale(1.04); animation: heroZoom 8s ease-out both; }
+  @keyframes heroZoom{ from{ transform: scale(1.1) } to{ transform: scale(1.04) } }
+
+  /* Micro-benefits as pills */
+  .micro-benefits{ gap:8px; }
+  .micro-benefits span{ padding:7px 14px; border:1px solid var(--line); border-radius:100px; background: rgba(255,255,255,0.03); color:#c8c9d1; font-size:12px; }
+  .micro-benefits span:not(:last-child)::after{ content:none; margin:0; }
+
+  /* Buttons: subtle motion */
+  .btn-primary,.nav-cta,.form-submit,.btn-ghost{ transition: transform .25s ease, box-shadow .25s ease, filter .25s ease, border-color .25s ease, background .25s ease, color .25s ease; }
+  .btn-primary:hover,.nav-cta:hover{ transform: translateY(-2px); box-shadow: 0 20px 44px -14px rgba(124,58,237,0.7); filter:saturate(1.05); }
+  .btn-primary:active,.nav-cta:active,.form-submit:active{ transform: translateY(0); }
+  .btn-ghost:hover{ transform: translateY(-2px); border-color: rgba(167,139,250,0.5); color: var(--silver-bright); background: rgba(167,139,250,0.07); }
+
+  /* Premium cards with gradient edge on hover + number chips */
+  .task-card, .apoyo-card{
+    position:relative; overflow:hidden;
+    background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0)) , var(--panel);
+    box-shadow: var(--shadow-card);
+  }
+  .task-card::after, .apoyo-card::after{
+    content:''; position:absolute; inset:0; border-radius:inherit; padding:1px;
+    background: linear-gradient(135deg, rgba(167,139,250,0.55), transparent 46%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity:0; transition: opacity .3s ease; pointer-events:none;
+  }
+  .task-card:hover::after, .apoyo-card:hover::after{ opacity:1; }
+  .apoyo-card:hover{ transform: translateY(-3px); }
+  .task-card .num, .apoyo-card .num{
+    display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px;
+    border-radius:11px; background: rgba(167,139,250,0.12); border:1px solid rgba(167,139,250,0.28);
+    color: var(--violet-glow); font-size:13px; font-style:normal;
+  }
+
+  /* Timeline: more elegant */
+  .timeline-track::before{ height:2px; top:12px; background: linear-gradient(90deg, transparent, rgba(167,139,250,0.55) 9%, rgba(167,139,250,0.55) 91%, transparent); }
+  .t-dot{ width:26px; height:26px; box-shadow: 0 0 0 6px rgba(124,58,237,0.08); transition: box-shadow .3s ease, transform .3s ease; }
+  .t-item:hover .t-dot{ box-shadow: 0 0 0 9px rgba(124,58,237,0.15); transform: scale(1.08); }
+  .t-item:hover .t-title{ color:#fff; }
+  .t-title{ transition: color .25s ease; }
+
+  /* Results hierarchy: stat group + framed proof */
+  .proof-img{ box-shadow: var(--shadow-card); }
+  .proof-img img{ transition: transform .6s cubic-bezier(.16,.84,.44,1); }
+  .proof-img:hover img{ transform: scale(1.04); }
+  .stat-strip{ gap:0; margin-top:26px; border:1px solid var(--line); border-radius:16px; overflow:hidden; background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0)), var(--panel); }
+  .stat-strip .stat{ flex:1 1 120px; padding:18px 20px; border-right:1px solid var(--line); }
+  .stat-strip .stat:last-child{ border-right:none; }
+  .stat-strip .stat b{ font-size: 2rem; background: var(--grad-violet); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .recognitions figure{ overflow:hidden; border-radius:18px; border:1px solid var(--line); }
+  .recognitions figure img{ border:none; border-radius:0; transition: transform .6s cubic-bezier(.16,.84,.44,1); }
+  .recognitions figure:hover img{ transform: scale(1.05); }
+
+  /* Niveles cards lift */
+  .niv-card{ transition: transform .25s ease, box-shadow .25s ease; }
+  .niv-card:hover{ transform: translateY(-3px); box-shadow: 0 18px 34px -22px rgba(10,10,12,0.4); }
+
+  /* FAQ polish */
+  .faq-item{ transition: border-color .25s ease, background .25s ease; }
+  .faq-item[data-open="true"]{ border-color: rgba(167,139,250,0.4); }
+  .faq-q:hover{ color:#fff; }
+
+  /* Premium form */
+  .cta-inner{ max-width: 640px; }
+  .form-card{ background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0)), var(--panel); box-shadow: var(--shadow-glow), var(--shadow-card); }
+  .form-row input, .form-row select{ transition: border-color .2s ease, box-shadow .2s ease, background .2s ease; }
+  .form-row input:hover, .form-row select:hover{ border-color: rgba(167,139,250,0.35); }
+  .form-row input:focus, .form-row select:focus{ outline:none; border-color: rgba(167,139,250,0.65); box-shadow: 0 0 0 3px rgba(124,58,237,0.2); background:#101014; }
+  .form-duo{ display:grid; grid-template-columns:1fr; gap:0; }
+  .form-submit{ display:flex; align-items:center; justify-content:center; gap:8px; }
+  .form-submit:hover{ transform: translateY(-2px); box-shadow: 0 18px 40px -14px rgba(124,58,237,0.7); }
+
+  /* Footer link hover */
+  .footer-links a{ transition: color .2s ease, border-color .2s ease; }
+  .footer-links a:hover{ color: var(--violet-glow); border-color: var(--violet-glow); }
+
+  /* Floating CTA motion */
+  .floating-cta{ transition: transform .25s ease, box-shadow .25s ease; }
+  .floating-cta:active{ transform: scale(.99); }
+
+  /* Desktop-only layout upgrades */
+  @media (min-width: 881px){
+    section{ padding: 104px 0; }
+    .hero{ min-height: 92vh; }
+    .hero-copy{ padding: 76px 60px 76px 28px; }
+    .hero-copy h1{ font-size: clamp(2.5rem, 4.6vw, 3.8rem); }
+    .form-duo{ grid-template-columns: 1fr 1fr; gap: 0 16px; }
+  }
+
+  /* Mobile refinements */
+  @media (max-width: 880px){
+    .hero-img{ height: 52vh; }
+    .hero-img img{ object-position: center 22%; }
+    .hero-copy::before{ display:none; }
+    .cta-row .btn-primary, .cta-row .btn-ghost{ flex:1 1 auto; justify-content:center; }
+    .stat-strip .stat{ flex:1 1 100%; border-right:none; border-bottom:1px solid var(--line); }
+    .stat-strip .stat:last-child{ border-bottom:none; }
+    .mini-gallery img{ height: 320px; }
+  }
+  @media (max-width: 520px){
+    .card-grid{ grid-template-columns: 1fr; }
+    .timeline-track{ grid-template-columns: 1fr; }
+    .niveles-track{ grid-template-columns: 1fr; }
+    .hero-copy h1{ font-size: clamp(2rem, 8vw, 2.6rem); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    [data-reveal]{ opacity:1 !important; transform:none !important; }
+    .hero-copy .eyebrow,.hero-copy h1,.hero-copy p.lead,.hero-copy .cta-row,.hero-copy .micro-benefits,.hero-img img{ animation:none !important; }
+    .hero-img img{ transform:none !important; }
+  }
 </style>
 </head>
 <body>
 
 <nav aria-label="Navegación principal">
   <div class="wrap">
-    <div class="brand">
-      <!-- Producción: reemplazar por <img src="/assets/impact-logo.webp" ...> -->
+    <a class="brand" href="/" aria-label="Volver al inicio de Tomás Flores">
       <img src="assets/trabaja/logo-impact.png" alt="Logotipo de Impact Enterprises" width="34" height="34">
       <span>IMPACT ENTERPRISES</span>
-    </div>
+    </a>
     <a href="#unirme" class="nav-cta" data-event="hero_cta_click">Quiero conocer la oportunidad</a>
   </div>
 </nav>
@@ -327,8 +480,7 @@
     </div>
   </div>
   <div class="hero-img">
-    <!-- Producción: reemplazar por <img src="/assets/hero.webp" ... fetchpriority="high"> -->
-    <img src="assets/trabaja/hero-trabaja.jpg" alt="Tomás Flores, distribuidor independiente de Royal Prestige" fetchpriority="high" decoding="async">
+    <img src="assets/trabaja/hero-trabaja.jpg" alt="Tomás Flores, distribuidor independiente de Royal Prestige" width="1100" height="1650" fetchpriority="high" decoding="async">
   </div>
 </section>
 
@@ -378,7 +530,7 @@
 <section class="company">
   <div class="wrap company-grid">
     <div class="company-logo-box">
-      <img src="assets/trabaja/logo-impact.png" alt="Logotipo de Impact Enterprises">
+      <img src="assets/trabaja/logo-impact.png" alt="Logotipo de Impact Enterprises" width="500" height="500" loading="lazy" decoding="async">
     </div>
     <div class="company-copy">
       <div class="eyebrow">¿Por qué aquí?</div>
@@ -449,7 +601,7 @@
 
     <div class="proof">
       <div class="proof-img">
-        <img src="assets/trabaja/royal-lion.jpg" alt="Trofeo y placa: 1st Place Top Distributor Junior, USA 2024, Impact Enterprises" loading="lazy" decoding="async">
+        <img src="assets/trabaja/royal-lion.jpg" alt="Trofeo y placa: 1st Place Top Distributor Junior, USA 2024, Impact Enterprises" width="900" height="675" loading="lazy" decoding="async">
         <div class="proof-tag"><span aria-hidden="true">🏆</span> 1st Place · Top Distributor Junior · USA 2024</div>
       </div>
       <div class="proof-copy">
@@ -468,11 +620,11 @@
       <h4>Otros reconocimientos</h4>
       <div class="mini-gallery">
         <figure>
-          <img src="assets/trabaja/convencion-1.jpg" alt="Reconocimiento proyectado en pantalla oficial de Royal Prestige" loading="lazy" decoding="async">
+          <img src="assets/trabaja/convencion-1.jpg" alt="Reconocimiento proyectado en pantalla oficial de Royal Prestige" width="900" height="1200" loading="lazy" decoding="async">
           <figcaption>Reconocimiento proyectado en pantalla oficial — The Grand Convention, Royal Prestige. Distinto del trofeo Royal Lion mostrado arriba.</figcaption>
         </figure>
         <figure>
-          <img src="assets/trabaja/convencion-2.jpg" alt="Parte del equipo de Impact Enterprises en convención nacional" loading="lazy" decoding="async">
+          <img src="assets/trabaja/convencion-2.jpg" alt="Parte del equipo de Impact Enterprises en convención nacional" width="1000" height="1497" loading="lazy" decoding="async">
           <figcaption>No se construye solo — con parte del equipo en convención nacional.</figcaption>
         </figure>
       </div>
@@ -666,13 +818,15 @@
           <label for="fullName">Nombre completo</label>
           <input type="text" id="fullName" name="fullName" required autocomplete="name">
         </div>
-        <div class="form-row">
-          <label for="phone">WhatsApp / teléfono</label>
-          <input type="tel" id="phone" name="phone" required autocomplete="tel" inputmode="tel" placeholder="+1 682 000 0000" pattern="^[+0-9()\s-]{7,20}$">
-        </div>
-        <div class="form-row">
-          <label for="city">Ciudad</label>
-          <input type="text" id="city" name="city" required autocomplete="address-level2">
+        <div class="form-duo">
+          <div class="form-row">
+            <label for="phone">WhatsApp / teléfono</label>
+            <input type="tel" id="phone" name="phone" required autocomplete="tel" inputmode="tel" placeholder="+1 682 000 0000" pattern="^[+0-9()\s-]{7,20}$">
+          </div>
+          <div class="form-row">
+            <label for="city">Ciudad</label>
+            <input type="text" id="city" name="city" required autocomplete="address-level2">
+          </div>
         </div>
         <div class="form-row">
           <label for="goal">¿Qué buscas principalmente?</label>
@@ -695,7 +849,7 @@
         </div>
         <button type="submit" class="form-submit" id="submitBtn">Quiero hablar con Tomás →</button>
         <p class="form-subnote">Enviar tus datos no te compromete a comenzar. Primero tendremos una conversación para explicarte cómo funciona.</p>
-        <p class="consent">Al enviar este formulario aceptas que Tomás Flores / Impact Enterprises pueda contactarte por llamada, mensaje de texto o WhatsApp en relación con esta solicitud. Consulta nuestra <a href="#" id="privacyLink"><!-- REEMPLAZAR CON POLÍTICA DE PRIVACIDAD REAL -->política de privacidad</a>.</p>
+        <p class="consent">Al enviar este formulario aceptas que Tomás Flores / Impact Enterprises pueda contactarte por llamada, mensaje de texto o WhatsApp en relación con esta solicitud. Consulta nuestra <a href="/privacidad" id="privacyLink">política de privacidad</a>.</p>
         <div class="form-error" id="formError" role="alert">No pudimos enviar tus datos. Intenta nuevamente o comunícate directamente conmigo.</div>
       </form>
       <div class="form-status" id="formStatus" role="status">
@@ -715,9 +869,10 @@
     <p>Impact Enterprises · Tomás Flores · Distribuidor independiente de Royal Prestige · Más que vender, sirvo.</p>
     <p id="footerYear"></p>
     <div class="footer-links">
-      <a href="#"><!-- REEMPLAZAR con URL real -->Política de privacidad</a>
-      <a href="#"><!-- REEMPLAZAR con URL real -->Términos</a>
-      <a href="#"><!-- REEMPLAZAR con URL real -->Contacto</a>
+      <a href="/">Inicio</a>
+      <a href="/privacidad">Política de privacidad</a>
+      <a href="/terminos">Términos</a>
+      <a href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B" target="_blank" rel="noopener">Contacto</a>
     </div>
   </div>
 </footer>
@@ -730,7 +885,19 @@
    Si FORM_ENDPOINT está vacío, el formulario NO simula éxito:
    solo valida, muestra un aviso en consola y NO envía datos.
 ========================================================= */
-const FORM_ENDPOINT = ""; // <-- COLOCAR ENDPOINT AQUÍ ANTES DE PUBLICAR
+const FORM_ENDPOINT = ""; // <-- Opcional: webhook/CRM. Si queda vacío, el formulario envía por WhatsApp.
+const WHATSAPP_NUMBER = "16823811576"; // Número de Tomás Flores (mismo del sitio principal)
+
+/* Etiquetas legibles para el objetivo seleccionado (para el mensaje de WhatsApp) */
+const GOAL_LABELS = {
+  ingresos_adicionales: "Generar ingresos adicionales",
+  cambiar_carrera: "Cambiar de carrera",
+  tiempo_completo: "Emprender a tiempo completo",
+  aprender_ventas: "Aprender ventas",
+  construir_equipo: "Construir un equipo",
+  conocer_mas: "Solo quiero conocer más"
+};
+const VEHICLE_LABELS = { si: "Sí", no: "No", hablarlo: "Prefiere hablarlo" };
 
 /* =========================================================
    EVENTOS DE ANALÍTICA (GA4 / Meta Pixel)
@@ -787,18 +954,30 @@ form.addEventListener('submit', async (e) => {
     return;
   }
 
+  const data = Object.fromEntries(new FormData(form).entries());
+
+  // Sin endpoint configurado: enviamos por WhatsApp (funcional, sin backend).
   if (!FORM_ENDPOINT) {
-    console.warn('[contactForm] FORM_ENDPOINT no configurado: el formulario no enviará datos hasta que se configure.');
-    formError.textContent = 'Este formulario todavía no está conectado. Escríbenos directo por WhatsApp mientras tanto.';
-    formError.classList.add('show');
+    const goalLabel = GOAL_LABELS[data.goal] || data.goal || '';
+    const vehicleLabel = VEHICLE_LABELS[data.vehicle] || data.vehicle || '';
+    const msg =
+      'Hola Tomás, quiero conocer la oportunidad de Impact Enterprises.\n\n' +
+      'Nombre: ' + (data.fullName || '') + '\n' +
+      'Teléfono: ' + (data.phone || '') + '\n' +
+      'Ciudad: ' + (data.city || '') + '\n' +
+      'Busco: ' + goalLabel + '\n' +
+      'Vehículo: ' + vehicleLabel;
+    const waUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
+    trackEvent('form_submitted', { goal: data.goal, channel: 'whatsapp' }); // sin datos personales
+    window.open(waUrl, '_blank', 'noopener');
+    form.style.display = 'none';
+    formStatus.classList.add('show');
     return;
   }
 
   isSubmitting = true;
   submitBtn.disabled = true;
   submitBtn.textContent = 'Enviando...';
-
-  const data = Object.fromEntries(new FormData(form).entries());
 
   try {
     const response = await fetch(FORM_ENDPOINT, {
@@ -830,6 +1009,26 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.2 });
 observer.observe(formSection);
+
+/* Scroll reveal + staggered entrances (respeta reduced-motion) */
+(function () {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const targets = document.querySelectorAll(
+    '.section-head, .task-card, .t-item, .apoyo-card, .niv-card, .proof, .fit-col, .faq-item, .form-card, .story-copy, .story-img, .company-copy, .company-logo-box, .recognitions, .results-disclaimer, .mid-cta, .transparency p'
+  );
+  // Stagger children within grids
+  document.querySelectorAll('.card-grid, .apoyo-grid, .niveles-track, .timeline-track, .mini-gallery').forEach(grid => {
+    Array.from(grid.children).forEach((child, i) => { child.style.transitionDelay = (i * 65) + 'ms'; });
+  });
+  if (reduce || !('IntersectionObserver' in window)) return;
+  targets.forEach(el => el.setAttribute('data-reveal', ''));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('revealed'); io.unobserve(entry.target); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  targets.forEach(el => io.observe(el));
+})();
 </script>
 </body>
 </html>
