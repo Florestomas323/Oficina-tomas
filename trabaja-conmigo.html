@@ -70,7 +70,7 @@
   nav { position: sticky; top:0; z-index: 50; background: rgba(10,10,12,0.82); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
   nav .wrap { display:flex; align-items:center; justify-content:space-between; height:72px; }
   .brand { display:flex; align-items:center; gap:10px; text-decoration:none; }
-  .brand img { height: 34px; width:auto; }
+  .brand img { height: 38px; width:38px; object-fit:contain; border-radius: 9px; border:1px solid rgba(167,139,250,0.20); }
   .brand span { font-family:'Playfair Display', serif; font-size:15px; letter-spacing:0.08em; color: var(--silver-bright); }
   .nav-cta {
     font-size: 13px; padding: 12px 22px; border-radius: 100px;
@@ -100,11 +100,20 @@
   }
   .micro-benefits { margin-top: 26px; display:flex; gap:10px; flex-wrap:wrap; font-size:12.5px; color:#9a9ba4; }
   .micro-benefits span:not(:last-child)::after { content:'·'; margin-left:10px; color: var(--violet-glow); }
-  .hero-img { position: relative; overflow: hidden; }
-  .hero-img img { width:100%; height:100%; object-fit: cover; object-position: top center; filter: saturate(0.92) contrast(1.05); }
+  .hero-img { position: relative; overflow: hidden; background: var(--black); }
+  .hero-img img { width:100%; height:100%; object-fit: cover; object-position: 50% 16%; filter: saturate(0.9) contrast(1.03) brightness(0.95); }
   .hero-img::after {
-    content:''; position:absolute; inset:0;
-    background: linear-gradient(90deg, var(--black) 0%, rgba(10,10,12,0.15) 22%, transparent 55%), linear-gradient(0deg, rgba(10,10,12,0.55), transparent 40%);
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background:
+      linear-gradient(90deg, var(--black) 0%, rgba(10,10,12,0.3) 20%, transparent 52%),
+      linear-gradient(0deg, rgba(10,10,12,0.78) 0%, rgba(10,10,12,0.12) 34%, transparent 50%),
+      linear-gradient(180deg, rgba(10,10,12,0.4) 0%, transparent 16%),
+      radial-gradient(135% 105% at 60% 30%, transparent 36%, rgba(10,10,12,0.55) 100%);
+  }
+  /* Tinte violeta muy sutil para integrar la foto con la marca */
+  .hero-img::before {
+    content:''; position:absolute; inset:0; z-index:1; pointer-events:none; mix-blend-mode: soft-light;
+    background: radial-gradient(120% 90% at 62% 32%, rgba(124,58,237,0.28), transparent 62%);
   }
 
   /* Nota de transparencia */
@@ -132,8 +141,8 @@
 
   .company { background: var(--charcoal); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .company-grid { display:grid; grid-template-columns: 240px 1fr; gap: 50px; align-items:center; }
-  .company-logo-box { display:flex; align-items:center; justify-content:center; background: var(--panel); border:1px solid var(--line); border-radius: 20px; padding: 30px; }
-  .company-logo-box img { width: 100%; height:auto; }
+  .company-logo-box { position:relative; display:flex; align-items:center; justify-content:center; border-radius: 20px; overflow:hidden; border:1px solid rgba(167,139,250,0.20); box-shadow: 0 30px 60px -34px rgba(0,0,0,0.85), 0 0 70px -22px rgba(124,58,237,0.4); }
+  .company-logo-box img { width: 100%; height:auto; display:block; }
   .company-copy h3 { font-size: 1.45rem; color: var(--silver-bright); margin-bottom:12px; }
   .company-copy p { color:#b6b7bf; font-size:15px; max-width:580px; margin-bottom: 10px; }
   .company-copy p.personal { color: var(--silver-bright); font-style: italic; }
@@ -144,7 +153,7 @@
   .story { display:grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items:center; }
   .story-copy p { color:#b6b7bf; font-size:15px; margin-bottom: 15px; max-width: 520px; }
   .story-img { border-radius: 20px; overflow:hidden; border:1px solid var(--line); }
-  .story-img img { width:100%; display:block; }
+  .story-img img { width:100%; height:auto; display:block; aspect-ratio: 2 / 3; object-fit: cover; object-position: center 20%; }
   .story-cta { display:inline-flex; align-items:center; gap:8px; margin-top:8px; font-size:13.5px; color: var(--violet-glow); text-decoration:none; }
 
   .timeline-track { position: relative; display:grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 10px; }
@@ -158,7 +167,7 @@
 
   .proof { margin-top: 64px; display:grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items:center; }
   .proof-img { position:relative; border-radius: 22px; overflow:hidden; border:1px solid var(--line); }
-  .proof-img img { width:100%; display:block; }
+  .proof-img img { width:100%; height:auto; display:block; }
   .proof-tag {
     position:absolute; bottom:18px; left:18px; background: rgba(10,10,12,0.72); backdrop-filter: blur(8px);
     border: 1px solid rgba(201,202,208,0.25); border-radius: 100px; padding: 9px 18px 9px 14px;
@@ -303,6 +312,7 @@
     section { padding: 52px 0; }
     section.compact { padding: 36px 0; }
     .floating-cta { display:flex; }
+    .nav-cta { display:none; }
     body { padding-bottom: 78px; }
   }
 
@@ -433,8 +443,14 @@
 
   /* Mobile refinements */
   @media (max-width: 880px){
-    .hero-img{ height: 40vh; max-height: 380px; }
-    .hero-img img{ object-position: center 20%; }
+    .hero-img{ height: 38vh; max-height: 340px; }
+    .hero-img img{ object-position: 50% 12%; }
+    .hero-img::after{
+      background:
+        linear-gradient(0deg, var(--black) 0%, rgba(10,10,12,0.35) 26%, transparent 52%),
+        linear-gradient(180deg, rgba(10,10,12,0.4) 0%, transparent 20%),
+        radial-gradient(120% 90% at 50% 28%, transparent 42%, rgba(10,10,12,0.5) 100%);
+    }
     .hero-copy::before{ display:none; }
     .cta-row{ width:100%; }
     .cta-row .btn-primary, .cta-row .btn-ghost{ flex:1 1 auto; justify-content:center; }
@@ -449,7 +465,7 @@
     .card-grid{ grid-template-columns: 1fr; }
     .niveles-track{ grid-template-columns: 1fr; }
     .hero-copy h1{ font-size: clamp(1.9rem, 8vw, 2.5rem); }
-    .hero-img{ height: 34vh; min-height: 240px; }
+    .hero-img{ height: 32vh; min-height: 220px; max-height: 300px; }
     .wrap{ padding: 0 20px; }
     /* Timeline vertical (más legible que apilar la horizontal) */
     .timeline-track{ grid-template-columns: 1fr; row-gap: 0; }
@@ -475,7 +491,7 @@
       <img src="assets/trabaja/logo-impact.png" alt="Logotipo de Impact Enterprises" width="34" height="34">
       <span>IMPACT ENTERPRISES</span>
     </a>
-    <a href="#unirme" class="nav-cta" data-event="hero_cta_click">Quiero conocer la oportunidad</a>
+    <a href="#unirme" class="nav-cta" data-event="hero_cta_click">Conocer la oportunidad</a>
   </div>
 </nav>
 
@@ -487,8 +503,8 @@
     <h1>Construye un negocio en ventas <em>con acompañamiento real.</em></h1>
     <p class="lead">Empieza como distribuidor independiente de Royal Prestige dentro de Impact Enterprises. Aprende desde cero a prospectar, vender, desarrollar clientes y, si tu objetivo es crecer, construir y liderar tu propio equipo.</p>
     <div class="cta-row">
-      <a href="#unirme" class="btn-primary" data-event="hero_cta_click">Quiero conocer la oportunidad →</a>
-      <a href="#resultados" class="btn-ghost" data-event="results_click">Ver mi recorrido</a>
+      <a href="#unirme" class="btn-primary" data-event="hero_cta_click">Conocer la oportunidad →</a>
+      <a href="#que-haras" class="btn-ghost" data-event="how_click">Cómo funciona</a>
     </div>
     <div class="micro-benefits">
       <span>Formación desde cero</span><span>Acompañamiento real</span><span>Equipo activo</span>
