@@ -1109,7 +1109,7 @@
   track('Visita','view');
 
   document.addEventListener('click', function(e){
-    var t = e.target.closest('[data-track], [data-cal], a[href*="wa.me"], [onclick*="openReview"], a[href*="instagram"], a[href*="tiktok"], a[href*="recetas.html"], a[href^="receta-"]');
+    var t = e.target.closest('[data-track], [data-cal], a[href*="wa.me"], [onclick*="openReview"], a[href*="instagram"], a[href*="tiktok"], a[href*="recetas.html"], a[href^="receta-"], a[href*="trabaja-conmigo.html"]');
     if(!t) return;
     var explicit = t.closest('[data-track]');
     if(explicit){ track(explicit.getAttribute('data-track')); return; }
@@ -1125,6 +1125,7 @@
     else if(t.closest('a[href*="tiktok"]')) track('TikTok');
     else if(t.closest('a[href^="receta-"]')) track('Receta abierta');
     else if(t.closest('a[href*="recetas.html"]')) track('Ver recetas');
+    else if(t.closest('a[href*="trabaja-conmigo.html"]')) track('Trabaja conmigo: nav');
   }, true);
 })();
 </script>
@@ -1166,6 +1167,7 @@
       <a href="#categorias">Productos</a>
       <a href="recetas.html">Recetas</a>
       <a href="#servicio">Servicio</a>
+      <a href="trabaja-conmigo.html">Trabaja conmigo</a>
       <a href="#contacto">Contacto</a>
     </nav>
     <button class="btn tn-cta" data-cal type="button">Reservar</button>
