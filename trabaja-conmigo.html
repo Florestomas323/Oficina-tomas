@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trabaja conmigo — Tomás Flores | Impact Enterprises</title>
+<meta name="description" content="Conoce cómo trabajar junto a Tomás Flores e Impact Enterprises como distribuidor independiente de Royal Prestige. Formación, ventas, liderazgo y acompañamiento desde cero.">
+<link rel="canonical" href="https://tomasflores.com/trabaja-conmigo">
+<!-- Open Graph — REEMPLAZAR og:image con una foto real antes de publicar -->
+<meta property="og:title" content="Trabaja conmigo — Tomás Flores">
+<meta property="og:description" content="Construye un negocio en ventas con acompañamiento real, junto a Impact Enterprises y Royal Prestige.">
+<meta property="og:type" content="website">
+<meta property="og:image" content=""><!-- REEMPLAZAR: URL de imagen real (ej. /assets/og-image.jpg) antes de publicar -->
+<meta property="og:url" content="https://tomasflores.com/trabaja-conmigo">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Trabaja conmigo — Tomás Flores">
+<meta name="twitter:description" content="Construye un negocio en ventas con acompañamiento real, junto a Impact Enterprises y Royal Prestige.">
+<meta name="twitter:image" content=""><!-- REEMPLAZAR: misma imagen que og:image -->
+<link rel="icon" href="/favicon.ico"><!-- REEMPLAZAR con favicon real -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0c;
+    --charcoal: #141417;
+    --panel: #1a1a1f;
+    --silver: #c9cad0;
+    --silver-bright: #e8e9ee;
+    --violet: #7c3aed;
+    --violet-deep: #5b21b6;
+    --violet-glow: #a78bfa;
+    --line: rgba(201,202,208,0.14);
+    --ok: #34d399;
+    --no: #6f707a;
+    --err: #f87171;
+  }
+  * { box-sizing: border-box; margin:0; padding:0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--silver-bright);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  h1,h2,h3,.serif { font-family: 'Playfair Display', serif; font-weight: 600; letter-spacing: -0.01em; }
+  a { color: inherit; }
+  button { font-family: 'Outfit', sans-serif; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--violet-glow); outline-offset: 3px; border-radius: 4px; }
+  @media (prefers-reduced-motion: reduce) {
+    * { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+  }
+  .eyebrow {
+    font-size: 12px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--violet-glow); font-weight: 500; display: flex; align-items: center; gap: 10px;
+  }
+  .eyebrow::before { content: ''; width: 28px; height: 1px; background: linear-gradient(90deg, var(--violet-glow), transparent); }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 28px; }
+
+  nav { position: sticky; top:0; z-index: 50; background: rgba(10,10,12,0.82); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+  nav .wrap { display:flex; align-items:center; justify-content:space-between; height:72px; }
+  .brand { display:flex; align-items:center; gap:10px; }
+  .brand img { height: 34px; width:auto; }
+  .brand span { font-family:'Playfair Display', serif; font-size:15px; letter-spacing:0.08em; color: var(--silver-bright); }
+  .nav-cta {
+    font-size: 13px; padding: 12px 22px; border-radius: 100px;
+    background: linear-gradient(135deg, var(--violet), var(--violet-deep)); color: white; text-decoration:none; font-weight:500;
+    box-shadow: 0 0 0 1px rgba(124,58,237,0.4), 0 8px 24px -8px rgba(124,58,237,0.6);
+    min-height: 44px; display:flex; align-items:center;
+  }
+
+  .hero { position: relative; display: grid; grid-template-columns: 1.05fr 0.95fr; min-height: 88vh; align-items: stretch; }
+  .hero-copy { display:flex; flex-direction:column; justify-content:center; padding: 60px 56px 60px 28px; position: relative; z-index: 2; }
+  .hero-copy h1 { font-size: clamp(2.2rem, 4.2vw, 3.4rem); line-height: 1.1; margin: 22px 0 22px; color: var(--silver-bright); }
+  .hero-copy h1 em {
+    font-style: italic;
+    background: linear-gradient(120deg, var(--violet-glow), var(--silver-bright) 60%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero-copy p.lead { font-size: 16.5px; color: #c2c3ca; max-width: 480px; margin-bottom: 30px; font-weight:300; }
+  .cta-row { display:flex; gap:16px; align-items:center; flex-wrap:wrap; }
+  .btn-primary {
+    padding: 16px 30px; border-radius: 100px; font-size:14px; font-weight:600; letter-spacing: 0.03em; border:none;
+    background: linear-gradient(135deg, var(--violet-glow), var(--violet-deep)); color: white; text-decoration:none;
+    box-shadow: 0 12px 32px -10px rgba(124,58,237,0.65); min-height: 48px; display:inline-flex; align-items:center;
+  }
+  .btn-ghost {
+    padding: 15px 26px; border-radius: 100px; font-size:14px; font-weight:500; border: 1px solid var(--line);
+    color: var(--silver); text-decoration:none; min-height: 48px; display:inline-flex; align-items:center; background:transparent;
+  }
+  .micro-benefits { margin-top: 26px; display:flex; gap:10px; flex-wrap:wrap; font-size:12.5px; color:#9a9ba4; }
+  .micro-benefits span:not(:last-child)::after { content:'·'; margin-left:10px; color: var(--violet-glow); }
+  .hero-img { position: relative; overflow: hidden; }
+  .hero-img img { width:100%; height:100%; object-fit: cover; object-position: top center; filter: saturate(0.92) contrast(1.05); }
+  .hero-img::after {
+    content:''; position:absolute; inset:0;
+    background: linear-gradient(90deg, var(--black) 0%, rgba(10,10,12,0.15) 22%, transparent 55%), linear-gradient(0deg, rgba(10,10,12,0.55), transparent 40%);
+  }
+
+  /* Nota de transparencia */
+  .transparency { padding: 26px 0; border-bottom: 1px solid var(--line); background: var(--charcoal); }
+  .transparency p { text-align:center; font-size: 13.5px; color:#9a9ba4; max-width: 720px; margin: 0 auto; line-height:1.6; }
+  .transparency p strong { color: var(--silver); font-weight: 500; }
+
+  section { padding: 88px 0; position:relative; }
+  section.compact { padding: 56px 0; }
+  .section-head { max-width: 640px; margin-bottom: 46px; }
+  .section-head h2 { font-size: clamp(1.7rem,3vw,2.4rem); margin-top:16px; color: var(--silver-bright); }
+  .section-head p { color:#b6b7bf; margin-top:14px; font-size:15.5px; max-width: 560px; }
+  .section-head.center { margin-left:auto; margin-right:auto; text-align:center; }
+  .section-head.center .eyebrow { justify-content:center; }
+  .section-head.center .eyebrow::before { display:none; }
+
+  .card-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+  .task-card { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 26px 22px; transition: border-color .25s ease, transform .25s ease; }
+  .task-card:hover { border-color: rgba(167,139,250,0.45); transform: translateY(-3px); }
+  .task-card .num { font-family:'Playfair Display', serif; font-style: italic; color: var(--violet-glow); font-size: 14px; }
+  .task-card h4 { font-family:'Playfair Display',serif; font-size:1.08rem; margin: 12px 0 10px; color: var(--silver-bright); }
+  .task-card p { font-size: 13.5px; color:#a7a8b0; }
+  .section-note { margin-top: 26px; font-size: 13.5px; color: var(--violet-glow); font-style: italic; }
+  .section-note.muted { color:#9a9ba4; font-style: normal; }
+
+  .company { background: var(--charcoal); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .company-grid { display:grid; grid-template-columns: 240px 1fr; gap: 50px; align-items:center; }
+  .company-logo-box { display:flex; align-items:center; justify-content:center; background: var(--panel); border:1px solid var(--line); border-radius: 20px; padding: 30px; }
+  .company-logo-box img { width: 100%; height:auto; }
+  .company-copy h3 { font-size: 1.45rem; color: var(--silver-bright); margin-bottom:12px; }
+  .company-copy p { color:#b6b7bf; font-size:15px; max-width:580px; margin-bottom: 10px; }
+  .company-copy p.personal { color: var(--silver-bright); font-style: italic; }
+  .badge-row { display:flex; gap:26px; margin-top:22px; flex-wrap:wrap; }
+  .badge { font-size:12.5px; color:var(--silver); letter-spacing:0.04em; display:flex; align-items:center; gap:8px; }
+  .badge .dot { width:6px; height:6px; border-radius:50%; background: var(--violet-glow); }
+
+  .story { display:grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items:center; }
+  .story-copy p { color:#b6b7bf; font-size:15px; margin-bottom: 15px; max-width: 520px; }
+  .story-img { border-radius: 20px; overflow:hidden; border:1px solid var(--line); }
+  .story-img img { width:100%; display:block; }
+  .story-cta { display:inline-flex; align-items:center; gap:8px; margin-top:8px; font-size:13.5px; color: var(--violet-glow); text-decoration:none; }
+
+  .timeline-track { position: relative; display:grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 10px; }
+  .timeline-track::before { content:''; position:absolute; top:13px; left:0; right:0; height:1px; background: linear-gradient(90deg, transparent, var(--line) 8%, var(--line) 92%, transparent); }
+  .t-item { position:relative; padding-top: 38px; }
+  .t-dot { position:absolute; top:0; left:0; width:27px; height:27px; border-radius:50%; background: var(--charcoal); border: 1.5px solid var(--violet-glow); display:flex; align-items:center; justify-content:center; }
+  .t-dot::after { content:''; width:8px; height:8px; border-radius:50%; background: var(--violet-glow); }
+  .t-date { font-size:12px; letter-spacing:0.1em; color: var(--violet-glow); text-transform:uppercase; font-weight:500; }
+  .t-title { font-family:'Playfair Display',serif; font-size: 1.06rem; margin: 8px 0 6px; color: var(--silver-bright); }
+  .t-desc { font-size: 13.5px; color:#b6b7bf; }
+
+  .proof { margin-top: 64px; display:grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items:center; }
+  .proof-img { position:relative; border-radius: 22px; overflow:hidden; border:1px solid var(--line); }
+  .proof-img img { width:100%; display:block; }
+  .proof-tag {
+    position:absolute; bottom:18px; left:18px; background: rgba(10,10,12,0.72); backdrop-filter: blur(8px);
+    border: 1px solid rgba(201,202,208,0.25); border-radius: 100px; padding: 9px 18px 9px 14px;
+    display:flex; align-items:center; gap:9px; font-size:12.5px; color: var(--silver-bright);
+  }
+  .proof-copy h3 { font-size:1.5rem; color:var(--silver-bright); margin-bottom:14px; }
+  .proof-copy p { color:#c2c3ca; font-size:15px; margin-bottom:12px; }
+  .stat-strip { display:flex; gap:28px; margin-top:22px; flex-wrap:wrap; }
+  .stat-strip .stat b { font-family:'Playfair Display',serif; font-size:1.75rem; color: var(--silver-bright); display:block; }
+  .stat-strip .stat span { font-size:11.5px; color:#a7a8b0; letter-spacing:0.04em; }
+
+  .recognitions { margin-top: 50px; }
+  .recognitions h4 { font-family:'Playfair Display',serif; font-size: 1.1rem; color: var(--silver-bright); margin-bottom: 18px; }
+  .mini-gallery { display:grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .mini-gallery img { width:100%; height: 260px; object-fit:cover; border-radius:18px; border:1px solid var(--line); }
+  .mini-gallery figcaption { font-size: 12.5px; color:#9a9ba4; margin-top:8px; }
+  .results-disclaimer { margin-top: 34px; font-size: 12.5px; color:#9a9ba4; max-width: 680px; padding: 16px 20px; border: 1px dashed var(--line); border-radius: 12px; }
+
+  .mid-cta { text-align:center; padding: 50px 0 10px; }
+  .mid-cta p { font-size: 16px; color: var(--silver-bright); margin-bottom: 18px; font-family:'Playfair Display',serif; }
+
+  /* Testimonios: oculto hasta tener contenido real */
+  .testimonials-hidden { display:none; }
+
+  .apoyo { background: var(--charcoal); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .apoyo-grid { display:grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
+  .apoyo-card { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 26px 22px; transition: border-color .2s ease; }
+  .apoyo-card:hover { border-color: rgba(167,139,250,0.45); }
+  .apoyo-card .num { font-family:'Playfair Display', serif; font-style: italic; color: var(--violet-glow); font-size: 14px; }
+  .apoyo-card h4 { font-family:'Playfair Display',serif; font-size:1.06rem; margin: 12px 0 10px; color: var(--silver-bright); }
+  .apoyo-card p { font-size: 13.5px; color:#a7a8b0; }
+
+  .niveles { background: var(--silver-bright); color: var(--black); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .niveles .eyebrow { color: var(--violet-deep); }
+  .niveles .eyebrow::before { background: linear-gradient(90deg, var(--violet-deep), transparent); }
+  .niveles .section-head h2 { color: var(--black); }
+  .niveles .section-head p { color: #3a3a40; }
+  .niveles-callout {
+    font-size: 13.5px; color: #3a3a40; background: #fff; border: 1px solid rgba(10,10,12,0.12);
+    border-radius: 12px; padding: 14px 18px; margin-bottom: 30px; max-width: 620px;
+  }
+  .niveles-track { display:grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 10px; }
+  .niv-card { background: #ffffff; border: 1px solid rgba(10,10,12,0.12); border-radius: 16px; padding: 20px 18px; box-shadow: 0 10px 26px -18px rgba(10,10,12,0.25); }
+  .niv-card .niv-n { font-family:'Playfair Display', serif; font-style: italic; color: var(--violet-deep); font-size: 14px; margin-bottom: 8px; display:block; }
+  .niv-card .niv-name { font-family:'Playfair Display', serif; font-weight:600; font-size: 0.96rem; color: var(--black); line-height:1.25; margin-bottom: 6px; }
+  .niv-card .niv-desc { font-size: 12px; color: #52525c; line-height:1.45; }
+  .niveles-note { margin-top: 28px; font-size: 13.5px; color:#4a4a52; max-width: 660px; padding: 16px 20px; border: 1px solid rgba(10,10,12,0.14); border-radius: 12px; background: #f4f4f6; }
+
+  .fit-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .fit-col { border-radius: 18px; padding: 28px 24px; border:1px solid var(--line); }
+  .fit-col.yes { background: rgba(52,211,153,0.06); border-color: rgba(52,211,153,0.25); }
+  .fit-col.no { background: var(--panel); }
+  .fit-col h4 { font-family:'Playfair Display',serif; font-size:1.1rem; margin-bottom: 16px; color: var(--silver-bright); }
+  .fit-col ul { list-style:none; display:flex; flex-direction:column; gap: 11px; }
+  .fit-col li { font-size: 13.8px; color:#c2c3ca; display:flex; gap:10px; align-items:flex-start; }
+  .fit-col.yes li::before { content:'✓'; color: var(--ok); font-weight:700; }
+  .fit-col.no li::before { content:'—'; color: var(--no); font-weight:700; }
+  .fit-close { margin-top: 28px; font-size: 14.5px; color: var(--violet-glow); font-style: italic; text-align:center; }
+
+  .faq-list { display:flex; flex-direction:column; gap: 12px; max-width: 780px; }
+  .faq-item { border: 1px solid var(--line); border-radius: 14px; background: var(--panel); overflow:hidden; }
+  .faq-q {
+    width:100%; text-align:left; background:none; border:none; color: var(--silver-bright);
+    padding: 20px 22px; font-size: 15px; font-family:'Outfit',sans-serif; font-weight:500;
+    display:flex; justify-content:space-between; align-items:center; gap: 16px; min-height: 44px;
+  }
+  .faq-q .icon { color: var(--violet-glow); font-size: 18px; transition: transform .25s ease; flex-shrink:0; }
+  .faq-item[data-open="true"] .icon { transform: rotate(45deg); }
+  .faq-a { max-height:0; overflow:hidden; transition: max-height .3s ease; }
+  .faq-item[data-open="true"] .faq-a { max-height: 280px; }
+  .faq-a p { padding: 0 22px 20px; font-size: 13.5px; color:#b6b7bf; }
+
+  .cta-section { position:relative; text-align:center; overflow:hidden; }
+  .cta-section::before {
+    content:''; position:absolute; inset: -20% -10% auto -10%; height: 480px;
+    background: radial-gradient(ellipse at center, rgba(124,58,237,0.22), transparent 70%); filter: blur(10px); pointer-events:none;
+  }
+  .cta-inner { position:relative; max-width: 580px; margin: 0 auto; }
+  .cta-inner .eyebrow { justify-content:center; }
+  .cta-inner .eyebrow::before { display:none; }
+  .cta-inner h2 { font-size: clamp(1.7rem,3vw,2.4rem); margin: 18px 0 14px; }
+  .cta-inner p.lead { color:#c2c3ca; font-size:15px; margin: 0 auto 34px; max-width:460px; }
+  .form-card { background: var(--panel); border: 1px solid var(--line); border-radius: 22px; padding: 32px; text-align:left; box-shadow: 0 30px 60px -30px rgba(0,0,0,0.6); }
+  .form-row { margin-bottom: 17px; }
+  .form-row label { display:block; font-size:12px; letter-spacing:0.05em; color:#b6b7bf; margin-bottom:8px; text-transform:uppercase; }
+  .form-row input, .form-row select {
+    width:100%; padding: 13px 16px; border-radius: 10px; background: var(--charcoal); border:1px solid var(--line);
+    color: var(--silver-bright); font-family:'Outfit',sans-serif; font-size:14px; min-height:44px;
+  }
+  .radio-row { display:flex; gap: 16px; flex-wrap:wrap; }
+  .radio-opt { display:flex; align-items:center; gap:8px; font-size: 13.5px; color:#c2c3ca; }
+  .radio-opt input { width:auto; min-height:auto; accent-color: var(--violet-glow); }
+  .form-submit {
+    width:100%; padding:15px; border-radius:10px; border:none; margin-top:6px; min-height: 48px;
+    background: linear-gradient(135deg, var(--violet-glow), var(--violet-deep)); color:white; font-weight:600; font-size:14px; letter-spacing:0.02em;
+  }
+  .form-submit[disabled] { opacity: .6; cursor: not-allowed; }
+  .form-subnote { text-align:center; font-size:12px; color:#9a9ba4; margin-top:14px; }
+  .consent { font-size: 11px; color:#7d7e88; margin-top:16px; line-height:1.5; text-align:center; }
+  .consent a { color: var(--violet-glow); text-decoration: underline; }
+  .form-error {
+    display:none; margin-top:14px; padding: 12px 16px; border-radius:10px;
+    background: rgba(248,113,113,0.08); border:1px solid rgba(248,113,113,0.35); color: var(--err); font-size: 13px;
+  }
+  .form-error.show { display:block; }
+  .form-status { display:none; text-align:center; padding: 26px 8px; }
+  .form-status.show { display:block; }
+  .form-status .check { font-size: 32px; color: var(--ok); margin-bottom: 10px; }
+  .form-status h3 { color: var(--silver-bright); font-size: 1.25rem; margin-bottom: 8px; }
+  .form-status p { color:#b6b7bf; font-size: 14px; }
+
+  footer { padding: 40px 0; border-top:1px solid var(--line); text-align:center; }
+  footer p { font-size:12px; color:#9a9ba4; }
+  .footer-links { display:flex; justify-content:center; gap:18px; margin-top:14px; flex-wrap:wrap; }
+  .footer-links a { font-size: 12px; color:#9a9ba4; text-decoration:none; border-bottom:1px solid transparent; }
+  .footer-links a:hover { border-color:#9a9ba4; }
+
+  .floating-cta {
+    display:none; position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 60;
+    background: linear-gradient(135deg, var(--violet-glow), var(--violet-deep)); color: white; text-align:center;
+    padding: 15px; border-radius: 14px; font-size: 14px; font-weight:600; text-decoration:none;
+    box-shadow: 0 14px 34px -10px rgba(0,0,0,0.6); min-height: 44px; align-items:center; justify-content:center;
+  }
+
+  @media (max-width: 880px) {
+    .hero { grid-template-columns: 1fr; min-height:auto; }
+    .hero-img { height: 42vh; order:-1; }
+    .hero-copy { padding: 34px 22px; }
+    .card-grid { grid-template-columns: 1fr 1fr; }
+    .company-grid { grid-template-columns: 1fr; text-align:center; }
+    .company-logo-box { max-width:180px; margin:0 auto; }
+    .badge-row { justify-content:center; }
+    .story { grid-template-columns: 1fr; }
+    .story-img { order:-1; }
+    .timeline-track { grid-template-columns: 1fr 1fr; row-gap: 30px; }
+    .proof { grid-template-columns: 1fr; }
+    .mini-gallery { grid-template-columns: 1fr; }
+    .apoyo-grid { grid-template-columns: 1fr; }
+    .niveles-track { grid-template-columns: 1fr 1fr; }
+    .fit-grid { grid-template-columns: 1fr; }
+    section { padding: 52px 0; }
+    section.compact { padding: 36px 0; }
+    .floating-cta { display:flex; }
+    body { padding-bottom: 78px; }
+  }
+</style>
+</head>
+<body>
+
+<nav aria-label="Navegación principal">
+  <div class="wrap">
+    <div class="brand">
+      <!-- Producción: reemplazar por <img src="/assets/impact-logo.webp" ...> -->
+      <img src="assets/trabaja/logo-impact.png" alt="Logotipo de Impact Enterprises" width="34" height="34">
+      <span>IMPACT ENTERPRISES</span>
+    </div>
+    <a href="#unirme" class="nav-cta" data-event="hero_cta_click">Quiero conocer la oportunidad</a>
+  </div>
+</nav>
+
+<main>
+<!-- ============ 1. HERO ============ -->
+<section class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow">Trabaja conmigo</div>
+    <h1>Construye un negocio en ventas <em>con acompañamiento real.</em></h1>
+    <p class="lead">Empieza como distribuidor independiente de Royal Prestige dentro de Impact Enterprises. Aprende desde cero a prospectar, vender, desarrollar clientes y, si tu objetivo es crecer, construir y liderar tu propio equipo.</p>
+    <div class="cta-row">
+      <a href="#unirme" class="btn-primary" data-event="hero_cta_click">Quiero conocer la oportunidad →</a>
+      <a href="#resultados" class="btn-ghost" data-event="results_click">Ver mi recorrido</a>
+    </div>
+    <div class="micro-benefits">
+      <span>Formación desde cero</span><span>Acompañamiento real</span><span>Equipo activo</span>
+    </div>
+  </div>
+  <div class="hero-img">
+    <!-- Producción: reemplazar por <img src="/assets/hero.webp" ... fetchpriority="high"> -->
+    <img src="assets/trabaja/hero-trabaja.jpg" alt="Tomás Flores, distribuidor independiente de Royal Prestige" fetchpriority="high" decoding="async">
+  </div>
+</section>
+
+<!-- ============ 2. NOTA DE TRANSPARENCIA ============ -->
+<section class="transparency compact">
+  <div class="wrap">
+    <p><strong>No es un empleo tradicional ni una promesa de ingresos.</strong> Es una oportunidad de distribución independiente basada en ventas, desarrollo de clientes y, para quienes quieran crecer, construcción de equipo.</p>
+  </div>
+</section>
+
+<!-- ============ 3. QUÉ HARÁS REALMENTE ============ -->
+<section id="que-haras">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Antes de decidir</div>
+      <h2>¿Qué harás realmente?</h2>
+      <p>Quiero que sepas exactamente en qué consiste antes de decidir si es para ti.</p>
+    </div>
+    <div class="card-grid">
+      <div class="task-card">
+        <span class="num">01</span>
+        <h4>Prospectar</h4>
+        <p>Conectar con personas y generar nuevas oportunidades.</p>
+      </div>
+      <div class="task-card">
+        <span class="num">02</span>
+        <h4>Presentar</h4>
+        <p>Aprender a realizar demostraciones y presentar los productos profesionalmente.</p>
+      </div>
+      <div class="task-card">
+        <span class="num">03</span>
+        <h4>Vender y dar seguimiento</h4>
+        <p>Aprender conversaciones comerciales, seguimiento, cierre y desarrollo de clientes.</p>
+      </div>
+      <div class="task-card">
+        <span class="num">04</span>
+        <h4>Construir equipo</h4>
+        <p>Para quienes quieran desarrollar una organización, aprender a formar y acompañar nuevas personas.</p>
+      </div>
+    </div>
+    <p class="section-note muted">Puedes comenzar desarrollando ventas y clientes. Construir equipo corresponde a quienes deciden avanzar hacia distribución y liderazgo.</p>
+    <p class="section-note">No necesitas llegar sabiendo hacerlo. Para eso existe el entrenamiento.</p>
+  </div>
+</section>
+
+<!-- ============ 4. IMPACT ENTERPRISES ============ -->
+<section class="company">
+  <div class="wrap company-grid">
+    <div class="company-logo-box">
+      <img src="assets/trabaja/logo-impact.png" alt="Logotipo de Impact Enterprises">
+    </div>
+    <div class="company-copy">
+      <div class="eyebrow">¿Por qué aquí?</div>
+      <h3 style="margin-top:14px;">¿Por qué hacerlo dentro de Impact Enterprises?</h3>
+      <p>Impact Enterprises es la organización desde la que desarrollamos vendedores, distribuidores y futuros líderes dentro de Royal Prestige.</p>
+      <p>Aquí no empiezas solo. Entras a un ambiente de entrenamiento, acompañamiento, práctica real y desarrollo constante.</p>
+      <p class="personal">Mi objetivo no es simplemente sumarte a un equipo. Es ayudarte a desarrollar habilidades que te permitan producir resultados por ti mismo.</p>
+      <div class="badge-row">
+        <div class="badge"><span class="dot"></span> Distribución propia desde marzo 2023</div>
+        <div class="badge"><span class="dot"></span> Reconocimiento Royal Lion</div>
+        <div class="badge"><span class="dot"></span> Equipo activo en DFW, Texas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. MI HISTORIA ============ -->
+<section id="mi-historia">
+  <div class="wrap story">
+    <div class="story-copy">
+      <div class="eyebrow">Antes de los resultados</div>
+      <h2 style="margin: 16px 0 18px; font-size: clamp(1.5rem,2.6vw,2.1rem);">Yo tampoco empecé sabiendo vender esto.</h2>
+      <p>Antes de construir Impact Enterprises pasé por diferentes trabajos, emprendimientos y momentos en los que tuve que volver a empezar desde cero. Cuando llegué a esta oportunidad tampoco tenía experiencia previa en Royal Prestige. Aprendí vendiendo, equivocándome, entrenándome y desarrollando personas.</p>
+      <p>Por eso mi objetivo no es simplemente decirte que puedes hacerlo. Es enseñarte el proceso que yo tuve que aprender.</p>
+      <a href="#resultados" class="story-cta" data-event="results_click">Conoce mi recorrido ↓</a>
+    </div>
+    <div class="story-img">
+      <img src="assets/trabaja/historia-tomas.jpg" alt="Tomás Flores" loading="lazy" decoding="async" width="900" height="1350">
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. RESULTADOS ============ -->
+<section id="resultados">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Mi recorrido</div>
+      <h2>Esto no es una promesa.<br>Es lo que ya construimos.</h2>
+      <p>Cada fecha es un resultado real de mi equipo — no una proyección.</p>
+    </div>
+
+    <div class="timeline-track">
+      <div class="t-item">
+        <div class="t-dot"></div>
+        <div class="t-date">Marzo 2023</div>
+        <div class="t-title">Entré a la compañía</div>
+        <div class="t-desc">Sin experiencia previa en el rubro. Empecé desde cero.</div>
+      </div>
+      <div class="t-item">
+        <div class="t-dot"></div>
+        <div class="t-date">Abril 2023</div>
+        <div class="t-title">Mi propia distribución</div>
+        <div class="t-desc">Poco después de comenzar, di el paso de abrir mi propia distribución y empezar a construir un equipo.</div>
+      </div>
+      <div class="t-item">
+        <div class="t-dot"></div>
+        <div class="t-date">2024</div>
+        <div class="t-title">Alcanzamos Blue Network</div>
+        <div class="t-desc">Junto a mi equipo alcanzamos el nivel Blue Network y recibimos dos reconocimientos Royal Lion por el trabajo desarrollado durante ese crecimiento.</div>
+      </div>
+      <div class="t-item">
+        <div class="t-dot"></div>
+        <div class="t-date">2025</div>
+        <div class="t-title">Repetimos el nivel Blue</div>
+        <div class="t-desc">Por segundo año consecutivo nuestra organización alcanzó el nivel Blue Network. El siguiente objetivo es seguir desarrollando estructura, nuevos líderes y avanzar al próximo nivel.</div>
+      </div>
+    </div>
+
+    <div class="proof">
+      <div class="proof-img">
+        <img src="assets/trabaja/royal-lion.jpg" alt="Trofeo y placa: 1st Place Top Distributor Junior, USA 2024, Impact Enterprises" loading="lazy" decoding="async">
+        <div class="proof-tag"><span aria-hidden="true">🏆</span> 1st Place · Top Distributor Junior · USA 2024</div>
+      </div>
+      <div class="proof-copy">
+        <h3>Reconocimiento Royal Lion</h3>
+        <p>Uno de los reconocimientos obtenidos por Impact Enterprises dentro de Royal Prestige, como resultado del trabajo y crecimiento desarrollado por nuestra organización.</p>
+        <p>Impact Enterprises, representado por Tomás Flores &amp; Angiemar Paredes.</p>
+        <div class="stat-strip">
+          <div class="stat"><b>2</b><span>Royal Lion</span></div>
+          <div class="stat"><b>#1</b><span>Top Distributor Junior · USA</span></div>
+          <div class="stat"><b>2024–2025</b><span>Blue Network</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="recognitions">
+      <h4>Otros reconocimientos</h4>
+      <div class="mini-gallery">
+        <figure>
+          <img src="assets/trabaja/convencion-1.jpg" alt="Reconocimiento proyectado en pantalla oficial de Royal Prestige" loading="lazy" decoding="async">
+          <figcaption>Reconocimiento proyectado en pantalla oficial — The Grand Convention, Royal Prestige. Distinto del trofeo Royal Lion mostrado arriba.</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/trabaja/convencion-2.jpg" alt="Parte del equipo de Impact Enterprises en convención nacional" loading="lazy" decoding="async">
+          <figcaption>No se construye solo — con parte del equipo en convención nacional.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <p class="results-disclaimer">Estos resultados corresponden a mi experiencia y al desarrollo de nuestra organización. Los resultados individuales pueden variar según actividad, ventas, aprendizaje, constancia y desarrollo del negocio.</p>
+
+    <div class="mid-cta">
+      <p>¿Quieres saber cómo empezar?</p>
+      <a href="#unirme" class="btn-primary" data-event="mid_page_cta_click">Conversemos →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. TESTIMONIOS (oculto hasta tener contenido real) ============ -->
+<!-- ACTIVAR ESTA SECCIÓN CUANDO EXISTAN TESTIMONIOS REALES -->
+<section id="testimonios" class="testimonials-hidden" aria-hidden="true">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Personas reales</div>
+      <h2>No se trata solamente de mi historia.</h2>
+      <p>Estas son algunas de las personas que están creciendo dentro de nuestro equipo.</p>
+    </div>
+    <!--
+      Al activar, usar por cada persona:
+      - fotografía real
+      - nombre real
+      - tiempo real en el negocio
+      - experiencia real (en sus palabras)
+      - logro verificable (sin cifras de ingresos)
+    -->
+  </div>
+</section>
+
+<!-- ============ 8. LO QUE RECIBES CONMIGO ============ -->
+<section class="apoyo">
+  <div class="wrap">
+    <div class="section-head center">
+      <div class="eyebrow">Cómo te acompaño</div>
+      <h2>No tienes que descubrir todo por tu cuenta.</h2>
+    </div>
+    <div class="apoyo-grid">
+      <div class="apoyo-card">
+        <div class="num">01</div>
+        <h4>Entrenamiento comercial</h4>
+        <p>Prospección, presentaciones, seguimiento y cierre.</p>
+      </div>
+      <div class="apoyo-card">
+        <div class="num">02</div>
+        <h4>Práctica y retroalimentación</h4>
+        <p>Podrás practicar y recibir orientación para identificar qué necesitas mejorar.</p>
+      </div>
+      <div class="apoyo-card">
+        <div class="num">03</div>
+        <h4>Acompañamiento de equipo</h4>
+        <p>Trabajarás alrededor de personas que están desarrollando la misma actividad.</p>
+      </div>
+      <div class="apoyo-card">
+        <div class="num">04</div>
+        <h4>Herramientas digitales</h4>
+        <p>Recursos para organizar prospectos, clientes, seguimiento y actividad comercial.</p>
+      </div>
+      <div class="apoyo-card">
+        <div class="num">05</div>
+        <h4>Desarrollo de liderazgo</h4>
+        <p>Para quienes quieran formar equipo, entrenamiento para acompañar y desarrollar personas.</p>
+      </div>
+      <div class="apoyo-card">
+        <div class="num">06</div>
+        <h4>Camino hacia distribución</h4>
+        <p>Para quienes quieran avanzar, existe una estructura de crecimiento hacia mayores responsabilidades y liderazgo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. NIVELES ============ -->
+<section class="niveles">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Cómo creces</div>
+      <h2>Un camino con niveles claros</h2>
+      <p>Royal Prestige tiene una estructura de crecimiento definida.</p>
+    </div>
+    <p class="niveles-callout">Cada etapa requiere resultados y desarrollo real. Avanzar no ocurre automáticamente por antigüedad.</p>
+    <div class="niveles-track">
+      <div class="niv-card"><span class="niv-n">01</span><div class="niv-name">Emprendedor</div><div class="niv-desc">Aprendes el modelo y desarrollas tus primeras ventas.</div></div>
+      <div class="niv-card"><span class="niv-n">02</span><div class="niv-name">Distribuidor Junior</div><div class="niv-desc">Empiezas a desarrollar una estructura comercial.</div></div>
+      <div class="niv-card"><span class="niv-n">03</span><div class="niv-name">Distribuidor</div><div class="niv-desc">Construyes y lideras una organización propia.</div></div>
+      <div class="niv-card"><span class="niv-n">04</span><div class="niv-name">Blue Network</div><div class="niv-desc">Desarrollas volumen, estructura y nuevos líderes.</div></div>
+      <div class="niv-card"><span class="niv-n">05</span><div class="niv-name">Royal Network</div><div class="niv-desc">Nivel avanzado dentro de la estructura de crecimiento.</div></div>
+      <div class="niv-card"><span class="niv-n">06</span><div class="niv-name">Premier Network Leader</div><div class="niv-desc">Nivel avanzado dentro de la estructura de crecimiento.</div></div>
+      <div class="niv-card"><span class="niv-n">07</span><div class="niv-name">Master Network Leader</div><div class="niv-desc">Nivel avanzado dentro de la estructura de crecimiento.</div></div>
+      <div class="niv-card"><span class="niv-n">08</span><div class="niv-name">Elite Network Leader</div><div class="niv-desc">Nivel avanzado dentro de la estructura de crecimiento.</div></div>
+    </div>
+    <p class="niveles-note">No necesitas comprar inventario para comenzar. No necesitas experiencia previa: recibirás entrenamiento para aprender el negocio. Comencé desde las primeras etapas de esta carrera y hoy nuestra organización ha alcanzado Blue Network durante dos años consecutivos. El objetivo continúa siendo crecer y desarrollar nuevos líderes.</p>
+  </div>
+</section>
+
+<!-- ============ 10. ES PARA TI ============ -->
+<section id="es-para-ti">
+  <div class="wrap">
+    <div class="section-head center">
+      <div class="eyebrow">Honestidad primero</div>
+      <h2>Esta oportunidad no es para todo el mundo.</h2>
+    </div>
+    <div class="fit-grid">
+      <div class="fit-col yes">
+        <h4>Puede ser para ti si…</h4>
+        <ul>
+          <li>Te interesa aprender ventas.</li>
+          <li>Te gusta trabajar con personas.</li>
+          <li>Estás dispuesto a prospectar.</li>
+          <li>Quieres desarrollar habilidades comerciales.</li>
+          <li>Te interesa construir algo basado en resultados.</li>
+          <li>Eres receptivo al entrenamiento.</li>
+          <li>Quieres crecer profesionalmente.</li>
+        </ul>
+      </div>
+      <div class="fit-col no">
+        <h4>Puede que no sea lo que buscas si…</h4>
+        <ul>
+          <li>Tu prioridad es únicamente recibir un salario fijo.</li>
+          <li>No quieres trabajar en ventas.</li>
+          <li>No quieres contactar o conocer nuevas personas.</li>
+          <li>Buscas resultados rápidos sin desarrollar habilidades.</li>
+          <li>Prefieres un trabajo donde tu compensación no dependa de resultados comerciales.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="fit-close">Prefiero que conozcas la realidad del negocio antes de que tomes una decisión.</p>
+    <div class="mid-cta">
+      <a href="#unirme" class="btn-primary" data-event="mid_page_cta_click">Creo que esto puede ser para mí →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. FAQ ============ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Preguntas frecuentes</div>
+      <h2>Lo que la mayoría pregunta</h2>
+    </div>
+    <div class="faq-list" id="faqList">
+      <div class="faq-item" data-open="false">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-empleo" id="faq-empleo-btn"><span>¿Esto es un empleo?</span><span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-empleo" role="region" aria-labelledby="faq-empleo-btn"><p>No. Es una oportunidad como distribuidor independiente. Los ingresos dependen de tu actividad y resultados.</p></div>
+      </div>
+      <div class="faq-item" data-open="false">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-experiencia" id="faq-experiencia-btn"><span>¿Necesito experiencia en ventas?</span><span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-experiencia" role="region" aria-labelledby="faq-experiencia-btn"><p>No. El entrenamiento está diseñado para personas que comienzan desde cero.</p></div>
+      </div>
+      <div class="faq-item" data-open="false">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-inventario" id="faq-inventario-btn"><span>¿Tengo que comprar inventario?</span><span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-inventario" role="region" aria-labelledby="faq-inventario-btn"><p>No necesitas comprar inventario para comenzar.</p></div>
+      </div>
+      <div class="faq-item" data-open="false">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-mediotiempo" id="faq-mediotiempo-btn"><span>¿Puedo hacerlo medio tiempo?</span><span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-mediotiempo" role="region" aria-labelledby="faq-mediotiempo-btn"><p>Dependiendo de tu disponibilidad puedes comenzar desarrollando actividad parcial, aunque los resultados dependerán directamente del tiempo y esfuerzo que dediques.</p></div>
+      </div>
+      <div class="faq-item" data-open="false">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-dinero" id="faq-dinero-btn"><span>¿Cómo se genera dinero?</span><span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-dinero" role="region" aria-labelledby="faq-dinero-btn"><p>Como distribuidor independiente, la compensación está relacionada con la actividad comercial y las ventas. Para quienes avanzan hacia el desarrollo de una organización, existen componentes adicionales dentro del plan de compensación correspondiente. Los resultados dependen de la actividad y desempeño individual.</p></div>
+      </div>
+      <div class="faq-item" data-open="false">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-marca" id="faq-marca-btn"><span>¿Impact Enterprises y Royal Prestige son lo mismo?</span><span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-marca" role="region" aria-labelledby="faq-marca-btn"><p>No. Impact Enterprises es la organización desde la que Tomás Flores desarrolla su negocio y equipo como distribuidor independiente de Royal Prestige. Royal Prestige es la marca y compañía con la que se desarrolla la distribución.</p></div>
+      </div>
+      <div class="faq-item" data-open="false">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-equipo" id="faq-equipo-btn"><span>¿Tengo que construir un equipo?</span><span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-equipo" role="region" aria-labelledby="faq-equipo-btn"><p>No necesariamente para comenzar. Puedes iniciar aprendiendo la actividad comercial y desarrollando clientes. Quienes desean avanzar hacia distribución y mayores niveles de liderazgo pueden posteriormente aprender a formar y desarrollar un equipo.</p></div>
+      </div>
+      <div class="faq-item" data-open="false">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-siguiente" id="faq-siguiente-btn"><span>¿Qué pasa después de dejar mis datos?</span><span class="icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-siguiente" role="region" aria-labelledby="faq-siguiente-btn"><p>Tomás o alguien autorizado de Impact Enterprises se comunicará contigo para conocerte, explicarte cómo funciona la oportunidad y responder tus preguntas.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12. FORMULARIO ============ -->
+<section class="cta-section" id="unirme">
+  <div class="wrap cta-inner">
+    <div class="eyebrow">Conversemos</div>
+    <h2>¿Quieres saber si esta oportunidad es para ti?</h2>
+    <p class="lead">Déjame tus datos. Te contactaré para conocerte, explicarte cómo funciona y responder tus preguntas.</p>
+    <div class="form-card">
+      <form id="contactForm" novalidate>
+        <div class="form-row">
+          <label for="fullName">Nombre completo</label>
+          <input type="text" id="fullName" name="fullName" required autocomplete="name">
+        </div>
+        <div class="form-row">
+          <label for="phone">WhatsApp / teléfono</label>
+          <input type="tel" id="phone" name="phone" required autocomplete="tel" inputmode="tel" placeholder="+1 682 000 0000" pattern="^[+0-9()\s-]{7,20}$">
+        </div>
+        <div class="form-row">
+          <label for="city">Ciudad</label>
+          <input type="text" id="city" name="city" required autocomplete="address-level2">
+        </div>
+        <div class="form-row">
+          <label for="goal">¿Qué buscas principalmente?</label>
+          <select id="goal" name="goal">
+            <option value="ingresos_adicionales">Generar ingresos adicionales</option>
+            <option value="cambiar_carrera">Cambiar de carrera</option>
+            <option value="tiempo_completo">Emprender a tiempo completo</option>
+            <option value="aprender_ventas">Aprender ventas</option>
+            <option value="construir_equipo">Construir un equipo</option>
+            <option value="conocer_mas">Solo quiero conocer más</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label id="vehicleLabel">¿Tienes vehículo actualmente?</label>
+          <div class="radio-row" role="radiogroup" aria-labelledby="vehicleLabel">
+            <label class="radio-opt"><input type="radio" name="vehicle" value="si" checked> Sí</label>
+            <label class="radio-opt"><input type="radio" name="vehicle" value="no"> No</label>
+            <label class="radio-opt"><input type="radio" name="vehicle" value="hablarlo"> Prefiero hablarlo</label>
+          </div>
+        </div>
+        <button type="submit" class="form-submit" id="submitBtn">Quiero hablar con Tomás →</button>
+        <p class="form-subnote">Enviar tus datos no te compromete a comenzar. Primero tendremos una conversación para explicarte cómo funciona.</p>
+        <p class="consent">Al enviar este formulario aceptas que Tomás Flores / Impact Enterprises pueda contactarte por llamada, mensaje de texto o WhatsApp en relación con esta solicitud. Consulta nuestra <a href="#" id="privacyLink"><!-- REEMPLAZAR CON POLÍTICA DE PRIVACIDAD REAL -->política de privacidad</a>.</p>
+        <div class="form-error" id="formError" role="alert">No pudimos enviar tus datos. Intenta nuevamente o comunícate directamente conmigo.</div>
+      </form>
+      <div class="form-status" id="formStatus" role="status">
+        <div class="check" aria-hidden="true">✓</div>
+        <h3>¡Listo! Recibí tu información.</h3>
+        <p>Me pondré en contacto contigo para conocer un poco más de ti y explicarte cómo funciona la oportunidad.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<a href="#unirme" class="floating-cta" id="floatingCta" data-event="floating_cta_click">Conocer la oportunidad</a>
+
+<footer>
+  <div class="wrap">
+    <p>Impact Enterprises · Tomás Flores · Distribuidor independiente de Royal Prestige · Más que vender, sirvo.</p>
+    <p id="footerYear"></p>
+    <div class="footer-links">
+      <a href="#"><!-- REEMPLAZAR con URL real -->Política de privacidad</a>
+      <a href="#"><!-- REEMPLAZAR con URL real -->Términos</a>
+      <a href="#"><!-- REEMPLAZAR con URL real -->Contacto</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* =========================================================
+   CONFIGURACIÓN DEL FORMULARIO
+   Reemplaza FORM_ENDPOINT con la URL de tu integración
+   (webhook, Zapier, Make, Google Sheets vía Apps Script, CRM, email, API, etc.)
+   Si FORM_ENDPOINT está vacío, el formulario NO simula éxito:
+   solo valida, muestra un aviso en consola y NO envía datos.
+========================================================= */
+const FORM_ENDPOINT = ""; // <-- COLOCAR ENDPOINT AQUÍ ANTES DE PUBLICAR
+
+/* =========================================================
+   EVENTOS DE ANALÍTICA (GA4 / Meta Pixel)
+   Reemplaza trackEvent() para llamar gtag('event', name, params)
+   y/o fbq('trackCustom', name, params) cuando tengas los IDs.
+   No se envían datos personales (nombre, teléfono) en los eventos.
+========================================================= */
+function trackEvent(name, params = {}) {
+  // Ejemplo GA4:  if (window.gtag) gtag('event', name, params);
+  // Ejemplo Meta: if (window.fbq) fbq('trackCustom', name, params);
+  console.log('[event]', name, params);
+}
+
+document.querySelectorAll('[data-event]').forEach(el => {
+  el.addEventListener('click', () => trackEvent(el.dataset.event));
+});
+
+/* Año dinámico en footer */
+document.getElementById('footerYear').textContent = '© ' + new Date().getFullYear() + ' Impact Enterprises.';
+
+/* FAQ accesible */
+document.querySelectorAll('.faq-item').forEach(item => {
+  const btn = item.querySelector('.faq-q');
+  btn.addEventListener('click', () => {
+    const isOpen = item.getAttribute('data-open') === 'true';
+    item.setAttribute('data-open', String(!isOpen));
+    btn.setAttribute('aria-expanded', String(!isOpen));
+    if (!isOpen) trackEvent('faq_open', { question: btn.querySelector('span').textContent });
+  });
+});
+
+/* Formulario */
+const form = document.getElementById('contactForm');
+const formStatus = document.getElementById('formStatus');
+const formError = document.getElementById('formError');
+const submitBtn = document.getElementById('submitBtn');
+let formStarted = false;
+let isSubmitting = false;
+
+form.addEventListener('input', () => {
+  if (!formStarted) {
+    formStarted = true;
+    trackEvent('form_started');
+  }
+}, { once: false });
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (isSubmitting) return; // evita doble envío
+  formError.classList.remove('show');
+
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
+
+  if (!FORM_ENDPOINT) {
+    console.warn('[contactForm] FORM_ENDPOINT no configurado: el formulario no enviará datos hasta que se configure.');
+    formError.textContent = 'Este formulario todavía no está conectado. Escríbenos directo por WhatsApp mientras tanto.';
+    formError.classList.add('show');
+    return;
+  }
+
+  isSubmitting = true;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Enviando...';
+
+  const data = Object.fromEntries(new FormData(form).entries());
+
+  try {
+    const response = await fetch(FORM_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) throw new Error('Respuesta no exitosa del servidor');
+
+    trackEvent('form_submitted', { goal: data.goal }); // sin datos personales
+    form.style.display = 'none';
+    formStatus.classList.add('show');
+  } catch (err) {
+    formError.textContent = 'No pudimos enviar tus datos. Intenta nuevamente o comunícate directamente conmigo.';
+    formError.classList.add('show');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Quiero hablar con Tomás →';
+    isSubmitting = false;
+  }
+});
+
+/* Floating CTA: ocultar cuando el formulario ya es visible */
+const floatingCta = document.getElementById('floatingCta');
+const formSection = document.getElementById('unirme');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    floatingCta.style.display = entry.isIntersecting ? 'none' : '';
+  });
+}, { threshold: 0.2 });
+observer.observe(formSection);
+</script>
+</body>
+</html>
