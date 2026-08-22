@@ -7,6 +7,8 @@
 <title>Trabaja conmigo — Tomás Flores | Impact Enterprises</title>
 <meta name="description" content="Conoce cómo trabajar junto a Tomás Flores e Impact Enterprises como distribuidor independiente de Royal Prestige. Formación, ventas, liderazgo y acompañamiento desde cero.">
 <meta name="robots" content="index,follow">
+<link rel="icon" type="image/png" href="assets/trabaja/logo-impact.png">
+<link rel="apple-touch-icon" href="assets/trabaja/logo-impact.png">
 <link rel="canonical" href="https://tomasflores.com/trabaja-conmigo.html">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
@@ -292,6 +294,7 @@
     .story { grid-template-columns: 1fr; }
     .story-img { order:-1; }
     .timeline-track { grid-template-columns: 1fr 1fr; row-gap: 30px; }
+    .timeline-track::before { display:none; }
     .proof { grid-template-columns: 1fr; }
     .mini-gallery { grid-template-columns: 1fr; }
     .apoyo-grid { grid-template-columns: 1fr; }
@@ -430,19 +433,31 @@
 
   /* Mobile refinements */
   @media (max-width: 880px){
-    .hero-img{ height: 52vh; }
-    .hero-img img{ object-position: center 22%; }
+    .hero-img{ height: 40vh; max-height: 380px; }
+    .hero-img img{ object-position: center 20%; }
     .hero-copy::before{ display:none; }
+    .cta-row{ width:100%; }
     .cta-row .btn-primary, .cta-row .btn-ghost{ flex:1 1 auto; justify-content:center; }
     .stat-strip .stat{ flex:1 1 100%; border-right:none; border-bottom:1px solid var(--line); }
     .stat-strip .stat:last-child{ border-bottom:none; }
     .mini-gallery img{ height: 320px; }
+    /* CTA flotante + safe-area iPhone */
+    .floating-cta{ bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+    body{ padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
   }
   @media (max-width: 520px){
     .card-grid{ grid-template-columns: 1fr; }
-    .timeline-track{ grid-template-columns: 1fr; }
     .niveles-track{ grid-template-columns: 1fr; }
-    .hero-copy h1{ font-size: clamp(2rem, 8vw, 2.6rem); }
+    .hero-copy h1{ font-size: clamp(1.9rem, 8vw, 2.5rem); }
+    .hero-img{ height: 34vh; min-height: 240px; }
+    .wrap{ padding: 0 20px; }
+    /* Timeline vertical (más legible que apilar la horizontal) */
+    .timeline-track{ grid-template-columns: 1fr; row-gap: 0; }
+    .timeline-track::before{ display:block; top:0; bottom:0; left:13px; right:auto; width:2px; height:auto;
+      background: linear-gradient(180deg, transparent, rgba(167,139,250,0.55) 6%, rgba(167,139,250,0.55) 94%, transparent); }
+    .t-item{ padding: 4px 0 26px 44px; }
+    .t-item:last-child{ padding-bottom: 0; }
+    .t-dot{ top: 4px; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -849,7 +864,7 @@
         </div>
         <button type="submit" class="form-submit" id="submitBtn">Quiero hablar con Tomás →</button>
         <p class="form-subnote">Enviar tus datos no te compromete a comenzar. Primero tendremos una conversación para explicarte cómo funciona.</p>
-        <p class="consent">Al enviar este formulario aceptas que Tomás Flores / Impact Enterprises pueda contactarte por llamada, mensaje de texto o WhatsApp en relación con esta solicitud. Consulta nuestra <a href="/privacidad" id="privacyLink">política de privacidad</a>.</p>
+        <p class="consent">Al enviar este formulario aceptas que Tomás Flores / Impact Enterprises pueda contactarte por llamada, mensaje de texto o WhatsApp en relación con esta solicitud. Consulta nuestra <a href="/privacidad.html" id="privacyLink">política de privacidad</a>.</p>
         <div class="form-error" id="formError" role="alert">No pudimos enviar tus datos. Intenta nuevamente o comunícate directamente conmigo.</div>
       </form>
       <div class="form-status" id="formStatus" role="status">
@@ -870,8 +885,8 @@
     <p id="footerYear"></p>
     <div class="footer-links">
       <a href="/">Inicio</a>
-      <a href="/privacidad">Política de privacidad</a>
-      <a href="/terminos">Términos</a>
+      <a href="/privacidad.html">Política de privacidad</a>
+      <a href="/terminos.html">Términos</a>
       <a href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B" target="_blank" rel="noopener">Contacto</a>
     </div>
   </div>
@@ -969,7 +984,8 @@ form.addEventListener('submit', async (e) => {
       'Vehículo: ' + vehicleLabel;
     const waUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
     trackEvent('form_submitted', { goal: data.goal, channel: 'whatsapp' }); // sin datos personales
-    window.open(waUrl, '_blank', 'noopener');
+    const win = window.open(waUrl, '_blank', 'noopener');
+    if (!win) { window.location.href = waUrl; return; } // popup bloqueado (iOS): abre en el mismo tab
     form.style.display = 'none';
     formStatus.classList.add('show');
     return;
