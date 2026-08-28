@@ -33,7 +33,7 @@
 <meta name="application-name" content="Tomas Flores">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300&family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500&display=swap" rel="stylesheet">
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
@@ -1084,17 +1084,18 @@
   .hero-content > .sub{transition-delay:.13s}
   .hero-content > .hero-desc{transition-delay:.19s}
   .hero-content > .hero-cta{transition-delay:.25s}
-  .hero-content > .hero-save{transition-delay:.31s}
   @media(prefers-reduced-motion:reduce){
     .hero-content > .rv{transform:none;transition:none}
   }
 
   /* --- Tipografia --- */
   .hero h1{
-    font-size:clamp(38px,9vw,62px);letter-spacing:-.035em;line-height:1.02;
-    font-weight:800;margin:0;text-wrap:balance;
+    font-family:'Poppins','Inter Tight',sans-serif;
+    font-weight:200;text-transform:uppercase;
+    font-size:clamp(34px,9.4vw,48px);letter-spacing:.125em;line-height:1.14;
+    margin:0;text-wrap:balance;color:#FFFFFF;
     -webkit-text-stroke:0;
-    text-shadow:0 2px 26px rgba(6,4,12,.85), 0 1px 3px rgba(6,4,12,.6);
+    text-shadow:0 2px 30px rgba(6,4,12,.9), 0 1px 4px rgba(6,4,12,.7);
   }
   .hero .sub{
     margin-top:14px;color:#FFFFFF;font-weight:700;
@@ -1102,6 +1103,7 @@
     font-size:clamp(20px,5vw,27px);line-height:1.2;max-width:20ch;
     text-shadow:0 1px 14px rgba(6,4,12,.8);
   }
+  .d-sm{display:none}
   .hero-desc{
     margin-top:12px;color:#C3BCDC;font-size:clamp(14.5px,3.7vw,16.5px);
     line-height:1.55;max-width:40ch;font-weight:450;
@@ -1132,7 +1134,8 @@
   }
   /* Accion terciaria: discreta, no compite */
   .hero-save{
-    display:inline-flex;align-items:center;gap:8px;margin-top:16px;
+    flex:0 0 100%;order:3;align-self:flex-start;
+    display:inline-flex;align-items:center;justify-content:flex-start;gap:8px;margin-top:4px;width:auto;max-width:max-content;
     background:none;border:0;padding:8px 2px;min-height:40px;cursor:pointer;
     font:inherit;font-size:13.5px;font-weight:600;letter-spacing:-.005em;
     color:rgba(226,219,247,.72);text-decoration:none;
@@ -1140,6 +1143,7 @@
     transition:color .22s var(--ease), border-color .22s var(--ease);
   }
   .hero-save svg{opacity:.8}
+  .hs-b{display:none}
   @media(hover:hover){.hero-save:hover{color:#F2EFFA;border-color:rgba(196,167,255,.65)}}
   .hero-save:active{opacity:.65}
 
@@ -1150,18 +1154,116 @@
   .hero-badge .hb-l1{font-size:10px;letter-spacing:.19em}
   .hero-badge .hb-l2{font-size:17px}
 
-  /* ---------------- MOVIL ---------------- */
+  /* ================================================================
+     MOVIL — composicion propia, cinematografica
+     ================================================================ */
   @media(max-width:639px){
-    .hero{min-height:100svh}
-    .hero-content{padding:0 24px calc(30px + env(safe-area-inset-bottom))}
+    .d-lg{display:none}
+    .d-sm{display:inline}
+
+    .hero{
+      min-height:100svh;min-height:100dvh;
+      align-items:flex-end;
+    }
+    /* La foto manda: rostro, accion y parte de las ollas */
     .hero-photo img{object-position:62% top}
-    .hero .sub{max-width:24ch}
-    .hero-desc{max-width:34ch;font-size:14.5px;line-height:1.5}
-    .hero-cta{gap:10px;margin-top:22px}
-    .hero-cta .btn-solid{flex:1 1 100%;justify-content:center}
-    .hero-cta .btn-ghost{flex:1 1 100%;justify-content:center}
-    .hero-save{margin-top:14px}
+    /* Fundido progresivo + viñeta lateral + suelo profundo */
+    .hero-veil{
+      background:
+        linear-gradient(to bottom,
+          rgba(8,5,15,.62) 0%,
+          rgba(8,5,15,.14) 12%,
+          rgba(8,5,15,0) 26%,
+          rgba(8,5,15,.10) 42%,
+          rgba(8,5,15,.44) 54%,
+          rgba(8,5,15,.78) 64%,
+          rgba(8,5,15,.93) 74%,
+          rgba(8,5,15,.985) 84%,
+          #08050F 93%),
+        radial-gradient(120% 62% at 50% 100%, rgba(8,5,15,.55), transparent 62%),
+        linear-gradient(to right, rgba(8,5,15,.42) 0%, rgba(8,5,15,0) 26%, rgba(8,5,15,0) 76%, rgba(8,5,15,.34) 100%);
+    }
+    .hero-glow{
+      background:radial-gradient(58% 30% at 62% 26%, rgba(139,92,246,.20), transparent 70%);
+      animation:heroDrift 26s ease-in-out infinite alternate;
+    }
+
+    /* Sello de respaldo, mas discreto */
+    .hero-badge{top:calc(env(safe-area-inset-top) + 20px);left:22px;opacity:.86}
+    .hero-badge .hb-l1{font-size:9.5px;letter-spacing:.2em}
+    .hero-badge .hb-l2{font-size:15.5px}
+
+    /* Bloque de contenido apoyado en la zona oscura */
+    .hero-content{
+      padding:0 22px calc(clamp(18px,3.4svh,30px) + env(safe-area-inset-bottom));
+    }
+    .hero h1{
+      font-size:clamp(34px,9.4vw,44px);line-height:1.12;
+      letter-spacing:.125em;text-wrap:balance;
+    }
+    .hero .sub{
+      margin-top:clamp(8px,1.4svh,13px);
+      font-size:clamp(19px,5.1vw,23px);line-height:1.18;max-width:24ch;
+    }
+    .hero-desc{
+      margin-top:clamp(6px,1.1svh,10px);
+      font-size:14.5px;line-height:1.45;max-width:32ch;color:#BDB6D6;
+    }
+
+    /* CTA: principal ancho completo, secundarios compactos en fila */
+    .hero-cta{
+      gap:9px;margin-top:clamp(14px,2.4svh,22px);max-width:none;
+    }
+    .hero .btn-hero{
+      flex:1 1 100%;order:0;justify-content:center;
+      min-height:clamp(50px,6.4svh,56px);padding:0 20px;font-size:16px;border-radius:15px;
+    }
+    .hero .btn-ghost{
+      flex:1 1 calc(50% - 4.5px);order:1;justify-content:center;
+      min-height:clamp(44px,5.4svh,48px);padding:0 8px;font-size:13px;gap:5px;border-radius:13px;min-width:0;
+      white-space:nowrap;letter-spacing:-.01em;
+      background:rgba(255,255,255,.055);border:1px solid rgba(196,167,255,.24);
+    }
+    .hero .btn-ghost svg{width:15px;height:15px}
+    .hero-save{
+      flex:1 1 calc(50% - 4.5px);order:2;align-self:auto;max-width:none;margin-top:0;
+      justify-content:center;gap:7px;
+      min-height:clamp(44px,5.4svh,48px);padding:0 8px;font-size:13px;font-weight:600;
+      gap:5px;min-width:0;white-space:nowrap;letter-spacing:-.01em;
+      background:rgba(255,255,255,.04);border:1px solid rgba(196,167,255,.20);
+      border-radius:13px;color:rgba(228,222,247,.86);
+    }
+    .hero-save svg{width:15px;height:15px;opacity:.75}
+    .hs-a{display:none}
+    .hs-b{display:inline}
+    /* Si no caben comodos, se apilan solos */
+    @media(max-width:339px){
+      .hero .btn-ghost,.hero-save{flex:1 1 100%}
+    }
+
+    /* Flecha: solo si sobra alto */
     .scroll-cue{display:none}
+  }
+
+  /* Teléfonos altos: se recupera la flecha y respira mas */
+  @media(max-width:639px) and (min-height:860px){
+    .scroll-cue{display:block;bottom:8px;opacity:.45}
+    .scroll-cue svg{width:19px;height:19px}
+    .hero-content{padding-bottom:calc(clamp(30px,4.6svh,42px) + env(safe-area-inset-bottom))}
+  }
+  /* Teléfonos bajos (SE, mini): se compacta sin perder accesibilidad */
+  @media(max-width:639px) and (max-height:700px){
+    .hero h1{font-size:clamp(29px,8vw,36px);line-height:1.1}
+    .hero .sub{font-size:18px;margin-top:7px}
+    .hero-desc{font-size:13.5px;margin-top:5px;max-width:30ch}
+    .hero-cta{margin-top:13px;gap:8px}
+    .hero .btn-hero{min-height:50px;font-size:15.5px}
+    .hero .btn-ghost,.hero-save{min-height:44px;font-size:12.5px}
+    .hero-badge .hb-l2{font-size:14.5px}
+  }
+  /* Pantallas muy estrechas: el nombre puede partirse solo */
+  @media(max-width:359px){
+    .hero h1{font-size:clamp(26px,8.4vw,34px);letter-spacing:.10em}
   }
 
   /* ---------------- IPAD VERTICAL ---------------- */
@@ -1169,7 +1271,7 @@
     .hero{min-height:100svh;align-items:flex-end}
     .hero-photo img{object-position:60% top}
     .hero-content{padding:0 40px calc(44px + env(safe-area-inset-bottom))}
-    .hero h1{font-size:clamp(46px,7vw,60px)}
+    .hero h1{font-size:clamp(36px,5.2vw,46px);letter-spacing:.13em}
     .hero .sub{max-width:22ch}
     .hero-desc{max-width:44ch}
     .hero-cta .btn-solid,.hero-cta .btn-ghost{flex:0 1 auto}
@@ -1205,7 +1307,7 @@
       max-width:1180px;
     }
     .hero-content > *{max-width:min(46%, 520px)}
-    .hero h1{font-size:clamp(44px,4.2vw,60px)}
+    .hero h1{font-size:clamp(34px,3.4vw,46px);letter-spacing:.13em;line-height:1.1}
     .hero .sub{font-size:clamp(22px,2vw,28px);max-width:min(46%,480px)}
     .hero-desc{font-size:clamp(15px,1.15vw,16.5px);max-width:min(44%,430px)}
     .hero-cta{max-width:min(56%,600px)}
@@ -1413,20 +1515,20 @@
   </div>
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-content">
-    <h1 class="rv in">Tom&aacute;s Flores</h1>
-    <p class="sub rv in" id="heroSub">Cocina mejor. Vive mejor.</p>
-    <p class="hero-desc rv in">Te acompa&ntilde;o a descubrir una forma m&aacute;s pr&aacute;ctica, saludable y consciente de cocinar para tu familia.</p>
+    <h1 class="rv in">Tomas Flores</h1>
+    <p class="sub rv in" id="heroSub">Cocinar mejor tambi&eacute;n es cuidar.</p>
+    <p class="hero-desc rv in"><span class="d-lg">Te acompa&ntilde;o a descubrir una forma m&aacute;s pr&aacute;ctica, saludable y consciente de cocinar para tu familia.</span><span class="d-sm">Una experiencia m&aacute;s pr&aacute;ctica y saludable para tu familia.</span></p>
 <div class="hero-cta rv in">
       <button class="btn btn-solid btn-hero" data-cal type="button">Reservar demostración</button>
       <a class="btn btn-ghost" href="/trabaja-conmigo.html" data-track="Trabaja conmigo">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
         Trabaja conmigo
       </a>
+      <button class="hero-save" id="heroSaveContact" type="button">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+        <span class="hs-a">Guardar mi contacto</span><span class="hs-b">Guardar contacto</span>
+      </button>
     </div>
-    <button class="hero-save rv in" id="heroSaveContact" type="button">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
-      Guardar mi contacto
-    </button>
   </div>
   <a class="scroll-cue" href="#beneficios" aria-label="Bajar para ver más"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></a>
 </section>
