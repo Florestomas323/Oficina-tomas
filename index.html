@@ -2313,7 +2313,7 @@ try{
     const S = st.data();
     const T = S.texts || {};
     const set = (id,val)=>{ const el=document.getElementById(id); if(el && val) el.textContent = val; };
-    set("heroSub", T.heroSub);
+    /* heroSub ya no se sobrescribe desde el panel: la frase del hero vive en el HTML */
     set("aboutH", T.aboutH);
     if(T.motto){ const m=document.getElementById("aboutMotto"); if(m) m.textContent = '"'+T.motto+'"'; }
     set("aboutBody", T.aboutB);
