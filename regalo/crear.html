@@ -29,9 +29,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@700;800&family=Fraunces:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#FBF9F4; --ink:#122A46; --navy:#122A46; --gold:#B08D4F; --gold-text:#8A672B;
-    --card:#FFFFFF; --hairline:#E7E1D6; --stone:#5C6B7E; --ok:#1E7A46; --err:#B3261E;
-    --shadow:0 1px 2px rgba(18,42,70,.05),0 10px 28px rgba(18,42,70,.08);
+    --bg:#0A0812; --ink:#F5F3FA; --navy:#F5F3FA; --gold:#8B5CF6; --gold-text:#C9A9FF;
+    --card:#171226; --hairline:rgba(196,167,255,.15); --stone:#A9A3C2; --ok:#5DE08A; --err:#FF8A8A;
+    --shadow:0 1px 2px rgba(0,0,0,.45),0 8px 24px rgba(0,0,0,.40);
+    --metal:linear-gradient(135deg,#9B6BF5 0%,#7C3AED 52%,#5B21B6 100%);
+    --metal-silver:linear-gradient(135deg,#F2F1F7 0%,#C9C6DA 45%,#8F8BA6 100%);
+    --silver:#D8D5E8; --silver-dim:#8E88A6;
+    --ink:#F5F3FA; --card:#171226; --stone:#A9A3C2;
+    --gold:#8B5CF6; --gold-text:#C9A9FF; --hairline:rgba(196,167,255,.15);
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html{scroll-behavior:smooth}
@@ -40,7 +45,7 @@
   a{color:var(--gold-text)}
   .top{display:flex;align-items:center;gap:12px;padding:16px 0 8px;flex-wrap:wrap}
   .back{display:inline-flex;align-items:center;gap:7px;color:var(--ink);text-decoration:none;font-weight:600;font-size:14.5px;padding:10px 16px;border:1px solid var(--hairline);border-radius:999px;background:var(--card);min-height:44px}
-  .top-chip{display:inline-flex;align-items:center;gap:6px;margin-left:auto;font-size:12.5px;font-weight:600;color:var(--gold-text);background:#FBF6EC;border:1px solid rgba(176,141,79,.3);border-radius:999px;padding:8px 13px;min-height:36px}
+  .top-chip{display:inline-flex;align-items:center;gap:6px;margin-left:auto;font-size:12.5px;font-weight:600;color:var(--gold-text);background:rgba(232,199,102,.12);border:1px solid rgba(139,92,246,.3);border-radius:999px;padding:8px 13px;min-height:36px}
   .top-chip svg{width:15px;height:15px;flex:0 0 15px}
   .eyebrow{font-family:'Fraunces',serif;font-style:italic;color:var(--gold-text);font-size:17px;display:block;margin:18px 0 6px}
   .logo{display:block;width:min(250px,64%);height:auto;margin:20px 0 14px}
@@ -53,8 +58,8 @@
   .field{margin-top:16px}
   .field:first-child{margin-top:0}
   label{display:block;font-weight:600;font-size:14.5px;margin-bottom:7px}
-  input[type=text]{width:100%;border:1.5px solid var(--hairline);border-radius:14px;background:#FFFFFF;color:var(--ink);font:inherit;font-size:16px;padding:13px 15px;min-height:48px}
-  input[type=text]:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(176,141,79,.18)}
+  input[type=text]{width:100%;border:1.5px solid var(--hairline);border-radius:14px;background:var(--card);color:var(--ink);font:inherit;font-size:16px;padding:13px 15px;min-height:48px}
+  input[type=text]:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(139,92,246,.18)}
   .hint{color:var(--stone);font-size:13px;margin-top:6px}
   .consent{display:flex;gap:11px;align-items:flex-start;margin-top:18px}
   .consent input{width:22px;height:22px;margin-top:2px;accent-color:var(--gold);flex:0 0 auto}
@@ -68,20 +73,20 @@
   .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border-radius:16px;padding:16px 20px;font-size:16px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font-family:inherit;min-height:52px;transition:transform .08s ease,opacity .15s ease}
   .btn:active{transform:scale(.985)}
   .btn[disabled]{opacity:.55;cursor:default}
-  .btn-primary{background:var(--navy);color:#fff;margin-top:20px}
-  .btn-gold{background:var(--gold);color:#fff}
+  .btn-primary{background:var(--metal);color:#fff;margin-top:20px}
+  .btn-gold{background:var(--metal);color:#fff}
   .btn-line{background:var(--card);color:var(--ink);border:1.5px solid var(--gold)}
   .btn svg{flex:0 0 20px}
   .msg{display:none;margin-top:14px;border-radius:14px;padding:13px 15px;font-size:14.5px;line-height:1.5;font-weight:500}
-  .msg.err{display:block;background:#FBEDEC;border:1px solid #EFC8C5;color:var(--err)}
-  .msg.ok{display:block;background:#EAF5EE;border:1px solid #C8E3D2;color:var(--ok)}
+  .msg.err{display:block;background:rgba(255,138,138,.12);border:1px solid rgba(255,138,138,.30);color:var(--err)}
+  .msg.ok{display:block;background:rgba(93,224,138,.13);border:1px solid rgba(93,224,138,.30);color:var(--ok)}
   /* ---- Vista del enlace creado ---- */
-  .seal{width:64px;height:64px;border-radius:50%;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;background:#FDFBF6}
+  .seal{width:64px;height:64px;border-radius:50%;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;background:rgba(255,255,255,.05)}
   .seal svg{width:30px;height:30px}
   .giftcard{text-align:center}
   .giftcard h2{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.02em;color:var(--navy)}
   .giftcard .who{font-family:'Fraunces',serif;font-style:italic;color:var(--gold-text);font-size:16px;margin-top:6px}
-  .linkbox{margin-top:18px;border:1.5px dashed var(--gold);border-radius:14px;background:#FDFBF6;padding:13px 14px;font-size:14px;word-break:break-all;color:var(--navy);font-weight:600;text-align:left}
+  .linkbox{margin-top:18px;border:1.5px dashed var(--gold);border-radius:14px;background:rgba(255,255,255,.05);padding:13px 14px;font-size:14px;word-break:break-all;color:var(--navy);font-weight:600;text-align:left}
   .validity{display:flex;justify-content:space-between;gap:10px;margin-top:14px;font-size:13.5px;color:var(--stone)}
   .validity b{color:var(--navy)}
   .actions{display:flex;flex-direction:column;gap:11px;margin-top:20px}
@@ -91,7 +96,7 @@
   .switch button{background:none;border:0;color:var(--gold-text);font:inherit;font-weight:600;cursor:pointer;text-decoration:underline;padding:10px;min-height:44px}
   .foot{color:var(--stone);text-align:center;font-size:12.5px;line-height:1.6;padding:34px 0 8px}
   .foot a{font-weight:600;text-decoration:none}
-  .spinner{width:20px;height:20px;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;display:none}
+  .spinner{width:20px;height:20px;border:2.5px solid rgba(255,255,255,.35);border-top-color:rgba(255,255,255,.18);border-radius:50%;animation:spin .8s linear infinite;display:none}
   .loading .spinner{display:inline-block}
   .loading .btn-label{display:none}
   @keyframes spin{to{transform:rotate(360deg)}}
@@ -101,6 +106,30 @@
     .spinner{animation-duration:1.6s}
   }
   .hidden{display:none !important}
+
+  /* ---- Paleta morada: capa de fondo compartida con el sitio ---- */
+  body{position:relative;background:#0A0812;color:var(--ink)}
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+    background:#0A0812 url('../fondo-textura.jpeg') center center / cover no-repeat;opacity:.55;
+  }
+  body::after{
+    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(120% 80% at 50% 0%, rgba(124,58,237,.20), transparent 60%),
+      linear-gradient(180deg, rgba(10,8,18,.62) 0%, rgba(10,8,18,.86) 55%, rgba(10,8,18,.94) 100%);
+  }
+  ::selection{background:rgba(167,139,250,.32);color:#fff}
+  /* El logotipo "Regala y Gana" tiene tipografia azul marino: se perfila en claro */
+  img[alt="Regala y Gana"], .logo, .ryg-logo, #brandLogo{
+    filter:drop-shadow(0 0 1.6px rgba(255,255,255,.95)) drop-shadow(0 2px 12px rgba(255,255,255,.28));
+  }
+  @media print{
+    body{background:#FFFFFF!important;color:#111110!important}
+    body::before,body::after{display:none!important}
+    *{color:#111110!important;background:transparent!important;box-shadow:none!important;
+      border-color:#CFCFD6!important;-webkit-text-fill-color:#111110!important;filter:none!important}
+  }
 </style>
 </head>
 <body>

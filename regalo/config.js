@@ -37,13 +37,13 @@ window.GIFT_CONFIG = {
   },
 
   theme: {
-    bg: "#FBF9F4",                   // blanco cálido
-    ink: "#122A46",                  // azul marino
-    navy: "#122A46",
-    gold: "#B08D4F",
-    goldText: "#8A672B",
-    card: "#FFFFFF",
-    hairline: "#E7E1D6"
+    bg: "#0A0812",                   // negro violáceo
+    ink: "#F5F3FA",                  // texto claro
+    navy: "#F5F3FA",
+    gold: "#8B5CF6",
+    goldText: "#C9A9FF",
+    card: "#171226",
+    hairline: "rgba(196,167,255,.15)"
   },
 
   texts: {

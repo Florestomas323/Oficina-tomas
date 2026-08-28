@@ -22,9 +22,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@700;800&family=Fraunces:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#FBF9F4; --ink:#122A46; --navy:#122A46; --gold:#B08D4F; --gold-text:#8A672B;
-    --card:#FFFFFF; --hairline:#E7E1D6; --stone:#5C6B7E; --ok:#1E7A46; --err:#B3261E;
-    --shadow:0 1px 2px rgba(18,42,70,.05),0 10px 28px rgba(18,42,70,.08);
+    --bg:#0A0812; --ink:#F5F3FA; --navy:#F5F3FA; --gold:#8B5CF6; --gold-text:#C9A9FF;
+    --card:#171226; --hairline:rgba(196,167,255,.15); --stone:#A9A3C2; --ok:#5DE08A; --err:#FF8A8A;
+    --shadow:0 1px 2px rgba(0,0,0,.45),0 8px 24px rgba(0,0,0,.40);
+    --metal:linear-gradient(135deg,#9B6BF5 0%,#7C3AED 52%,#5B21B6 100%);
+    --metal-silver:linear-gradient(135deg,#F2F1F7 0%,#C9C6DA 45%,#8F8BA6 100%);
+    --silver:#D8D5E8; --silver-dim:#8E88A6;
+    --ink:#F5F3FA; --card:#171226; --stone:#A9A3C2;
+    --gold:#8B5CF6; --gold-text:#C9A9FF; --hairline:rgba(196,167,255,.15);
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;min-height:100dvh}
@@ -35,7 +40,7 @@
   .logo{width:min(215px,58%);height:auto;display:block;margin:0 auto}
   /* --- Encabezado del obsequio --- */
   .hero{text-align:center;margin-top:14px}
-  .seal{width:74px;height:74px;border-radius:50%;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;background:#FDFBF6;box-shadow:var(--shadow)}
+  .seal{width:74px;height:74px;border-radius:50%;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;background:rgba(255,255,255,.05);box-shadow:var(--shadow)}
   .seal svg{width:36px;height:36px}
   h1{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:clamp(26px,7.4vw,36px);letter-spacing:-.03em;line-height:1.12;color:var(--navy)}
   h1 .sender{color:var(--gold-text)}
@@ -47,21 +52,21 @@
   .field{margin-top:15px}
   label{display:block;font-weight:600;font-size:14.5px;margin-bottom:7px}
   label small{font-weight:500;color:var(--stone)}
-  input[type=text],input[type=tel]{width:100%;border:1.5px solid var(--hairline);border-radius:14px;background:#fff;color:var(--ink);font:inherit;font-size:16px;padding:13px 15px;min-height:48px}
-  input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(176,141,79,.18)}
+  input[type=text],input[type=tel]{width:100%;border:1.5px solid var(--hairline);border-radius:14px;background:var(--card);color:var(--ink);font:inherit;font-size:16px;padding:13px 15px;min-height:48px}
+  input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(139,92,246,.18)}
   .consent{display:flex;gap:11px;align-items:flex-start;margin-top:18px}
   .consent input{width:22px;height:22px;margin-top:2px;accent-color:var(--gold);flex:0 0 auto}
   .consent span{font-size:13.5px;line-height:1.55;color:var(--stone)}
   .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border-radius:16px;padding:16px 20px;font-size:16px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font-family:inherit;min-height:52px;transition:transform .08s ease,opacity .15s ease}
   .btn:active{transform:scale(.985)}
   .btn[disabled]{opacity:.55;cursor:default}
-  .btn-primary{background:var(--navy);color:#fff;margin-top:20px}
-  .btn-gold{background:var(--gold);color:#fff}
+  .btn-primary{background:var(--metal);color:#fff;margin-top:20px}
+  .btn-gold{background:var(--metal);color:#fff}
   .btn-line{background:var(--card);color:var(--ink);border:1.5px solid var(--gold)}
   .btn svg{flex:0 0 20px}
   .msg{display:none;margin-top:14px;border-radius:14px;padding:13px 15px;font-size:14.5px;line-height:1.5;font-weight:500}
-  .msg.err{display:block;background:#FBEDEC;border:1px solid #EFC8C5;color:var(--err)}
-  .msg.ok{display:block;background:#EAF5EE;border:1px solid #C8E3D2;color:var(--ok)}
+  .msg.err{display:block;background:rgba(255,138,138,.12);border:1px solid rgba(255,138,138,.30);color:var(--err)}
+  .msg.ok{display:block;background:rgba(93,224,138,.13);border:1px solid rgba(93,224,138,.30);color:var(--ok)}
   .fineprint{color:var(--stone);font-size:12.5px;line-height:1.6;margin-top:14px;text-align:center}
   /* --- Confirmación --- */
   .done{text-align:center}
@@ -73,7 +78,7 @@
   .statecard p{color:var(--stone);font-size:15px;line-height:1.65;margin-top:8px}
   .foot{color:var(--stone);text-align:center;font-size:12.5px;line-height:1.6;padding:34px 0 8px}
   .foot a{font-weight:600;text-decoration:none}
-  .spinner{width:20px;height:20px;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;display:none}
+  .spinner{width:20px;height:20px;border:2.5px solid rgba(255,255,255,.35);border-top-color:rgba(255,255,255,.18);border-radius:50%;animation:spin .8s linear infinite;display:none}
   .loading .spinner{display:inline-block}
   .loading .btn-label{display:none}
   .pageload{display:flex;justify-content:center;padding:60px 0}
@@ -84,6 +89,30 @@
     .spinner,.pageload .dot{animation-duration:1.8s}
   }
   .hidden{display:none !important}
+
+  /* ---- Paleta morada: capa de fondo compartida con el sitio ---- */
+  body{position:relative;background:#0A0812;color:var(--ink)}
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+    background:#0A0812 url('../fondo-textura.jpeg') center center / cover no-repeat;opacity:.55;
+  }
+  body::after{
+    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(120% 80% at 50% 0%, rgba(124,58,237,.20), transparent 60%),
+      linear-gradient(180deg, rgba(10,8,18,.62) 0%, rgba(10,8,18,.86) 55%, rgba(10,8,18,.94) 100%);
+  }
+  ::selection{background:rgba(167,139,250,.32);color:#fff}
+  /* El logotipo "Regala y Gana" tiene tipografia azul marino: se perfila en claro */
+  img[alt="Regala y Gana"], .logo, .ryg-logo, #brandLogo{
+    filter:drop-shadow(0 0 1.6px rgba(255,255,255,.95)) drop-shadow(0 2px 12px rgba(255,255,255,.28));
+  }
+  @media print{
+    body{background:#FFFFFF!important;color:#111110!important}
+    body::before,body::after{display:none!important}
+    *{color:#111110!important;background:transparent!important;box-shadow:none!important;
+      border-color:#CFCFD6!important;-webkit-text-fill-color:#111110!important;filter:none!important}
+  }
 </style>
 </head>
 <body>
