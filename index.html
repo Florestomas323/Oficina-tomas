@@ -1115,7 +1115,7 @@
   .hero-cta::before{content:none;display:none}
   .hero-cta .btn-solid,.hero-cta .btn-ghost{flex:0 1 auto;order:0}
   .hero .btn-hero,.hero .btn-ghost{
-    min-height:52px;padding:0 26px;font-size:15.5px;font-weight:600;letter-spacing:-.01em;
+    min-height:54px;padding:0 28px;font-size:16.5px;font-weight:600;letter-spacing:-.01em;
     border-radius:14px;white-space:nowrap;transition:transform .24s var(--ease), box-shadow .24s var(--ease), background .24s var(--ease), border-color .24s var(--ease);
   }
   .hero .btn-hero{
@@ -1151,8 +1151,8 @@
   .hero-badge{
     top:calc(env(safe-area-inset-top) + 26px);left:24px;opacity:.9;
   }
-  .hero-badge .hb-l1{font-size:10px;letter-spacing:.19em}
-  .hero-badge .hb-l2{font-size:17px}
+  .hero-badge .hb-l1{font-size:11.5px;letter-spacing:.17em}
+  .hero-badge .hb-l2{font-size:20px}
 
   /* ================================================================
      MOVIL — composicion propia, cinematografica
@@ -1166,32 +1166,32 @@
       align-items:flex-end;
     }
     /* La foto manda: rostro, accion y parte de las ollas */
-    .hero-photo img{object-position:62% top}
+    .hero-photo img{object-position:52% top}
     /* Fundido progresivo + viñeta lateral + suelo profundo */
     .hero-veil{
       background:
         linear-gradient(to bottom,
-          rgba(8,5,15,.62) 0%,
-          rgba(8,5,15,.14) 12%,
-          rgba(8,5,15,0) 26%,
-          rgba(8,5,15,.10) 42%,
-          rgba(8,5,15,.44) 54%,
-          rgba(8,5,15,.78) 64%,
-          rgba(8,5,15,.93) 74%,
-          rgba(8,5,15,.985) 84%,
-          #08050F 93%),
-        radial-gradient(120% 62% at 50% 100%, rgba(8,5,15,.55), transparent 62%),
-        linear-gradient(to right, rgba(8,5,15,.42) 0%, rgba(8,5,15,0) 26%, rgba(8,5,15,0) 76%, rgba(8,5,15,.34) 100%);
+          rgba(8,5,15,.58) 0%,
+          rgba(8,5,15,.12) 13%,
+          rgba(8,5,15,0) 28%,
+          rgba(8,5,15,0) 50%,
+          rgba(8,5,15,.20) 62%,
+          rgba(8,5,15,.42) 74%,
+          rgba(8,5,15,.60) 88%,
+          rgba(8,5,15,.72) 100%),
+        radial-gradient(130% 46% at 50% 104%, rgba(8,5,15,.42), transparent 66%),
+        linear-gradient(to right, rgba(8,5,15,.38) 0%, rgba(8,5,15,0) 24%, rgba(8,5,15,0) 78%, rgba(8,5,15,.30) 100%);
     }
     .hero-glow{
-      background:radial-gradient(58% 30% at 62% 26%, rgba(139,92,246,.20), transparent 70%);
+      background:radial-gradient(58% 26% at 62% 22%, rgba(139,92,246,.20), transparent 70%),
+                 radial-gradient(105% 30% at 52% 82%, rgba(124,58,237,.16), transparent 72%);
       animation:heroDrift 26s ease-in-out infinite alternate;
     }
 
     /* Sello de respaldo, mas discreto */
     .hero-badge{top:calc(env(safe-area-inset-top) + 20px);left:22px;opacity:.86}
-    .hero-badge .hb-l1{font-size:9.5px;letter-spacing:.2em}
-    .hero-badge .hb-l2{font-size:15.5px}
+    .hero-badge .hb-l1{font-size:11px;letter-spacing:.18em}
+    .hero-badge .hb-l2{font-size:18px}
 
     /* Bloque de contenido apoyado en la zona oscura */
     .hero-content{
@@ -1259,7 +1259,7 @@
     .hero-cta{margin-top:13px;gap:8px}
     .hero .btn-hero{min-height:50px;font-size:15.5px}
     .hero .btn-ghost,.hero-save{min-height:44px;font-size:12.5px}
-    .hero-badge .hb-l2{font-size:14.5px}
+    .hero-badge .hb-l2{font-size:16.5px}
   }
   /* Pantallas muy estrechas: el nombre puede partirse solo */
   @media(max-width:359px){
@@ -1289,7 +1289,7 @@
       -webkit-mask-image:linear-gradient(to right, transparent 0%, rgba(0,0,0,.28) 9%, rgba(0,0,0,.78) 20%, #000 34%);
       mask-image:linear-gradient(to right, transparent 0%, rgba(0,0,0,.28) 9%, rgba(0,0,0,.78) 20%, #000 34%);
     }
-    .hero-photo img{object-position:56% center}
+    .hero-photo img{object-position:95% center}
     .hero-veil{
       background:
         linear-gradient(to right, #08050F 0%, rgba(8,5,15,.98) 26%, rgba(8,5,15,.82) 40%, rgba(8,5,15,.42) 53%, rgba(8,5,15,.14) 66%, rgba(8,5,15,0) 78%),
@@ -1306,11 +1306,11 @@
       padding:0 clamp(40px,4.4vw,64px);
       max-width:1180px;
     }
-    .hero-content > *{max-width:min(46%, 520px)}
-    .hero h1{font-size:clamp(34px,3.4vw,46px);letter-spacing:.13em;line-height:1.1}
-    .hero .sub{font-size:clamp(22px,2vw,28px);max-width:min(46%,480px)}
-    .hero-desc{font-size:clamp(15px,1.15vw,16.5px);max-width:min(44%,430px)}
-    .hero-cta{max-width:min(56%,600px)}
+    .hero-content > *{max-width:min(52%, 580px)}
+    .hero h1{font-size:clamp(38px,3.9vw,56px);letter-spacing:.125em;line-height:1.08}
+    .hero .sub{font-size:clamp(24px,2.3vw,33px);max-width:min(50%,540px);margin-top:16px;line-height:1.14}
+    .hero-desc{font-size:clamp(16px,1.3vw,18.5px);max-width:min(46%,500px);margin-top:14px;line-height:1.5}
+    .hero-cta{max-width:min(60%,640px);margin-top:30px}
     .hero-badge{top:calc(env(safe-area-inset-top) + 34px);left:clamp(40px,4.4vw,64px)}
   }
   @keyframes heroDrift{
