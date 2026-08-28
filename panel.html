@@ -6,6 +6,12 @@
 <meta name="robots" content="noindex,nofollow">
 <script src="config.js"></script>
 <title>Panel del Distribuidor — Tomas Flores</title>
+<link rel="manifest" href="panel.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mi panel">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon-oficina.png">
 <link rel="apple-touch-icon" href="icono-panel.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icono-panel.png">
@@ -209,6 +215,23 @@
   .pr-acc{ display:flex; gap:7px; flex-wrap:wrap; margin-top:13px; }
   .ryg-b.danger{ border-color:rgba(255,138,138,.35); color:#FFB3B3; }
 
+
+  /* ---- Barra de notificaciones ---- */
+  #pushBar{ margin-bottom:16px; padding:14px 16px; border-radius:16px;
+    background:rgba(255,255,255,.045); border:1px solid rgba(196,167,255,.2);
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  #pushBar.ok{ background:rgba(93,224,138,.10); border-color:rgba(93,224,138,.28); }
+  #pushBar.aviso{ background:rgba(232,199,102,.10); border-color:rgba(232,199,102,.30); }
+  .pb-txt{ flex:1 1 220px; font-size:13.5px; line-height:1.5; color:#C0B7DC; }
+  .pb-txt b{ color:#F5F3FA; display:block; margin-bottom:3px; font-size:14.5px; }
+  .pb-acc{ display:flex; gap:8px; flex-wrap:wrap; }
+  .pb-b{ font:inherit; font-size:14px; font-weight:600; cursor:pointer;
+    min-height:42px; padding:0 18px; border-radius:999px;
+    background:linear-gradient(135deg,#9B6BF5,#7C3AED 52%,#5B21B6);
+    border:1px solid rgba(203,178,255,.34); color:#fff; }
+  .pb-b.ghost{ background:rgba(255,255,255,.06); border-color:rgba(196,167,255,.28); color:#F5F3FA; }
+  .pb-b:disabled{ opacity:.55; cursor:default; }
+
 </style>
 </head>
 <body>
@@ -258,6 +281,7 @@
   </nav>
   <main class="wrap">
     <div id="avisosCaja" style="display:none"></div>
+    <div id="pushBar" style="display:none"></div>
     <div class="panel on" id="p-inicio"></div>
     <div class="panel" id="p-recetas"></div>
     <div class="panel" id="p-opiniones"></div>
@@ -369,7 +393,7 @@
     view("loading");
     $("loadingTxt").textContent = "Cargando tu contenido…";
     try{
-      await loadOrSeed(); view("app"); renderAll(); try{ contarNovedades(); }catch(e){}
+      await loadOrSeed(); view("app"); renderAll(); try{ contarNovedades(); }catch(e){} try{ iniciarPush(); }catch(e){}
       purgeOldTrash();
       countDuplicates().then(function(n){
         if(n>0) toast("Tienes "+n+" duplicados. Ve a Inicio y toca \u201CLimpiar duplicados\u201D.");
@@ -1994,6 +2018,175 @@
     if(typeof total === "number") localStorage.setItem(VISTO + f.coll, String(total));
     NOVEDADES[tab] = 0;
     pintarAvisos();
+  }
+
+
+  /* ==================================================================
+     NOTIFICACIONES DEL PANEL
+     ------------------------------------------------------------------
+     En iPhone, Apple solo permite notificaciones web si el panel esta
+     INSTALADO en la pantalla de inicio y se abre desde ese icono.
+     Abierto desde Safari nunca funciona, por diseño de Apple. Por eso
+     lo primero que hace esta barra es detectar en cual de los dos
+     estados estas y decirte exactamente que falta.
+     ================================================================== */
+  const VAPID_PUBLICA = "BEgTY0Dot5hBxapYRjg5E-OJ4AhblzEdt5Zm57D3Uh1pCB4iozk_pj-Bu07H8kIBvAoAQlyuhg24iVudM7eH4Js";
+
+  function esIOS(){
+    return /iPad|iPhone|iPod/.test(navigator.userAgent)
+        || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  }
+  function estaInstalado(){
+    return window.matchMedia("(display-mode: standalone)").matches
+        || window.navigator.standalone === true;
+  }
+  function haySoporte(){
+    return ("serviceWorker" in navigator) && ("PushManager" in window) && ("Notification" in window);
+  }
+  function b64aBytes(base64){
+    const pad = "=".repeat((4 - base64.length % 4) % 4);
+    const b64 = (base64 + pad).replace(/-/g, "+").replace(/_/g, "/");
+    const bruto = atob(b64);
+    const bytes = new Uint8Array(bruto.length);
+    for(let i = 0; i < bruto.length; i++) bytes[i] = bruto.charCodeAt(i);
+    return bytes;
+  }
+  function idDeSub(sub){
+    // Un identificador estable y corto a partir del endpoint.
+    const e = sub.endpoint || "";
+    let x = 0;
+    for(let i = 0; i < e.length; i++){ x = ((x << 5) - x + e.charCodeAt(i)) | 0; }
+    return "s" + Math.abs(x).toString(36) + "_" + e.slice(-12).replace(/[^a-zA-Z0-9]/g, "");
+  }
+
+  let SW_REG = null;
+
+  async function registrarSW(){
+    if(!haySoporte()) return null;
+    try{
+      SW_REG = await navigator.serviceWorker.register("sw-panel.js", { scope: "/" });
+      return SW_REG;
+    }catch(e){ return null; }
+  }
+
+  async function guardarSub(sub){
+    const json = sub.toJSON();
+    await setDoc(doc(db, "pushSubs", idDeSub(sub)), {
+      endpoint: sub.endpoint,
+      p256dh: json.keys && json.keys.p256dh,
+      auth:   json.keys && json.keys.auth,
+      agente: navigator.userAgent.slice(0, 180),
+      creado: serverTimestamp()
+    });
+  }
+
+  window.activarPush = async function(){
+    const btn = document.getElementById("pbActivar");
+    if(btn){ btn.disabled = true; btn.textContent = "Activando…"; }
+    try{
+      const permiso = await Notification.requestPermission();
+      if(permiso !== "granted"){ pintarPush(); return; }
+      const reg = SW_REG || await registrarSW();
+      if(!reg){ toast("No se pudo preparar el servicio"); pintarPush(); return; }
+      await navigator.serviceWorker.ready;
+      let sub = await reg.pushManager.getSubscription();
+      if(!sub){
+        sub = await reg.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: b64aBytes(VAPID_PUBLICA)
+        });
+      }
+      await guardarSub(sub);
+      toast("Notificaciones activadas");
+      pintarPush();
+    }catch(e){
+      toast("No se pudieron activar: " + (e && e.message ? e.message : "error"));
+      pintarPush();
+    }
+  };
+
+  window.probarPush = async function(){
+    try{
+      const reg = SW_REG || await navigator.serviceWorker.getRegistration();
+      if(!reg) return toast("Aun no esta listo");
+      await reg.showNotification("Prueba del panel", {
+        body: "Si ves esto, las notificaciones funcionan.",
+        icon: "icono-panel-192.png",
+        badge: "icono-panel-192.png",
+        tag: "prueba"
+      });
+    }catch(e){ toast("No se pudo mostrar la prueba"); }
+  };
+
+  window.desactivarPush = async function(){
+    try{
+      const reg = SW_REG || await navigator.serviceWorker.getRegistration();
+      const sub = reg && await reg.pushManager.getSubscription();
+      if(sub){
+        try{ await deleteDoc(doc(db, "pushSubs", idDeSub(sub))); }catch(e){}
+        await sub.unsubscribe();
+      }
+      toast("Notificaciones desactivadas en este dispositivo");
+      pintarPush();
+    }catch(e){ toast("No se pudo desactivar"); }
+  };
+
+  async function pintarPush(){
+    const el = document.getElementById("pushBar");
+    if(!el) return;
+    el.className = "";
+
+    if(!haySoporte()){
+      el.style.display = "";
+      el.innerHTML = '<div class="pb-txt"><b>Este navegador no admite notificaciones</b>' +
+        'Abre el panel en Safari o Chrome actualizados.</div>';
+      return;
+    }
+
+    if(esIOS() && !estaInstalado()){
+      el.style.display = "";
+      el.className = "aviso";
+      el.innerHTML = '<div class="pb-txt"><b>Instala el panel para recibir avisos</b>' +
+        'En iPhone y iPad, Apple solo permite notificaciones si abres el panel desde su icono. ' +
+        'Toca el boton Compartir de Safari, elige <b style="display:inline">Anadir a pantalla de inicio</b> ' +
+        'y desde ahora entra por ese icono.</div>';
+      return;
+    }
+
+    const reg = SW_REG || await navigator.serviceWorker.getRegistration();
+    const sub = reg ? await reg.pushManager.getSubscription() : null;
+    const permiso = Notification.permission;
+
+    if(permiso === "denied"){
+      el.style.display = "";
+      el.className = "aviso";
+      el.innerHTML = '<div class="pb-txt"><b>Notificaciones bloqueadas</b>' +
+        'Las rechazaste antes. Para reactivarlas: Ajustes del telefono &rarr; Notificaciones &rarr; Mi panel.</div>';
+      return;
+    }
+
+    if(sub && permiso === "granted"){
+      el.style.display = "";
+      el.className = "ok";
+      el.innerHTML = '<div class="pb-txt"><b>Notificaciones activadas</b>' +
+        'Este dispositivo recibira un aviso cuando entre algo nuevo.</div>' +
+        '<div class="pb-acc">' +
+          '<button class="pb-b ghost" type="button" onclick="probarPush()">Probar</button>' +
+          '<button class="pb-b ghost" type="button" onclick="desactivarPush()">Desactivar</button>' +
+        '</div>';
+      return;
+    }
+
+    el.style.display = "";
+    el.innerHTML = '<div class="pb-txt"><b>Activa las notificaciones</b>' +
+      'Te aviso en cuanto llegue una reserva, un prospecto o una solicitud.</div>' +
+      '<div class="pb-acc"><button class="pb-b" id="pbActivar" type="button" onclick="activarPush()">Activar notificaciones</button></div>';
+  }
+
+  async function iniciarPush(){
+    if(!haySoporte()) { pintarPush(); return; }
+    await registrarSW();
+    pintarPush();
   }
 
   // ==================== AGENDA DE DEMOSTRACIONES ====================
