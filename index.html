@@ -1356,10 +1356,56 @@
   }
 
 
-  /* ---- Regala y Gana: lamina unica de premios ---- */
-  .ryg-premios{margin:20px auto 0;max-width:440px;border-radius:18px;overflow:hidden;
-    border:1px solid var(--hairline);box-shadow:0 18px 44px rgba(0,0,0,.5)}
-  .ryg-premios img{width:100%;height:auto;display:block}
+  /* ================================================================
+     REGALA Y GANA — seccion de ancho completo sobre la textura morada
+     ================================================================ */
+  #regala-gana.ryg-sec{position:relative;padding:clamp(66px,9vw,112px) 0;overflow:hidden;isolation:isolate}
+  .ryg-sec::before{
+    content:"";position:absolute;inset:0;z-index:0;
+    background:
+      linear-gradient(to bottom, #0A0812 0%, rgba(10,8,18,.82) 22%, rgba(10,8,18,.80) 78%, #0A0812 100%),
+      linear-gradient(to right, #0A0812 0%, rgba(10,8,18,0) 26%, rgba(10,8,18,0) 74%, #0A0812 100%),
+      radial-gradient(90% 70% at 50% 0%, rgba(124,58,237,.22), transparent 62%),
+      url("fondo-textura.jpeg") center center / cover no-repeat;
+  }
+  .ryg-in{position:relative;z-index:1;text-align:center}
+  .ryg-title{
+    font-family:'Inter Tight',sans-serif;font-weight:700;line-height:.94;letter-spacing:-.04em;
+    font-size:clamp(42px,10vw,78px);
+  }
+  .ryg-title .t1{display:block;color:var(--ink)}
+  .ryg-title .t2{
+    display:block;padding-bottom:.1em;margin-bottom:-.1em;
+    background:linear-gradient(96deg, #C9A9FF 0%, #9B6BF5 46%, #6D28D9 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .ryg-lede{margin:20px auto 0;max-width:34ch;font-size:clamp(17px,4.4vw,22px);font-weight:600;color:var(--ink);line-height:1.3}
+  .ryg-desc{margin:12px auto 0;max-width:52ch;font-size:15.5px;line-height:1.6;color:var(--stone)}
+
+  .ryg-route{margin-top:40px}
+  .premios-img{margin:0 auto;max-width:640px;border-radius:22px;overflow:hidden;
+    border:1px solid var(--hairline);box-shadow:0 22px 56px rgba(0,0,0,.6)}
+  .premios-img img{width:100%;height:auto;display:block}
+
+  .ryg-actions{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:38px}
+  @media(min-width:560px){.ryg-actions{flex-direction:row;justify-content:center}}
+  .ryg-sec .ryg-go{
+    min-height:54px;padding:16px 30px;border-radius:999px;color:#fff;font-weight:700;
+    background:var(--metal);border:1px solid rgba(203,178,255,.34);
+    box-shadow:0 12px 32px rgba(91,33,182,.42), inset 0 1px 0 rgba(255,255,255,.18);
+  }
+  @media(hover:hover){.ryg-sec .ryg-go:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(102,42,204,.52), inset 0 1px 0 rgba(255,255,255,.24)}}
+  .ryg-sec .ryg-how{
+    min-height:54px;padding:16px 26px;border-radius:999px;color:var(--ink);font-weight:600;font-size:15.5px;
+    background:rgba(255,255,255,.05);border:1px solid rgba(196,167,255,.42);text-decoration:none;
+  }
+  @media(hover:hover){.ryg-sec .ryg-how:hover{border-color:rgba(196,167,255,.75);background:rgba(139,92,246,.16)}}
+  .ryg-trust{
+    list-style:none;padding:0;margin:26px auto 0;max-width:760px;
+    display:flex;flex-wrap:wrap;justify-content:center;gap:12px 24px;
+  }
+  .ryg-trust li{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--stone)}
+  .ryg-trust svg{width:17px;height:17px;flex:0 0 17px;color:var(--gold-text)}
 
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -1717,26 +1763,28 @@
   </div>
 </section>
 <!-- =============== REGALA Y GANA =============== -->
-<section class="block wrap" id="regala-gana" aria-label="Programa Regala y Gana">
-  <div class="ryg-card rv">
-    <div class="ryg-card-head">
-      <img class="ryg-logo" src="regalo/logo-regala-y-gana.webp" alt="Regala y Gana" width="933" height="592"
-           onerror="this.onerror=null;this.src='regalo/logo-regala-y-gana.png'">
+<section class="ryg-sec" id="regala-gana" aria-label="Programa Regala y Gana">
+  <div class="wrap ryg-in">
+    <h2 class="ryg-title rv"><span class="t1">Regala</span><span class="t2">y gana</span></h2>
+    <p class="ryg-lede rv">Comparte un obsequio. Gana premios para tu cocina.</p>
+    <p class="ryg-desc rv">Crea tu enlace personal, comp&aacute;rtelo con familiares y amigos y avanza durante 30 d&iacute;as en tu ruta de recompensas.</p>
+
+    <div class="ryg-route rv">
+      <figure class="premios-img">
+        <img src="premios.jpeg" alt="Posibles premios del programa Regala y Gana: cafetera, licuadora, juego de cuchillos, batidora de mano, ollas y sartenes" loading="lazy" width="1254" height="1254">
+      </figure>
     </div>
-    <h2 class="ryg-h">Comparte un obsequio. Gana premios para tu cocina.</h2>
-    <p class="ryg-p">Crea tu enlace personal, comp&aacute;rtelo con familiares y amigos y avanza durante 30 d&iacute;as en tu ruta de recompensas.</p>
-    <ul class="ryg-points">
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Sin costo para quien recibe</li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Sin obligaci&oacute;n de compra</li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Campa&ntilde;a de 30 d&iacute;as</li>
+
+    <div class="ryg-actions rv">
+      <a class="btn ryg-go" href="regala-y-gana.html" data-tr="Modulo RyG: ver programa">Regala una experiencia <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+      <a class="btn ryg-how" href="regalo/crear.html" data-tr="Modulo RyG: crear enlace">Crear mi enlace</a>
+    </div>
+
+    <ul class="ryg-trust rv">
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M17 5.5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Sin costo para quien recibe</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Campa&ntilde;a de 30 d&iacute;as</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Sin obligaci&oacute;n de compra</li>
     </ul>
-    <figure class="ryg-premios">
-      <img src="premios.jpeg" alt="Posibles premios del programa Regala y Gana: cafetera, licuadora, juego de cuchillos, batidora de mano, ollas y sartenes" loading="lazy" width="1254" height="1254">
-    </figure>
-    <div class="ryg-actions">
-      <a class="btn btn-solid ryg-go" href="regalo/crear.html" data-tr="Modulo RyG: crear enlace">Crear mi enlace</a>
-      <a class="ryg-how" href="regala-y-gana.html" data-tr="Modulo RyG: como funciona">C&oacute;mo funciona &rsaquo;</a>
-    </div>
   </div>
 </section>
 <!-- =============== PASAPORTE DE SABORES =============== -->
