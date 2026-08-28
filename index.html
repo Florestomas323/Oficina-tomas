@@ -1407,6 +1407,14 @@
   .ryg-trust li{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--stone)}
   .ryg-trust svg{width:17px;height:17px;flex:0 0 17px;color:var(--gold-text)}
 
+
+  @media print{
+    body{background:#FFFFFF!important;color:#111110!important}
+    body::before,body::after{display:none!important}
+    *{color:#111110!important;background:transparent!important;box-shadow:none!important;
+      border-color:#CFCFD6!important;-webkit-text-fill-color:#111110!important;filter:none!important}
+  }
+
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script>
