@@ -14,7 +14,7 @@
 <meta property="og:title" content="Tomas Flores — Royal Prestige">
 <meta property="og:description" content="Tu distribuidor de confianza. Demostración gratuita, recetas, servicio y contacto directo.">
 <meta property="og:url" content="https://tomasflores.com/">
-<meta property="og:image" content="https://tomasflores.com/og-image.jpeg">
+<meta property="og:image" content="https://tomasflores.com/og-image.jpeg?v=2">
 <meta property="og:image:secure_url" content="https://tomasflores.com/og-image.jpeg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Tomas Flores — Royal Prestige">
 <meta name="twitter:description" content="Tu distribuidor de confianza. Demostración gratuita, recetas, servicio y contacto directo.">
-<meta name="twitter:image" content="https://tomasflores.com/og-image.jpeg">
+<meta name="twitter:image" content="https://tomasflores.com/og-image.jpeg?v=2">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://tomasflores.com/">
 <link rel="icon" type="image/png" sizes="192x192" href="icono-oficina-192.png?v=2">
@@ -1407,6 +1407,42 @@
       border-color:#CFCFD6!important;-webkit-text-fill-color:#111110!important;filter:none!important}
   }
 
+
+  /* ================= PRODUCTOS (portada) ================= */
+  .px-sec{padding:clamp(52px,7vw,92px) 0;border-top:1px solid var(--hairline)}
+  .px-wrap{max-width:1080px;margin:0 auto;padding:0 22px;text-align:center}
+  .px-eyebrow{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-text);margin-bottom:14px}
+  .px-h{font-family:'Fraunces','Playfair Display',serif;font-style:italic;font-weight:500;font-size:clamp(1.6rem,3.4vw,2.3rem);line-height:1.2;margin:0 0 14px}
+  .px-lede{max-width:40em;margin:0 auto 34px;color:var(--stone);font-size:clamp(14.5px,1.5vw,16px);line-height:1.65}
+  .px-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:left}
+  .px-card{
+    display:block;padding:22px 22px 24px;border-radius:20px;text-decoration:none;
+    background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,0)), var(--card);
+    border:1px solid var(--hairline);box-shadow:var(--shadow);
+    transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
+  }
+  @media(hover:hover){.px-card:hover{transform:translateY(-3px);border-color:rgba(167,139,250,.45);box-shadow:0 18px 40px -20px rgba(91,33,182,.5)}}
+  .px-ico{
+    display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;
+    border-radius:14px;margin-bottom:14px;color:var(--gold-text);
+    background:rgba(139,92,246,.14);border:1px solid rgba(196,167,255,.25);
+  }
+  .px-ico svg{width:23px;height:23px}
+  .px-card b{display:block;font-family:'Inter Tight',sans-serif;font-weight:700;font-size:16.5px;color:var(--ink);margin-bottom:6px}
+  .px-card > span:last-child{display:block;font-size:13.5px;line-height:1.55;color:var(--stone)}
+  .px-cta{margin-top:30px}
+  .px-btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    min-height:52px;padding:0 28px;border-radius:999px;text-decoration:none;
+    font-family:'Inter Tight',sans-serif;font-weight:700;font-size:15.5px;color:#fff;
+    background:var(--metal);border:1px solid rgba(203,178,255,.34);
+    box-shadow:0 14px 30px -14px rgba(124,58,237,.55);
+    transition:transform .22s ease,box-shadow .22s ease;
+  }
+  @media(hover:hover){.px-btn:hover{transform:translateY(-2px);box-shadow:0 18px 36px -14px rgba(124,58,237,.72)}}
+  .px-btn svg{width:18px;height:18px}
+  @media(max-width:760px){.px-grid{grid-template-columns:1fr}.px-cta .px-btn{width:100%;max-width:420px}}
+
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script>
@@ -1763,6 +1799,38 @@
   </div>
 </section>
 <!-- =============== REGALA Y GANA =============== -->
+
+<!-- ============ PRODUCTOS ============ -->
+<section class="px-sec" id="productos" aria-label="Productos Royal Prestige">
+  <div class="px-wrap">
+    <div class="px-eyebrow">Productos Royal Prestige&reg;</div>
+    <h2 class="px-h">Soluciones para tu bienestar diario</h2>
+    <p class="px-lede">Descubre productos dise&ntilde;ados para ayudarte a cocinar con menos grasa, disfrutar agua de mejor calidad e incorporar jugos naturales a tu rutina.</p>
+    <div class="px-grid">
+      <a class="px-card" href="productos.html#cocina" data-event="home_prod_cocina">
+        <span class="px-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h16M6 10v7a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3v-7M2 10l2-3h16l2 3M12 7V4"/></svg></span>
+        <b>Cocina saludable</b>
+        <span>Sistemas para cocinar con menos grasa y conservar el sabor.</span>
+      </a>
+      <a class="px-card" href="productos.html#agua" data-event="home_prod_agua">
+        <span class="px-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6.5 7 6.5 11.5a6.5 6.5 0 1 1-13 0C5.5 10 12 3 12 3Z"/></svg></span>
+        <b>Agua de mejor calidad</b>
+        <span>Purificaci&oacute;n pr&aacute;ctica para beber y cocinar en casa.</span>
+      </a>
+      <a class="px-card" href="productos.html#jugoterapia" data-event="home_prod_jugo">
+        <span class="px-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l-1 7H9L8 3ZM9 10l1.2 10a1.5 1.5 0 0 0 1.5 1h.6a1.5 1.5 0 0 0 1.5-1L15 10M7 6h10"/></svg></span>
+        <b>Jugoterapia</b>
+        <span>Jugos naturales para sumar frutas y verduras a tu d&iacute;a.</span>
+      </a>
+    </div>
+    <div class="px-cta">
+      <a class="px-btn" href="productos.html" data-event="home_prod_ver">Conoce nuestros productos
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
 <section class="ryg-sec" id="regala-gana" aria-label="Programa Regala y Gana">
   <div class="wrap ryg-in">
     <h2 class="ryg-title rv"><span class="t1">Regala</span><span class="t2">y gana</span></h2>
