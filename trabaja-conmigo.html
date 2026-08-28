@@ -15,18 +15,18 @@
 <meta property="og:site_name" content="Tomas Flores — Royal Prestige">
 <meta property="og:title" content="Trabaja conmigo — Tomás Flores">
 <meta property="og:description" content="Construye un negocio en ventas con acompañamiento real, junto a Impact Enterprises y Royal Prestige.">
-<meta property="og:image" content="https://tomasflores.com/assets/trabaja/hero-trabaja.jpg">
-<meta property="og:image:alt" content="Tomás Flores, distribuidor independiente de Royal Prestige">
+<meta property="og:image" content="https://tomasflores.com/assets/trabaja/hero-equipo.jpeg">
+<meta property="og:image:alt" content="Tomás Flores y Angiemar Paredes, Impact Enterprises">
 <meta property="og:url" content="https://tomasflores.com/trabaja-conmigo.html">
 <meta property="og:locale" content="es_US">
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Trabaja conmigo — Tomás Flores">
 <meta name="twitter:description" content="Construye un negocio en ventas con acompañamiento real, junto a Impact Enterprises y Royal Prestige.">
-<meta name="twitter:image" content="https://tomasflores.com/assets/trabaja/hero-trabaja.jpg">
+<meta name="twitter:image" content="https://tomasflores.com/assets/trabaja/hero-equipo.jpeg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="assets/trabaja/hero-trabaja.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="assets/trabaja/hero-equipo.jpeg" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -72,8 +72,21 @@
   .eyebrow::before { content: ''; width: 28px; height: 1px; background: linear-gradient(90deg, var(--violet-glow), transparent); }
   .wrap { max-width: 1160px; margin: 0 auto; padding: 0 28px; }
 
-  nav { position: sticky; top:0; z-index: 50; background: rgba(10,8,18,0.86); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
-  nav .wrap { display:flex; align-items:center; justify-content:space-between; height:72px; }
+  nav { position: sticky; top:0; z-index: 50;
+    background: linear-gradient(180deg, rgba(64,50,96,.60), rgba(46,36,72,.52));
+    -webkit-backdrop-filter: blur(18px) saturate(1.35); backdrop-filter: blur(18px) saturate(1.35);
+    border-bottom: 1px solid rgba(196,167,255,.24);
+    box-shadow: 0 10px 30px -18px rgba(0,0,0,.6); }
+  nav .wrap { display:flex; align-items:center; gap:12px; height:72px; }
+  .nav-back {
+    flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center;
+    width:42px; height:42px; min-height:42px; border-radius:13px;
+    border:1px solid rgba(196,167,255,.32); background:rgba(255,255,255,.08);
+    color:var(--silver-bright); text-decoration:none;
+    transition: background .22s ease, border-color .22s ease, transform .22s ease; }
+  .nav-back svg { width:19px; height:19px; }
+  .nav-back:hover { background:rgba(167,139,250,.18); border-color:rgba(196,167,255,.55); transform:translateX(-1px); }
+  .nav-cta { margin-left:auto; }
   .brand { display:flex; align-items:center; gap:10px; text-decoration:none; }
   .brand img { height: 38px; width:38px; object-fit:contain; border-radius: 9px; border:1px solid rgba(167,139,250,0.20); }
   .brand span { font-family:'Playfair Display', serif; font-size:15px; letter-spacing:0.08em; color: var(--silver-bright); }
@@ -115,7 +128,7 @@
   .micro-benefits span:hover { border-color: rgba(167,139,250,0.4); background: rgba(167,139,250,0.06); transform: translateY(-1px); }
   .micro-benefits span svg { width:17px; height:17px; color: var(--violet-glow); flex-shrink:0; }
   .hero-img { position: relative; overflow: hidden; background: var(--black); }
-  .hero-img img { width:100%; height:100%; object-fit: cover; object-position: 50% 15%; filter: saturate(0.98) contrast(1.02); }
+  .hero-img img { width:100%; height:100%; object-fit: cover; object-position: 85% top; filter: saturate(0.98) contrast(1.02); }
   /* Desktop: solo un blend suave del borde izquierdo e inferior; el rostro queda limpio */
   .hero-img::after {
     content:''; position:absolute; inset:0; pointer-events:none;
@@ -371,8 +384,8 @@
   .hero-copy p.lead{ animation: fadeUp .75s .16s both; }
   .hero-copy .cta-row{ animation: fadeUp .75s .24s both; }
   .hero-copy .micro-benefits{ animation: fadeUp .75s .32s both; }
-  .hero-img img{ transform: scale(1.04); animation: heroZoom 8s ease-out both; }
-  @keyframes heroZoom{ from{ transform: scale(1.1) } to{ transform: scale(1.04) } }
+  .hero-img img{ transform-origin: 85% 0; transform: scale(1.02); animation: heroZoom 8s ease-out both; }
+  @keyframes heroZoom{ from{ transform: scale(1.06) } to{ transform: scale(1.02) } }
 
   /* Micro-benefits as pills */
   .micro-benefits{ gap:8px; }
@@ -462,7 +475,7 @@
   /* Mobile refinements */
   @media (max-width: 880px){
     .hero-img{ height: 52vh; max-height: 460px; }
-    .hero-img img{ object-position: center 20%; }
+    .hero-img img{ object-position: 85% top; }
     /* Degradado que empieza abajo: el rostro queda prácticamente limpio */
     .hero-img::after{
       background: linear-gradient(to bottom,
@@ -546,12 +559,30 @@
     *{color:#111110!important;background:transparent!important;box-shadow:none!important;
       border-color:#CFCFD6!important;-webkit-text-fill-color:#111110!important;filter:none!important}
   }
+
+  /* ---- En escritorio la foto se funde con el fondo por su borde izquierdo ---- */
+  @media (min-width: 881px){
+    .hero-img{
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.45) 7%, rgba(0,0,0,.9) 17%, #000 28%);
+      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.45) 7%, rgba(0,0,0,.9) 17%, #000 28%);
+    }
+  }
+  /* ---- Sin CTA flotante: en movil tapaba el contenido del hero ---- */
+  .floating-cta{ display:none !important; }
+  @media (max-width: 880px){
+    body{ padding-bottom: env(safe-area-inset-bottom, 0px) !important; }
+    /* La barra gana el boton de volver; el CTA del hero queda como accion principal */
+    nav .wrap{ height:64px; }
+    .nav-back{ width:40px; height:40px; min-height:40px; }
+  }
+
 </style>
 </head>
 <body>
 
 <nav aria-label="Navegación principal">
   <div class="wrap">
+    <a class="nav-back" href="/" aria-label="Volver al inicio de tomasflores.com" data-event="nav_back_click"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></a>
     <a class="brand" href="/" aria-label="Volver al inicio de Tomás Flores">
       <img src="assets/trabaja/logo-impact.png" alt="Logotipo de Impact Enterprises" width="34" height="34">
       <span>IMPACT ENTERPRISES</span>
@@ -581,7 +612,7 @@
     </div>
   </div>
   <div class="hero-img">
-    <img src="assets/trabaja/hero-trabaja.jpg" alt="Tomás Flores, distribuidor independiente de Royal Prestige" width="1100" height="1650" fetchpriority="high" decoding="async">
+    <img src="assets/trabaja/hero-equipo.jpeg" alt="Tomás Flores y Angiemar Paredes, Impact Enterprises — distribuidores independientes de Royal Prestige" width="1672" height="940" fetchpriority="high" decoding="async">
   </div>
 </section>
 
