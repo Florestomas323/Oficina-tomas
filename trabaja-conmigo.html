@@ -24,6 +24,7 @@
 <meta name="twitter:title" content="Trabaja conmigo — Tomás Flores">
 <meta name="twitter:description" content="Construye un negocio en ventas con acompañamiento real, junto a Impact Enterprises y Royal Prestige.">
 <meta name="twitter:image" content="https://tomasflores.com/assets/trabaja/hero-equipo.jpeg">
+<script src="config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="image" href="assets/trabaja/hero-equipo.jpeg" fetchpriority="high">
@@ -1126,6 +1127,43 @@ form.addEventListener('input', () => {
   }
 }, { once: false });
 
+
+/* =========================================================
+   GUARDAR EL PROSPECTO EN FIRESTORE
+   Antes, si el visitante no pulsaba enviar en WhatsApp, el
+   registro se perdia por completo. Ahora queda guardado
+   siempre, y el flujo de WhatsApp sigue igual.
+   Nunca bloquea el envio: si Firestore falla, se continua.
+========================================================= */
+async function guardarProspecto(data){
+  try{
+    var O = window.OFICINA || {};
+    if(!O.firebase) return false;
+    var fb = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+    var fs = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+    var app = (fb.getApps && fb.getApps().length) ? fb.getApps()[0] : fb.initializeApp(O.firebase);
+    var db  = fs.getFirestore(app);
+    var metas = (data.goal || []).slice(0, 6).map(function(g){ return String(g).slice(0, 40); });
+    await fs.addDoc(fs.collection(db, "leads"), {
+      nombre:   String(data.fullName || "").slice(0, 80),
+      phone:    String(data.phone || "").slice(0, 30),
+      ciudad:   String(data.city || "").slice(0, 80),
+      metas:    metas,
+      vehiculo: String(data.vehicle || "").slice(0, 20),
+      origen:   "trabaja-conmigo",
+      status:   "nueva",
+      consent:  true,
+      createdAt: fs.serverTimestamp()
+    });
+    return true;
+  }catch(e){
+    /* Silencioso a proposito: el visitante no debe ver un error
+       tecnico, y el envio por WhatsApp tiene que continuar. */
+    if (window.console && console.warn) console.warn("No se pudo guardar el prospecto:", e && e.message);
+    return false;
+  }
+}
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   if (isSubmitting) return; // evita doble envío
@@ -1139,6 +1177,7 @@ form.addEventListener('submit', async (e) => {
   const _fd = new FormData(form);
   const data = Object.fromEntries(_fd.entries());
   data.goal = _fd.getAll('goal');   // seleccion multiple
+  await guardarProspecto(data);     // queda registrado pase lo que pase
 
   // Sin endpoint configurado: enviamos por WhatsApp (funcional, sin backend).
   if (!FORM_ENDPOINT) {

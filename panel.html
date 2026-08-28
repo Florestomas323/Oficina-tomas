@@ -174,6 +174,41 @@
     *{color:#111110!important;background:transparent!important;box-shadow:none!important;
       border-color:#CFCFD6!important;-webkit-text-fill-color:#111110!important;filter:none!important}
   }
+
+  /* ---- Prospectos y avisos de novedades ---- */
+  .tab{ position:relative; }
+  .tab-badge{
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width:19px; height:19px; padding:0 5px; margin-left:7px;
+    border-radius:999px; font-size:11.5px; font-weight:700; line-height:1;
+    background:#7C3AED; color:#fff; vertical-align:middle; }
+  #avisosCaja{ margin-bottom:16px; padding:14px 16px; border-radius:16px;
+    background:rgba(139,92,246,.12); border:1px solid rgba(196,167,255,.28); }
+  .aviso-tit{ font-size:12.5px; font-weight:700; letter-spacing:.06em;
+    text-transform:uppercase; color:#C9A9FF; margin-bottom:9px; }
+  .aviso-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .aviso-item{ font:inherit; font-size:14px; cursor:pointer;
+    padding:8px 14px; min-height:40px; border-radius:999px;
+    background:rgba(255,255,255,.06); border:1px solid rgba(196,167,255,.25);
+    color:#F5F3FA; }
+  .aviso-item b{ color:#C9A9FF; }
+  .pr-card{ padding:15px 16px; border-radius:16px; margin-bottom:11px;
+    background:rgba(255,255,255,.04); border:1px solid rgba(196,167,255,.16); }
+  .pr-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap; }
+  .pr-top b{ font-size:15.5px; }
+  .pr-est{ display:inline-block; margin-left:9px; padding:2px 9px; border-radius:999px;
+    font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; }
+  .pr-nueva{ background:rgba(139,92,246,.24); color:#D8C6FF; }
+  .pr-contactado{ background:rgba(93,224,138,.18); color:#8FEAB0; }
+  .pr-descartado{ background:rgba(255,138,138,.16); color:#FFB3B3; }
+  .pr-fecha{ font-size:12.5px; color:#8E88A6; white-space:nowrap; }
+  .pr-datos{ display:flex; gap:14px; flex-wrap:wrap; margin-top:7px; font-size:13.5px; color:#A9A3C2; }
+  .pr-chips{ display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+  .pr-chip{ font-size:12px; padding:4px 10px; border-radius:999px;
+    background:rgba(196,167,255,.12); border:1px solid rgba(196,167,255,.2); color:#C0B7DC; }
+  .pr-acc{ display:flex; gap:7px; flex-wrap:wrap; margin-top:13px; }
+  .ryg-b.danger{ border-color:rgba(255,138,138,.35); color:#FFB3B3; }
+
 </style>
 </head>
 <body>
@@ -217,11 +252,12 @@
       <button class="tab" data-tab="analitica" type="button">Analítica</button>
       <button class="tab" data-tab="pasaporte" type="button">Pasaporte</button>
       <button class="tab" data-tab="regalayg" type="button">Regala y Gana</button>
-      <button class="tab" data-tab="ayuda" type="button">Clientes y solicitudes</button>
+      <button class="tab" data-tab="prospectos" type="button">Prospectos</button><button class="tab" data-tab="ayuda" type="button">Clientes y solicitudes</button>
       <button class="tab" data-tab="agenda" type="button">Agenda</button>
       <button class="tab" data-tab="papelera" type="button">Papelera</button>
   </nav>
   <main class="wrap">
+    <div id="avisosCaja" style="display:none"></div>
     <div class="panel on" id="p-inicio"></div>
     <div class="panel" id="p-recetas"></div>
     <div class="panel" id="p-opiniones"></div>
@@ -231,7 +267,7 @@
     <div class="panel" id="p-analitica"></div>
     <div class="panel" id="p-pasaporte"></div>
     <div class="panel" id="p-regalayg"></div>
-    <div class="panel" id="p-ayuda"></div>
+    <div class="panel" id="p-prospectos"></div><div class="panel" id="p-ayuda"></div>
     <div class="panel" id="p-agenda"></div>
     <div class="panel" id="p-papelera"></div>
   </main>
@@ -243,7 +279,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import { getFirestore, collection, doc, getDoc, getDocs, setDoc, addDoc, updateDoc, deleteDoc, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getFirestore, collection, doc, getDoc, getDocs, setDoc, addDoc, updateDoc, deleteDoc, writeBatch, serverTimestamp, getCountFromServer, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   /* Si config.js no llegó, avisar en vez de quedarse cargando para siempre */
   if(!window.OFICINA || !window.OFICINA.firebase || !window.OFICINA.firebase.apiKey){
@@ -333,7 +369,7 @@
     view("loading");
     $("loadingTxt").textContent = "Cargando tu contenido…";
     try{
-      await loadOrSeed(); view("app"); renderAll();
+      await loadOrSeed(); view("app"); renderAll(); try{ contarNovedades(); }catch(e){}
       purgeOldTrash();
       countDuplicates().then(function(n){
         if(n>0) toast("Tienes "+n+" duplicados. Ve a Inicio y toca \u201CLimpiar duplicados\u201D.");
@@ -1777,11 +1813,188 @@
     if(name==="analitica") renderAnalytics();
     if(name==="pasaporte") renderPassportAdmin();
     if(name==="regalayg") renderGiftAdmin();
+    if(name==="prospectos") renderProspectos();
     if(name==="ayuda") renderAyuda();
     if(name==="agenda") renderAgenda();
     if(name==="papelera") renderTrash();
+    marcarVisto(name);
     window.scrollTo({top:0,behavior:"smooth"});
   };
+
+
+  /* ==================================================================
+     PROSPECTOS  (formulario de trabaja-conmigo.html)
+     ================================================================== */
+  let PR = [], prCargado = false, prEstado = "todos";
+  const PR_METAS = {
+    tiempo_completo: "Tiempo completo",
+    medio_tiempo:    "Medio tiempo",
+    mas_ingresos:    "Mas ingresos",
+    lider:           "Formarse como lider",
+    aprender_ventas: "Aprender ventas",
+    otro:            "Otro / conocer mas"
+  };
+  const PR_VEH = { si:"Si", no:"No", hablarlo:"Prefiere hablarlo" };
+
+  async function prCargar(){
+    const snap = await getDocs(collection(db,"leads"));
+    PR = [];
+    snap.forEach(d => PR.push(Object.assign({ id:d.id }, d.data())));
+    PR.sort((a,b) => (msDe(b.createdAt) - msDe(a.createdAt)));
+    prCargado = true;
+  }
+  function msDe(v){
+    if(!v) return 0;
+    if(typeof v.toMillis === "function") return v.toMillis();
+    if(v.seconds) return v.seconds * 1000;
+    return 0;
+  }
+  function prFecha(v){
+    const ms = msDe(v);
+    if(!ms) return "";
+    const d = new Date(ms);
+    return d.toLocaleDateString("es-MX",{day:"2-digit",month:"short"}) + " · " +
+           d.toLocaleTimeString("es-MX",{hour:"2-digit",minute:"2-digit"});
+  }
+  window.prRecargar = async function(){
+    prCargado = false;
+    await renderProspectos();
+    toast("Prospectos actualizados");
+  };
+  window.prFiltro = function(v){ prEstado = v; renderProspectos(); };
+  window.prEstadoSet = async function(id, estado){
+    try{
+      await updateDoc(doc(db,"leads",id), { status: estado });
+      const r = PR.find(x => x.id === id); if(r) r.status = estado;
+      renderProspectos();
+      toast("Prospecto marcado como " + estado);
+    }catch(e){ toast("No se pudo actualizar"); }
+  };
+  window.prBorrar = async function(id){
+    if(!confirm("¿Borrar este prospecto? No se puede deshacer.")) return;
+    try{
+      await deleteDoc(doc(db,"leads",id));
+      PR = PR.filter(x => x.id !== id);
+      renderProspectos();
+      toast("Prospecto borrado");
+    }catch(e){ toast("No se pudo borrar"); }
+  };
+
+  async function renderProspectos(){
+    const el = $("p-prospectos");
+    if(!el) return;
+    if(!prCargado){
+      el.innerHTML = '<div class="empty-note">Cargando prospectos…</div>';
+      try{ await prCargar(); }
+      catch(e){ el.innerHTML = '<div class="empty-note">No se pudieron cargar los prospectos. Revisa las reglas de Firestore para la coleccion <b>leads</b>.</div>'; return; }
+    }
+    if(typeof rygEstilos === "function") rygEstilos();
+    let lista = PR.slice();
+    if(prEstado !== "todos") lista = lista.filter(r => (r.status || "nueva") === prEstado);
+    const nuevas = PR.filter(r => (r.status || "nueva") === "nueva").length;
+
+    let out = '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">' +
+      '<h3 style="font-size:17px;font-family:\'Inter Tight\',sans-serif">Prospectos de Trabaja conmigo</h3>' +
+      '<button class="ryg-b sm" type="button" onclick="prRecargar()">Actualizar</button></div>';
+    out += '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">' +
+      ['todos','nueva','contactado','descartado'].map(v =>
+        '<button class="ryg-b sm' + (prEstado === v ? ' on' : '') + '" type="button" onclick="prFiltro(\'' + v + '\')">' +
+        (v === "todos" ? "Todos (" + PR.length + ")" : v === "nueva" ? "Nuevos (" + nuevas + ")" : v.charAt(0).toUpperCase() + v.slice(1)) +
+        '</button>').join('') + '</div>';
+
+    if(!lista.length){
+      out += '<div class="empty-note">Aun no hay prospectos en este filtro. Cuando alguien llene el formulario de <b>Trabaja conmigo</b>, aparecera aqui aunque no llegue a enviarte el WhatsApp.</div>';
+      el.innerHTML = out; return;
+    }
+
+    out += lista.map(r => {
+      const tel = String(r.phone || "").replace(/[^0-9+]/g, "");
+      const metas = (r.metas || []).map(m => '<span class="pr-chip">' + esc(PR_METAS[m] || m) + '</span>').join('');
+      const est = r.status || "nueva";
+      return '<div class="pr-card">' +
+        '<div class="pr-top">' +
+          '<div><b>' + esc(r.nombre || "Sin nombre") + '</b>' +
+          '<span class="pr-est pr-' + esc(est) + '">' + esc(est) + '</span></div>' +
+          '<span class="pr-fecha">' + prFecha(r.createdAt) + '</span>' +
+        '</div>' +
+        '<div class="pr-datos">' +
+          (r.ciudad ? '<span>' + esc(r.ciudad) + '</span>' : '') +
+          (r.vehiculo ? '<span>Vehiculo: ' + esc(PR_VEH[r.vehiculo] || r.vehiculo) + '</span>' : '') +
+        '</div>' +
+        (metas ? '<div class="pr-chips">' + metas + '</div>' : '') +
+        '<div class="pr-acc">' +
+          (tel ? '<a class="ryg-b sm" href="https://wa.me/' + esc(tel.replace("+","")) + '" target="_blank" rel="noopener">WhatsApp</a>' +
+                 '<a class="ryg-b sm" href="tel:' + esc(tel) + '">Llamar</a>' : '') +
+          (est !== "contactado" ? '<button class="ryg-b sm" type="button" onclick="prEstadoSet(\'' + r.id + '\',\'contactado\')">Contactado</button>' : '') +
+          (est !== "descartado" ? '<button class="ryg-b sm" type="button" onclick="prEstadoSet(\'' + r.id + '\',\'descartado\')">Descartar</button>' : '') +
+          '<button class="ryg-b sm danger" type="button" onclick="prBorrar(\'' + r.id + '\')">Borrar</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+    el.innerHTML = out;
+  }
+
+  /* ==================================================================
+     AVISOS: "nuevos desde tu ultima visita"
+     Compara el total actual de cada coleccion contra el guardado.
+     No depende de que los documentos tengan fecha, asi que funciona
+     igual en todas las colecciones.
+     ================================================================== */
+  const FUENTES = [
+    { tab:"agenda",     coll:"appointments",      nombre:"reservas" },
+    { tab:"ayuda",      coll:"helpRequests",      nombre:"solicitudes" },
+    { tab:"regalayg",   coll:"giftParticipants",  nombre:"de Regala y Gana" },
+    { tab:"pasaporte",  coll:"passportUsers",     nombre:"del Pasaporte" },
+    { tab:"prospectos", coll:"leads",             nombre:"prospectos" }
+  ];
+  const VISTO = "panelVisto:";
+  let NOVEDADES = {};
+
+  async function contarNovedades(){
+    for(const f of FUENTES){
+      try{
+        const snap = await getCountFromServer(collection(db, f.coll));
+        const total = snap.data().count;
+        const antes = parseInt(localStorage.getItem(VISTO + f.coll) || "-1", 10);
+        if(antes < 0){
+          // Primera vez: no marcamos nada como nuevo, solo guardamos la foto actual.
+          localStorage.setItem(VISTO + f.coll, String(total));
+          NOVEDADES[f.tab] = 0;
+        }else{
+          NOVEDADES[f.tab] = Math.max(0, total - antes);
+        }
+        NOVEDADES["_total_" + f.tab] = total;
+      }catch(e){ NOVEDADES[f.tab] = 0; }
+    }
+    pintarAvisos();
+  }
+  function pintarAvisos(){
+    document.querySelectorAll(".tab").forEach(t => {
+      const n = NOVEDADES[t.dataset.tab] || 0;
+      let b = t.querySelector(".tab-badge");
+      if(n > 0){
+        if(!b){ b = document.createElement("span"); b.className = "tab-badge"; t.appendChild(b); }
+        b.textContent = n > 99 ? "99+" : n;
+      }else if(b){ b.remove(); }
+    });
+    const caja = $("avisosCaja");
+    if(!caja) return;
+    const partes = FUENTES.filter(f => (NOVEDADES[f.tab] || 0) > 0)
+      .map(f => '<button type="button" class="aviso-item" onclick="goTab(\'' + f.tab + '\')">' +
+                '<b>' + NOVEDADES[f.tab] + '</b> ' + f.nombre + '</button>');
+    if(!partes.length){ caja.style.display = "none"; caja.innerHTML = ""; return; }
+    caja.style.display = "";
+    caja.innerHTML = '<div class="aviso-tit">Novedades desde tu ultima visita</div>' +
+                     '<div class="aviso-row">' + partes.join('') + '</div>';
+  }
+  function marcarVisto(tab){
+    const f = FUENTES.find(x => x.tab === tab);
+    if(!f) return;
+    const total = NOVEDADES["_total_" + tab];
+    if(typeof total === "number") localStorage.setItem(VISTO + f.coll, String(total));
+    NOVEDADES[tab] = 0;
+    pintarAvisos();
+  }
 
   // ==================== AGENDA DE DEMOSTRACIONES ====================
   const AG_DIAS = [["1","Lunes"],["2","Martes"],["3","Miércoles"],["4","Jueves"],
