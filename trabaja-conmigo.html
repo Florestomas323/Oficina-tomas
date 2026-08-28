@@ -576,6 +576,47 @@
     .nav-back{ width:40px; height:40px; min-height:40px; }
   }
 
+
+  /* ---- FAQ: solo 3 preguntas visibles ---- */
+  .faq-more-wrap{ display:flex; justify-content:center; margin-top:22px; }
+  .faq-more{
+    display:inline-flex; align-items:center; gap:9px; min-height:48px; padding:0 24px;
+    border-radius:999px; cursor:pointer; font:inherit; font-size:15px; font-weight:600;
+    color:var(--silver-bright); background:rgba(255,255,255,.05);
+    border:1px solid rgba(196,167,255,.32);
+    transition: background .22s ease, border-color .22s ease, transform .22s ease; }
+  .faq-more svg{ width:17px; height:17px; transition: transform .3s ease; }
+  .faq-more[aria-expanded="true"] svg{ transform: rotate(180deg); }
+  @media(hover:hover){ .faq-more:hover{ background:rgba(167,139,250,.18); border-color:rgba(196,167,255,.6); transform:translateY(-1px); } }
+
+  /* ---- Seleccion multiple de objetivos ---- */
+  .goal-hint{ font-weight:500; font-size:12.5px; letter-spacing:0; text-transform:none;
+    color:var(--violet-glow); opacity:.9; margin-left:6px; }
+  .goal-grid{ display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+  @media (max-width: 560px){ .goal-grid{ grid-template-columns:1fr; } }
+  .form-card .goal-opt{
+    display:flex; align-items:center; gap:11px; min-height:48px; padding:11px 14px; margin:0;
+    border-radius:13px; cursor:pointer;
+    font-size:14.5px; font-weight:500; line-height:1.3;
+    text-transform:none; letter-spacing:normal;
+    color:var(--silver); background:rgba(255,255,255,.04);
+    border:1px solid rgba(196,167,255,.18);
+    transition: background .2s ease, border-color .2s ease, color .2s ease; }
+  .form-card .goal-opt span{ text-transform:none; letter-spacing:normal; font-size:14.5px; }
+  .form-card .goal-opt input[type="checkbox"]{
+    appearance:none; -webkit-appearance:none;
+    flex:0 0 20px; width:20px; height:20px; min-height:0; max-width:20px;
+    padding:0; margin:0; box-shadow:none;
+    border-radius:6px; border:1.5px solid rgba(196,167,255,.45); background:transparent;
+    cursor:pointer; position:relative; transition: background .2s ease, border-color .2s ease; }
+  .form-card .goal-opt input[type="checkbox"]:checked{ background:#7C3AED; border-color:#C9A9FF; }
+  .form-card .goal-opt input[type="checkbox"]:checked::after{
+    content:""; position:absolute; left:6px; top:2.5px; width:5px; height:10px;
+    border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg); }
+  .form-card .goal-opt input[type="checkbox"]:focus-visible{ outline:2px solid #C9A9FF; outline-offset:2px; }
+  .form-card .goal-opt:has(input:checked){ background:rgba(139,92,246,.16); border-color:rgba(196,167,255,.5); color:#F5F3FA; }
+  @media(hover:hover){ .form-card .goal-opt:hover{ border-color:rgba(196,167,255,.38); } }
+
 </style>
 </head>
 <body>
@@ -846,14 +887,14 @@
     </div>
     <p class="niveles-callout">Cada etapa requiere resultados y desarrollo real. Avanzar no ocurre automáticamente por antigüedad.</p>
     <div class="niveles-track">
-      <div class="niv-card"><span class="niv-n">01</span><div class="niv-name">Emprendedor</div><div class="niv-desc">Aprendes el modelo y desarrollas tus primeras ventas.</div></div>
-      <div class="niv-card"><span class="niv-n">02</span><div class="niv-name">Distribuidor Junior</div><div class="niv-desc">Empiezas a desarrollar una estructura comercial.</div></div>
-      <div class="niv-card"><span class="niv-n">03</span><div class="niv-name">Distribuidor</div><div class="niv-desc">Construyes y lideras una organización propia.</div></div>
-      <div class="niv-card"><span class="niv-n">04</span><div class="niv-name">Blue Network</div><div class="niv-desc">Desarrollas volumen, estructura y nuevos líderes.</div></div>
-      <div class="niv-card"><span class="niv-n">05</span><div class="niv-name">Royal Network</div><div class="niv-desc">Nivel avanzado dentro de la estructura de crecimiento.</div></div>
-      <div class="niv-card"><span class="niv-n">06</span><div class="niv-name">Premier Network Leader</div><div class="niv-desc">Nivel avanzado dentro de la estructura de crecimiento.</div></div>
-      <div class="niv-card"><span class="niv-n">07</span><div class="niv-name">Master Network Leader</div><div class="niv-desc">Nivel avanzado dentro de la estructura de crecimiento.</div></div>
-      <div class="niv-card"><span class="niv-n">08</span><div class="niv-name">Elite Network Leader</div><div class="niv-desc">Nivel avanzado dentro de la estructura de crecimiento.</div></div>
+      <div class="niv-card"><span class="niv-n">01</span><div class="niv-name">Emprendedor</div><div class="niv-desc">Aprendes el modelo, conoces el producto y desarrollas tus primeras ventas.</div></div>
+      <div class="niv-card"><span class="niv-n">02</span><div class="niv-name">Distribuidor Junior</div><div class="niv-desc">Tu negocio ya es una realidad: lo manejas tú y empiezas a formar nuevos líderes.</div></div>
+      <div class="niv-card"><span class="niv-n">03</span><div class="niv-name">Distribuidor</div><div class="niv-desc">Creces y fortaleces tu red. Lideras a tu equipo y le enseñas los básicos del negocio.</div></div>
+      <div class="niv-card"><span class="niv-n">04</span><div class="niv-name">Blue Network</div><div class="niv-desc">Patrocinas Distribuciones directas y tu organización crece de forma constante.</div></div>
+      <div class="niv-card"><span class="niv-n">05</span><div class="niv-name">Royal Network</div><div class="niv-desc">Sigues desarrollando tu liderazgo empresarial y entrenas a toda tu red.</div></div>
+      <div class="niv-card"><span class="niv-n">06</span><div class="niv-name">Premier Network Leader</div><div class="niv-desc">Eres el líder de tu grupo: guías a tus Distribuidores y desarrollas nuevos directos.</div></div>
+      <div class="niv-card"><span class="niv-n">07</span><div class="niv-name">Master Network Leader</div><div class="niv-desc">Has creado Distribuciones fuertes e independientes y conservas el título en tu trayectoria.</div></div>
+      <div class="niv-card"><span class="niv-n">08</span><div class="niv-name">Elite Network Leader</div><div class="niv-desc">El nivel más alto: lideras con excelencia y dejas un legado en otras personas.</div></div>
     </div>
     <p class="niveles-note">No necesitas comprar inventario para comenzar. No necesitas experiencia previa: recibirás entrenamiento para aprender el negocio. Comencé desde las primeras etapas de esta carrera y hoy nuestra organización ha alcanzado Blue Network durante dos años consecutivos. El objetivo continúa siendo crecer y desarrollar nuevos líderes.</p>
   </div>
@@ -917,26 +958,32 @@
         <button class="faq-q" aria-expanded="false" aria-controls="faq-inventario" id="faq-inventario-btn"><span>¿Tengo que comprar inventario?</span><span class="icon" aria-hidden="true">+</span></button>
         <div class="faq-a" id="faq-inventario" role="region" aria-labelledby="faq-inventario-btn"><p>No necesitas comprar inventario para comenzar.</p></div>
       </div>
-      <div class="faq-item" data-open="false">
+      <div class="faq-item faq-extra" hidden data-open="false">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-mediotiempo" id="faq-mediotiempo-btn"><span>¿Puedo hacerlo medio tiempo?</span><span class="icon" aria-hidden="true">+</span></button>
         <div class="faq-a" id="faq-mediotiempo" role="region" aria-labelledby="faq-mediotiempo-btn"><p>Dependiendo de tu disponibilidad puedes comenzar desarrollando actividad parcial, aunque los resultados dependerán directamente del tiempo y esfuerzo que dediques.</p></div>
       </div>
-      <div class="faq-item" data-open="false">
+      <div class="faq-item faq-extra" hidden data-open="false">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-dinero" id="faq-dinero-btn"><span>¿Cómo se genera dinero?</span><span class="icon" aria-hidden="true">+</span></button>
         <div class="faq-a" id="faq-dinero" role="region" aria-labelledby="faq-dinero-btn"><p>Como distribuidor independiente, la compensación está relacionada con la actividad comercial y las ventas. Para quienes avanzan hacia el desarrollo de una organización, existen componentes adicionales dentro del plan de compensación correspondiente. Los resultados dependen de la actividad y desempeño individual.</p></div>
       </div>
-      <div class="faq-item" data-open="false">
+      <div class="faq-item faq-extra" hidden data-open="false">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-marca" id="faq-marca-btn"><span>¿Impact Enterprises y Royal Prestige son lo mismo?</span><span class="icon" aria-hidden="true">+</span></button>
         <div class="faq-a" id="faq-marca" role="region" aria-labelledby="faq-marca-btn"><p>No. Impact Enterprises es la organización desde la que Tomás Flores desarrolla su negocio y equipo como distribuidor independiente de Royal Prestige. Royal Prestige es la marca y compañía con la que se desarrolla la distribución.</p></div>
       </div>
-      <div class="faq-item" data-open="false">
+      <div class="faq-item faq-extra" hidden data-open="false">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-equipo" id="faq-equipo-btn"><span>¿Tengo que construir un equipo?</span><span class="icon" aria-hidden="true">+</span></button>
         <div class="faq-a" id="faq-equipo" role="region" aria-labelledby="faq-equipo-btn"><p>No necesariamente para comenzar. Puedes iniciar aprendiendo la actividad comercial y desarrollando clientes. Quienes desean avanzar hacia distribución y mayores niveles de liderazgo pueden posteriormente aprender a formar y desarrollar un equipo.</p></div>
       </div>
-      <div class="faq-item" data-open="false">
+      <div class="faq-item faq-extra" hidden data-open="false">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-siguiente" id="faq-siguiente-btn"><span>¿Qué pasa después de dejar mis datos?</span><span class="icon" aria-hidden="true">+</span></button>
         <div class="faq-a" id="faq-siguiente" role="region" aria-labelledby="faq-siguiente-btn"><p>Tomás o alguien autorizado de Impact Enterprises se comunicará contigo para conocerte, explicarte cómo funciona la oportunidad y responder tus preguntas.</p></div>
       </div>
+    </div>
+    <div class="faq-more-wrap">
+      <button type="button" class="faq-more" id="faqMore" aria-expanded="false" aria-controls="faqList">
+        <span class="faq-more-txt">Ver todas las preguntas</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
     </div>
   </div>
 </section>
@@ -964,15 +1011,15 @@
           </div>
         </div>
         <div class="form-row">
-          <label for="goal">¿Qué buscas principalmente?</label>
-          <select id="goal" name="goal">
-            <option value="ingresos_adicionales">Generar ingresos adicionales</option>
-            <option value="cambiar_carrera">Cambiar de carrera</option>
-            <option value="tiempo_completo">Emprender a tiempo completo</option>
-            <option value="aprender_ventas">Aprender ventas</option>
-            <option value="construir_equipo">Construir un equipo</option>
-            <option value="conocer_mas">Solo quiero conocer más</option>
-          </select>
+          <label id="goalLabel">&iquest;Qu&eacute; buscas? <span class="goal-hint">Puedes elegir varias</span></label>
+          <div class="goal-grid" role="group" aria-labelledby="goalLabel">
+            <label class="goal-opt"><input type="checkbox" name="goal" value="tiempo_completo"> <span>Un trabajo de tiempo completo</span></label>
+            <label class="goal-opt"><input type="checkbox" name="goal" value="medio_tiempo"> <span>Un trabajo de medio tiempo</span></label>
+            <label class="goal-opt"><input type="checkbox" name="goal" value="mas_ingresos"> <span>Generar m&aacute;s ingresos</span></label>
+            <label class="goal-opt"><input type="checkbox" name="goal" value="lider"> <span>Formarme como l&iacute;der</span></label>
+            <label class="goal-opt"><input type="checkbox" name="goal" value="aprender_ventas"> <span>Aprender ventas</span></label>
+            <label class="goal-opt"><input type="checkbox" name="goal" value="otro"> <span>Otro / quiero conocer m&aacute;s</span></label>
+          </div>
         </div>
         <div class="form-row">
           <label id="vehicleLabel">¿Tienes vehículo actualmente?</label>
@@ -1025,12 +1072,12 @@ const WHATSAPP_NUMBER = "16823811576"; // Número de Tomás Flores (mismo del si
 
 /* Etiquetas legibles para el objetivo seleccionado (para el mensaje de WhatsApp) */
 const GOAL_LABELS = {
-  ingresos_adicionales: "Generar ingresos adicionales",
-  cambiar_carrera: "Cambiar de carrera",
-  tiempo_completo: "Emprender a tiempo completo",
+  tiempo_completo: "Un trabajo de tiempo completo",
+  medio_tiempo: "Un trabajo de medio tiempo",
+  mas_ingresos: "Generar m\u00e1s ingresos",
+  lider: "Formarme como l\u00edder",
   aprender_ventas: "Aprender ventas",
-  construir_equipo: "Construir un equipo",
-  conocer_mas: "Solo quiero conocer más"
+  otro: "Otro / quiere conocer m\u00e1s"
 };
 const VEHICLE_LABELS = { si: "Sí", no: "No", hablarlo: "Prefiere hablarlo" };
 
@@ -1089,11 +1136,13 @@ form.addEventListener('submit', async (e) => {
     return;
   }
 
-  const data = Object.fromEntries(new FormData(form).entries());
+  const _fd = new FormData(form);
+  const data = Object.fromEntries(_fd.entries());
+  data.goal = _fd.getAll('goal');   // seleccion multiple
 
   // Sin endpoint configurado: enviamos por WhatsApp (funcional, sin backend).
   if (!FORM_ENDPOINT) {
-    const goalLabel = GOAL_LABELS[data.goal] || data.goal || '';
+    const goalLabel = (data.goal || []).map(function(g){ return GOAL_LABELS[g] || g; }).join(', ') || 'Sin especificar';
     const vehicleLabel = VEHICLE_LABELS[data.vehicle] || data.vehicle || '';
     const msg =
       'Hola Tomás, quiero conocer la oportunidad de Impact Enterprises.\n\n' +
@@ -1103,7 +1152,7 @@ form.addEventListener('submit', async (e) => {
       'Busco: ' + goalLabel + '\n' +
       'Vehículo: ' + vehicleLabel;
     const waUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
-    trackEvent('form_submitted', { goal: data.goal, channel: 'whatsapp' }); // sin datos personales
+    trackEvent('form_submitted', { goal: (data.goal || []).join('|'), channel: 'whatsapp' }); // sin datos personales
     const win = window.open(waUrl, '_blank', 'noopener');
     if (!win) { window.location.href = waUrl; return; } // popup bloqueado (iOS): abre en el mismo tab
     form.style.display = 'none';
@@ -1124,7 +1173,7 @@ form.addEventListener('submit', async (e) => {
 
     if (!response.ok) throw new Error('Respuesta no exitosa del servidor');
 
-    trackEvent('form_submitted', { goal: data.goal }); // sin datos personales
+    trackEvent('form_submitted', { goal: (data.goal || []).join('|') }); // sin datos personales
     form.style.display = 'none';
     formStatus.classList.add('show');
   } catch (err) {
@@ -1164,6 +1213,25 @@ observer.observe(formSection);
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
   targets.forEach(el => io.observe(el));
+})();
+
+/* ---- Ver mas / ver menos en el FAQ ---- */
+(function(){
+  var btn = document.getElementById('faqMore');
+  if (!btn) return;
+  var extras = document.querySelectorAll('.faq-extra');
+  var txt = btn.querySelector('.faq-more-txt');
+  btn.addEventListener('click', function(){
+    var abierto = btn.getAttribute('aria-expanded') === 'true';
+    for (var i = 0; i < extras.length; i++) { extras[i].hidden = abierto; }
+    btn.setAttribute('aria-expanded', abierto ? 'false' : 'true');
+    txt.textContent = abierto ? 'Ver todas las preguntas' : 'Ver menos';
+    if (abierto) {
+      var faq = document.getElementById('faq');
+      if (faq) faq.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    if (typeof trackEvent === 'function') trackEvent(abierto ? 'faq_collapse' : 'faq_expand');
+  });
 })();
 </script>
 </body>
