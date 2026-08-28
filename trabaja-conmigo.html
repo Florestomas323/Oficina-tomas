@@ -186,7 +186,7 @@
   .story { display:grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items:center; }
   .story-copy p { color:#b6b7bf; font-size:15px; margin-bottom: 15px; max-width: 520px; }
   .story-img { border-radius: 20px; overflow:hidden; border:1px solid var(--line); }
-  .story-img img { width:100%; height:auto; display:block; aspect-ratio: 2 / 3; object-fit: cover; object-position: center 20%; }
+  .story-img img { width:100%; height:auto; display:block; aspect-ratio: 3 / 4; object-fit: cover; object-position: center 32%; }
   .story-cta { display:inline-flex; align-items:center; gap:8px; margin-top:8px; font-size:13.5px; color: var(--violet-glow); text-decoration:none; }
 
   .timeline-track { position: relative; display:grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 10px; }
@@ -215,7 +215,7 @@
   .recognitions { margin-top: 50px; }
   .recognitions h4 { font-family:'Playfair Display',serif; font-size: 1.1rem; color: var(--silver-bright); margin-bottom: 18px; }
   .mini-gallery { display:grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  .mini-gallery img { width:100%; height: 260px; object-fit:cover; border-radius:18px; border:1px solid var(--line); }
+  .mini-gallery img { width:100%; height:auto; aspect-ratio: 4 / 5; object-fit:cover; object-position: center 22%; border-radius:18px; border:1px solid var(--line); }
   .mini-gallery figcaption { font-size: 12.5px; color:#9a9ba4; margin-top:8px; }
   .results-disclaimer { margin-top: 34px; font-size: 12.5px; color:#9a9ba4; max-width: 680px; padding: 16px 20px; border: 1px dashed var(--line); border-radius: 12px; }
 
@@ -488,7 +488,7 @@
     .cta-row .btn-primary, .cta-row .btn-ghost{ flex:1 1 auto; justify-content:center; }
     .stat-strip .stat{ flex:1 1 100%; border-right:none; border-bottom:1px solid var(--line); }
     .stat-strip .stat:last-child{ border-bottom:none; }
-    .mini-gallery img{ height: 320px; }
+    .mini-gallery img{ aspect-ratio: 4 / 5; height:auto; }
     /* CTA flotante + safe-area iPhone */
     .floating-cta{ bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
     body{ padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
@@ -693,7 +693,7 @@
       <a href="#resultados" class="story-cta" data-event="results_click">Conoce mi recorrido ↓</a>
     </div>
     <div class="story-img">
-      <img src="assets/trabaja/historia-tomas.jpg" alt="Tomás Flores" loading="lazy" decoding="async" width="900" height="1350">
+      <img src="assets/trabaja/historia-tomas.jpeg" alt="Tomás Flores trabajando en construcción, antes de Impact Enterprises" loading="lazy" decoding="async" width="900" height="1200">
     </div>
   </div>
 </section>
@@ -755,12 +755,12 @@
       <h4>Otros reconocimientos</h4>
       <div class="mini-gallery">
         <figure>
-          <img src="assets/trabaja/convencion-1.jpg" alt="Reconocimiento proyectado en pantalla oficial de Royal Prestige" width="900" height="1200" loading="lazy" decoding="async">
-          <figcaption>Reconocimiento proyectado en pantalla oficial — The Grand Convention, Royal Prestige. Distinto del trofeo Royal Lion mostrado arriba.</figcaption>
+          <img src="assets/trabaja/reco-novatos-2023.jpeg" alt="Tomás Flores y Angiemar Paredes recibiendo el reconocimiento a mejores novatos del territorio de Texas 2023" width="900" height="1600" loading="lazy" decoding="async">
+          <figcaption>Mejores novatos del territorio de Texas, 2023 — nuestro primer reconocimiento dentro de Royal Prestige.</figcaption>
         </figure>
         <figure>
-          <img src="assets/trabaja/convencion-2.jpg" alt="Parte del equipo de Impact Enterprises en convención nacional" width="1000" height="1497" loading="lazy" decoding="async">
-          <figcaption>No se construye solo — con parte del equipo en convención nacional.</figcaption>
+          <img src="assets/trabaja/reco-convencion-nola.jpeg" alt="Tomás Flores en The Grand Convention de Royal Prestige, su primera convención nacional en New Orleans" width="900" height="1351" loading="lazy" decoding="async">
+          <figcaption>Mi primera convención nacional — The Grand Convention, New Orleans.</figcaption>
         </figure>
       </div>
     </div>
@@ -769,7 +769,7 @@
 
     <div class="mid-cta">
       <p>¿Quieres saber cómo empezar?</p>
-      <a href="#unirme" class="btn-primary" data-event="mid_page_cta_click">Conversemos →</a>
+      <a href="https://wa.me/16823811576?text=Hola%20Tomas%20%F0%9F%91%8B%20Me%20gustar%C3%ADa%20saber%20c%C3%B3mo%20empezar%20a%20trabajar%20contigo" target="_blank" rel="noopener" class="btn-primary" data-event="mid_page_cta_click" aria-label="Escribir por WhatsApp a Tomás Flores">Conversemos por WhatsApp →</a>
     </div>
   </div>
 </section>
