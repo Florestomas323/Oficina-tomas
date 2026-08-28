@@ -1355,6 +1355,12 @@
     .ts-item{font-size:11.5px;padding:12px 8px}
   }
 
+
+  /* ---- Regala y Gana: lamina unica de premios ---- */
+  .ryg-premios{margin:20px auto 0;max-width:440px;border-radius:18px;overflow:hidden;
+    border:1px solid var(--hairline);box-shadow:0 18px 44px rgba(0,0,0,.5)}
+  .ryg-premios img{width:100%;height:auto;display:block}
+
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script>
@@ -1724,14 +1730,12 @@
       <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Sin obligaci&oacute;n de compra</li>
       <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Campa&ntilde;a de 30 d&iacute;as</li>
     </ul>
-    <div class="ryg-prizes" aria-label="Ejemplos de premios">
-      <figure><img src="regalo/tabla-cocina.webp" alt="Tabla de cocina" loading="lazy"><figcaption>Tabla de cocina</figcaption></figure>
-      <figure><img src="regalo/chocolatera.webp" alt="Chocolatera" loading="lazy"><figcaption>Chocolatera</figcaption></figure>
-      <figure><img src="regalo/premio-mayor.webp" alt="Premio mayor a elegir" loading="lazy"><figcaption>Premio mayor</figcaption></figure>
-    </div>
+    <figure class="ryg-premios">
+      <img src="premios.jpeg" alt="Posibles premios del programa Regala y Gana: cafetera, licuadora, juego de cuchillos, batidora de mano, ollas y sartenes" loading="lazy" width="1254" height="1254">
+    </figure>
     <div class="ryg-actions">
       <a class="btn btn-solid ryg-go" href="regalo/crear.html" data-tr="Modulo RyG: crear enlace">Crear mi enlace</a>
-      <a class="ryg-how" href="regalo/crear.html" data-tr="Modulo RyG: como funciona">C&oacute;mo funciona &rsaquo;</a>
+      <a class="ryg-how" href="regala-y-gana.html" data-tr="Modulo RyG: como funciona">C&oacute;mo funciona &rsaquo;</a>
     </div>
   </div>
 </section>
