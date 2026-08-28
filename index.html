@@ -1163,7 +1163,7 @@
     .d-sm{display:inline}
 
     .hero{
-      min-height:100svh;min-height:100dvh;
+      min-height:100svh;
       align-items:flex-end;
     }
     /* La foto manda: rostro, accion y parte de las ollas */
@@ -1409,6 +1409,9 @@
   .ryg-trust svg{width:17px;height:17px;flex:0 0 17px;color:var(--gold-text)}
 
 
+  /* iOS Safari infla el texto al recomponer y luego lo corrige: eso se ve
+     como un cambio de tamano brusco al volver a la pagina. */
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   @media print{
     body{background:#FFFFFF!important;color:#111110!important}
     body::before,body::after{display:none!important}
