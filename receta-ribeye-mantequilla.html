@@ -72,18 +72,24 @@
 }
 </script>
 <style>
-  :root{--paper:#FAFAF8;--card:#FFF;--ink:#111110;--stone:#66625B;--hairline:#E9E6E0;--gold:#B08D4F;--gold-text:#8A672B;--shadow:0 1px 2px rgba(17,17,16,.04),0 8px 24px rgba(17,17,16,.06)}
+  :root{--paper:#0A0812;--card:#171226;--ink:#F5F3FA;--stone:#A9A3C2;--hairline:rgba(196,167,255,.15);--gold:#8B5CF6;--gold-text:#C9A9FF;--shadow:0 1px 2px rgba(0,0,0,.45),0 8px 24px rgba(0,0,0,.40);
+    --metal:linear-gradient(135deg,#9B6BF5 0%,#7C3AED 52%,#5B21B6 100%);
+    --metal-silver:linear-gradient(135deg,#F2F1F7 0%,#C9C6DA 45%,#8F8BA6 100%);
+    --silver:#D8D5E8; --silver-dim:#8E88A6;
+    --ink:#F5F3FA; --card:#171226; --stone:#A9A3C2;
+    --gold:#8B5CF6; --gold-text:#C9A9FF; --hairline:rgba(196,167,255,.15);
+  }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   body{background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
   .wrap{max-width:760px;margin:0 auto;padding:0 20px}
   .top{display:flex;align-items:center;gap:12px;padding:16px 0}
-  .back{display:inline-flex;align-items:center;gap:7px;color:var(--ink);text-decoration:none;font-weight:600;font-size:14.5px;padding:9px 15px;border:1px solid var(--hairline);border-radius:999px;background:#fff}
+  .back{display:inline-flex;align-items:center;gap:7px;color:var(--ink);text-decoration:none;font-weight:600;font-size:14.5px;padding:9px 15px;border:1px solid var(--hairline);border-radius:999px;background:var(--card)}
   .heroimg{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:22px;box-shadow:var(--shadow)}
   .eyebrow{font-family:'Fraunces',serif;font-style:italic;color:var(--gold-text);font-size:16px;display:block;margin:22px 0 6px}
   h1{font-family:'Inter Tight',sans-serif;font-size:clamp(28px,7vw,40px);letter-spacing:-.03em;line-height:1.05}
   .desc{color:var(--stone);font-size:16px;line-height:1.55;margin-top:10px;max-width:56ch}
   .meta{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px}
-  .chip{background:#fff;border:1px solid var(--hairline);border-radius:999px;padding:8px 14px;font-size:13.5px;font-weight:600}
+  .chip{background:var(--card);border:1px solid var(--hairline);border-radius:999px;padding:8px 14px;font-size:13.5px;font-weight:600}
   .chip b{color:var(--gold-text)}
   .card{background:var(--card);border:1px solid var(--hairline);border-radius:20px;padding:22px;margin-top:18px;box-shadow:var(--shadow)}
   h2{font-family:'Inter Tight',sans-serif;font-size:20px;letter-spacing:-.02em;margin-bottom:14px}
@@ -94,17 +100,41 @@
   .steps{list-style:none;counter-reset:s}
   .steps li{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--hairline)}
   .steps li:last-child{border-bottom:0}
-  .stp-n{flex:0 0 30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+  .stp-n{flex:0 0 30px;height:30px;border-radius:50%;background:var(--metal);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
   .steps p{font-size:15.5px;line-height:1.6;padding-top:3px}
-  .tipbox{background:#F6F1E7;border:1px solid #EADFC9;border-radius:16px;padding:16px 18px;margin-top:18px}
+  .tipbox{background:rgba(139,92,246,.14);border:1px solid rgba(232,199,102,.28);border-radius:16px;padding:16px 18px;margin-top:18px}
   .tipbox .t{font-weight:700;font-size:14px;color:var(--gold-text);margin-bottom:5px}
   .tipbox p{font-size:14.5px;line-height:1.55}
   .cta{display:flex;flex-direction:column;gap:10px;margin:26px 0 14px}
   .btn{display:flex;align-items:center;justify-content:center;gap:9px;border-radius:16px;padding:16px 20px;font-size:15.5px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font-family:inherit}
-  .btn-solid{background:var(--ink);color:#fff}
-  .btn-line{background:#fff;color:var(--ink);border:1.5px solid var(--gold)}
+  .btn-solid{background:var(--metal);color:#fff}
+  .btn-line{background:var(--card);color:var(--ink);border:1.5px solid var(--gold)}
   .foot{color:var(--stone);text-align:center;font-size:13px;padding:26px 0 40px}
   .foot a{color:var(--gold-text);font-weight:600;text-decoration:none}
+
+  /* ---- Paleta morada: capa de fondo compartida con el sitio ---- */
+  body{position:relative;background:#0A0812;color:var(--ink)}
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+    background:#0A0812 url('fondo-textura.jpeg') center center / cover no-repeat;opacity:.55;
+  }
+  body::after{
+    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(120% 80% at 50% 0%, rgba(124,58,237,.20), transparent 60%),
+      linear-gradient(180deg, rgba(10,8,18,.62) 0%, rgba(10,8,18,.86) 55%, rgba(10,8,18,.94) 100%);
+  }
+  ::selection{background:rgba(167,139,250,.32);color:#fff}
+  /* El logotipo "Regala y Gana" tiene tipografia azul marino: se perfila en claro */
+  img[alt="Regala y Gana"], .logo, .ryg-logo, #brandLogo{
+    filter:drop-shadow(0 0 1.6px rgba(255,255,255,.95)) drop-shadow(0 2px 12px rgba(255,255,255,.28));
+  }
+  @media print{
+    body{background:#FFFFFF!important;color:#111110!important}
+    body::before,body::after{display:none!important}
+    *{color:#111110!important;background:transparent!important;box-shadow:none!important;
+      border-color:#CFCFD6!important;-webkit-text-fill-color:#111110!important;filter:none!important}
+  }
 </style>
 </head>
 <body>

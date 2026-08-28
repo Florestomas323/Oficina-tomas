@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0a0a0c">
+<meta name="theme-color" content="#0A0812">
 <title>Trabaja conmigo — Tomás Flores | Impact Enterprises</title>
 <meta name="description" content="Conoce cómo trabajar junto a Tomás Flores e Impact Enterprises como distribuidor independiente de Royal Prestige. Formación, ventas, liderazgo y acompañamiento desde cero.">
 <meta name="robots" content="index,follow">
@@ -29,19 +29,24 @@
 <link rel="preload" as="image" href="assets/trabaja/hero-trabaja.jpg" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --black: #0a0a0c;
-    --charcoal: #141417;
-    --panel: #1a1a1f;
-    --silver: #c9cad0;
-    --silver-bright: #e8e9ee;
+  :root{
+    --black: #0A0812;
+    --charcoal: #120E1E;
+    --panel: #171226;
+    --silver: #C7C3DA;
+    --silver-bright: #F5F3FA;
     --violet: #7c3aed;
     --violet-deep: #5b21b6;
-    --violet-glow: #a78bfa;
-    --line: rgba(201,202,208,0.14);
-    --ok: #34d399;
+    --violet-glow: #C9A9FF;
+    --line: rgba(196,167,255,0.15);
+    --ok: #5DE08A;
     --no: #6f707a;
-    --err: #f87171;
+    --err: #FF8A8A;
+    --metal:linear-gradient(135deg,#9B6BF5 0%,#7C3AED 52%,#5B21B6 100%);
+    --metal-silver:linear-gradient(135deg,#F2F1F7 0%,#C9C6DA 45%,#8F8BA6 100%);
+    --silver:#D8D5E8; --silver-dim:#8E88A6;
+    --ink:#F5F3FA; --card:#171226; --stone:#A9A3C2;
+    --gold:#8B5CF6; --gold-text:#C9A9FF; --hairline:rgba(196,167,255,.15);
   }
   * { box-sizing: border-box; margin:0; padding:0; }
   html { scroll-behavior: smooth; }
@@ -67,7 +72,7 @@
   .eyebrow::before { content: ''; width: 28px; height: 1px; background: linear-gradient(90deg, var(--violet-glow), transparent); }
   .wrap { max-width: 1160px; margin: 0 auto; padding: 0 28px; }
 
-  nav { position: sticky; top:0; z-index: 50; background: rgba(10,10,12,0.82); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+  nav { position: sticky; top:0; z-index: 50; background: rgba(10,8,18,0.86); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
   nav .wrap { display:flex; align-items:center; justify-content:space-between; height:72px; }
   .brand { display:flex; align-items:center; gap:10px; text-decoration:none; }
   .brand img { height: 38px; width:38px; object-fit:contain; border-radius: 9px; border:1px solid rgba(167,139,250,0.20); }
@@ -221,11 +226,11 @@
   .niveles .section-head h2 { color: var(--black); }
   .niveles .section-head p { color: #3a3a40; }
   .niveles-callout {
-    font-size: 13.5px; color: #3a3a40; background: #fff; border: 1px solid rgba(10,10,12,0.12);
+    font-size: 13.5px; color: #3a3a40; background: var(--card); border: 1px solid rgba(10,10,12,0.12);
     border-radius: 12px; padding: 14px 18px; margin-bottom: 30px; max-width: 620px;
   }
   .niveles-track { display:grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 10px; }
-  .niv-card { background: #ffffff; border: 1px solid rgba(10,10,12,0.12); border-radius: 16px; padding: 20px 18px; box-shadow: 0 10px 26px -18px rgba(10,10,12,0.25); }
+  .niv-card { background: var(--card); border: 1px solid rgba(10,10,12,0.12); border-radius: 16px; padding: 20px 18px; box-shadow: 0 10px 26px -18px rgba(10,10,12,0.25); }
   .niv-card .niv-n { font-family:'Playfair Display', serif; font-style: italic; color: var(--violet-deep); font-size: 14px; margin-bottom: 8px; display:block; }
   .niv-card .niv-name { font-family:'Playfair Display', serif; font-weight:600; font-size: 0.96rem; color: var(--black); line-height:1.25; margin-bottom: 6px; }
   .niv-card .niv-desc { font-size: 12px; color: #52525c; line-height:1.45; }
@@ -432,7 +437,7 @@
   .form-card{ background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0)), var(--panel); box-shadow: var(--shadow-glow), var(--shadow-card); }
   .form-row input, .form-row select{ transition: border-color .2s ease, box-shadow .2s ease, background .2s ease; }
   .form-row input:hover, .form-row select:hover{ border-color: rgba(167,139,250,0.35); }
-  .form-row input:focus, .form-row select:focus{ outline:none; border-color: rgba(167,139,250,0.65); box-shadow: 0 0 0 3px rgba(124,58,237,0.2); background:#101014; }
+  .form-row input:focus, .form-row select:focus{ outline:none; border-color: rgba(167,139,250,0.65); box-shadow: 0 0 0 3px rgba(124,58,237,0.2); background:#15102A; }
   .form-duo{ display:grid; grid-template-columns:1fr; gap:0; }
   .form-submit{ display:flex; align-items:center; justify-content:center; gap:8px; }
   .form-submit:hover{ transform: translateY(-2px); box-shadow: 0 18px 40px -14px rgba(124,58,237,0.7); }
@@ -495,6 +500,50 @@
     [data-reveal]{ opacity:1 !important; transform:none !important; }
     .hero-copy .eyebrow,.hero-copy h1,.hero-copy p.lead,.hero-copy .cta-row,.hero-copy .micro-benefits,.hero-img img{ animation:none !important; }
     .hero-img img{ transform:none !important; }
+  }
+
+  /* ---- Niveles: seccion invertida a la paleta oscura ---- */
+  .niveles{ background: linear-gradient(160deg,#170F28 0%,#0D0818 62%,#0A0812 100%); color: var(--silver-bright); }
+  .niveles .eyebrow{ color: var(--violet-glow); }
+  .niveles .eyebrow::before{ background: linear-gradient(90deg, var(--violet-glow), transparent); }
+  .niveles .section-head h2{ color: var(--silver-bright); }
+  .niveles .section-head p{ color:#B6AFD2; }
+  .niveles-callout{
+    color:#C7C2DC; background: rgba(255,255,255,.05);
+    border: 1px solid rgba(196,167,255,.18); }
+  .niv-card{
+    background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,0)), var(--panel);
+    border: 1px solid var(--line); box-shadow: 0 18px 40px -26px rgba(0,0,0,.8); }
+  .niv-card .niv-n{ color: var(--violet-glow); }
+  .niv-card .niv-name{ color: var(--silver-bright); }
+  .niv-card .niv-desc{ color:#A9A3C2; }
+  .niv-card:hover{ box-shadow: 0 22px 46px -24px rgba(0,0,0,.85); border-color: rgba(167,139,250,.4); }
+  .niveles-note{
+    color:#A9A3C2; background: rgba(255,255,255,.04);
+    border: 1px solid rgba(196,167,255,.16); }
+
+  /* ---- Paleta morada: capa de fondo compartida con el sitio ---- */
+  body{position:relative;background:#0A0812;color:var(--ink)}
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+    background:#0A0812 url('fondo-textura.jpeg') center center / cover no-repeat;opacity:.55;
+  }
+  body::after{
+    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(120% 80% at 50% 0%, rgba(124,58,237,.20), transparent 60%),
+      linear-gradient(180deg, rgba(10,8,18,.62) 0%, rgba(10,8,18,.86) 55%, rgba(10,8,18,.94) 100%);
+  }
+  ::selection{background:rgba(167,139,250,.32);color:#fff}
+  /* El logotipo "Regala y Gana" tiene tipografia azul marino: se perfila en claro */
+  img[alt="Regala y Gana"], .logo, .ryg-logo, #brandLogo{
+    filter:drop-shadow(0 0 1.6px rgba(255,255,255,.95)) drop-shadow(0 2px 12px rgba(255,255,255,.28));
+  }
+  @media print{
+    body{background:#FFFFFF!important;color:#111110!important}
+    body::before,body::after{display:none!important}
+    *{color:#111110!important;background:transparent!important;box-shadow:none!important;
+      border-color:#CFCFD6!important;-webkit-text-fill-color:#111110!important;filter:none!important}
   }
 </style>
 </head>

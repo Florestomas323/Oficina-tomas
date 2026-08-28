@@ -14,23 +14,53 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@700&family=Fraunces:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
 <style>
-  :root{--paper:#FAFAF8;--card:#FFF;--ink:#111110;--stone:#66625B;--hairline:#E9E6E0;--gold:#B08D4F;--gold-text:#8A672B;--shadow:0 1px 2px rgba(17,17,16,.04),0 8px 24px rgba(17,17,16,.06)}
+  :root{--paper:#0A0812;--card:#171226;--ink:#F5F3FA;--stone:#A9A3C2;--hairline:rgba(196,167,255,.15);--gold:#8B5CF6;--gold-text:#C9A9FF;--shadow:0 1px 2px rgba(0,0,0,.45),0 8px 24px rgba(0,0,0,.40);
+    --metal:linear-gradient(135deg,#9B6BF5 0%,#7C3AED 52%,#5B21B6 100%);
+    --metal-silver:linear-gradient(135deg,#F2F1F7 0%,#C9C6DA 45%,#8F8BA6 100%);
+    --silver:#D8D5E8; --silver-dim:#8E88A6;
+    --ink:#F5F3FA; --card:#171226; --stone:#A9A3C2;
+    --gold:#8B5CF6; --gold-text:#C9A9FF; --hairline:rgba(196,167,255,.15);
+  }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   body{background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
   .wrap{max-width:720px;margin:0 auto;padding:0 20px 50px}
   .top{display:flex;align-items:center;gap:12px;padding:16px 0}
-  .back{display:inline-flex;align-items:center;gap:7px;color:var(--ink);text-decoration:none;font-weight:600;font-size:14.5px;padding:9px 15px;border:1px solid var(--hairline);border-radius:999px;background:#fff}
+  .back{display:inline-flex;align-items:center;gap:7px;color:var(--ink);text-decoration:none;font-weight:600;font-size:14.5px;padding:9px 15px;border:1px solid var(--hairline);border-radius:999px;background:var(--card)}
   .eyebrow{font-family:'Fraunces',serif;font-style:italic;color:var(--gold-text);font-size:16px;display:block;margin:18px 0 6px}
   h1{font-family:'Inter Tight',sans-serif;font-size:clamp(26px,6.5vw,36px);letter-spacing:-.03em;line-height:1.08;margin-bottom:8px}
   .upd{color:var(--stone);font-size:13px;margin-bottom:8px}
   .card{background:var(--card);border:1px solid var(--hairline);border-radius:20px;padding:22px;margin-top:16px;box-shadow:var(--shadow)}
   h2{font-family:'Inter Tight',sans-serif;font-size:18px;letter-spacing:-.02em;margin-bottom:10px}
-  p,li{font-size:15px;line-height:1.65;color:#3B3831}
+  p,li{font-size:15px;line-height:1.65;color:#DCD8EA}
   ul{padding-left:20px;margin-top:6px}
   li{margin-bottom:6px}
   .hi{color:var(--gold-text);font-weight:600}
   a{color:var(--gold-text)}
   .foot{color:var(--stone);text-align:center;font-size:12.5px;padding-top:30px;line-height:1.6}
+
+  /* ---- Paleta morada: capa de fondo compartida con el sitio ---- */
+  body{position:relative;background:#0A0812;color:var(--ink)}
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+    background:#0A0812 url('fondo-textura.jpeg') center center / cover no-repeat;opacity:.55;
+  }
+  body::after{
+    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(120% 80% at 50% 0%, rgba(124,58,237,.20), transparent 60%),
+      linear-gradient(180deg, rgba(10,8,18,.62) 0%, rgba(10,8,18,.86) 55%, rgba(10,8,18,.94) 100%);
+  }
+  ::selection{background:rgba(167,139,250,.32);color:#fff}
+  /* El logotipo "Regala y Gana" tiene tipografia azul marino: se perfila en claro */
+  img[alt="Regala y Gana"], .logo, .ryg-logo, #brandLogo{
+    filter:drop-shadow(0 0 1.6px rgba(255,255,255,.95)) drop-shadow(0 2px 12px rgba(255,255,255,.28));
+  }
+  @media print{
+    body{background:#FFFFFF!important;color:#111110!important}
+    body::before,body::after{display:none!important}
+    *{color:#111110!important;background:transparent!important;box-shadow:none!important;
+      border-color:#CFCFD6!important;-webkit-text-fill-color:#111110!important;filter:none!important}
+  }
 </style>
 </head>
 <body>
@@ -103,7 +133,7 @@
   </div>
 
   <div class="card">
-    <p style="font-size:13.5px;color:#5A5650">Esta informaci&oacute;n es de car&aacute;cter general y no constituye asesor&iacute;a legal. Se recomienda su revisi&oacute;n por un abogado autorizado cuando corresponda.</p>
+    <p style="font-size:13.5px;color:#B4AECA">Esta informaci&oacute;n es de car&aacute;cter general y no constituye asesor&iacute;a legal. Se recomienda su revisi&oacute;n por un abogado autorizado cuando corresponda.</p>
   </div>
 
   <p class="foot">Tomas Flores &middot; Distribuidor Autorizado Independiente de Royal Prestige&reg;<br>Royal Prestige&reg; y sus marcas pertenecen a sus respectivos propietarios.<br><a href="index.html">tomasflores.com</a></p>
