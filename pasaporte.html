@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <script src="config.js"></script>
+<script src="avisar.js"></script>
 <title>Pasaporte de Sabores — Tomas Flores</title>
 <meta name="description" content="Un continente. Muchas cocinas. Un viaje para compartir. Prepara seis recetas, toma tu foto, gana tus sellos y completa la ruta.">
 <link rel="canonical" href="https://tomasflores.com/pasaporte.html">
@@ -16,8 +17,8 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/png" href="icono-pasaporte.png?v=2">
-<link rel="apple-touch-icon" href="icono-pasaporte.png?v=2">
+<link rel="icon" type="image/png" href="icono-pasaporte.png?v=4">
+<link rel="apple-touch-icon" href="icono-pasaporte.png?v=4">
 <meta name="apple-mobile-web-app-title" content="Pasaporte">
 <meta name="theme-color" content="#0A0812">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1025,6 +1026,7 @@ document.addEventListener('click', e=>{
           name:USER.name, phone:USER.phone, city:USER.city, state:USER.state, stamps:USER.stamps,
           consent:true, consentAt:serverTimestamp(), createdAt:serverTimestamp(), updatedAt:serverTimestamp()
         });
+        if(window.avisar) window.avisar('passportUsers', uid);
       }
     }catch(e){ restoreLocal(); }
   }catch(e){
