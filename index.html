@@ -2499,9 +2499,9 @@ try{
 
   // ---------- Franja Próximamente ----------
   const TIPOS_HS = {
-    receta:  {label:"Nueva receta",    color:"#8A672B"},
-    novedad: {label:"Novedad",         color:"#5A3F86"},
-    oferta:  {label:"Oferta especial", color:"#9C3524"}
+    receta:  {label:"Nueva receta",    color:"#C9A9FF"},
+    novedad: {label:"Novedad",         color:"#C4B5E8"},
+    oferta:  {label:"Oferta especial", color:"#FFB3A8"}
   };
   const soonAll = us.docs.map(d=>{ const x=d.data(); return {name:x.name, tipo:x.tipo||"receta", img:x.img||"", desc:x.desc||"", order:x.order||0}; }).sort(byOrder);
   const soonList = soonAll.filter(x=>x.tipo==="receta");
@@ -2638,7 +2638,7 @@ try{
   window.openNovedad = function(i){
     const n = (window.__NOVEDADES||[])[i];
     if(!n) return;
-    const TIP = { novedad:{label:"Novedad",color:"#5A3F86"}, oferta:{label:"Oferta especial",color:"#9C3524"} };
+    const TIP = { novedad:{label:"Novedad",color:"#C4B5E8"}, oferta:{label:"Oferta especial",color:"#FFB3A8"} };
     const t = TIP[n.tipo] || TIP.novedad;
     const im = document.getElementById("nvmImg");
     if(n.img){ im.src = n.img; im.style.display = "block"; } else { im.style.display = "none"; }
