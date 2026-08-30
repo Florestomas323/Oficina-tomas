@@ -76,7 +76,7 @@ async function mandarPush(info, texto) {
   const subs = await db.collection('pushSubs').get();
   if (subs.empty) return 'sin dispositivos';
 
-  let ok = 0, muertas = 0;
+  let ok = 0, muertas = 0; const fallos = [];
   await Promise.all(subs.docs.map(async (doc) => {
     const s = doc.data();
     try {
@@ -90,10 +90,14 @@ async function mandarPush(info, texto) {
       if (e.statusCode === 404 || e.statusCode === 410) {
         await doc.ref.delete().catch(() => {});
         muertas++;
+      } else {
+        fallos.push((e.statusCode || '?') + ' ' + String(e.body || e.message).slice(0, 90));
       }
     }
   }));
-  return ok + ' enviadas' + (muertas ? ', ' + muertas + ' caducadas borradas' : '');
+  return ok + ' enviadas de ' + subs.size +
+         (muertas ? ', ' + muertas + ' caducadas borradas' : '') +
+         (fallos.length ? ' | fallos: ' + fallos.join(' ; ') : '');
 }
 
 module.exports = async (req, res) => {
@@ -101,6 +105,27 @@ module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   if (req.method === 'OPTIONS') return res.status(204).end();
+  // Diagnostico: /api/notify?diag=1 desde el navegador.
+  // Solo informa de que hay configurado y cuantos dispositivos hay suscritos.
+  // No revela ninguna clave ni ningun dato personal.
+  if (req.method === 'GET' && req.query && req.query.diag) {
+    const info = {
+      correoConfigurado: !!(process.env.RESEND_API_KEY && process.env.CORREO_AVISOS),
+      vapidPublica: process.env.VAPID_PUBLICA ? process.env.VAPID_PUBLICA.slice(0, 12) + '...' : 'FALTA',
+      vapidPrivadaConfigurada: !!process.env.VAPID_PRIVADA,
+      firebaseConfigurado: !!process.env.FIREBASE_SERVICE_ACCOUNT,
+    };
+    try {
+      iniciarFirebase();
+      const s = await admin.firestore().collection('pushSubs').get();
+      info.dispositivosSuscritos = s.size;
+      info.dispositivos = s.docs.map((d) => (d.data().agente || '').slice(0, 40));
+    } catch (e) {
+      info.dispositivosSuscritos = 'error: ' + e.message;
+    }
+    return res.status(200).json(info);
+  }
+
   if (req.method !== 'POST') return res.status(405).json({ ok: false });
 
   try {
@@ -118,6 +143,8 @@ module.exports = async (req, res) => {
       mandarCorreo(info, texto).catch((e) => 'error: ' + e.message),
       mandarPush(info, texto).catch((e) => 'error: ' + e.message),
     ]);
+    // Queda en los Logs de Vercel: sin esto, un fallo del push es invisible.
+    console.log('[aviso]', coleccion, '| correo:', correo, '| push:', push);
     return res.status(200).json({ ok: true, correo, push });
   } catch (e) {
     // Se responde 200 a proposito: un fallo del aviso no debe
