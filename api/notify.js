@@ -67,10 +67,14 @@ async function mandarCorreo(info, texto) {
 }
 
 async function mandarPush(info, texto) {
-  const pub = process.env.VAPID_PUBLICA;
-  const priv = process.env.VAPID_PRIVADA;
+  const pub = (process.env.VAPID_PUBLICA || '').trim();
+  const priv = (process.env.VAPID_PRIVADA || '').trim();
   if (!pub || !priv) return 'sin configurar';
-  webpush.setVapidDetails('mailto:' + (process.env.CORREO_AVISOS || 'admin@tomasflores.com'), pub, priv);
+  try {
+    webpush.setVapidDetails('mailto:' + (process.env.CORREO_AVISOS || 'admin@tomasflores.com').trim(), pub, priv);
+  } catch (e) {
+    return 'claves VAPID invalidas: ' + e.message;
+  }
 
   const db = admin.firestore();
   const subs = await db.collection('pushSubs').get();
@@ -124,6 +128,19 @@ module.exports = async (req, res) => {
       info.dispositivosSuscritos = 'error: ' + e.message;
     }
     return res.status(200).json(info);
+  }
+
+  // Prueba real: /api/notify?test=1 envia una notificacion a todos los
+  // dispositivos y devuelve el resultado detallado, con el motivo si falla.
+  if (req.method === 'GET' && req.query && req.query.test) {
+    try {
+      iniciarFirebase();
+      const r = await mandarPush({ titulo: 'Prueba del panel', origen: 'Diagnostico' },
+                                 'Si ves esto, el envio funciona.');
+      return res.status(200).json({ push: r });
+    } catch (e) {
+      return res.status(200).json({ push: 'error: ' + e.message });
+    }
   }
 
   if (req.method !== 'POST') return res.status(405).json({ ok: false });
