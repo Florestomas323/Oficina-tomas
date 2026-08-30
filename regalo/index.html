@@ -18,7 +18,7 @@
 <meta name="twitter:title" content="Tienes un obsequio para tu cocina">
 <meta name="twitter:description" content="Sin costo y sin obligación de compra.">
 <meta name="twitter:image" content="https://tomasflores.com/regalo/og-regala-y-gana.jpeg?v=2">
-<link rel="icon" href="../favicon-panel.png?v=2">
+<link rel="icon" href="../favicon-panel.png?v=4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@700;800&family=Fraunces:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
@@ -211,6 +211,7 @@
 
 <script src="../config.js"></script>
 <script src="config.js"></script>
+<script src="../avisar.js"></script>
 <script type="module">
 /* ============================================================
    REGALA Y GANA — Reclamar obsequio (Fase 4)
@@ -407,7 +408,7 @@ $('btnClaim').addEventListener('click', async () => {
   if(zip) data.zipCode = zip;
 
   try{
-    await setDoc(doc(db,'giftClaims', claimId), data);
+    await setDoc(doc(db,'giftClaims', claimId), data).then(function(){ if(window.avisar) window.avisar('giftClaims', claimId); });
   }catch(e){
     const code = (e && e.code) || '';
     if(code === 'permission-denied'){
