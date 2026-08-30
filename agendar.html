@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <script src="config.js"></script>
+<script src="avisar.js"></script>
 <title>Reserva tu demostración — Tomas Flores</title>
 <meta name="description" content="Reserva tu demostración de cocina sin costo. Elige el tema que te interesa, el día y la hora que mejor te venga.">
 <meta name="robots" content="index,follow">
@@ -446,8 +447,7 @@ async function enviar(){
     };
     Object.keys(datos).forEach(k => { if(datos[k] === "") delete datos[k]; });
 
-    try{
-      await fs.addDoc(fs.collection(db,"appointments"), datos);
+    try{const _cita = await fs.addDoc(fs.collection(db,"appointments"), datos); if(window.avisar) window.avisar("appointments", _cita.id);
     }catch(e){
       /* Si falla, devolver el hueco para no dejarlo bloqueado a nadie */
       try{ await fs.deleteDoc(fs.doc(db,"busySlots",slotId)); }catch(_){}

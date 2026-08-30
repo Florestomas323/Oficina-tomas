@@ -27,6 +27,7 @@
 <meta name="twitter:description" content="Construye un negocio en ventas con acompañamiento real, junto a Impact Enterprises y Royal Prestige.">
 <meta name="twitter:image" content="https://tomasflores.com/og-trabaja.jpeg?v=2">
 <script src="config.js"></script>
+<script src="avisar.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="image" href="assets/trabaja/hero-equipo.jpeg" fetchpriority="high">
@@ -1302,7 +1303,7 @@ async function guardarProspecto(data){
     var app = (fb.getApps && fb.getApps().length) ? fb.getApps()[0] : fb.initializeApp(O.firebase);
     var db  = fs.getFirestore(app);
     var metas = (data.goal || []).slice(0, 6).map(function(g){ return String(g).slice(0, 40); });
-    await fs.addDoc(fs.collection(db, "leads"), {
+    const _ref = await fs.addDoc(fs.collection(db, "leads"), {
       nombre:   String(data.fullName || "").slice(0, 80),
       phone:    String(data.phone || "").slice(0, 30),
       ciudad:   String(data.city || "").slice(0, 80),
@@ -1313,6 +1314,7 @@ async function guardarProspecto(data){
       consent:  true,
       createdAt: fs.serverTimestamp()
     });
+    if (window.avisar) window.avisar("leads", _ref.id);
     return true;
   }catch(e){
     /* Silencioso a proposito: el visitante no debe ver un error
