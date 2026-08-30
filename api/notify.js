@@ -24,6 +24,7 @@ const PERMITIDAS = {
   appointments:     { titulo: 'Nueva reserva',          origen: 'Agenda' },
   helpRequests:     { titulo: 'Nueva solicitud',        origen: 'Clientes y solicitudes' },
   giftParticipants: { titulo: 'Nuevo participante',     origen: 'Regala y Gana' },
+  giftClaims:       { titulo: 'Nuevo participante',     origen: 'Regala y Gana' },
   passportUsers:    { titulo: 'Nuevo en el Pasaporte',  origen: 'Pasaporte de Sabores' },
 };
 
@@ -109,40 +110,6 @@ module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   if (req.method === 'OPTIONS') return res.status(204).end();
-  // Diagnostico: /api/notify?diag=1 desde el navegador.
-  // Solo informa de que hay configurado y cuantos dispositivos hay suscritos.
-  // No revela ninguna clave ni ningun dato personal.
-  if (req.method === 'GET' && req.query && req.query.diag) {
-    const info = {
-      correoConfigurado: !!(process.env.RESEND_API_KEY && process.env.CORREO_AVISOS),
-      vapidPublica: process.env.VAPID_PUBLICA ? process.env.VAPID_PUBLICA.slice(0, 12) + '...' : 'FALTA',
-      vapidPrivadaConfigurada: !!process.env.VAPID_PRIVADA,
-      firebaseConfigurado: !!process.env.FIREBASE_SERVICE_ACCOUNT,
-    };
-    try {
-      iniciarFirebase();
-      const s = await admin.firestore().collection('pushSubs').get();
-      info.dispositivosSuscritos = s.size;
-      info.dispositivos = s.docs.map((d) => (d.data().agente || '').slice(0, 40));
-    } catch (e) {
-      info.dispositivosSuscritos = 'error: ' + e.message;
-    }
-    return res.status(200).json(info);
-  }
-
-  // Prueba real: /api/notify?test=1 envia una notificacion a todos los
-  // dispositivos y devuelve el resultado detallado, con el motivo si falla.
-  if (req.method === 'GET' && req.query && req.query.test) {
-    try {
-      iniciarFirebase();
-      const r = await mandarPush({ titulo: 'Prueba del panel', origen: 'Diagnostico' },
-                                 'Si ves esto, el envio funciona.');
-      return res.status(200).json({ push: r });
-    } catch (e) {
-      return res.status(200).json({ push: 'error: ' + e.message });
-    }
-  }
-
   if (req.method !== 'POST') return res.status(405).json({ ok: false });
 
   try {
