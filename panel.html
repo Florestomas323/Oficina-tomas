@@ -885,6 +885,14 @@
     rswPintarAna();
   }
 
+  /* Los formularios llaman a estas cuatro desde un onclick, y ese atributo
+     se evalúa en el ámbito global. Como el script es un módulo, hay que
+     exponerlas o los botones «Cancelar» no hacen nada. */
+  window.renderRecipes = renderRecipes;
+  window.renderReviews = renderReviews;
+  window.renderGallery = renderGallery;
+  window.renderSoon    = renderSoon;
+
   window.newRecipe = function(){
     const p = $("p-recetas");
     p.innerHTML = '<div class="card-form">'+
