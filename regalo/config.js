@@ -68,7 +68,7 @@ window.GIFT_CONFIG = {
     termsSummary:
       "Programa válido por 30 días desde la creación del enlace. " +
       "Obsequios sujetos a disponibilidad y zona de servicio. " +
-      "Solo cuentan obsequios entregados y ventas confirmadas por el distribuidor. " +
+      "Solo cuentan citas realizadas y ventas confirmadas por el distribuidor. " +
       "Se otorga únicamente la recompensa más alta alcanzada; los premios no son acumulativos. " +
       "Un obsequio por persona y por número telefónico."
   },
