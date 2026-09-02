@@ -752,7 +752,7 @@
     </div>
   </div>
   <div class="hero-img">
-    <img src="assets/trabaja/hero-equipo.jpeg" alt="Tomás Flores y Angiemar Paredes, Impact Enterprises — distribuidores independientes de Royal Prestige" width="1672" height="940" fetchpriority="high" decoding="async">
+    <img data-tc="heroEquipo" src="assets/trabaja/hero-equipo.jpeg" alt="Tomás Flores y Angiemar Paredes, Impact Enterprises — distribuidores independientes de Royal Prestige" width="1672" height="940" fetchpriority="high" decoding="async">
   </div>
 </section>
 
@@ -883,7 +883,7 @@
       <a href="#resultados" class="story-cta" data-event="results_click">Conoce mi recorrido ↓</a>
     </div>
     <div class="story-img">
-      <img src="assets/trabaja/historia-tomas.jpeg" alt="Tomás Flores trabajando en construcción, antes de Impact Enterprises" loading="lazy" decoding="async" width="900" height="1200">
+      <img data-tc="historia" src="assets/trabaja/historia-tomas.jpeg" alt="Tomás Flores trabajando en construcción, antes de Impact Enterprises" loading="lazy" decoding="async" width="900" height="1200">
     </div>
   </div>
 </section>
@@ -945,11 +945,11 @@
       <h4>Otros reconocimientos</h4>
       <div class="mini-gallery">
         <figure>
-          <img src="assets/trabaja/reco-novatos-2023.jpeg" alt="Tomás Flores y Angiemar Paredes recibiendo el reconocimiento a mejores novatos del territorio de Texas 2023" width="900" height="1600" loading="lazy" decoding="async">
+          <img data-tc="recoNovatos" src="assets/trabaja/reco-novatos-2023.jpeg" alt="Tomás Flores y Angiemar Paredes recibiendo el reconocimiento a mejores novatos del territorio de Texas 2023" width="900" height="1600" loading="lazy" decoding="async">
           <figcaption>Mejores novatos del territorio de Texas, 2023 — nuestro primer reconocimiento dentro de Royal Prestige.</figcaption>
         </figure>
         <figure>
-          <img src="assets/trabaja/reco-convencion-nola.jpeg" alt="Tomás Flores en The Grand Convention de Royal Prestige, su primera convención nacional en New Orleans" width="900" height="1351" loading="lazy" decoding="async">
+          <img data-tc="recoConvencion" src="assets/trabaja/reco-convencion-nola.jpeg" alt="Tomás Flores en The Grand Convention de Royal Prestige, su primera convención nacional en New Orleans" width="900" height="1351" loading="lazy" decoding="async">
           <figcaption>Mi primera convención nacional — The Grand Convention, New Orleans.</figcaption>
         </figure>
       </div>
@@ -1323,6 +1323,29 @@ async function guardarProspecto(data){
     return false;
   }
 }
+
+
+/* =========================================================
+   FOTOS DESDE EL PANEL
+   Si el distribuidor cambio alguna foto desde el panel, se
+   sustituye aqui. Si no hay ninguna guardada o Firestore no
+   responde, se quedan las del repositorio: nunca se rompe.
+========================================================= */
+(async function(){
+  try{
+    var O = window.OFICINA || {};
+    if(!O.firebase || !document.querySelector('[data-tc]')) return;
+    var fb = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+    var fs = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+    var app = (fb.getApps && fb.getApps().length) ? fb.getApps()[0] : fb.initializeApp(O.firebase);
+    var snap = await fs.getDocs(fs.collection(fs.getFirestore(app), "trabajaFotos"));
+    snap.forEach(function(d){
+      var src = d.data() && d.data().src;
+      if(!src) return;
+      document.querySelectorAll('[data-tc="' + d.id + '"]').forEach(function(img){ img.src = src; });
+    });
+  }catch(e){}
+})();
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();

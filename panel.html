@@ -232,6 +232,20 @@
   .pb-b.ghost{ background:rgba(255,255,255,.06); border-color:rgba(196,167,255,.28); color:#F5F3FA; }
   .pb-b:disabled{ opacity:.55; cursor:default; }
 
+
+  /* ---- Fotos de Trabaja conmigo ---- */
+  .tc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+  .tc-card{border-radius:16px;overflow:hidden;background:rgba(255,255,255,.04);border:1px solid rgba(196,167,255,.16)}
+  .tc-img{aspect-ratio:4/3;background:#0A0812}
+  .tc-img img{width:100%;height:100%;object-fit:cover;display:block}
+  .tc-body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:5px}
+  .tc-body b{font-size:14.5px}
+  .tc-pista{font-size:12.5px;color:#A9A3C2;line-height:1.4}
+  .tc-est{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#8E88A6}
+  .tc-est.on{color:#8FEAB0}
+  .tc-acc{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px}
+  .tc-acc label.ryg-b{cursor:pointer}
+
 </style>
 </head>
 <body>
@@ -275,7 +289,7 @@
       <button class="tab" data-tab="analitica" type="button">Analítica</button>
       <button class="tab" data-tab="pasaporte" type="button">Pasaporte</button>
       <button class="tab" data-tab="regalayg" type="button">Regala y Gana</button>
-      <button class="tab" data-tab="prospectos" type="button">Prospectos</button><button class="tab" data-tab="ayuda" type="button">Clientes y solicitudes</button>
+      <button class="tab" data-tab="prospectos" type="button">Prospectos</button><button class="tab" data-tab="trabaja" type="button">Trabaja conmigo</button><button class="tab" data-tab="ayuda" type="button">Clientes y solicitudes</button>
       <button class="tab" data-tab="agenda" type="button">Agenda</button>
       <button class="tab" data-tab="papelera" type="button">Papelera</button>
   </nav>
@@ -291,7 +305,7 @@
     <div class="panel" id="p-analitica"></div>
     <div class="panel" id="p-pasaporte"></div>
     <div class="panel" id="p-regalayg"></div>
-    <div class="panel" id="p-prospectos"></div><div class="panel" id="p-ayuda"></div>
+    <div class="panel" id="p-prospectos"></div><div class="panel" id="p-trabaja"></div><div class="panel" id="p-ayuda"></div>
     <div class="panel" id="p-agenda"></div>
     <div class="panel" id="p-papelera"></div>
   </main>
@@ -1846,6 +1860,7 @@
     if(name==="pasaporte") renderPassportAdmin();
     if(name==="regalayg") renderGiftAdmin();
     if(name==="prospectos") renderProspectos();
+    if(name==="trabaja") renderTrabaja();
     if(name==="ayuda") renderAyuda();
     if(name==="agenda") renderAgenda();
     if(name==="papelera") renderTrash();
@@ -2199,6 +2214,81 @@
     if(!haySoporte()) { pintarPush(); return; }
     await registrarSW();
     pintarPush();
+  }
+
+
+  /* ==================================================================
+     TRABAJA CONMIGO — fotos de la pagina de reclutamiento
+     Cada foto se guarda en trabajaFotos/{slot} como imagen comprimida.
+     La pagina publica las lee al cargar; si no hay ninguna guardada,
+     muestra la del repositorio. Asi cambiar una foto no toca codigo.
+     ================================================================== */
+  const TC_SLOTS = [
+    { id:"heroEquipo",      nombre:"Foto principal (hero)",        pista:"Horizontal. Persona a la derecha, fondo despejado a la izquierda.", defecto:"assets/trabaja/hero-equipo.jpeg" },
+    { id:"historia",        nombre:"Antes de los resultados",       pista:"Vertical 3:4. Tu etapa anterior.",                                 defecto:"assets/trabaja/historia-tomas.jpeg" },
+    { id:"recoNovatos",     nombre:"Reconocimiento 1",              pista:"Vertical 4:5.",                                                    defecto:"assets/trabaja/reco-novatos-2023.jpeg" },
+    { id:"recoConvencion",  nombre:"Reconocimiento 2",              pista:"Vertical 4:5.",                                                    defecto:"assets/trabaja/reco-convencion-nola.jpeg" },
+  ];
+  let TC_FOTOS = null;
+
+  async function tcCargar(){
+    TC_FOTOS = {};
+    try{
+      const snap = await getDocs(collection(db,"trabajaFotos"));
+      snap.forEach(d => { TC_FOTOS[d.id] = d.data(); });
+    }catch(e){ TC_FOTOS = {}; }
+  }
+
+  window.tcSubir = async function(slot, input){
+    const f = input.files && input.files[0];
+    if(!f) return;
+    if(!/^image\//.test(f.type)) return toast("Elige una imagen");
+    toast("Comprimiendo y guardando…");
+    try{
+      const dataUrl = await subirFoto(f, "trabaja");
+      await setDoc(doc(db,"trabajaFotos",slot), { src:dataUrl, actualizado:serverTimestamp() });
+      TC_FOTOS[slot] = { src:dataUrl };
+      renderTrabaja();
+      toast("Foto actualizada");
+    }catch(e){ toast("No se pudo guardar: " + (e && e.message ? e.message.slice(0,60) : "")); }
+    input.value = "";
+  };
+
+  window.tcRestaurar = async function(slot){
+    if(!confirm("¿Volver a la foto original del repositorio?")) return;
+    try{
+      await deleteDoc(doc(db,"trabajaFotos",slot));
+      delete TC_FOTOS[slot];
+      renderTrabaja();
+      toast("Foto original restaurada");
+    }catch(e){ toast("No se pudo restaurar"); }
+  };
+
+  async function renderTrabaja(){
+    const el = $("p-trabaja");
+    if(!el) return;
+    if(TC_FOTOS === null){
+      el.innerHTML = '<div class="empty-note">Cargando…</div>';
+      await tcCargar();
+    }
+    if(typeof rygEstilos === "function") rygEstilos();
+    let out = '<h3 style="font-size:17px;font-family:\'Inter Tight\',sans-serif;margin-bottom:6px">Fotos de Trabaja conmigo</h3>' +
+      '<p class="empty-note" style="margin-bottom:16px">Cambia cualquiera de las cuatro sin tocar codigo. Se comprimen solas. ' +
+      'Para volver a la original, usa <b>Restaurar</b>.</p>';
+    out += '<div class="tc-grid">' + TC_SLOTS.map(s => {
+      const propia = TC_FOTOS[s.id] && TC_FOTOS[s.id].src;
+      const src = propia ? propia : s.defecto;
+      return '<div class="tc-card">' +
+        '<div class="tc-img"><img src="' + src + '" alt="" loading="lazy"></div>' +
+        '<div class="tc-body"><b>' + s.nombre + '</b>' +
+          '<span class="tc-pista">' + s.pista + '</span>' +
+          '<span class="tc-est ' + (propia ? "on" : "") + '">' + (propia ? "Foto propia" : "Original del repositorio") + '</span>' +
+          '<div class="tc-acc">' +
+            '<label class="ryg-b sm">Cambiar<input type="file" accept="image/*" style="display:none" onchange="tcSubir(\'' + s.id + '\', this)"></label>' +
+            (propia ? '<button class="ryg-b sm" type="button" onclick="tcRestaurar(\'' + s.id + '\')">Restaurar</button>' : '') +
+          '</div></div></div>';
+    }).join('') + '</div>';
+    el.innerHTML = out;
   }
 
   // ==================== AGENDA DE DEMOSTRACIONES ====================
