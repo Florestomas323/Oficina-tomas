@@ -246,6 +246,42 @@
   .tc-acc{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px}
   .tc-acc label.ryg-b{cursor:pointer}
 
+
+  /* ---- Menu desplegable de secciones ---- */
+  .menu-bar{position:sticky;top:62px;z-index:31;padding:10px 16px;
+    background:rgba(12,9,20,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--hair)}
+  .menu-btn{display:flex;align-items:center;gap:10px;width:100%;max-width:520px;min-height:48px;
+    padding:0 16px;border-radius:14px;cursor:pointer;font:inherit;font-weight:700;font-size:15px;
+    color:var(--ink);background:var(--card);border:1px solid var(--hair)}
+  .menu-btn svg{width:20px;height:20px;flex:0 0 auto}
+  .menu-actual{flex:1;text-align:left}
+  .menu-chev{transition:transform .25s ease}
+  .menu-btn[aria-expanded="true"] .menu-chev{transform:rotate(180deg)}
+  .menu-badge{min-width:22px;height:22px;padding:0 7px;border-radius:999px;display:inline-flex;
+    align-items:center;justify-content:center;font-size:12px;font-weight:700;background:#7C3AED;color:#fff}
+  .menu-badge[hidden]{display:none}
+  .menu-fondo{position:fixed;inset:0;z-index:39;background:rgba(0,0,0,.45)}
+  .menu-fondo[hidden]{display:none}
+  /* La lista: hoja anclada bajo la barra, en columna, con scroll propio */
+  .tabs{position:fixed;left:16px;right:16px;top:124px;z-index:40;max-width:520px;max-height:calc(100vh - 150px);
+    overflow-y:auto;display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:18px;
+    background:#171226;border:1px solid var(--hair);box-shadow:0 20px 50px rgba(0,0,0,.55)}
+  .tabs[hidden]{display:none}
+  .tabs .tab{flex:0 0 auto;width:100%;text-align:left;padding:12px 14px;border-radius:12px;font-size:15px;min-height:46px;
+    display:flex;align-items:center;justify-content:space-between}
+  @media(min-width:760px){.tabs{left:auto;right:auto;margin-left:16px}}
+
+
+  .tc-lab{display:flex;flex-direction:column;gap:4px;font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#8E88A6;margin-top:4px}
+  .tc-in{font:inherit;font-size:14px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink);
+    padding:9px 11px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(196,167,255,.2);min-height:40px}
+  .tc-in:focus{outline:2px solid #C9A9FF;outline-offset:1px}
+  .tc-add{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:200px;
+    cursor:pointer;border-style:dashed;text-align:center;padding:18px}
+  .tc-add-ico{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:28px;font-weight:300;color:#C9A9FF;background:rgba(139,92,246,.16);border:1px solid rgba(196,167,255,.3)}
+
 </style>
 </head>
 <body>
@@ -279,7 +315,16 @@
       </button>
     </div>
   </header>
-  <nav class="tabs" id="tabs">
+  <div class="menu-bar" id="menuBar">
+    <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="tabs">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <span class="menu-actual" id="menuActual">Inicio</span>
+      <span class="menu-badge" id="menuBadge" hidden></span>
+      <svg class="menu-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+  </div>
+  <div class="menu-fondo" id="menuFondo" hidden></div>
+  <nav class="tabs" id="tabs" hidden>
     <button class="tab on" data-tab="inicio" type="button">Inicio</button>
     <button class="tab" data-tab="recetas" type="button">Recetas</button>
     <button class="tab" data-tab="opiniones" type="button">Opiniones</button>
@@ -1865,8 +1910,31 @@
     if(name==="agenda") renderAgenda();
     if(name==="papelera") renderTrash();
     marcarVisto(name);
+    menuActualizar(name);
+    menuCerrar();
     window.scrollTo({top:0,behavior:"smooth"});
   };
+
+  /* ---- Menu desplegable ---- */
+  function menuActualizar(name){
+    const b = document.querySelector('.tab[data-tab="' + name + '"]');
+    const el = $("menuActual");
+    if(b && el) el.textContent = b.childNodes[0].textContent.trim();
+  }
+  function menuAbrir(){
+    $("tabs").hidden = false; $("menuFondo").hidden = false;
+    $("menuBtn").setAttribute("aria-expanded","true");
+  }
+  function menuCerrar(){
+    const tabs = $("tabs"); if(!tabs) return;
+    tabs.hidden = true; $("menuFondo").hidden = true;
+    $("menuBtn").setAttribute("aria-expanded","false");
+  }
+  document.addEventListener("click", function(e){
+    if(e.target.closest("#menuBtn")){ $("tabs").hidden ? menuAbrir() : menuCerrar(); }
+    else if(e.target.closest("#menuFondo")){ menuCerrar(); }
+  });
+  document.addEventListener("keydown", function(e){ if(e.key === "Escape") menuCerrar(); });
 
 
   /* ==================================================================
@@ -2024,6 +2092,9 @@
         b.textContent = n > 99 ? "99+" : n;
       }else if(b){ b.remove(); }
     });
+    const total = FUENTES.reduce((s,f) => s + (NOVEDADES[f.tab] || 0), 0);
+    const mb = $("menuBadge");
+    if(mb){ mb.hidden = total === 0; mb.textContent = total > 99 ? "99+" : total; }
     const caja = $("avisosCaja");
     if(!caja) return;
     const partes = FUENTES.filter(f => (NOVEDADES[f.tab] || 0) > 0)
@@ -2224,10 +2295,11 @@
      muestra la del repositorio. Asi cambiar una foto no toca codigo.
      ================================================================== */
   const TC_SLOTS = [
-    { id:"heroEquipo",      nombre:"Foto principal (hero)",        pista:"Horizontal. Persona a la derecha, fondo despejado a la izquierda.", defecto:"assets/trabaja/hero-equipo.jpeg" },
-    { id:"historia",        nombre:"Antes de los resultados",       pista:"Vertical 3:4. Tu etapa anterior.",                                 defecto:"assets/trabaja/historia-tomas.jpeg" },
-    { id:"recoNovatos",     nombre:"Reconocimiento 1",              pista:"Vertical 4:5.",                                                    defecto:"assets/trabaja/reco-novatos-2023.jpeg" },
-    { id:"recoConvencion",  nombre:"Reconocimiento 2",              pista:"Vertical 4:5.",                                                    defecto:"assets/trabaja/reco-convencion-nola.jpeg" },
+    { id:"historia",       nombre:"Antes de los resultados", pista:"Vertical 3:4. Tu etapa anterior.", defecto:"assets/trabaja/historia-tomas.jpeg", titulo:false },
+    { id:"recoNovatos",    nombre:"Reconocimiento 1",        pista:"Vertical 4:5.", defecto:"assets/trabaja/reco-novatos-2023.jpeg",   titulo:true,
+      tituloDefecto:"Mejores novatos del territorio de Texas, 2023 \u2014 nuestro primer reconocimiento dentro de Royal Prestige." },
+    { id:"recoConvencion", nombre:"Reconocimiento 2",        pista:"Vertical 4:5.", defecto:"assets/trabaja/reco-convencion-nola.jpeg", titulo:true,
+      tituloDefecto:"Mi primera convenci\u00f3n nacional \u2014 The Grand Convention, New Orleans." },
   ];
   let TC_FOTOS = null;
 
@@ -2235,62 +2307,107 @@
     TC_FOTOS = {};
     try{
       const snap = await getDocs(collection(db,"trabajaFotos"));
-      snap.forEach(d => { TC_FOTOS[d.id] = d.data(); });
+      snap.forEach(d => { TC_FOTOS[d.id] = Object.assign({ id:d.id }, d.data()); });
     }catch(e){ TC_FOTOS = {}; }
+  }
+  function tcExtras(){
+    return Object.values(TC_FOTOS).filter(x => x.id.indexOf("extra_") === 0)
+      .sort((a,b) => (a.orden||0) - (b.orden||0));
   }
 
   window.tcSubir = async function(slot, input){
     const f = input.files && input.files[0];
     if(!f) return;
     if(!/^image\//.test(f.type)) return toast("Elige una imagen");
-    toast("Comprimiendo y guardando…");
+    toast("Comprimiendo y guardando\u2026");
     try{
       const dataUrl = await subirFoto(f, "trabaja");
-      await setDoc(doc(db,"trabajaFotos",slot), { src:dataUrl, actualizado:serverTimestamp() });
-      TC_FOTOS[slot] = { src:dataUrl };
+      const prev = TC_FOTOS[slot] || {};
+      const datos = { src:dataUrl, titulo: prev.titulo || "", orden: prev.orden || Date.now(), actualizado:serverTimestamp() };
+      await setDoc(doc(db,"trabajaFotos",slot), datos, { merge:true });
+      TC_FOTOS[slot] = Object.assign({ id:slot }, prev, datos);
       renderTrabaja();
       toast("Foto actualizada");
     }catch(e){ toast("No se pudo guardar: " + (e && e.message ? e.message.slice(0,60) : "")); }
     input.value = "";
   };
 
-  window.tcRestaurar = async function(slot){
-    if(!confirm("¿Volver a la foto original del repositorio?")) return;
+  window.tcTitulo = async function(slot, input){
+    const titulo = String(input.value || "").trim().slice(0, 160);
     try{
-      await deleteDoc(doc(db,"trabajaFotos",slot));
-      delete TC_FOTOS[slot];
-      renderTrabaja();
-      toast("Foto original restaurada");
-    }catch(e){ toast("No se pudo restaurar"); }
+      await setDoc(doc(db,"trabajaFotos",slot), { titulo:titulo, actualizado:serverTimestamp() }, { merge:true });
+      TC_FOTOS[slot] = Object.assign({ id:slot }, TC_FOTOS[slot] || {}, { titulo:titulo });
+      toast("T\u00edtulo guardado");
+    }catch(e){ toast("No se pudo guardar el t\u00edtulo"); }
   };
+
+  window.tcAgregar = async function(input){
+    const f = input.files && input.files[0];
+    if(!f) return;
+    if(!/^image\//.test(f.type)) return toast("Elige una imagen");
+    toast("Comprimiendo y guardando\u2026");
+    try{
+      const dataUrl = await subirFoto(f, "trabaja");
+      const id = "extra_" + Date.now();
+      const datos = { src:dataUrl, titulo:"", orden:Date.now(), actualizado:serverTimestamp() };
+      await setDoc(doc(db,"trabajaFotos",id), datos);
+      TC_FOTOS[id] = Object.assign({ id:id }, datos);
+      renderTrabaja();
+      toast("Foto a\u00f1adida. Ponle un t\u00edtulo.");
+    }catch(e){ toast("No se pudo a\u00f1adir: " + (e && e.message ? e.message.slice(0,60) : "")); }
+    input.value = "";
+  };
+
+  window.tcRestaurar = async function(slot){
+    if(!confirm("\u00bfVolver a la foto y al t\u00edtulo originales?")) return;
+    try{ await deleteDoc(doc(db,"trabajaFotos",slot)); delete TC_FOTOS[slot]; renderTrabaja(); toast("Original restaurada"); }
+    catch(e){ toast("No se pudo restaurar"); }
+  };
+  window.tcBorrar = async function(slot){
+    if(!confirm("\u00bfQuitar esta foto de la p\u00e1gina?")) return;
+    try{ await deleteDoc(doc(db,"trabajaFotos",slot)); delete TC_FOTOS[slot]; renderTrabaja(); toast("Foto quitada"); }
+    catch(e){ toast("No se pudo quitar"); }
+  };
+
+  function tcTarjeta(s, propia){
+    const src = (propia && propia.src) ? propia.src : s.defecto;
+    const tit = propia && typeof propia.titulo === "string" && propia.titulo ? propia.titulo : (s.tituloDefecto || "");
+    const esExtra = s.id.indexOf("extra_") === 0;
+    return '<div class="tc-card">' +
+      '<div class="tc-img"><img src="' + src + '" alt="" loading="lazy"></div>' +
+      '<div class="tc-body"><b>' + esc(s.nombre) + '</b>' +
+        (s.pista ? '<span class="tc-pista">' + esc(s.pista) + '</span>' : '') +
+        (s.titulo ? '<label class="tc-lab">T\u00edtulo debajo de la foto' +
+          '<input class="tc-in" type="text" maxlength="160" value="' + esc(tit) + '" placeholder="Escribe un t\u00edtulo\u2026" ' +
+          'onchange="tcTitulo(\'' + s.id + '\', this)"></label>' : '') +
+        (!esExtra ? '<span class="tc-est ' + (propia && propia.src ? "on" : "") + '">' + (propia && propia.src ? "Foto propia" : "Original del repositorio") + '</span>' : '') +
+        '<div class="tc-acc">' +
+          '<label class="ryg-b sm">Cambiar foto<input type="file" accept="image/*" style="display:none" onchange="tcSubir(\'' + s.id + '\', this)"></label>' +
+          (esExtra ? '<button class="ryg-b sm danger" type="button" onclick="tcBorrar(\'' + s.id + '\')">Quitar</button>'
+                   : (propia ? '<button class="ryg-b sm" type="button" onclick="tcRestaurar(\'' + s.id + '\')">Restaurar</button>' : '')) +
+        '</div></div></div>';
+  }
 
   async function renderTrabaja(){
     const el = $("p-trabaja");
     if(!el) return;
-    if(TC_FOTOS === null){
-      el.innerHTML = '<div class="empty-note">Cargando…</div>';
-      await tcCargar();
-    }
+    if(TC_FOTOS === null){ el.innerHTML = '<div class="empty-note">Cargando\u2026</div>'; await tcCargar(); }
     if(typeof rygEstilos === "function") rygEstilos();
     let out = '<h3 style="font-size:17px;font-family:\'Inter Tight\',sans-serif;margin-bottom:6px">Fotos de Trabaja conmigo</h3>' +
-      '<p class="empty-note" style="margin-bottom:16px">Cambia cualquiera de las cuatro sin tocar codigo. Se comprimen solas. ' +
-      'Para volver a la original, usa <b>Restaurar</b>.</p>';
-    out += '<div class="tc-grid">' + TC_SLOTS.map(s => {
-      const propia = TC_FOTOS[s.id] && TC_FOTOS[s.id].src;
-      const src = propia ? propia : s.defecto;
-      return '<div class="tc-card">' +
-        '<div class="tc-img"><img src="' + src + '" alt="" loading="lazy"></div>' +
-        '<div class="tc-body"><b>' + s.nombre + '</b>' +
-          '<span class="tc-pista">' + s.pista + '</span>' +
-          '<span class="tc-est ' + (propia ? "on" : "") + '">' + (propia ? "Foto propia" : "Original del repositorio") + '</span>' +
-          '<div class="tc-acc">' +
-            '<label class="ryg-b sm">Cambiar<input type="file" accept="image/*" style="display:none" onchange="tcSubir(\'' + s.id + '\', this)"></label>' +
-            (propia ? '<button class="ryg-b sm" type="button" onclick="tcRestaurar(\'' + s.id + '\')">Restaurar</button>' : '') +
-          '</div></div></div>';
-    }).join('') + '</div>';
+      '<p class="empty-note" style="margin-bottom:16px">Cambia las fotos y sus t\u00edtulos sin tocar c\u00f3digo. Se comprimen solas. ' +
+      'La foto principal del hero no se cambia desde aqu\u00ed.</p>';
+    out += '<div class="tc-grid">' + TC_SLOTS.map(s => tcTarjeta(s, TC_FOTOS[s.id])).join('') + '</div>';
+
+    const extras = tcExtras();
+    out += '<h3 style="font-size:16px;font-family:\'Inter Tight\',sans-serif;margin:26px 0 6px">M\u00e1s reconocimientos</h3>' +
+      '<p class="empty-note" style="margin-bottom:12px">Se a\u00f1aden a la galer\u00eda despu\u00e9s de los dos primeros, en el orden en que los subas.</p>';
+    out += '<div class="tc-grid">' +
+      extras.map((x, i) => tcTarjeta({ id:x.id, nombre:"Reconocimiento " + (i + 3), pista:"", defecto:x.src, titulo:true, tituloDefecto:"" }, x)).join('') +
+      '<label class="tc-card tc-add"><input type="file" accept="image/*" style="display:none" onchange="tcAgregar(this)">' +
+        '<span class="tc-add-ico">+</span><b>A\u00f1adir foto</b><span class="tc-pista">Vertical 4:5 queda mejor</span></label>' +
+      '</div>';
     el.innerHTML = out;
   }
-
   // ==================== AGENDA DE DEMOSTRACIONES ====================
   const AG_DIAS = [["1","Lunes"],["2","Martes"],["3","Miércoles"],["4","Jueves"],
                    ["5","Viernes"],["6","Sábado"],["0","Domingo"]];

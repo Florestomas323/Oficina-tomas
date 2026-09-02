@@ -752,7 +752,7 @@
     </div>
   </div>
   <div class="hero-img">
-    <img data-tc="heroEquipo" src="assets/trabaja/hero-equipo.jpeg" alt="Tomás Flores y Angiemar Paredes, Impact Enterprises — distribuidores independientes de Royal Prestige" width="1672" height="940" fetchpriority="high" decoding="async">
+    <img src="assets/trabaja/hero-equipo.jpeg" alt="Tomás Flores y Angiemar Paredes, Impact Enterprises — distribuidores independientes de Royal Prestige" width="1672" height="940" fetchpriority="high" decoding="async">
   </div>
 </section>
 
@@ -1339,11 +1339,29 @@ async function guardarProspecto(data){
     var fs = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
     var app = (fb.getApps && fb.getApps().length) ? fb.getApps()[0] : fb.initializeApp(O.firebase);
     var snap = await fs.getDocs(fs.collection(fs.getFirestore(app), "trabajaFotos"));
+    var galeria = document.querySelector('.mini-gallery');
+    var extras = [];
     snap.forEach(function(d){
-      var src = d.data() && d.data().src;
-      if(!src) return;
-      document.querySelectorAll('[data-tc="' + d.id + '"]').forEach(function(img){ img.src = src; });
+      var x = d.data() || {};
+      if(d.id.indexOf('extra_') === 0){ if(x.src) extras.push({ src:x.src, titulo:x.titulo || '', orden:x.orden || 0 }); return; }
+      document.querySelectorAll('[data-tc="' + d.id + '"]').forEach(function(img){
+        if(x.src) img.src = x.src;
+        var fig = img.closest('figure');
+        var cap = fig && fig.querySelector('figcaption');
+        if(cap && typeof x.titulo === 'string' && x.titulo.trim()) cap.textContent = x.titulo.trim();
+      });
     });
+    if(galeria && extras.length){
+      extras.sort(function(a,b){ return a.orden - b.orden; });
+      extras.forEach(function(x){
+        var fig = document.createElement('figure');
+        var img = document.createElement('img');
+        img.src = x.src; img.alt = x.titulo || 'Reconocimiento'; img.loading = 'lazy'; img.decoding = 'async';
+        fig.appendChild(img);
+        if(x.titulo){ var cap = document.createElement('figcaption'); cap.textContent = x.titulo; fig.appendChild(cap); }
+        galeria.appendChild(fig);
+      });
+    }
   }catch(e){}
 })();
 
