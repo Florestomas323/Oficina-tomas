@@ -208,6 +208,9 @@
   .pr-contactado{ background:rgba(93,224,138,.18); color:#8FEAB0; }
   .pr-descartado{ background:rgba(255,138,138,.16); color:#FFB3B3; }
   .pr-fecha{ font-size:12.5px; color:#8E88A6; white-space:nowrap; }
+  .pr-origen{ display:inline-block; margin-left:7px; padding:2px 9px; border-radius:999px;
+    font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
+    background:rgba(37,99,235,.22); color:#9EC2FF; border:1px solid rgba(96,165,250,.35); }
   .pr-datos{ display:flex; gap:14px; flex-wrap:wrap; margin-top:7px; font-size:13.5px; color:#A9A3C2; }
   .pr-chips{ display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
   .pr-chip{ font-size:12px; padding:4px 10px; border-radius:999px;
@@ -2022,18 +2025,25 @@
       el.innerHTML = out; return;
     }
 
-    out += lista.map(r => {
+    out += lista.map(prTarjeta).join('');
+    el.innerHTML = out;
+  }
+
+  function prEsOficina(r){ return r.leadType === "oficina_digital" || r.source === "oficinadigital.website"; }
+
+  function prTarjeta(r){
       const tel = String(r.phone || "").replace(/[^0-9+]/g, "");
       const metas = (r.metas || []).map(m => '<span class="pr-chip">' + esc(PR_METAS[m] || m) + '</span>').join('');
       const est = r.status || "nueva";
       return '<div class="pr-card">' +
         '<div class="pr-top">' +
           '<div><b>' + esc(r.nombre || "Sin nombre") + '</b>' +
-          '<span class="pr-est pr-' + esc(est) + '">' + esc(est) + '</span></div>' +
+          '<span class="pr-est pr-' + esc(est) + '">' + esc(est) + '</span>' +
+          (prEsOficina(r) ? '<span class="pr-origen">Oficina Digital</span>' : '') + '</div>' +
           '<span class="pr-fecha">' + prFecha(r.createdAt) + '</span>' +
         '</div>' +
         '<div class="pr-datos">' +
-          (r.ciudad ? '<span>' + esc(r.ciudad) + '</span>' : '') +
+          (r.ciudad ? '<span>' + esc(r.ciudad) + (r.estado ? ', ' + esc(r.estado) : '') + '</span>' : (r.estado ? '<span>' + esc(r.estado) + '</span>' : '')) +
           (r.vehiculo ? '<span>Vehiculo: ' + esc(PR_VEH[r.vehiculo] || r.vehiculo) + '</span>' : '') +
         '</div>' +
         (metas ? '<div class="pr-chips">' + metas + '</div>' : '') +
@@ -2045,8 +2055,6 @@
           '<button class="ryg-b sm danger" type="button" onclick="prBorrar(\'' + r.id + '\')">Borrar</button>' +
         '</div>' +
       '</div>';
-    }).join('');
-    el.innerHTML = out;
   }
 
   /* ==================================================================
