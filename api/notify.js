@@ -1,109 +1,13 @@
 /* ============================================================
    AVISOS DE LA OFICINA DIGITAL
    ------------------------------------------------------------
-   Una sola funcion que hace dos cosas cuando entra un registro:
-     1. Te manda un correo (siempre que haya RESEND_API_KEY).
-     2. Te manda una notificacion al panel instalado (si hay
-        claves VAPID y alguna suscripcion guardada).
-
-   Si falta la configuracion de una de las dos, la otra sigue
-   funcionando. Nunca devuelve error al visitante.
-
-   POR QUE LEE EL DOCUMENTO EN VEZ DE FIARSE DEL ENVIO
-   El navegador solo manda la coleccion y el id. La funcion va a
-   Firestore y lee el documento real. Asi nadie puede llamar a
-   esta direccion e inventarse un aviso con datos falsos.
+   Recibe { coleccion, id } tras guardarse un registro desde el
+   sitio, lee el documento real en Firestore y avisa por correo y
+   push. La logica de envio vive en lib/avisos.js, compartida con
+   api/lead.js. Nunca devuelve error al visitante.
    ============================================================ */
 
-const webpush = require('web-push');
-const admin = require('firebase-admin');
-
-// --- Colecciones permitidas. Cualquier otra se rechaza. ---
-const PERMITIDAS = {
-  leads:            { titulo: 'Nuevo prospecto',        origen: 'Trabaja conmigo' },
-  appointments:     { titulo: 'Nueva reserva',          origen: 'Agenda' },
-  helpRequests:     { titulo: 'Nueva solicitud',        origen: 'Clientes y solicitudes' },
-  giftParticipants: { titulo: 'Nuevo participante',     origen: 'Regala y Gana' },
-  giftClaims:       { titulo: 'Nuevo participante',     origen: 'Regala y Gana' },
-  passportUsers:    { titulo: 'Nuevo en el Pasaporte',  origen: 'Pasaporte de Sabores' },
-};
-
-let listo = false;
-function iniciarFirebase() {
-  if (listo || admin.apps.length) { listo = true; return; }
-  const cred = process.env.FIREBASE_SERVICE_ACCOUNT;
-  if (!cred) throw new Error('Falta FIREBASE_SERVICE_ACCOUNT');
-  admin.initializeApp({ credential: admin.credential.cert(JSON.parse(cred)) });
-  listo = true;
-}
-
-function resumen(d) {
-  // Arma una linea legible con lo que traiga el documento.
-  const partes = [];
-  if (d.nombre) partes.push(d.nombre + (d.apellido ? ' ' + d.apellido : ''));
-  if (d.name) partes.push(d.name);
-  if (d.phone) partes.push(d.phone);
-  if (d.ciudad || d.city) partes.push(d.ciudad || d.city);
-  if (d.fecha) partes.push(d.fecha + (d.hora ? ' ' + d.hora : ''));
-  if (Array.isArray(d.metas) && d.metas.length) partes.push(d.metas.join(', '));
-  return partes.filter(Boolean).join(' · ') || 'Sin detalles';
-}
-
-async function mandarCorreo(info, texto) {
-  const key = process.env.RESEND_API_KEY;
-  const para = process.env.CORREO_AVISOS;
-  if (!key || !para) return 'sin configurar';
-  const r = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { Authorization: 'Bearer ' + key, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      from: 'Oficina Digital <onboarding@resend.dev>',
-      to: [para],
-      subject: info.titulo + ' — ' + info.origen,
-      text: info.titulo + '\n' + info.origen + '\n\n' + texto +
-            '\n\nAbrir el panel: https://tomasflores.com/panel.html',
-    }),
-  });
-  return r.ok ? 'enviado' : 'fallo ' + r.status;
-}
-
-async function mandarPush(info, texto) {
-  const pub = (process.env.VAPID_PUBLICA || '').trim();
-  const priv = (process.env.VAPID_PRIVADA || '').trim();
-  if (!pub || !priv) return 'sin configurar';
-  try {
-    webpush.setVapidDetails('mailto:' + (process.env.CORREO_AVISOS || 'admin@tomasflores.com').trim(), pub, priv);
-  } catch (e) {
-    return 'claves VAPID invalidas: ' + e.message;
-  }
-
-  const db = admin.firestore();
-  const subs = await db.collection('pushSubs').get();
-  if (subs.empty) return 'sin dispositivos';
-
-  let ok = 0, muertas = 0; const fallos = [];
-  await Promise.all(subs.docs.map(async (doc) => {
-    const s = doc.data();
-    try {
-      await webpush.sendNotification(
-        { endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } },
-        JSON.stringify({ title: info.titulo, body: texto, url: '/panel.html', tag: info.origen })
-      );
-      ok++;
-    } catch (e) {
-      // 404 y 410 significan que el dispositivo ya no existe: se limpia sola.
-      if (e.statusCode === 404 || e.statusCode === 410) {
-        await doc.ref.delete().catch(() => {});
-        muertas++;
-      } else {
-        fallos.push((e.statusCode || '?') + ' ' + String(e.body || e.message).slice(0, 90));
-      }
-    }
-  }));
-  return ok + ' enviadas de ' + subs.size +
-         (muertas ? ', ' + muertas + ' caducadas borradas' : '') +
-         (fallos.length ? ' | fallos: ' + fallos.join(' ; ') : '');
-}
+const { PERMITIDAS, iniciarFirebase, resumen, mandarCorreo, mandarPush, admin } = require('../lib/avisos');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
