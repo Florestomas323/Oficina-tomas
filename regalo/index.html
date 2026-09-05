@@ -117,6 +117,26 @@
       border-color:#CFCFD6!important;-webkit-text-fill-color:#111110!important;filter:none!important}
   }
 </style>
+<script>
+/* Vigilante de carga: si Firebase no responde en 15 s, se avisa en vez
+   de dejar la rueda girando. Lo unico que sabe es si sigue "cargando". */
+(function(){
+  window.__rygCargado = false;
+  setTimeout(function(){
+    if(window.__rygCargado) return;
+    var st = document.getElementById('state') || document.querySelector('.state, #loading, .loading');
+    var cont = document.querySelector('main') || document.body;
+    var aviso = document.createElement('div');
+    aviso.setAttribute('role','alert');
+    aviso.style.cssText = 'max-width:520px;margin:40px auto;padding:22px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(196,167,255,.28);text-align:center;font-family:inherit;color:#F5F3FA';
+    aviso.innerHTML = '<h2 style="margin:0 0 8px;font-size:20px">No se pudo cargar</h2>' +
+      '<p style="margin:0 0 16px;color:#A9A3C2">Revisa tu conexión y vuelve a intentarlo. Si usas un bloqueador de contenido, desactívalo para esta página.</p>' +
+      '<button type="button" onclick="location.reload()" style="font:inherit;font-weight:700;padding:12px 22px;border-radius:999px;border:0;cursor:pointer;background:linear-gradient(135deg,#9B6BF5,#7C3AED 52%,#5B21B6);color:#fff;min-height:46px">Reintentar</button>';
+    document.querySelectorAll('.ring,.spinner,.loader').forEach(function(e){ e.style.display='none'; });
+    if(st){ st.innerHTML = ''; st.appendChild(aviso); } else { cont.prepend(aviso); }
+  }, 15000);
+})();
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -242,6 +262,7 @@ const { getAuth, signInAnonymously, onAuthStateChanged } = await import("https:/
 const { getFirestore, doc, getDoc, setDoc, serverTimestamp, collection, addDoc } =
   await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
 const app  = getApps().length ? getApps()[0] : initializeApp(CFG.firebase);
+    window.__rygCargado = true;
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
