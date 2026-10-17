@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#160d1f" />
-  <meta name="description" content="El Sombrero Encantado: una experiencia de Halloween de Tomás Flores. Elige un sombrero, gana un regalo y compártelo con alguien especial." />
-  <meta property="og:title" content="🎩 El Sombrero Encantado | Tomás Flores" />
-  <meta property="og:description" content="Cinco sombreros, cinco regalos: aquí todos ganan. Gana tu regalo y compártelo con alguien especial." />
+  <meta name="description" content="El Sombrero Encantado: regálale a alguien especial cinco sombreros encantados donde todos ganan un regalo para su cocina." />
+  <meta property="og:title" content="🎩 Te enviaron El Sombrero Encantado" />
+  <meta property="og:description" content="Elige uno de los cinco sombreros y descubre tu regalo para la cocina. Aquí todos ganan." />
   <meta property="og:url" content="https://tomasflores.com/sombreroencantado.html" />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://tomasflores.com/sombreroencantado/assets/portada.webp" />
@@ -24,43 +24,128 @@
     .result-conditions { max-width: 360px; margin: 7px auto 4px; color: #dccbd6; font-size: 11px; line-height: 1.5; text-align: center; }
     .eligibility-confirm input { flex: none; width: 22px; height: 22px; accent-color: #eabd6a; }
     .eligibility-confirm input:focus-visible { outline: 3px solid #fff5cf; outline-offset: 3px; }
-    /* Registro para compartir el regalo */
-    .share-box { margin: 4px 0 6px; text-align: left; }
-    .share-title { font-family: Cinzel, Cambria, serif; color: #ffe1a1; font-size: 1.08rem; text-align: center; margin: 4px 0 4px; }
-    .share-copy { font-size: .8rem; color: #e6cfdd; text-align: center; margin: 0 0 12px; line-height: 1.45; }
-    .share-form { display: grid; gap: 10px; }
-    .share-group { font-size: .66rem; font-weight: 800; letter-spacing: .13em; color: #e9bd83; margin: 6px 0 -2px; }
-    .share-form label { display: grid; gap: 4px; font-size: .78rem; font-weight: 650; color: #f7e6da; }
-    .share-form label small { font-weight: 400; color: #cdb6c6; }
-    .share-form input, .share-form select { width: 100%; font: inherit; font-size: 16px; color: #fff3df; background: rgba(10,5,15,.6); border: 1px solid rgba(243,202,130,.45); border-radius: 12px; padding: 11px 13px; outline: none; -webkit-appearance: none; appearance: none; }
-    .share-form select { background-image: linear-gradient(45deg,transparent 50%,#e9bd83 50%),linear-gradient(135deg,#e9bd83 50%,transparent 50%); background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%; background-size: 6px 6px; background-repeat: no-repeat; }
-    .share-form select option { color: #111; }
-    .share-form input:focus, .share-form select:focus { border-color: #f3ca82; box-shadow: 0 0 0 3px rgba(243,202,130,.25); }
-    .share-check { display: flex !important; gap: 9px; align-items: flex-start; font-weight: 400 !important; font-size: .72rem !important; color: #dccbd6 !important; line-height: 1.4; }
-    .share-check input { flex: none; width: 21px; height: 21px; padding: 0; margin-top: 1px; -webkit-appearance: checkbox; appearance: auto; accent-color: #eabd6a; }
-    .share-error { color: #ff9c9c; font-size: .78rem; min-height: 1em; margin: 0; text-align: center; }
-    .share-steps { display: grid; gap: 10px; margin-top: 6px; }
-    .share-step { font-size: .68rem; color: #d9c2d2; letter-spacing: .06em; margin: 4px 0 -4px; text-align: center; }
+    /* Regala y Gana con el sombrero */
+    [hidden], .hidden { display: none !important; }
+    .rg-view { width: 100%; max-width: 480px; margin: 0 auto; padding: 14px 14px 30px; position: relative; z-index: 2; }
+    .rg-hero { text-align: center; }
+    .rg-hero img { width: min(62vw, 230px); height: auto; filter: drop-shadow(0 14px 22px rgba(0,0,0,.55)); margin: 4px auto 2px; display: block; animation: rgFlota 3.2s ease-in-out infinite; }
+    @keyframes rgFlota { 0%,100% { transform: translateY(0) rotate(-3deg) } 50% { transform: translateY(-8px) rotate(2deg) } }
+    .rg-hero h1 { font-family: Cinzel, Cambria, serif; color: #ffe1a2; font-size: clamp(1.75rem, 8vw, 2.4rem); line-height: 1.08; margin: 6px 0 8px; text-shadow: 0 0 22px #edaf607a; }
+    .rg-hero h1 span { color: #f3b663; }
+    .rg-lead { color: #f2dfe9; font-size: .98rem; line-height: 1.5; margin: 0 auto 4px; max-width: 400px; }
+    .rg-lead b { color: #ffe0a1; }
+    .rg-card { background: linear-gradient(160deg, rgba(61,32,81,.92), rgba(25,15,36,.94)); border: 1px solid rgba(227,171,101,.55); border-radius: 22px; padding: 18px 16px; margin-top: 16px; box-shadow: 0 14px 40px #0008; }
+    .rg-steps { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+    .rg-steps li { display: flex; gap: 12px; align-items: flex-start; font-size: .88rem; color: #f2dfe9; line-height: 1.4; }
+    .rg-steps .n { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: .82rem; color: #301126; background: linear-gradient(135deg,#ffefbc,#e8a540); }
+    .rg-title { font-family: Cinzel, Cambria, serif; color: #ffe1a1; font-size: 1.12rem; text-align: center; margin: 2px 0 6px; }
+    .rg-copy { font-size: .82rem; color: #e6cfdd; text-align: center; margin: 0 0 12px; line-height: 1.45; }
+    .rg-form { display: grid; gap: 10px; text-align: left; }
+    .rg-form label { display: grid; gap: 4px; font-size: .8rem; font-weight: 650; color: #f7e6da; }
+    .rg-form label small { font-weight: 400; color: #cdb6c6; }
+    .rg-form input[type=text], .rg-form input[type=tel] { width: 100%; font: inherit; font-size: 16px; color: #fff3df; background: rgba(10,5,15,.6); border: 1px solid rgba(243,202,130,.45); border-radius: 12px; padding: 11px 13px; outline: none; -webkit-appearance: none; appearance: none; }
+    .rg-form input:focus { border-color: #f3ca82; box-shadow: 0 0 0 3px rgba(243,202,130,.25); }
+    .rg-check { display: flex !important; gap: 9px; align-items: flex-start; font-weight: 400 !important; font-size: .74rem !important; color: #dccbd6 !important; line-height: 1.4; }
+    .rg-check input { flex: none; width: 21px; height: 21px; margin-top: 1px; accent-color: #eabd6a; }
+    .rg-check a { color: #ffe0a1; }
+    .rg-msg { font-size: .8rem; min-height: 1em; margin: 0; text-align: center; color: #ff9c9c; }
+    .rg-msg.ok { color: #b6f58e; }
+    .rg-actions { display: grid; gap: 10px; margin-top: 12px; }
+    .rg-actions .button, .result-dialog .rg-actions .button { width: 100%; text-decoration: none; }
+    .rg-link { word-break: break-all; font-size: .8rem; color: #ffe0a1; background: rgba(10,5,15,.55); border: 1px dashed rgba(243,202,130,.5); border-radius: 12px; padding: 10px 12px; text-align: center; margin: 8px 0 2px; }
+    .rg-meta { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; font-size: .72rem; color: #d9c2d2; margin-top: 8px; }
+    .rg-meta b { color: #ffe0a1; }
+    .rg-small { font-size: .72rem; color: #cdb6c6; text-align: center; line-height: 1.5; margin: 14px 0 0; }
+    .rg-small a, .rg-textlink { color: #ffe0a1; text-decoration: underline; text-underline-offset: 3px; }
+    .rg-textlink { display: block; text-align: center; font-size: .78rem; margin: 14px auto 0; background: none; border: 0; cursor: pointer; font: inherit; font-size: .78rem; }
+    .sender-line { margin: 2px auto 4px; font-size: .95rem; color: #fff0db; text-align: center; }
+    .sender-line b { color: #ffe0a1; }
     .button-whatsapp { color: #0c2400; background: linear-gradient(135deg,#b6f58e,#4fc22a); border-color: #c9f7a8; box-shadow: 0 5px 21px #4fc22a45; }
-    .result-dialog .button-soft { width: 100%; text-decoration: none; letter-spacing: .03em; }
-    .work-link { display: block; margin: 16px auto 0; font-size: .74rem; color: #ffe0a1; text-decoration: underline; text-underline-offset: 3px; }
+    .spin { width: 18px; height: 18px; border: 2.5px solid rgba(48,17,38,.35); border-top-color: #301126; border-radius: 50%; animation: rgGira .8s linear infinite; display: none; }
+    .loading .spin { display: inline-block; }
+    @keyframes rgGira { to { transform: rotate(360deg) } }
+    .rg-loading { display: grid; place-items: center; min-height: 60vh; }
+    .rg-loading .spin { display: block; width: 34px; height: 34px; border-color: rgba(243,202,130,.25); border-top-color: #f3ca82; }
   </style>
-  <script src="sombreroencantado/config.js" defer></script>
-  <script src="sombreroencantado/game.js" defer></script>
+  <script src="/config.js"></script>
+  <script src="/regalo/config.js"></script>
+  <script src="/sombreroencantado/config.js"></script>
+  <script src="/sombreroencantado/game.js" defer></script>
+  <script type="module" src="/sombreroencantado/regalo.js"></script>
 </head>
 <body>
   <div class="atmosphere" aria-hidden="true"></div>
   <main class="app" id="main">
-    <section class="game-screen" id="gameScreen" tabindex="-1" aria-label="El Sombrero Encantado">
+    <div class="rg-loading" id="loadingView"><span class="spin" aria-label="Cargando"></span></div>
+
+    <!-- 1. Quien escanea: crea su enlace y regala la experiencia -->
+    <section class="rg-view" id="creatorView" hidden>
+      <div class="rg-hero">
+        <p class="brand">✦ TOMÁS FLORES · REGALA Y GANA ✦</p>
+        <img src="/sombreroencantado/assets/sombrero.webp" alt="" width="600" height="473">
+        <h1>Regala El Sombrero <span>Encantado</span></h1>
+        <p class="rg-lead">Envíale a alguien especial cinco sombreros encantados. <b>Todos ganan</b> un regalo para su cocina, y tú ganas por cada persona que reciba el suyo.</p>
+      </div>
+      <div class="rg-card">
+        <ol class="rg-steps">
+          <li><span class="n">1</span><span>Crea tu enlace personal con tu nombre.</span></li>
+          <li><span class="n">2</span><span>Envíaselo por WhatsApp a quien tú quieras.</span></li>
+          <li><span class="n">3</span><span>Esa persona elige su sombrero, descubre su regalo y lo reclama.</span></li>
+          <li><span class="n">4</span><span>Mientras más personas reciban su regalo, mejor es tu premio.</span></li>
+        </ol>
+      </div>
+      <div class="rg-card" id="formCard">
+        <p class="rg-title">Crea tu enlace</p>
+        <div class="rg-form">
+          <label>Tu nombre <small>(así lo verá quien reciba tu regalo)</small><input type="text" id="fName" autocomplete="name" maxlength="60" placeholder="Ej. María López"></label>
+          <label>Tu ciudad<input type="text" id="fCity" autocomplete="address-level2" maxlength="50" placeholder="Ej. Temple"></label>
+          <label class="rg-check"><input type="checkbox" id="fTerms"><span>Acepto los <a href="/regala-y-gana.html" target="_blank" rel="noopener">términos de Regala y Gana</a>.</span></label>
+          <p class="rg-msg" id="formMsg" role="alert"></p>
+          <button class="button button-main" id="btnCreate" type="button"><span class="spin" aria-hidden="true"></span>✦ CREAR MI ENLACE ✦</button>
+        </div>
+      </div>
+      <div class="rg-card" id="doneCard" hidden>
+        <p class="rg-title">¡Tu enlace está listo!</p>
+        <p class="rg-copy" id="whoLine"></p>
+        <div class="rg-link" id="linkBox"></div>
+        <div class="rg-meta"><span>Vence: <b id="vEnd">—</b></span><span>Días restantes: <b id="vDays">—</b></span></div>
+        <div class="rg-actions">
+          <a class="button button-whatsapp" id="btnWa" href="#">ENVIAR POR WHATSAPP</a>
+          <button class="button button-soft" id="btnShare" type="button">Compartir en otra app</button>
+          <button class="button button-soft" id="btnCopy" type="button">Copiar enlace</button>
+          <a class="button button-soft" id="btnProgress" href="/regalo/mi-progreso.html">Ver mi progreso</a>
+        </div>
+        <p class="rg-msg" id="doneMsg" role="status"></p>
+        <p class="rg-small">Puedes enviárselo a todas las personas que quieras con el mismo enlace.</p>
+      </div>
+      <a class="rg-textlink" href="/trabaja-conmigo.html">¿Buscas un ingreso extra? Conoce cómo trabajar conmigo →</a>
+      <p class="rg-small"><a href="/sombreroencantado/bases.html">Bases y premios</a> · <a href="/sombreroencantado/privacidad.html">Privacidad</a> · <a href="/regala-y-gana.html">Regala y Gana</a></p>
+    </section>
+
+    <!-- Enlace inválido o vencido -->
+    <section class="rg-view" id="stateView" hidden>
+      <div class="rg-hero">
+        <img src="/sombreroencantado/assets/sombrero.webp" alt="" width="600" height="473">
+      </div>
+      <div class="rg-card">
+        <p class="rg-title" id="stateTitle"></p>
+        <p class="rg-copy" id="stateBody"></p>
+        <div class="rg-actions"><a class="button button-main" href="/sombreroencantado.html">✦ CREAR MI PROPIO ENLACE ✦</a></div>
+      </div>
+    </section>
+
+    <!-- 2. Quien recibe el enlace: juega -->
+    <section class="game-screen" id="gameScreen" hidden tabindex="-1" aria-label="El Sombrero Encantado">
       <header class="game-header">
         <p class="brand">✦ TOMÁS FLORES · REGALO DE HALLOWEEN ✦</p>
         <h1>El Sombrero <span>Encantado</span></h1>
+        <p class="sender-line" id="senderLine" hidden><b id="senderName"></b> te envió este regalo encantado</p>
         <p class="game-lead" id="lead">¡Cinco sombreros, cinco regalos! Todos ganan.</p>
       </header>
       <div class="launch-panel" id="launchPanel">
         <button class="button button-main start-hero" id="startButton" type="button">✦ INICIAR EL JUEGO ✦</button>
         <p class="launch-caption" id="launchCaption">¡Mira cómo se mezclan y elige tu sombrero favorito!</p>
-        <p class="commercial-notice">Participación gratuita para mayores de 18 años en Texas, sin obligación de compra. Gana un regalo y compártelo con alguien especial. Promoción con visita comercial. <a href="/sombreroencantado/bases.html" target="_blank" rel="noopener">Consulta las bases y condiciones</a>.</p>
+        <p class="commercial-notice">Participación gratuita para mayores de 18 años en Texas, sin obligación de compra. Promoción con visita comercial. <a href="/sombreroencantado/bases.html" target="_blank" rel="noopener">Consulta las bases y condiciones</a>.</p>
         <label class="eligibility-confirm" for="eligibilityCheck"><input type="checkbox" id="eligibilityCheck" /> <span>Confirmo que tengo 18 años o más y he podido consultar las bases.</span></label>
       </div>
       <div class="game-toolbar">
@@ -90,43 +175,30 @@
       <div class="win-image-wrap"><img id="winImage" alt="" /></div>
       <p class="winner-caption">Tu regalo encantado es:</p>
       <p class="winner-name" id="winName"></p>
-      <p class="winner-copy">Este regalo es para <strong>compartirlo con alguien especial</strong>.</p>
-
-      <div class="share-box" id="shareBox">
-        <p class="share-title">Aparta tu regalo</p>
-        <p class="share-copy">Regístrate y dinos con quién vas a vivir la experiencia.</p>
-        <form class="share-form" id="shareForm" novalidate>
-          <p class="share-group">TUS DATOS</p>
-          <label>Tu nombre<input id="fNombre" autocomplete="name" placeholder="Nombre y apellido" required></label>
-          <label>Tu WhatsApp<input id="fTel" type="tel" inputmode="tel" autocomplete="tel" placeholder="(254) 555-1234" required></label>
-          <label>¿En qué ciudad vives?
-            <select id="fCiudad" required>
-              <option value="">Elige tu ciudad</option>
-              <option>Temple</option><option>Killeen</option><option>Belton</option><option>Waco</option>
-              <option>Austin</option><option>Round Rock</option><option>Dallas / Fort Worth</option><option>Otra</option>
-            </select>
-          </label>
-          <p class="share-group">¿CON QUIÉN LO COMPARTES?</p>
-          <label>Nombre de tu invitado(a)<input id="fInvitado" placeholder="Tu pareja, mamá, amiga, compañero del gym…" required></label>
-          <label>WhatsApp de tu invitado(a) <small>(opcional, para avisarle)</small><input id="fTelInvitado" type="tel" inputmode="tel" placeholder="(512) 555-6789"></label>
-          <label class="share-check"><input type="checkbox" id="fAcepto"><span>Acepto que Tomás Flores me contacte por WhatsApp o llamada para coordinar la entrega de mi regalo.</span></label>
-          <p class="share-error" id="fError" role="alert"></p>
-          <button class="button button-main" type="submit">✦ APARTAR MI REGALO ✦</button>
-        </form>
+      <div id="claimBox">
+        <p class="winner-copy">Completa tus datos para apartar tu regalo y coordinar la entrega.</p>
+        <div class="rg-form">
+          <label>Nombre completo<input type="text" id="cName" autocomplete="name" maxlength="79" placeholder="Ej. Ana Martínez"></label>
+          <label>Teléfono (WhatsApp)<input type="tel" id="cPhone" autocomplete="tel" inputmode="tel" maxlength="18" placeholder="Ej. 254 555 1234"></label>
+          <label>Ciudad<input type="text" id="cCity" autocomplete="address-level2" maxlength="59" placeholder="Ej. Temple"></label>
+          <label>Código postal <small>(opcional)</small><input type="text" id="cZip" autocomplete="postal-code" inputmode="numeric" maxlength="10" placeholder="Ej. 76502"></label>
+          <label class="rg-check"><input type="checkbox" id="cConsent"><span>Acepto que Tomás Flores me contacte por llamada, SMS o WhatsApp para coordinar la entrega de mi regalo.</span></label>
+          <p class="rg-msg" id="claimMsg" role="alert"></p>
+          <button class="button button-main" id="btnClaim" type="button"><span class="spin" aria-hidden="true"></span>✦ RECLAMAR MI REGALO ✦</button>
+        </div>
       </div>
 
-      <div class="share-steps" id="doneBox" hidden>
-        <p class="share-title" id="doneTitle">¡Regalo apartado!</p>
-        <p class="share-copy" id="doneCopy"></p>
-        <p class="share-step">PASO 1 · CONFIRMA TU REGISTRO</p>
-        <a id="claimButton" class="button button-whatsapp" target="_blank" rel="noopener noreferrer">ENVIAR MI REGISTRO A TOMÁS</a>
-        <p class="share-step" id="inviteStep">PASO 2 · AVÍSALE A TU INVITADO(A)</p>
-        <a id="inviteButton" class="button button-soft" target="_blank" rel="noopener noreferrer">💌 Avisarle por WhatsApp</a>
+      <div id="doneBox" hidden>
+        <p class="rg-title">¡Tu regalo quedó registrado!</p>
+        <p class="rg-copy">Envíale tu confirmación a Tomás para coordinar la entrega.</p>
+        <div class="rg-actions">
+          <a class="button button-whatsapp" id="btnWaConfirm" href="#">CONFIRMAR POR WHATSAPP</a>
+          <a class="button button-soft" href="/sombreroencantado.html">🎩 Yo también quiero regalar y ganar</a>
+        </div>
       </div>
 
-      <p class="result-conditions">Entrega gratuita a domicilio previa coordinación con Tomás. La visita incluye una invitación a una demostración comercial de aproximadamente 40 minutos para ti y tu invitado(a). El regalo se entrega al comienzo, antes de la presentación; no necesitas comprar ni permanecer hasta el final. Válido según elegibilidad, cobertura y disponibilidad: <a href="/sombreroencantado/bases.html" target="_blank" rel="noopener">consulta las bases oficiales</a>.</p>
+      <p class="result-conditions">Entrega gratuita a domicilio previa coordinación con Tomás. La visita incluye una invitación a una demostración comercial de aproximadamente 40 minutos. El regalo se entrega al comienzo, antes de la presentación; no necesitas comprar ni permanecer hasta el final. Válido según elegibilidad, cobertura y disponibilidad: <a href="/sombreroencantado/bases.html" target="_blank" rel="noopener">consulta las bases oficiales</a>.</p>
       <p class="claim-help" id="claimHelp"></p>
-      <a class="work-link" href="/trabaja-conmigo.html">¿Buscas un ingreso extra? Conoce cómo trabajar conmigo →</a>
       <p class="result-legal"><a href="/sombreroencantado/bases.html" target="_blank" rel="noopener">Bases de la promoción</a> · <a href="/sombreroencantado/privacidad.html" target="_blank" rel="noopener">Privacidad</a></p>
     </div>
   </dialog>
