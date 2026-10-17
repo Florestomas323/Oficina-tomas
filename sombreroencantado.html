@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#160d1f" />
+  <meta name="description" content="El Sombrero Encantado: una experiencia de Halloween de Tomás Flores. Elige un sombrero, gana un regalo y compártelo con alguien especial." />
+  <meta property="og:title" content="🎩 El Sombrero Encantado | Tomás Flores" />
+  <meta property="og:description" content="Cinco sombreros, cinco regalos: aquí todos ganan. Gana tu regalo y compártelo con alguien especial." />
+  <meta property="og:url" content="https://tomasflores.com/sombreroencantado.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://tomasflores.com/sombreroencantado/assets/portada.webp" />
+  <title>El Sombrero Encantado · Tomás Flores</title>
+  <link rel="canonical" href="https://tomasflores.com/sombreroencantado.html" />
+  <link rel="icon" href="sombreroencantado/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" as="image" href="sombreroencantado/assets/portada.webp" />
+  <link rel="preload" as="image" href="sombreroencantado/assets/sombrero.webp" />
+  <link rel="stylesheet" href="sombreroencantado/styles.css" />
+  <style>
+    /* Breve aviso antes de participar; las condiciones completas están en las bases. */
+    .commercial-notice { max-width: 660px; margin: 8px auto 3px; padding: 0 8px; color: #ead6e2; font-size: 12px; line-height: 1.45; text-align: center; }
+    .commercial-notice a, .result-conditions a { color: #ffe0a1; text-decoration: underline; text-underline-offset: 3px; }
+    .eligibility-confirm { max-width: 660px; margin: 2px auto 7px; padding: 4px 8px; display: flex; gap: 9px; align-items: center; color: #f7e6da; text-align: left; font-weight: 550; font-size: 12px; line-height: 1.35; cursor: pointer; }
+    .result-conditions { max-width: 360px; margin: 7px auto 4px; color: #dccbd6; font-size: 11px; line-height: 1.5; text-align: center; }
+    .eligibility-confirm input { flex: none; width: 22px; height: 22px; accent-color: #eabd6a; }
+    .eligibility-confirm input:focus-visible { outline: 3px solid #fff5cf; outline-offset: 3px; }
+    /* Registro para compartir el regalo */
+    .share-box { margin: 4px 0 6px; text-align: left; }
+    .share-title { font-family: Cinzel, Cambria, serif; color: #ffe1a1; font-size: 1.08rem; text-align: center; margin: 4px 0 4px; }
+    .share-copy { font-size: .8rem; color: #e6cfdd; text-align: center; margin: 0 0 12px; line-height: 1.45; }
+    .share-form { display: grid; gap: 10px; }
+    .share-group { font-size: .66rem; font-weight: 800; letter-spacing: .13em; color: #e9bd83; margin: 6px 0 -2px; }
+    .share-form label { display: grid; gap: 4px; font-size: .78rem; font-weight: 650; color: #f7e6da; }
+    .share-form label small { font-weight: 400; color: #cdb6c6; }
+    .share-form input, .share-form select { width: 100%; font: inherit; font-size: 16px; color: #fff3df; background: rgba(10,5,15,.6); border: 1px solid rgba(243,202,130,.45); border-radius: 12px; padding: 11px 13px; outline: none; -webkit-appearance: none; appearance: none; }
+    .share-form select { background-image: linear-gradient(45deg,transparent 50%,#e9bd83 50%),linear-gradient(135deg,#e9bd83 50%,transparent 50%); background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%; background-size: 6px 6px; background-repeat: no-repeat; }
+    .share-form select option { color: #111; }
+    .share-form input:focus, .share-form select:focus { border-color: #f3ca82; box-shadow: 0 0 0 3px rgba(243,202,130,.25); }
+    .share-check { display: flex !important; gap: 9px; align-items: flex-start; font-weight: 400 !important; font-size: .72rem !important; color: #dccbd6 !important; line-height: 1.4; }
+    .share-check input { flex: none; width: 21px; height: 21px; padding: 0; margin-top: 1px; -webkit-appearance: checkbox; appearance: auto; accent-color: #eabd6a; }
+    .share-error { color: #ff9c9c; font-size: .78rem; min-height: 1em; margin: 0; text-align: center; }
+    .share-steps { display: grid; gap: 10px; margin-top: 6px; }
+    .share-step { font-size: .68rem; color: #d9c2d2; letter-spacing: .06em; margin: 4px 0 -4px; text-align: center; }
+    .button-whatsapp { color: #0c2400; background: linear-gradient(135deg,#b6f58e,#4fc22a); border-color: #c9f7a8; box-shadow: 0 5px 21px #4fc22a45; }
+    .result-dialog .button-soft { width: 100%; text-decoration: none; letter-spacing: .03em; }
+    .work-link { display: block; margin: 16px auto 0; font-size: .74rem; color: #ffe0a1; text-decoration: underline; text-underline-offset: 3px; }
+  </style>
+  <script src="sombreroencantado/config.js" defer></script>
+  <script src="sombreroencantado/game.js" defer></script>
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true"></div>
+  <main class="app" id="main">
+    <section class="game-screen" id="gameScreen" tabindex="-1" aria-label="El Sombrero Encantado">
+      <header class="game-header">
+        <p class="brand">✦ TOMÁS FLORES · REGALO DE HALLOWEEN ✦</p>
+        <h1>El Sombrero <span>Encantado</span></h1>
+        <p class="game-lead" id="lead">¡Cinco sombreros, cinco regalos! Todos ganan.</p>
+      </header>
+      <div class="launch-panel" id="launchPanel">
+        <button class="button button-main start-hero" id="startButton" type="button">✦ INICIAR EL JUEGO ✦</button>
+        <p class="launch-caption" id="launchCaption">¡Mira cómo se mezclan y elige tu sombrero favorito!</p>
+        <p class="commercial-notice">Participación gratuita para mayores de 18 años en Texas, sin obligación de compra. Gana un regalo y compártelo con alguien especial. Promoción con visita comercial. <a href="/sombreroencantado/bases.html" target="_blank" rel="noopener">Consulta las bases y condiciones</a>.</p>
+        <label class="eligibility-confirm" for="eligibilityCheck"><input type="checkbox" id="eligibilityCheck" /> <span>Confirmo que tengo 18 años o más y he podido consultar las bases.</span></label>
+      </div>
+      <div class="game-toolbar">
+        <span class="toolbar-caption">✦ SORPRESAS DE HALLOWEEN ✦</span>
+        <div class="tool-right">
+          <button class="tool-button" type="button" id="soundButton" aria-pressed="true" title="Silenciar el juego">♫ <span>Sonido: sí</span></button>
+          <button class="tool-button" type="button" id="fullscreenButton">⛶ <span>Pantalla completa</span></button>
+        </div>
+      </div>
+      <div class="status-area" aria-live="polite" aria-atomic="true">
+        <p class="status" id="status">Presiona iniciar para descubrir tu regalo</p>
+      </div>
+      <div class="game-field" id="gameField" aria-label="Cinco sombreros encantados que se mezclan al comenzar">
+        <div class="moon-glow" aria-hidden="true"></div>
+        <div class="tiles" id="tiles"></div>
+      </div>
+      <p class="hint" id="hint">Todos los sombreros tienen un regalo sorpresa. Participación gratuita.</p>
+      <div class="bottom-bar"><p class="campaign-note"><a href="/sombreroencantado/bases.html" target="_blank" rel="noopener">Bases y premios</a> · <a href="/sombreroencantado/privacidad.html" target="_blank" rel="noopener">Privacidad</a> · <a href="/sombreroencantado/terminos.html" target="_blank" rel="noopener">Términos</a></p></div>
+    </section>
+  </main>
+
+  <dialog id="resultDialog" class="result-dialog" aria-labelledby="winnerTitle">
+    <div class="result-inner">
+      <div class="result-sparkles" aria-hidden="true">✦ ✧ ✦</div>
+      <p class="winner-kicker">EL SOMBRERO HA HABLADO…</p>
+      <h2 id="winnerTitle">¡Felicidades!</h2>
+      <div class="win-image-wrap"><img id="winImage" alt="" /></div>
+      <p class="winner-caption">Tu regalo encantado es:</p>
+      <p class="winner-name" id="winName"></p>
+      <p class="winner-copy">Este regalo es para <strong>compartirlo con alguien especial</strong>.</p>
+
+      <div class="share-box" id="shareBox">
+        <p class="share-title">Aparta tu regalo</p>
+        <p class="share-copy">Regístrate y dinos con quién vas a vivir la experiencia.</p>
+        <form class="share-form" id="shareForm" novalidate>
+          <p class="share-group">TUS DATOS</p>
+          <label>Tu nombre<input id="fNombre" autocomplete="name" placeholder="Nombre y apellido" required></label>
+          <label>Tu WhatsApp<input id="fTel" type="tel" inputmode="tel" autocomplete="tel" placeholder="(254) 555-1234" required></label>
+          <label>¿En qué ciudad vives?
+            <select id="fCiudad" required>
+              <option value="">Elige tu ciudad</option>
+              <option>Temple</option><option>Killeen</option><option>Belton</option><option>Waco</option>
+              <option>Austin</option><option>Round Rock</option><option>Dallas / Fort Worth</option><option>Otra</option>
+            </select>
+          </label>
+          <p class="share-group">¿CON QUIÉN LO COMPARTES?</p>
+          <label>Nombre de tu invitado(a)<input id="fInvitado" placeholder="Tu pareja, mamá, amiga, compañero del gym…" required></label>
+          <label>WhatsApp de tu invitado(a) <small>(opcional, para avisarle)</small><input id="fTelInvitado" type="tel" inputmode="tel" placeholder="(512) 555-6789"></label>
+          <label class="share-check"><input type="checkbox" id="fAcepto"><span>Acepto que Tomás Flores me contacte por WhatsApp o llamada para coordinar la entrega de mi regalo.</span></label>
+          <p class="share-error" id="fError" role="alert"></p>
+          <button class="button button-main" type="submit">✦ APARTAR MI REGALO ✦</button>
+        </form>
+      </div>
+
+      <div class="share-steps" id="doneBox" hidden>
+        <p class="share-title" id="doneTitle">¡Regalo apartado!</p>
+        <p class="share-copy" id="doneCopy"></p>
+        <p class="share-step">PASO 1 · CONFIRMA TU REGISTRO</p>
+        <a id="claimButton" class="button button-whatsapp" target="_blank" rel="noopener noreferrer">ENVIAR MI REGISTRO A TOMÁS</a>
+        <p class="share-step" id="inviteStep">PASO 2 · AVÍSALE A TU INVITADO(A)</p>
+        <a id="inviteButton" class="button button-soft" target="_blank" rel="noopener noreferrer">💌 Avisarle por WhatsApp</a>
+      </div>
+
+      <p class="result-conditions">Entrega gratuita a domicilio previa coordinación con Tomás. La visita incluye una invitación a una demostración comercial de aproximadamente 40 minutos para ti y tu invitado(a). El regalo se entrega al comienzo, antes de la presentación; no necesitas comprar ni permanecer hasta el final. Válido según elegibilidad, cobertura y disponibilidad: <a href="/sombreroencantado/bases.html" target="_blank" rel="noopener">consulta las bases oficiales</a>.</p>
+      <p class="claim-help" id="claimHelp"></p>
+      <a class="work-link" href="/trabaja-conmigo.html">¿Buscas un ingreso extra? Conoce cómo trabajar conmigo →</a>
+      <p class="result-legal"><a href="/sombreroencantado/bases.html" target="_blank" rel="noopener">Bases de la promoción</a> · <a href="/sombreroencantado/privacidad.html" target="_blank" rel="noopener">Privacidad</a></p>
+    </div>
+  </dialog>
+
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <footer class="footer">Una experiencia de <strong>Tomás Flores · Impact Enterprises</strong> · Halloween 2026</footer>
+</body>
+</html>
