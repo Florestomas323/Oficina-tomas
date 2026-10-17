@@ -4,7 +4,7 @@
  * El Sombrero Encantado - Tomás Flores / Impact Enterprises
  * Five exact independent probabilities; all plays win.
  * Prize is drawn only after selection. Hat choice is cosmetic.
- * Registration data never leaves the phone except in the WhatsApp message the player decides to send.
+ * Connected to Regala y Gana: regalo.js handles the link, the claim and Firestore.
  */
 const PRIZES = Object.freeze([
   { id: 'tazones',    name: 'Set de tazones',          percentage: 5,  image: '/sombreroencantado/assets/tazones.webp' },
@@ -13,8 +13,8 @@ const PRIZES = Object.freeze([
   { id: 'cuchillo',   name: 'Cuchillo Santoku',        percentage: 35, image: '/sombreroencantado/assets/cuchillo.webp' },
   { id: 'utensilios', name: 'Set de utensilios',       percentage: 35, image: '/sombreroencantado/assets/utensilios.webp' }
 ]);
-const STORAGE_KEY = 'tomas-sombrero-premio-v1';
-const REG_KEY = 'tomas-sombrero-registro-v1';
+const REF_CODE = (new URLSearchParams(location.search).get('ref') || '').trim().toUpperCase();
+const STORAGE_KEY = 'tomas-sombrero-premio-v1-' + (REF_CODE || 'sin-enlace');
 const CONFIG = window.SOMBRERO_CONFIG || {};
 const DEMO_MODE = new URLSearchParams(location.search).get('demo') === '1';
 const $ = id => document.getElementById(id);
@@ -313,13 +313,6 @@ function validWhatsAppNumber() {
   const number = String(CONFIG.whatsappNumber || '').replace(/[^0-9]/g,'');
   return /^[1-9][0-9]{7,14}$/.test(number) ? number : '';
 }
-function getRegistration() {
-  if (DEMO_MODE) return null;
-  try {
-    const data = JSON.parse(localStorage.getItem(REG_KEY) || 'null');
-    return data && data.nombre ? data : null;
-  } catch (_) { return null; }
-}
 let currentPrize = null;
 
 function showResult(prize, receipt) {
@@ -327,80 +320,13 @@ function showResult(prize, receipt) {
   $('winImage').src = prize.image;
   $('winImage').alt = prize.name;
   $('winName').textContent = prize.name;
-  $('fError').textContent = '';
-  const reg = getRegistration();
-  if (reg) showDone(prize, reg);
-  else {
-    $('shareBox').hidden = false;
-    $('doneBox').hidden = true;
-    $('claimHelp').textContent = DEMO_MODE ? 'Modo demostración: este resultado no asigna premios ni puede reclamarse.' : '';
-  }
+  $('claimHelp').textContent = DEMO_MODE ? 'Modo demostración: este resultado no asigna premios ni puede reclamarse.' : '';
+  if (DEMO_MODE) { $('claimBox').hidden = true; $('doneBox').hidden = true; }
   if (!resultDialog.open) resultDialog.showModal();
   phase = 'finished';
+  // regalo.js decide si muestra el formulario de reclamo o la confirmación
+  document.dispatchEvent(new CustomEvent('sombrero:premio', { detail: { prize: { ...prize }, demo: DEMO_MODE } }));
 }
-
-function showDone(prize, reg) {
-  const number = validWhatsAppNumber();
-  $('shareBox').hidden = true;
-  $('doneBox').hidden = false;
-  $('doneTitle').textContent = '¡' + prize.name + ' apartado!';
-  $('doneCopy').textContent = `Para ti y para ${reg.invitado}. Envía tu registro y Tomás te escribirá para coordinar la entrega.`;
-  const msgTomas =
-`🎩 *El Sombrero Encantado* — Halloween
-Hola Tomás, gané: *${prize.name}*
-
-👤 Nombre: ${reg.nombre}
-📱 WhatsApp: ${prettyPhone(reg.tel)}
-📍 Ciudad: ${reg.ciudad}
-💌 Lo comparto con: ${reg.invitado}${reg.telInvitado ? ' — ' + prettyPhone(reg.telInvitado) : ''}
-
-¿Cuándo coordinamos la entrega?`;
-  const claim = $('claimButton');
-  if (number && !DEMO_MODE) {
-    claim.hidden = false;
-    claim.href = `https://wa.me/${number}?text=${encodeURIComponent(msgTomas)}`;
-    $('claimHelp').textContent = 'Se abrirá WhatsApp con tu registro listo. Pulsa Enviar para apartar tu regalo.';
-  } else {
-    claim.hidden = true;
-    claim.removeAttribute('href');
-    $('claimHelp').textContent = DEMO_MODE
-      ? 'Modo demostración: este resultado no asigna premios ni puede reclamarse.'
-      : `Si no puedes usar WhatsApp, escribe a ${CONFIG.email || 'Tomás'} para apartar tu regalo.`;
-  }
-  const url = CONFIG.urlJuego || location.origin + location.pathname;
-  const msgInvite =
-`¡Hola ${reg.invitado}! 🎩 Jugué El Sombrero Encantado, gané un regalo (${prize.name}) y te elegí a ti para compartir la experiencia conmigo. Tomás Flores nos va a contactar para coordinar.
-
-Tú también puedes elegir tu sombrero y ganar 👉 ${url}`;
-  const dInv = digits(reg.telInvitado);
-  const invite = $('inviteButton');
-  invite.href = (dInv.length === 11 ? 'https://wa.me/' + dInv : 'https://wa.me/') + '?text=' + encodeURIComponent(msgInvite);
-  invite.textContent = '💌 Avisarle a ' + reg.invitado;
-  $('inviteStep').textContent = 'PASO 2 · AVÍSALE A ' + reg.invitado.toUpperCase();
-}
-
-$('shareForm').addEventListener('submit', event => {
-  event.preventDefault();
-  const reg = {
-    nombre: $('fNombre').value.trim(),
-    tel: $('fTel').value.trim(),
-    ciudad: $('fCiudad').value,
-    invitado: $('fInvitado').value.trim(),
-    telInvitado: $('fTelInvitado').value.trim()
-  };
-  const err = $('fError');
-  if (reg.nombre.length < 2) { err.textContent = 'Escribe tu nombre.'; $('fNombre').focus(); return; }
-  if (digits(reg.tel).length !== 11) { err.textContent = 'Escribe tu WhatsApp completo (10 dígitos).'; $('fTel').focus(); return; }
-  if (!reg.ciudad) { err.textContent = 'Elige tu ciudad.'; $('fCiudad').focus(); return; }
-  if (reg.invitado.length < 2) { err.textContent = 'Dinos con quién vas a compartir tu regalo.'; $('fInvitado').focus(); return; }
-  if (reg.telInvitado && digits(reg.telInvitado).length !== 11) { err.textContent = 'El WhatsApp de tu invitado(a) está incompleto (o déjalo vacío).'; $('fTelInvitado').focus(); return; }
-  if (!$('fAcepto').checked) { err.textContent = 'Marca la casilla para que podamos entregarte tu regalo.'; return; }
-  err.textContent = '';
-  if (!DEMO_MODE) { try { localStorage.setItem(REG_KEY, JSON.stringify({...reg, at: new Date().toISOString()})); } catch (_) {} }
-  showDone(currentPrize, reg);
-  $('doneBox').scrollIntoView({block: 'start', behavior: 'smooth'});
-  chime(784, .3, 'sine', .1); chime(1046.5, .45, 'sine', .1, .12);
-});
 
 function resetToIdle() {
   round += 1;
