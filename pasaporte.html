@@ -7,12 +7,12 @@
 <script src="avisar.js"></script>
 <title>Pasaporte de Sabores — Tomas Flores</title>
 <meta name="description" content="Un continente. Muchas cocinas. Un viaje para compartir. Prepara seis recetas, toma tu foto, gana tus sellos y completa la ruta.">
-<link rel="canonical" href="https://tomasflores.com/pasaporte.html">
+<link rel="canonical" href="https://tomasflores.com/pasaporte">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Tomas Flores — Royal Prestige">
 <meta property="og:title" content="Pasaporte de Sabores">
 <meta property="og:description" content="Un continente. Muchas cocinas. Un viaje para compartir. Seis países, seis recetas, un pasaporte.">
-<meta property="og:url" content="https://tomasflores.com/pasaporte.html">
+<meta property="og:url" content="https://tomasflores.com/pasaporte">
 <meta property="og:image" content="https://tomasflores.com/og-pasaporte.jpeg?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -261,7 +261,7 @@
 <div class="net" id="netBanner">Sin conexión — tu progreso se guardará al reconectar</div>
 <div class="wrap">
   <div class="top">
-    <a class="back-link" href="index.html">&#8592; tomasflores.com</a>
+    <a class="back-link" href="/">&#8592; tomasflores.com</a>
     <img class="top-logo" src="emblema-pasaporte.jpeg" alt="Pasaporte de Sabores" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='emblema-pasaporte.jpg'}else{this.style.display='none'}">
   </div>
 
@@ -388,7 +388,7 @@
         <p style="margin-top:10px"><b>El regalo.</b> Se entrega &uacute;nicamente al completar los seis destinos y enviar el comprobante por WhatsApp. Es una <b>sorpresa que Tomas entrega personalmente</b>, sujeta a disponibilidad y a que te encuentres en el &aacute;rea de Dallas&ndash;Fort Worth. No es un premio f&iacute;sico espec&iacute;fico garantizado ni tiene valor en efectivo.</p>
         <p style="margin-top:10px"><b>Tus datos.</b> Guardo tu nombre, WhatsApp, ciudad, estado, tu progreso y las fotos que subes. Los uso solo para acompa&ntilde;arte en el viaje y coordinar tu regalo. <b>No vendo ni comparto tu informaci&oacute;n</b> y tu n&uacute;mero nunca se publica en el sitio.</p>
         <p style="margin-top:10px"><b>Tus fotos.</b> Son tuyas. Las guardo como comprobante de tu ruta y no las publico sin pedirte permiso antes.</p>
-        <p style="margin-top:10px"><b>Eliminaci&oacute;n.</b> Puedes pedir que borre tu pasaporte, tus datos y tus fotos escribi&eacute;ndome por WhatsApp. M&aacute;s detalles en la <a href="privacidad.html" style="color:var(--gold-text)">pol&iacute;tica de privacidad</a>.</p>
+        <p style="margin-top:10px"><b>Eliminaci&oacute;n.</b> Puedes pedir que borre tu pasaporte, tus datos y tus fotos escribi&eacute;ndome por WhatsApp. M&aacute;s detalles en la <a href="/privacidad" style="color:var(--gold-text)">pol&iacute;tica de privacidad</a>.</p>
       </div>
       <div style="margin-top:18px"><button class="btn btn-line" data-nav="#/pasaporte" type="button">Volver</button></div>
     </div>
@@ -775,7 +775,7 @@ $('stampOk').addEventListener('click', ()=>{
 });
 $('stampShare').addEventListener('click', ()=>{
   const c=pendingCountry;
-  const txt=(USER?USER.name:'Alguien')+' acaba de ganar el sello '+(c?c.stamp:'')+' del Pasaporte de Sabores de Tomas Flores. Prepara la receta, gana tu sello y completa la ruta: https://tomasflores.com/pasaporte.html';
+  const txt=(USER?USER.name:'Alguien')+' acaba de ganar el sello '+(c?c.stamp:'')+' del Pasaporte de Sabores de Tomas Flores. Prepara la receta, gana tu sello y completa la ruta: https://tomasflores.com/pasaporte';
   shareImage($('stampShot').src, 'mi-sello.jpg', txt);
 });
 
@@ -793,13 +793,13 @@ async function shareImage(dataUrl, filename, text){
     }
   }catch(e){}
   try{
-    if(navigator.share){ await navigator.share({ text:text, url:'https://tomasflores.com/pasaporte.html' }); return true; }
+    if(navigator.share){ await navigator.share({ text:text, url:'https://tomasflores.com/pasaporte' }); return true; }
   }catch(e){}
   window.open('https://wa.me/?text='+encodeURIComponent(text), '_blank', 'noopener');
   return false;
 }
 $('btnShare').addEventListener('click', ()=>{
-  const txt=(USER?USER.name:'Alguien')+' te invita a viajar por Latinoamérica desde tu cocina. Prepara la receta, gana tu sello y comienza tu Pasaporte de Sabores: https://tomasflores.com/pasaporte.html';
+  const txt=(USER?USER.name:'Alguien')+' te invita a viajar por Latinoamérica desde tu cocina. Prepara la receta, gana tu sello y comienza tu Pasaporte de Sabores: https://tomasflores.com/pasaporte';
   shareImage(null, null, txt);
 });
 $('btnRewards').addEventListener('click', ()=>{ location.hash='#/regalo'; });

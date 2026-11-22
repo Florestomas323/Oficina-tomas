@@ -2,7 +2,7 @@
   "name": "Panel · Tomas Flores",
   "short_name": "Mi panel",
   "description": "Panel de administración de la oficina digital de Tomas Flores.",
-  "start_url": "/panel.html",
+  "start_url": "/panel",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",

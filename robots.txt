@@ -1,5 +1,30 @@
+# Tomas Flores — https://tomasflores.com
+# Los rastreadores de búsqueda y de IA pueden leer el sitio.
+# El panel de administración no es público.
+
 User-agent: *
 Allow: /
+Disallow: /panel
+Disallow: /panel.html
+
+User-agent: GPTBot
+Allow: /
+Disallow: /panel
+Disallow: /panel.html
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /panel
+Disallow: /panel.html
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /panel
+Disallow: /panel.html
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /panel
 Disallow: /panel.html
 
 Sitemap: https://tomasflores.com/sitemap.xml

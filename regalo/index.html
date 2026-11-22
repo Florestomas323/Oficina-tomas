@@ -137,6 +137,7 @@
   }, 15000);
 })();
 </script>
+<link rel="canonical" href="https://tomasflores.com/regalo">
 </head>
 <body>
 <div class="wrap">
@@ -195,7 +196,7 @@
         <span class="btn-label" id="claimBtnLabel">Reclamar mi obsequio</span>
       </button>
       <div class="msg" id="claimMsg" role="alert"></div>
-      <p class="fineprint">Un obsequio por persona y por número telefónico. Consulta los <a href="../terminos.html">términos</a> y el <a href="../privacidad.html">aviso de privacidad</a>.</p>
+      <p class="fineprint">Un obsequio por persona y por número telefónico. Consulta los <a href="/terminos">términos</a> y el <a href="/privacidad">aviso de privacidad</a>.</p>
     </section>
   </div>
 
@@ -213,7 +214,7 @@
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.7.8-.8 1-.1.2-.3.2-.6.1a6.7 6.7 0 0 1-2-1.2 7.4 7.4 0 0 1-1.4-1.7c-.1-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.9 2.9 4.6 4 .6.3 1.1.4 1.5.6.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3z"/></svg>
         Confirmar por WhatsApp
       </button>
-      <a class="btn btn-line" id="btnOwnLink" href="crear.html" data-tr="RyG reclamo: crear mi propio enlace">Yo también quiero regalar y ganar</a>
+      <a class="btn btn-line" id="btnOwnLink" href="/regalo/crear" data-tr="RyG reclamo: crear mi propio enlace">Yo también quiero regalar y ganar</a>
     </div>
   </section>
 
@@ -222,7 +223,7 @@
     <h2 id="stateTitle"></h2>
     <p id="stateBody"></p>
     <div class="actions">
-      <a class="btn btn-line" href="crear.html" id="stateCta">Crear mi propio enlace</a>
+      <a class="btn btn-line" href="/regalo/crear" id="stateCta">Crear mi propio enlace</a>
     </div>
   </section>
 
@@ -252,7 +253,7 @@ const $ = id => document.getElementById(id);
   lg.onerror = function(){ if(CFG.brand && CFG.brand.logoPng && lg.src.indexOf('.png')<0) lg.src = CFG.brand.logoPng; };
   $('claimBtnLabel').textContent = CFG.texts.claimButton;
   $('footLine').innerHTML = esc(D.name)+' · Distribuidor autorizado Royal Prestige · '+esc(D.city)+
-    '<br><a href="../index.html">Página principal</a> · <a href="../privacidad.html">Privacidad</a>';
+    '<br><a href="/">Página principal</a> · <a href="/privacidad">Privacidad</a>';
 })();
 function esc(s){ return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
