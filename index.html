@@ -39,43 +39,96 @@
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
-  "@type":"Person",
-  "name":"Tomas Flores",
-  "url":"https://tomasflores.com/",
-  "jobTitle":"Distribuidor autorizado Royal Prestige",
-  "worksFor":{"@type":"Organization","name":"Impact Enterprises"},
-  "telephone":"+1-682-381-1576",
-  "areaServed":"DFW, Texas",
-  "sameAs":[
-    "https://www.instagram.com/tomasflores_23",
-    "https://www.tiktok.com/@titoflores45"
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://tomasflores.com/#website",
+      "url":"https://tomasflores.com/",
+      "name":"Tomas Flores",
+      "inLanguage":"es",
+      "publisher":{"@id":"https://tomasflores.com/#tomas"}
+    },
+    {
+      "@type":"Person",
+      "@id":"https://tomasflores.com/#tomas",
+      "name":"Tomas Flores",
+      "url":"https://tomasflores.com/",
+      "jobTitle":"Distribuidor autorizado Royal Prestige",
+      "telephone":"+1-682-381-1576",
+      "image":"https://tomasflores.com/og-image.jpeg",
+      "worksFor":{"@id":"https://tomasflores.com/#impact"},
+      "areaServed":[
+        {"@type":"City","name":"Dallas"},
+        {"@type":"City","name":"Irving"},
+        {"@type":"City","name":"Arlington"},
+        {"@type":"City","name":"Grand Prairie"},
+        {"@type":"City","name":"Farmers Branch"},
+        {"@type":"City","name":"Addison"},
+        {"@type":"City","name":"Plano"},
+        {"@type":"City","name":"Fort Worth"}
+      ],
+      "sameAs":[
+        "https://www.instagram.com/tomasflores_23",
+        "https://www.tiktok.com/@titoflores45"
+      ]
+    },
+    {
+      "@type":"Organization",
+      "@id":"https://tomasflores.com/#impact",
+      "name":"Impact Enterprises"
+    },
+    {
+      "@type":"Brand",
+      "@id":"https://tomasflores.com/#royal",
+      "name":"Royal Prestige"
+    },
+    {
+      "@type":"LocalBusiness",
+      "@id":"https://tomasflores.com/#negocio",
+      "name":"Tomas Flores — Distribuidor Royal Prestige",
+      "image":"https://tomasflores.com/og-image.jpeg",
+      "url":"https://tomasflores.com/",
+      "telephone":"+1-682-381-1576",
+      "description":"Demostraciones de cocina gratuitas y sin compromiso en el área de Dallas–Fort Worth, con acompañamiento y servicio posventa.",
+      "address":{"@type":"PostalAddress","addressRegion":"TX","addressCountry":"US"},
+      "areaServed":[
+        {"@type":"City","name":"Dallas"},
+        {"@type":"City","name":"Irving"},
+        {"@type":"City","name":"Arlington"},
+        {"@type":"City","name":"Grand Prairie"},
+        {"@type":"City","name":"Farmers Branch"},
+        {"@type":"City","name":"Addison"},
+        {"@type":"City","name":"Plano"},
+        {"@type":"City","name":"Fort Worth"}
+      ],
+      "parentOrganization":{"@id":"https://tomasflores.com/#impact"},
+      "brand":{"@id":"https://tomasflores.com/#royal"},
+      "sameAs":[
+        "https://www.instagram.com/tomasflores_23",
+        "https://www.tiktok.com/@titoflores45"
+      ]
+    },
+    {
+      "@type":"Service",
+      "@id":"https://tomasflores.com/#demostracion",
+      "name":"Demostración de cocina gratuita en el hogar",
+      "serviceType":"Demostración de cocina en el hogar",
+      "description":"Demostración gratuita y sin compromiso en tu hogar. Dura entre una hora y hora y media. Se prepara un menú completo con utensilios Royal Prestige.",
+      "url":"https://tomasflores.com/agendar",
+      "provider":{"@id":"https://tomasflores.com/#tomas"},
+      "brand":{"@id":"https://tomasflores.com/#royal"},
+      "areaServed":[
+        {"@type":"City","name":"Dallas"},
+        {"@type":"City","name":"Irving"},
+        {"@type":"City","name":"Arlington"},
+        {"@type":"City","name":"Grand Prairie"},
+        {"@type":"City","name":"Farmers Branch"},
+        {"@type":"City","name":"Addison"},
+        {"@type":"City","name":"Plano"},
+        {"@type":"City","name":"Fort Worth"}
+      ]
+    }
   ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"LocalBusiness",
-  "name":"Tomas Flores — Distribuidor Royal Prestige",
-  "image":"https://tomasflores.com/og-image.jpeg",
-  "url":"https://tomasflores.com/",
-  "telephone":"+1-682-381-1576",
-  "priceRange":"$$",
-  "areaServed":[
-    {"@type":"City","name":"Dallas"},
-    {"@type":"City","name":"Irving"},
-    {"@type":"City","name":"Arlington"},
-    {"@type":"City","name":"Grand Prairie"},
-    {"@type":"City","name":"Farmers Branch"},
-    {"@type":"City","name":"Addison"},
-    {"@type":"City","name":"Plano"},
-    {"@type":"City","name":"Fort Worth"}
-  ],
-  "address":{"@type":"PostalAddress","addressRegion":"TX","addressCountry":"US"},
-  "parentOrganization":{"@type":"Organization","name":"Impact Enterprises"},
-  "brand":{"@type":"Brand","name":"Royal Prestige"},
-  "description":"Demostraciones de cocina gratuitas y sin compromiso en el área de Dallas–Fort Worth, con acompañamiento y servicio posventa.",
-  "sameAs":["https://www.instagram.com/tomasflores_23","https://www.tiktok.com/@titoflores45"]
 }
 </script>
 <script type="application/ld+json">
@@ -2081,7 +2134,7 @@
 
 <footer>
   <b>Tomas Flores</b> · "Más que vender, sirvo."<br>
-  <span class="foot-legal">Sitio personal de Tomas Flores, Distribuidor Autorizado Independiente de Royal Prestige®. Royal Prestige® y sus marcas pertenecen a sus respectivos propietarios.</span><br>
+  <span class="foot-legal">Sitio personal de Tomas Flores, Distribuidor Autorizado Independiente de Royal Prestige® — Impact Enterprises. Royal Prestige® y sus marcas pertenecen a sus respectivos propietarios.</span><br>
   <span class="foot-links">
     <a class="foot-link" href="/privacidad">Privacidad</a> <span class="foot-sep">·</span>
     <a class="foot-link" href="/terminos">Términos</a> <span class="foot-sep">·</span>
@@ -3041,7 +3094,7 @@ var GARANTIA_URL = "/garantia";
           sel('ayMotivo',['No sé cómo utilizarlo','No funciona correctamente','Limpieza o mantenimiento','Pieza o accesorio','Otro'],'Tipo de ayuda')+
           '<label for="ayDetalle">Detalle del problema</label><textarea id="ayDetalle" placeholder="Cuéntame con tus palabras qué necesitas"></textarea>'+
           bloqueFoto()+bloqueContacto()+bloqueConsent(),
-        ok:'Recibimos tu solicitud. Tomás o una persona autorizada se comunicará contigo dentro de un máximo de 3 días hábiles.',
+        ok:'Recibimos tu solicitud. Tomas o una persona autorizada se comunicará contigo dentro de un máximo de 3 días hábiles.',
         req:['ayNombre','ayApellido','ayTel','ayProducto','ayMotivo','ayDetalle','ayMedio','ayHorario']
       };
     },
@@ -3335,7 +3388,7 @@ var GARANTIA_URL = "/garantia";
     var l = document.querySelector('link[rel="canonical"]');
     return (l && l.href) ? l.href : location.href.split('#')[0];
   })();
-  var TEXTO_COMPARTIR = 'Te comparto la oficina digital de Tomás Flores. Aquí puedes encontrar recetas, ayuda, beneficios y contacto directo.';
+  var TEXTO_COMPARTIR = 'Te comparto la oficina digital de Tomas Flores. Aquí puedes encontrar recetas, ayuda, beneficios y contacto directo.';
   var instalable = null;   /* evento de instalación, si el navegador lo ofrece */
 
   function ev(n){ if(window.trackEvent) window.trackEvent('Guardar oficina: ' + n); }
