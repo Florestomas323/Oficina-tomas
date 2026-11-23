@@ -79,12 +79,12 @@
 }
 </script>
 <style>
-  :root{--paper:#0A0812;--card:#171226;--ink:#F5F3FA;--stone:#A9A3C2;--hairline:rgba(196,167,255,.15);--gold:#8B5CF6;--gold-text:#C9A9FF;--shadow:0 1px 2px rgba(0,0,0,.45),0 8px 24px rgba(0,0,0,.40);
-    --metal:linear-gradient(135deg,#9B6BF5 0%,#7C3AED 52%,#5B21B6 100%);
-    --metal-silver:linear-gradient(135deg,#F2F1F7 0%,#C9C6DA 45%,#8F8BA6 100%);
-    --silver:#D8D5E8; --silver-dim:#8E88A6;
-    --ink:#F5F3FA; --card:#171226; --stone:#A9A3C2;
-    --gold:#8B5CF6; --gold-text:#C9A9FF; --hairline:rgba(196,167,255,.15);
+  :root{--paper:#E9E7E3;--card:#C4BBB0;--ink:#4A4540;--stone:#514A44;--hairline:rgba(74,69,64,.15);--gold:#6B2BFF;--gold-text:#4E14D4;--shadow:0 1px 2px rgba(74,69,64,.06),0 8px 24px rgba(74,69,64,.08);
+    --metal:linear-gradient(135deg,#6B2BFF 0%,#6B2BFF 52%,#5516E0 100%);
+    --metal-silver:linear-gradient(135deg,#F7F4F0 0%,#E7E0D6 48%,#C4BBB0 100%);
+    --silver:#514A44; --silver-dim:#514A44;
+    --ink:#4A4540; --card:#C4BBB0; --stone:#514A44;
+    --gold:#6B2BFF; --gold-text:#4E14D4; --hairline:rgba(74,69,64,.15);
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   body{background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
@@ -109,7 +109,7 @@
   .steps li:last-child{border-bottom:0}
   .stp-n{flex:0 0 30px;height:30px;border-radius:50%;background:var(--metal);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
   .steps p{font-size:15.5px;line-height:1.6;padding-top:3px}
-  .tipbox{background:rgba(139,92,246,.14);border:1px solid rgba(232,199,102,.28);border-radius:16px;padding:16px 18px;margin-top:18px}
+  .tipbox{background:rgba(107,43,255,.14);border:1px solid rgba(232,199,102,.28);border-radius:16px;padding:16px 18px;margin-top:18px}
   .tipbox .t{font-weight:700;font-size:14px;color:var(--gold-text);margin-bottom:5px}
   .tipbox p{font-size:14.5px;line-height:1.55}
   .cta{display:flex;flex-direction:column;gap:10px;margin:26px 0 14px}
@@ -119,23 +119,23 @@
   .foot{color:var(--stone);text-align:center;font-size:13px;padding:26px 0 40px}
   .foot a{color:var(--gold-text);font-weight:600;text-decoration:none}
 
-  /* ---- Paleta morada: capa de fondo compartida con el sitio ---- */
+  /* Textura de fondo lavada con Gris Porcelana */
   html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
-  body{position:relative;background:#0A0812;color:var(--ink)}
+  body{position:relative;background:#E9E7E3;color:var(--ink)}
   body::before{
     content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
-    background:#0A0812 url('fondo-textura.jpeg') center center / cover no-repeat;opacity:.55;
+    background:#E9E7E3 url('fondo-textura.jpeg') center center / cover no-repeat;opacity:.14;
   }
   body::after{
     content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     background:
-      radial-gradient(120% 80% at 50% 0%, rgba(124,58,237,.20), transparent 60%),
-      linear-gradient(180deg, rgba(10,8,18,.62) 0%, rgba(10,8,18,.86) 55%, rgba(10,8,18,.94) 100%);
+      radial-gradient(120% 80% at 50% 0%, rgba(107,43,255,.20), transparent 60%),
+      linear-gradient(180deg, rgba(233,231,227,.90) 0%, rgba(233,231,227,.94) 55%, rgba(233,231,227,.97) 100%);
   }
-  ::selection{background:rgba(167,139,250,.32);color:#fff}
+  ::selection{background:rgba(107,43,255,.22);color:#4A4540}
   /* El logotipo "Regala y Gana" tiene tipografia azul marino: se perfila en claro */
   img[alt="Regala y Gana"], .logo, .ryg-logo, #brandLogo{
-    filter:drop-shadow(0 0 1.6px rgba(255,255,255,.95)) drop-shadow(0 2px 12px rgba(255,255,255,.28));
+    filter:drop-shadow(0 1px 2px rgba(74,69,64,.20));
   }
   @media print{
     body{background:#FFFFFF!important;color:#111110!important}

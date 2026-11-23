@@ -24,14 +24,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@700;800&family=Fraunces:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0A0812; --ink:#F5F3FA; --navy:#F5F3FA; --gold:#8B5CF6; --gold-text:#C9A9FF;
-    --card:#171226; --hairline:rgba(196,167,255,.15); --stone:#A9A3C2; --ok:#5DE08A; --err:#FF8A8A;
-    --shadow:0 1px 2px rgba(0,0,0,.45),0 8px 24px rgba(0,0,0,.40);
-    --metal:linear-gradient(135deg,#9B6BF5 0%,#7C3AED 52%,#5B21B6 100%);
-    --metal-silver:linear-gradient(135deg,#F2F1F7 0%,#C9C6DA 45%,#8F8BA6 100%);
-    --silver:#D8D5E8; --silver-dim:#8E88A6;
-    --ink:#F5F3FA; --card:#171226; --stone:#A9A3C2;
-    --gold:#8B5CF6; --gold-text:#C9A9FF; --hairline:rgba(196,167,255,.15);
+    --bg:#E9E7E3; --ink:#4A4540; --navy:#4A4540; --gold:#6B2BFF; --gold-text:#4E14D4;
+    --card:#C4BBB0; --hairline:rgba(74,69,64,.15); --stone:#514A44; --ok:#14532D; --err:#7A1A1A;
+    --shadow:0 1px 2px rgba(74,69,64,.06),0 8px 24px rgba(74,69,64,.08);
+    --metal:linear-gradient(135deg,#6B2BFF 0%,#6B2BFF 52%,#5516E0 100%);
+    --metal-silver:linear-gradient(135deg,#F7F4F0 0%,#E7E0D6 48%,#C4BBB0 100%);
+    --silver:#514A44; --silver-dim:#514A44;
+    --ink:#4A4540; --card:#C4BBB0; --stone:#514A44;
+    --gold:#6B2BFF; --gold-text:#4E14D4; --hairline:rgba(74,69,64,.15);
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;min-height:100dvh;overflow-x:hidden}
@@ -58,7 +58,7 @@
   .metric .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px}
   .metric .lbl{font-weight:600;font-size:14.5px}
   .metric .num{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:16px;color:var(--gold-text)}
-  .bar{height:10px;border-radius:999px;background:#221B33;overflow:hidden}
+  .bar{height:10px;border-radius:999px;background:#B8AEA2;overflow:hidden}
   .bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--gold),#B79BF0);width:0;transition:width .6s ease}
   .missing{margin-top:14px;background:rgba(255,255,255,.05);border:1px dashed var(--gold);border-radius:14px;padding:13px 14px;font-size:14px;line-height:1.55;color:var(--navy)}
   .missing b{color:var(--gold-text)}
@@ -92,7 +92,7 @@
   .clist .n{font-weight:600;font-size:14.5px}
   .clist .s{font-size:12.5px;font-weight:700;border-radius:999px;padding:5px 11px;white-space:nowrap}
   .s-ok{background:rgba(93,224,138,.13);color:var(--ok)}
-  .s-mid{background:#EFE9FB;color:var(--gold-text)}
+  .s-mid{background:#E4DFD8;color:var(--gold-text)}
   .s-new{background:rgba(255,255,255,.05);color:var(--stone)}
   .empty{color:var(--stone);font-size:14px;line-height:1.6}
   .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border-radius:16px;padding:16px 20px;font-size:16px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font-family:inherit;min-height:52px}
@@ -116,23 +116,23 @@
   @media (prefers-reduced-motion: reduce){ .bar i{transition:none} .pageload .dot{animation-duration:1.8s} }
   .hidden{display:none !important}
 
-  /* ---- Paleta morada: capa de fondo compartida con el sitio ---- */
+  /* Textura de fondo lavada con Gris Porcelana */
   html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
-  body{position:relative;background:#0A0812;color:var(--ink)}
+  body{position:relative;background:#E9E7E3;color:var(--ink)}
   body::before{
     content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
-    background:#0A0812 url('../fondo-textura.jpeg') center center / cover no-repeat;opacity:.55;
+    background:#E9E7E3 url('../fondo-textura.jpeg') center center / cover no-repeat;opacity:.14;
   }
   body::after{
     content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     background:
-      radial-gradient(120% 80% at 50% 0%, rgba(124,58,237,.20), transparent 60%),
-      linear-gradient(180deg, rgba(10,8,18,.62) 0%, rgba(10,8,18,.86) 55%, rgba(10,8,18,.94) 100%);
+      radial-gradient(120% 80% at 50% 0%, rgba(107,43,255,.20), transparent 60%),
+      linear-gradient(180deg, rgba(233,231,227,.90) 0%, rgba(233,231,227,.94) 55%, rgba(233,231,227,.97) 100%);
   }
-  ::selection{background:rgba(167,139,250,.32);color:#fff}
+  ::selection{background:rgba(107,43,255,.22);color:#4A4540}
   /* El logotipo "Regala y Gana" tiene tipografia azul marino: se perfila en claro */
   img[alt="Regala y Gana"], .logo, .ryg-logo, #brandLogo{
-    filter:drop-shadow(0 0 1.6px rgba(255,255,255,.95)) drop-shadow(0 2px 12px rgba(255,255,255,.28));
+    filter:drop-shadow(0 1px 2px rgba(74,69,64,.20));
   }
   @media print{
     body{background:#FFFFFF!important;color:#111110!important}
@@ -152,10 +152,10 @@
     var cont = document.querySelector('main') || document.body;
     var aviso = document.createElement('div');
     aviso.setAttribute('role','alert');
-    aviso.style.cssText = 'max-width:520px;margin:40px auto;padding:22px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(196,167,255,.28);text-align:center;font-family:inherit;color:#F5F3FA';
+    aviso.style.cssText = 'max-width:520px;margin:40px auto;padding:22px;border-radius:18px;background:#C4BBB0;border:1px solid rgba(74,69,64,.28);text-align:center;font-family:inherit;color:#4A4540';
     aviso.innerHTML = '<h2 style="margin:0 0 8px;font-size:20px">No se pudo cargar</h2>' +
-      '<p style="margin:0 0 16px;color:#A9A3C2">Revisa tu conexión y vuelve a intentarlo. Si usas un bloqueador de contenido, desactívalo para esta página.</p>' +
-      '<button type="button" onclick="location.reload()" style="font:inherit;font-weight:700;padding:12px 22px;border-radius:999px;border:0;cursor:pointer;background:linear-gradient(135deg,#9B6BF5,#7C3AED 52%,#5B21B6);color:#fff;min-height:46px">Reintentar</button>';
+      '<p style="margin:0 0 16px;color:#514A44">Revisa tu conexión y vuelve a intentarlo. Si usas un bloqueador de contenido, desactívalo para esta página.</p>' +
+      '<button type="button" onclick="location.reload()" style="font:inherit;font-weight:700;padding:12px 22px;border-radius:999px;border:0;cursor:pointer;background:linear-gradient(135deg,#6B2BFF,#5516E0 52%,#4E14D4);color:#fff;min-height:46px">Reintentar</button>';
     document.querySelectorAll('.ring,.spinner,.loader').forEach(function(e){ e.style.display='none'; });
     if(st){ st.innerHTML = ''; st.appendChild(aviso); } else { cont.prepend(aviso); }
   }, 15000);
@@ -288,7 +288,7 @@ const authReady = new Promise(res => {
   signInAnonymously(auth).catch(()=>{});
 });
 
-const GIFT_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="#9B6BF5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"></rect><path d="M3 12h18M12 8v13"></path><path d="M12 8c-1.8 0-4.5-.6-4.5-2.7C7.5 3.9 8.6 3 9.8 3 11.4 3 12 5.2 12 8zm0 0c1.8 0 4.5-.6 4.5-2.7C16.5 3.9 15.4 3 14.2 3 12.6 3 12 5.2 12 8z"></path></svg>';
+const GIFT_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="#6B2BFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"></rect><path d="M3 12h18M12 8v13"></path><path d="M12 8c-1.8 0-4.5-.6-4.5-2.7C7.5 3.9 8.6 3 9.8 3 11.4 3 12 5.2 12 8zm0 0c1.8 0 4.5-.6 4.5-2.7C16.5 3.9 15.4 3 14.2 3 12.6 3 12 5.2 12 8z"></path></svg>';
 
 /* Muestra la fotografía real del premio; si aún no existe el archivo,
    deja un marcador neutro. Nunca inventa un producto. */
