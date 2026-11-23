@@ -9,7 +9,7 @@
 <meta property="og:site_name" content="Regala y Gana">
 <meta property="og:title" content="Mi progreso — Regala y Gana">
 <meta property="og:description" content="Sigue tu avance en Regala y Gana y descubre qué premio de cocina has desbloqueado.">
-<meta property="og:url" content="https://tomasflores.com/regalo/mi-progreso.html">
+<meta property="og:url" content="https://tomasflores.com/regalo/mi-progreso">
 <meta property="og:image" content="https://tomasflores.com/regalo/og-regala-y-gana.jpeg?v=2">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -161,12 +161,13 @@
   }, 15000);
 })();
 </script>
+<link rel="canonical" href="https://tomasflores.com/regalo/mi-progreso">
 </head>
 <body>
 <div class="wrap">
 
   <div class="top">
-    <a class="back" href="crear.html">&#8592; Volver</a>
+    <a class="back" href="/regalo/crear">&#8592; Volver</a>
     <img class="logo" id="brandLogo" src="" alt="Regala y Gana" width="933" height="592">
   </div>
 
@@ -246,7 +247,7 @@
   <section class="card statecard hidden" id="stateView">
     <h2 id="stateTitle"></h2>
     <p id="stateBody"></p>
-    <div class="actions"><a class="btn btn-line" href="crear.html" id="stateCta">Ir a mi enlace</a></div>
+    <div class="actions"><a class="btn btn-line" href="/regalo/crear" id="stateCta">Ir a mi enlace</a></div>
   </section>
 
   <p class="foot" id="footLine"></p>
@@ -272,7 +273,7 @@ const $ = id => document.getElementById(id);
   lg.src = (CFG.brand && CFG.brand.logo) || '';
   lg.onerror = function(){ if(CFG.brand && CFG.brand.logoPng && lg.src.indexOf('.png')<0) lg.src = CFG.brand.logoPng; };
   $('footLine').innerHTML = esc(D.name)+' · Distribuidor autorizado Royal Prestige · '+esc(D.city)+
-    '<br><a href="../index.html">Página principal</a> · <a href="../privacidad.html">Privacidad</a>';
+    '<br><a href="/">Página principal</a> · <a href="/privacidad">Privacidad</a>';
 })();
 function esc(s){ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 

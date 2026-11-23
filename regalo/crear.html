@@ -6,12 +6,12 @@
 <title>Regala y Gana — Crea tu enlace personal</title>
 <meta name="description" content="Crea tu enlace personal de Regala y Gana y comparte un obsequio de cocina con tus familiares y amigos. Sin costo y sin obligación de compra.">
 <meta name="robots" content="index,follow">
-<link rel="canonical" href="https://tomasflores.com/regalo/crear.html">
+<link rel="canonical" href="https://tomasflores.com/regalo/crear">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Regala y Gana">
 <meta property="og:title" content="Regala y Gana — Comparte un obsequio para su cocina">
 <meta property="og:description" content="Crea tu enlace personal, compártelo con familiares y amigos, y gana premios para tu cocina. Sin costo y sin obligación de compra.">
-<meta property="og:url" content="https://tomasflores.com/regalo/crear.html">
+<meta property="og:url" content="https://tomasflores.com/regalo/crear">
 <meta property="og:image" content="https://tomasflores.com/regalo/og-regala-y-gana.jpeg?v=2">
 <meta property="og:image:secure_url" content="https://tomasflores.com/regalo/og-regala-y-gana.jpeg">
 <meta property="og:image:type" content="image/jpeg">
@@ -157,7 +157,7 @@
 <div class="wrap">
 
   <div class="top">
-    <a class="back" href="../index.html" data-tr="RyG crear: volver al inicio">&#8592; Inicio</a>
+    <a class="back" href="/" data-tr="RyG crear: volver al inicio">&#8592; Inicio</a>
     <span class="top-chip" aria-label="Reto de recompensas de 30 días">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M8.2 13.5 7 22l5-3 5 3-1.2-8.5"/></svg>
       Reto de recompensas &middot; 30 d&iacute;as
@@ -192,7 +192,7 @@
     <details>
       <summary>Ver términos del programa</summary>
       <p id="termsText"></p>
-      <p>Consulta también los <a href="../terminos.html">términos generales</a> y el <a href="../privacidad.html">aviso de privacidad</a>.</p>
+      <p>Consulta también los <a href="/terminos">términos generales</a> y el <a href="/privacidad">aviso de privacidad</a>.</p>
     </details>
 
     <button class="btn btn-primary" id="btnCreate" type="button">
@@ -277,7 +277,7 @@ const D = CFG.distributor;
   document.getElementById('termsText').textContent    = CFG.texts.termsSummary;
   document.getElementById('footLine').innerHTML =
     esc(D.name) + ' · Distribuidor autorizado Royal Prestige · ' + esc(D.city) +
-    '<br><a href="../index.html">Página principal</a> · <a href="../privacidad.html">Privacidad</a>';
+    '<br><a href="/">Página principal</a> · <a href="/privacidad">Privacidad</a>';
 })();
 
 function esc(s){ return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -374,7 +374,7 @@ function renderDone(code, data){
     }
   };
   $('btnCopy').onclick = () => copyLink(link);
-  $('btnProgress').href = 'mi-progreso.html?c=' + code;
+  $('btnProgress').href = '/regalo/mi-progreso?c=' + code;
 
   if(expired){
     showMsg($('doneMsg'),

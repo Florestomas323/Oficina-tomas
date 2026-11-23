@@ -5,9 +5,9 @@
    colecciones giftLinks, giftParticipants y giftClaims), así que
    todo aparece en el panel y en "Mi progreso".
 
-   /sombreroencantado.html            → quien escanea crea su enlace
-   /sombreroencantado.html?ref=CODIGO → quien lo recibe juega y reclama
-   /sombreroencantado.html?demo=1     → prueba del juego, sin guardar nada
+   /sombreroencantado            → quien escanea crea su enlace
+   /sombreroencantado?ref=CODIGO → quien lo recibe juega y reclama
+   /sombreroencantado?demo=1     → prueba del juego, sin guardar nada
    ============================================================ */
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -64,7 +64,7 @@ async function start(){
     } catch (_) {}
   }
 
-  const link = code => SITE + '/sombreroencantado.html?ref=' + code;
+  const link = code => SITE + '/sombreroencantado?ref=' + code;
   const fmt = d => d.toLocaleDateString('es-US', { day: 'numeric', month: 'short', year: 'numeric' });
   const toDate = v => (v && v.toDate) ? v.toDate() : new Date(v);
   function msg(el, text, ok){ el.textContent = text; el.className = 'rg-msg' + (ok ? ' ok' : ''); }
@@ -125,7 +125,7 @@ async function start(){
         } else copiar(completo);
       };
       $('btnCopy').onclick = () => copiar(url);
-      $('btnProgress').href = '/regalo/mi-progreso.html?c=' + code;
+      $('btnProgress').href = '/regalo/mi-progreso?c=' + code;
     }
     async function copiar(text){
       try { await navigator.clipboard.writeText(text); msg($('doneMsg'), 'Enlace copiado. Ya puedes pegarlo donde quieras.', true); }

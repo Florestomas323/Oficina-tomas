@@ -192,7 +192,7 @@ function ensureEligibilityControl() {
   checkbox.id = 'eligibilityCheck';
   checkbox.style.cssText = 'flex:none;width:21px;height:21px;margin:1px 0 0;accent-color:#eabd6a';
   const explanation = document.createElement('span');
-  explanation.innerHTML = 'Confirmo que soy mayor de 18 años, consulté las <a href="/sombreroencantado/bases.html" target="_blank" rel="noopener" style="color:#ffe0a1;text-decoration:underline">bases y premios</a>. La entrega gratuita se coordina en una visita con demostración comercial de unos 40 minutos, sin obligación de compra; el regalo se entrega al inicio.';
+  explanation.innerHTML = 'Confirmo que soy mayor de 18 años, consulté las <a href="/sombreroencantado/bases" target="_blank" rel="noopener" style="color:#ffe0a1;text-decoration:underline">bases y premios</a>. La entrega gratuita se coordina en una visita con demostración comercial de unos 40 minutos, sin obligación de compra; el regalo se entrega al inicio.';
   label.append(checkbox, explanation);
   panel.appendChild(label);
   return checkbox;
