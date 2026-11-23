@@ -10,7 +10,7 @@
    no existiera, y este solo se despierta cuando llega un push.
    ============================================================ */
 
-const VERSION = "panel-push-1";
+const VERSION = "panel-push-2";
 
 self.addEventListener("install", (e) => {
   // Toma el control sin esperar a que se cierren las pestañas viejas.
@@ -42,7 +42,7 @@ self.addEventListener("push", (e) => {
     badge: "/icono-panel-192.png",
     tag: d.tag || "panel",
     renotify: true,
-    data: { url: d.url || "/panel.html" }
+    data: { url: d.url || "/panel" }
   };
 
   e.waitUntil(self.registration.showNotification(titulo, opciones));
@@ -51,7 +51,7 @@ self.addEventListener("push", (e) => {
 /* ---------- El usuario toca la notificacion ---------- */
 self.addEventListener("notificationclick", (e) => {
   e.notification.close();
-  const destino = (e.notification.data && e.notification.data.url) || "/panel.html";
+  const destino = (e.notification.data && e.notification.data.url) || "/panel";
 
   e.waitUntil((async () => {
     const abiertas = await self.clients.matchAll({
@@ -60,7 +60,7 @@ self.addEventListener("notificationclick", (e) => {
     });
     // Si el panel ya esta abierto, lo trae al frente en vez de duplicarlo.
     for (const c of abiertas) {
-      if (c.url.indexOf("/panel.html") >= 0 && "focus" in c) {
+      if (/\/panel(?:\.html)?(?:[?#]|$)/.test(c.url) && "focus" in c) {
         try { await c.navigate(destino); } catch (err) {}
         return c.focus();
       }
